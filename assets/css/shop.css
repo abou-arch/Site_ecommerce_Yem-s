@@ -1,0 +1,245 @@
+/* ==========================================================================
+   YEM'S — Boutique : pages catégorie et fiches produit
+   ========================================================================== */
+
+/* Les pages intérieures n'ont pas de hero : il faut dégager le header fixe. */
+.section--top { padding-top: calc(var(--header-h) + var(--sp-6)); }
+
+/* Titre de page : c'est un h1 pour le référencement, à l'échelle d'un h2 à l'écran. */
+.page-title { font-size: var(--fs-3xl); }
+
+/* --------------------------------------------------------------------------
+   FIL D'ARIANE
+   -------------------------------------------------------------------------- */
+.crumb {
+  padding-top: calc(var(--header-h) + var(--sp-5));
+  padding-bottom: 0;
+  font-size: var(--fs-xs);
+  letter-spacing: 0.04em;
+  color: var(--text-subtle);
+}
+
+.crumb + .section--top { padding-top: var(--sp-5); }
+
+.crumb a { color: var(--text-muted); transition: color 300ms var(--ease); }
+.crumb a:hover { color: var(--brass-300); }
+.crumb__sep { margin-inline: var(--sp-3); opacity: 0.5; }
+.crumb [aria-current] { color: var(--brass-300); }
+
+/* --------------------------------------------------------------------------
+   PLACEHOLDER — produit sans photo
+   -------------------------------------------------------------------------- */
+.pshot__empty,
+.pshot--empty {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background:
+    radial-gradient(120% 90% at 50% 8%, var(--beige-50) 0%, var(--beige-200) 46%, var(--beige-300) 100%);
+}
+
+.pshot--empty::after {
+  content: "";
+  position: absolute;
+  inset: 14px;
+  border: 1.5px dashed rgba(122, 94, 51, 0.35);
+  border-radius: var(--radius-sm);
+  pointer-events: none;
+}
+
+.pshot__empty .pshot__note,
+.pshot--empty .pshot__note {
+  position: static;
+  font-size: var(--fs-xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: rgba(46, 36, 32, 0.5);
+}
+
+/* --------------------------------------------------------------------------
+   ÉTAT VIDE — catégorie sans produit
+   -------------------------------------------------------------------------- */
+.empty-state {
+  padding: var(--sp-9) var(--sp-6);
+  text-align: center;
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}
+
+.empty-state .display { font-size: var(--fs-xl); margin-bottom: var(--sp-3); }
+.empty-state p:last-child { font-size: var(--fs-sm); }
+
+/* --------------------------------------------------------------------------
+   FICHE PRODUIT
+   -------------------------------------------------------------------------- */
+.product {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  gap: clamp(2rem, 5vw, 4.5rem);
+  align-items: start;
+}
+
+.product__gallery {
+  position: sticky;
+  top: calc(var(--header-h) + var(--sp-4));
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.gallery__thumbs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--sp-3);
+}
+
+.gallery__thumbs .pshot { aspect-ratio: 1 / 1; cursor: zoom-in; }
+
+.product__name { font-size: var(--fs-3xl); margin-bottom: var(--sp-3); }
+
+.product__price {
+  font-family: var(--font-display);
+  font-size: var(--fs-xl);
+  color: var(--brass-300);
+  margin-bottom: var(--sp-5);
+}
+
+.product__info .lede { margin-bottom: var(--sp-6); }
+
+/* Sélecteurs cuir et pointure */
+.product__pickers {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-5);
+  padding-block: var(--sp-5);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  margin-bottom: var(--sp-5);
+}
+
+.product__pickers:empty { display: none; }
+
+.picker__label {
+  display: block;
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  color: var(--text-subtle);
+  margin-bottom: var(--sp-3);
+}
+
+.picker__row { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+
+.size {
+  min-width: 46px;
+  padding: 0.6rem 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: var(--fs-sm);
+  font-variant-numeric: tabular-nums;
+  color: var(--text-muted);
+  transition:
+    border-color 260ms var(--ease),
+    color 260ms var(--ease),
+    background-color 260ms var(--ease);
+}
+
+.size:hover { border-color: var(--brass-400); color: var(--text); }
+
+.size.is-active {
+  background: var(--brass-400);
+  border-color: var(--brass-400);
+  color: var(--espresso-900);
+  font-weight: 600;
+}
+
+.swatch--btn {
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  cursor: pointer;
+  transition: box-shadow 260ms var(--ease), transform 260ms var(--ease);
+}
+
+.swatch--btn:hover { transform: scale(1.08); }
+
+.swatch--btn.is-active {
+  box-shadow: 0 0 0 2px var(--bg), 0 0 0 3.5px var(--brass-400);
+}
+
+/* Actions */
+.product__actions { margin-bottom: var(--sp-6); }
+
+.product__actions .btn[data-added] {
+  --btn-bg: var(--status-green);
+  --btn-border: var(--status-green);
+  --btn-fg: var(--beige-50);
+}
+
+/* Caractéristiques */
+.product__specs {
+  margin: 0 0 var(--sp-6);
+  padding-top: var(--sp-2);
+}
+
+.product__specs .spec-row { border-bottom-style: solid; }
+
+/* Réassurance */
+.product__reassure {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  padding-top: var(--sp-5);
+  border-top: 1px solid var(--border);
+}
+
+.product__reassure li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--sp-3);
+  align-items: center;
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+}
+
+.product__reassure svg { width: 18px; height: 18px; color: var(--brass-400); flex: none; }
+
+@media (max-width: 900px) {
+  .product { grid-template-columns: minmax(0, 1fr); }
+  .product__gallery { position: static; }
+  .product__name { font-size: var(--fs-2xl); }
+}
+
+/* --------------------------------------------------------------------------
+   NOTIFICATION D'AJOUT AU PANIER
+   -------------------------------------------------------------------------- */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: var(--sp-6);
+  z-index: 150;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-4) var(--sp-5);
+  background: var(--espresso-700);
+  border: 1px solid rgba(201, 164, 106, 0.45);
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-lg);
+  font-size: var(--fs-sm);
+  opacity: 0;
+  transform: translate(-50%, 16px);
+  transition: opacity 400ms var(--ease), transform 500ms var(--ease-out-expo);
+  pointer-events: none;
+}
+
+.toast.is-visible { opacity: 1; transform: translate(-50%, 0); }
+
+.toast svg { width: 17px; height: 17px; color: var(--brass-300); flex: none; }
+.toast a { color: var(--brass-300); text-decoration: underline; pointer-events: auto; }

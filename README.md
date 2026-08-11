@@ -7,11 +7,66 @@ HTML / CSS / JS pur — aucun framework, aucune étape de build. Ouvrir `index.h
 
 ---
 
+## ⚠ Les fichiers `.html` sont générés
+
+Ne modifie **jamais** `index.html`, `chaussures.html` ou `produit/*.html` directement :
+ils sont réécrits à chaque build. Les sources sont dans `templates/` et `data/`.
+
+```bash
+python3 tools/build.py
+```
+
+### Ajouter un produit
+
+1. Déposer les photos dans le dossier du projet, ajouter une entrée dans `JOBS`
+   de `tools/process_images.py`, puis lancer `python3 tools/process_images.py`.
+2. Ajouter le produit dans `data/products.json` :
+
+```json
+{
+  "slug": "derby-porto-novo",
+  "category": "chaussures",
+  "name": "Derby Porto-Novo",
+  "price": 105000,
+  "status": "green",
+  "featured": false,
+  "bespoke": true,
+  "short": "Une phrase, celle qui s'affiche sur la carte produit.",
+  "pitch": "Deux ou trois phrases sur la fiche produit.",
+  "images": [{ "file": "derby-porto-novo", "w": 992, "h": 1240, "alt": "…" }],
+  "specs":  [{ "label": "Cuir", "value": "Pleine fleur, 2 mm" }],
+  "details":[{ "title": "Le détail qui compte", "text": "…" }],
+  "sizes":  [39, 40, 41, 42, 43, 44, 45, 46],
+  "colors": [{ "name": "Cognac", "hex": "#8C5A3C" }]
+}
+```
+
+3. `python3 tools/build.py`
+
+La fiche produit, la page catégorie, la navigation, le pied de page, le fil
+d'Ariane, les produits associés et les données structurées se mettent à jour seuls.
+
+**Champs facultatifs** — `featured` (le fait remonter sur la homepage),
+`bespoke_only` (retire le bouton panier au profit du configurateur),
+`placeholder` (produit en attente de photos), `images: []` (affiche un cadre
+« photo à venir » au lieu de casser la page).
+
+**Ajouter une catégorie** — une entrée dans `categories`, et la page, la nav et
+le pied de page suivent. Une catégorie sans produit affiche un état vide propre.
+
+---
+
 ## Ce qui est livré
 
 | Fichier | Rôle |
 |---|---|
-| `index.html` | Homepage complète (hero → footer) |
+| `data/products.json` | Le catalogue — la seule source de vérité |
+| `templates/` | Squelette de document, header, footer, contenu de la homepage |
+| `tools/build.py` | Générateur : 15 pages statiques |
+| `index.html` | Homepage complète (hero → footer) — **généré** |
+| `<categorie>.html` | 4 pages catégorie — **générées** |
+| `produit/<slug>.html` | 8 fiches produit — **générées** |
+| `assets/css/shop.css` | Fiches produit, catégories, fil d'Ariane, notifications |
 | `assets/css/base.css` | Tokens (couleurs, typo, spacing), reset, motif saddle-stitch, animations |
 | `assets/css/components.css` | Boutons, logo, header, footer, badges, cartes produit |
 | `assets/css/home.css` | Sections de la homepage |

@@ -1,0 +1,275 @@
+{
+  "site": {
+    "brand": "Yem's",
+    "slogan": "Différents par les détails",
+    "whatsapp": "22900000000",
+    "email": "contact@yems.example",
+    "currency": "F",
+    "cities": ["Cotonou, Bénin", "Abidjan, Côte d'Ivoire"]
+  },
+
+  "categories": [
+    {
+      "slug": "chaussures",
+      "nav": "Chaussures",
+      "name": "Chaussures",
+      "title": "Souliers cousus main — loafers, derbys, boots, richelieus",
+      "description": "Quatre formes de souliers cousus main à Cotonou. Point sellier, cuir pleine fleur, semelle ressemelable. Disponibles en sur-mesure.",
+      "eyebrow": "Les lignes",
+      "heading": "Quatre formes.<br>Une seule construction.",
+      "lede": "Même cuir, même point sellier, même semelle remplaçable sur les quatre. Vous choisissez la forme selon ce que vous en faites — pas selon ce qu'elle vaut."
+    },
+    {
+      "slug": "ceintures",
+      "nav": "Ceintures",
+      "name": "Ceintures",
+      "title": "Ceintures en cuir pleine fleur, taillées à la demande",
+      "description": "Ceintures Yem's taillées dans la même peau que nos souliers. Boucle laiton, longueur ajustée à votre tour de taille.",
+      "eyebrow": "La maroquinerie",
+      "heading": "Taillée dans<br>la même peau.",
+      "lede": "Une ceinture assortie n'est pas une ceinture de la même couleur : c'est une ceinture coupée dans la peau qui a servi à monter vos souliers."
+    },
+    {
+      "slug": "portefeuilles",
+      "nav": "Portefeuilles",
+      "name": "Portefeuilles",
+      "title": "Portefeuilles et porte-cartes cousus main",
+      "description": "Portefeuilles Yem's cousus au point sellier, cuir pleine fleur tanné végétal. Se patinent au lieu de s'user.",
+      "eyebrow": "La maroquinerie",
+      "heading": "L'objet qu'on sort<br>dix fois par jour.",
+      "lede": "C'est la pièce la plus manipulée de votre garde-robe. C'est donc celle où la couture compte le plus."
+    },
+    {
+      "slug": "entretien",
+      "nav": "Entretien",
+      "name": "Entretien",
+      "title": "Crèmes, brosses et embauchoirs pour cuir",
+      "description": "Produits d'entretien Yem's : crème nourrissante, brosses en crin, embauchoirs bois. Ce que nous utilisons à l'atelier.",
+      "eyebrow": "Le soin",
+      "heading": "Une paire dure<br>si on s'en occupe.",
+      "lede": "Nous ne vendons pas ce que nous n'utilisons pas nous-mêmes. Ces quatre produits sont ceux qui sortent tous les jours à l'atelier."
+    }
+  ],
+
+  "products": [
+    {
+      "slug": "loafer-ouidah",
+      "category": "chaussures",
+      "name": "Loafer Ouidah",
+      "price": 85000,
+      "status": "green",
+      "featured": true,
+      "bespoke": true,
+      "short": "Sans lacet, non doublé : il se met en quatre secondes et ne serre pas à 14 h. Celui qu'on porte cinq jours sur sept.",
+      "pitch": "Le loafer est le soulier qu'on enfile sans y penser. Le nôtre est monté sans doublure : le cuir travaille seul, prend la forme du pied en une dizaine de jours, et ne serre plus jamais aux heures chaudes.",
+      "images": [
+        { "file": "loafer-ouidah", "w": 807, "h": 1008, "alt": "Loafer Ouidah en cuir noir avec bride, semelle crantée, vu de trois quarts" },
+        { "file": "loafer-ouidah-alt", "w": 744, "h": 930, "alt": "Loafer Ouidah en cuir marine, vue de dessus, première de propreté cuir naturel" }
+      ],
+      "specs": [
+        { "label": "Cuir", "value": "Pleine fleur tannée végétal, 1,8 mm" },
+        { "label": "Doublure", "value": "Non doublé" },
+        { "label": "Semelle", "value": "Gomme crantée, cousue sur trépointe" },
+        { "label": "Couture", "value": "Point sellier, fil de lin ciré" },
+        { "label": "Pointures", "value": "39 à 46" }
+      ],
+      "details": [
+        { "title": "Pourquoi non doublé", "text": "Une doublure ajoute une épaisseur qui ne respire pas. Sans elle, le cuir évacue l'humidité et se détend là où le pied appuie — c'est ce qui rend le chaussant confortable dès la deuxième semaine." },
+        { "title": "La semelle crantée", "text": "Elle donne de l'accroche sur le carrelage mouillé et sur la latérite. Cousue sur trépointe, donc remplaçable : comptez une ressemelage tous les deux à trois ans selon l'usage." }
+      ],
+      "sizes": [39, 40, 41, 42, 43, 44, 45, 46],
+      "colors": [
+        { "name": "Noir", "hex": "#1A1614" },
+        { "name": "Marine", "hex": "#232B3D" },
+        { "name": "Cognac", "hex": "#8C5A3C" }
+      ]
+    },
+    {
+      "slug": "derby-cotonou",
+      "category": "chaussures",
+      "name": "Derby Cotonou",
+      "price": 98000,
+      "status": "amber",
+      "featured": true,
+      "bespoke": true,
+      "short": "Laçage ouvert : le coup de pied fort passe, le pied fin se rattrape au laçage. La forme qui pardonne le plus.",
+      "pitch": "Si vous hésitez entre deux pointures dans toutes les boutiques, c'est cette forme qu'il vous faut. Le laçage ouvert laisse le quartier s'écarter : un coup de pied fort entre, un pied fin se serre. C'est la seule construction qui s'adapte vraiment.",
+      "images": [
+        { "file": "derby-cotonou", "w": 992, "h": 1240, "alt": "Derby Cotonou en cuir cognac, laçage ouvert, couture apparente sur l'avant" },
+        { "file": "derby-cotonou-alt", "w": 1057, "h": 1321, "alt": "Derby Cotonou en cuir noir, semelle épaisse crantée, vu de profil" }
+      ],
+      "specs": [
+        { "label": "Cuir", "value": "Pleine fleur tannée végétal, 2 mm" },
+        { "label": "Doublure", "value": "Veau naturel" },
+        { "label": "Semelle", "value": "Cuir ou gomme, cousue sur trépointe" },
+        { "label": "Couture", "value": "Point sellier, couture d'apron apparente" },
+        { "label": "Pointures", "value": "39 à 46" }
+      ],
+      "details": [
+        { "title": "Le laçage ouvert", "text": "Les quartiers sont cousus par-dessus l'empeigne et restent libres. C'est ce qui permet d'ouvrir largement le soulier — et donc d'y faire entrer un pied que le richelieu refuse." },
+        { "title": "La couture d'apron", "text": "La couture visible sur l'avant du soulier n'est pas décorative : elle assemble le rabat. Elle est posée à la main, point par point, et c'est là que la différence de fabrication se voit le plus vite." }
+      ],
+      "sizes": [39, 40, 41, 42, 43, 44, 45, 46],
+      "colors": [
+        { "name": "Cognac", "hex": "#8C5A3C" },
+        { "name": "Noir", "hex": "#1A1614" },
+        { "name": "Espresso", "hex": "#3B2F29" }
+      ]
+    },
+    {
+      "slug": "boot-atakora",
+      "category": "chaussures",
+      "name": "Boot Atakora",
+      "price": 125000,
+      "status": "green",
+      "featured": true,
+      "bespoke": true,
+      "short": "Tige montante, élastiques latéraux, semelle gomme. Elle tient sur le bitume mouillé de juin comme sur la latérite de janvier.",
+      "pitch": "La saison des pluies abîme les souliers bas : l'eau entre par le col, le cuir gonfle, la semelle se décolle. La tige montante règle le problème, les élastiques latéraux évitent les lacets détrempés.",
+      "images": [
+        { "file": "boot-atakora", "w": 797, "h": 997, "alt": "Boot Atakora en cuir noir à élastiques latéraux, vue de dessus" }
+      ],
+      "specs": [
+        { "label": "Cuir", "value": "Pleine fleur tannée végétal, 2 mm" },
+        { "label": "Doublure", "value": "Veau naturel, tige entièrement doublée" },
+        { "label": "Semelle", "value": "Gomme, cousue sur trépointe" },
+        { "label": "Élastiques", "value": "Sangle double, remplaçable" },
+        { "label": "Pointures", "value": "39 à 46" }
+      ],
+      "details": [
+        { "title": "Les élastiques", "text": "Ce sont eux qui lâchent en premier sur une chelsea bon marché. Les nôtres sont montés en sangle double et se remplacent à l'atelier sans toucher au reste du montage." },
+        { "title": "Après la pluie", "text": "Séchez-la loin de toute source de chaleur, embauchoirs en place, sur vingt-quatre heures. Un cuir séché trop vite craquelle — c'est la seule chose qui puisse vraiment abîmer cette paire." }
+      ],
+      "sizes": [39, 40, 41, 42, 43, 44, 45, 46],
+      "colors": [
+        { "name": "Noir", "hex": "#1A1614" },
+        { "name": "Espresso", "hex": "#3B2F29" }
+      ]
+    },
+    {
+      "slug": "richelieu-abidjan",
+      "category": "chaussures",
+      "name": "Richelieu Abidjan",
+      "price": 135000,
+      "status": "red",
+      "featured": true,
+      "bespoke": true,
+      "bespoke_only": true,
+      "short": "Laçage fermé, empiècement fleuri. La pièce de cérémonie — en sur-mesure uniquement, sur vos mesures et vos initiales.",
+      "pitch": "Le richelieu ne pardonne rien : laçage fermé, ligne tendue, aucune marge d'ajustement. C'est précisément pour ça qu'on ne le vend qu'en sur-mesure. Une pièce de cérémonie qui ne tombe pas juste ne sert à rien.",
+      "images": [
+        { "file": "richelieu-abidjan", "w": 1013, "h": 1266, "alt": "Richelieu Abidjan en cuir noir, laçage fermé et empiècement façon croco perforé" }
+      ],
+      "specs": [
+        { "label": "Cuir", "value": "Pleine fleur tannée végétal, 1,8 mm" },
+        { "label": "Doublure", "value": "Veau naturel, intégrale" },
+        { "label": "Semelle", "value": "Cuir, cousue sur trépointe" },
+        { "label": "Perforations", "value": "Empiècement fleuri, posé à la main" },
+        { "label": "Délai", "value": "14 à 20 jours" }
+      ],
+      "details": [
+        { "title": "Pourquoi sur-mesure uniquement", "text": "Le laçage fermé ne s'ouvre pas : les quartiers sont cousus sous l'empeigne. Le chaussant se joue au millimètre, et aucune pointure standard ne couvre l'écart entre deux pieds. On prend les mesures, ou on ne le fait pas." },
+        { "title": "Les initiales", "text": "Gravées à chaud dans la première de propreté, en laiton. Deux ou trois lettres, sans supplément." }
+      ],
+      "sizes": [],
+      "colors": [
+        { "name": "Noir", "hex": "#1A1614" },
+        { "name": "Espresso", "hex": "#3B2F29" },
+        { "name": "Cognac", "hex": "#8C5A3C" }
+      ]
+    },
+
+    {
+      "slug": "ceinture-sellier",
+      "category": "ceintures",
+      "name": "Ceinture Sellier",
+      "price": 38000,
+      "status": "green",
+      "placeholder": true,
+      "bespoke": true,
+      "short": "Une seule bande de cuir, pas de doublure collée. Boucle laiton massif, longueur coupée à votre tour de taille.",
+      "pitch": "Une ceinture bon marché est faite de deux bandes fines collées ensemble. Elle se plie, puis se fend au milieu. Celle-ci est taillée d'un seul tenant dans la croupe — la partie la plus dense de la peau.",
+      "images": [],
+      "specs": [
+        { "label": "Cuir", "value": "Croupe pleine fleur, 3,5 mm" },
+        { "label": "Largeur", "value": "35 mm" },
+        { "label": "Boucle", "value": "Laiton massif, à ardillon" },
+        { "label": "Couture", "value": "Point sellier sur le passant" },
+        { "label": "Longueur", "value": "Coupée à la demande, 80 à 115 cm" }
+      ],
+      "details": [],
+      "sizes": [],
+      "colors": [
+        { "name": "Noir", "hex": "#1A1614" },
+        { "name": "Cognac", "hex": "#8C5A3C" },
+        { "name": "Espresso", "hex": "#3B2F29" }
+      ]
+    },
+    {
+      "slug": "portefeuille-quatre-cartes",
+      "category": "portefeuilles",
+      "name": "Portefeuille Quatre Cartes",
+      "price": 42000,
+      "status": "green",
+      "placeholder": true,
+      "bespoke": true,
+      "short": "Quatre emplacements, un soufflet à billets, aucune doublure. Il tient dans une poche de veste sans la déformer.",
+      "pitch": "Un portefeuille épais déforme la veste et use le pantalon. Celui-ci est monté sans renfort : quatre cartes, les billets pliés une fois, et rien d'autre. Il s'affine encore avec le temps.",
+      "images": [],
+      "specs": [
+        { "label": "Cuir", "value": "Pleine fleur tannée végétal, 1,2 mm" },
+        { "label": "Emplacements", "value": "4 cartes + 1 soufflet billets" },
+        { "label": "Couture", "value": "Point sellier, fil de lin ciré" },
+        { "label": "Dimensions", "value": "11 × 8,5 cm fermé" },
+        { "label": "Initiales", "value": "Gravées à chaud, sans supplément" }
+      ],
+      "details": [],
+      "sizes": [],
+      "colors": [
+        { "name": "Espresso", "hex": "#3B2F29" },
+        { "name": "Cognac", "hex": "#8C5A3C" },
+        { "name": "Noir", "hex": "#1A1614" }
+      ]
+    },
+    {
+      "slug": "creme-nourrissante",
+      "category": "entretien",
+      "name": "Crème nourrissante",
+      "price": 6500,
+      "status": "green",
+      "placeholder": true,
+      "short": "Cire d'abeille et huile de lin. Nourrit sans boucher les pores du cuir. Une application tous les deux mois suffit.",
+      "pitch": "La plupart des cirages du marché déposent un film qui brille et étouffe. Celle-ci pénètre : le cuir reprend sa souplesse et fonce légèrement, ce qui est exactement ce qu'on attend d'une patine.",
+      "images": [],
+      "specs": [
+        { "label": "Composition", "value": "Cire d'abeille, huile de lin, essence de térébenthine" },
+        { "label": "Contenance", "value": "100 ml" },
+        { "label": "Teintes", "value": "Incolore, cognac, espresso, noir" },
+        { "label": "Fréquence", "value": "Une application tous les deux mois" }
+      ],
+      "details": [],
+      "sizes": [],
+      "colors": []
+    },
+    {
+      "slug": "embauchoirs-cedre",
+      "category": "entretien",
+      "name": "Embauchoirs cèdre",
+      "price": 18000,
+      "status": "amber",
+      "placeholder": true,
+      "short": "Cèdre rouge non verni. Il absorbe l'humidité et garde la forme du soulier entre deux ports.",
+      "pitch": "C'est l'accessoire qui prolonge le plus une paire, et celui qu'on achète en dernier. Sans embauchoir, la tige se creuse à l'endroit du pli et le cuir finit par se fendre là.",
+      "images": [],
+      "specs": [
+        { "label": "Bois", "value": "Cèdre rouge non verni" },
+        { "label": "Forme", "value": "Double fente, ressort central" },
+        { "label": "Pointures", "value": "39-40, 41-42, 43-44, 45-46" },
+        { "label": "Entretien", "value": "Poncer légèrement une fois par an" }
+      ],
+      "details": [],
+      "sizes": [],
+      "colors": []
+    }
+  ]
+}

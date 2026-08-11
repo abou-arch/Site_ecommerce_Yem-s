@@ -1,0 +1,62 @@
+<footer class="footer">
+  <div class="container">
+    <div class="footer__grid">
+      <div>
+        <a class="logo" href="{{base}}index.html">
+          <svg class="logo__mark" aria-hidden="true"><use href="#i-logo"></use></svg>
+          <span>
+            <span class="logo__word">YEM'S</span>
+            <span class="logo__tag">Différents par les détails</span>
+          </span>
+        </a>
+        <p class="text-muted" style="font-size:var(--fs-sm);margin-top:var(--sp-4);max-width:34ch">
+          Souliers et maroquinerie façonnés à la main pour le Bénin et la Côte d'Ivoire.
+        </p>
+        <form class="newsletter" onsubmit="return false">
+          <label class="visually-hidden" for="nl">Votre adresse e-mail</label>
+          <input id="nl" type="email" placeholder="Votre e-mail" required>
+          <button class="btn btn--sm" type="submit">S'inscrire</button>
+        </form>
+      </div>
+
+      <div>
+        <h4 class="footer__title">Boutique</h4>
+        <ul class="footer__list">
+{{footer_categories}}
+          <li><a href="{{base}}configurateur.html">Sur-mesure</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer__title">La maison</h4>
+        <ul class="footer__list">
+          <li><a href="{{home}}#manifeste">Notre savoir-faire</a></li>
+          <li><a href="{{home}}#garantie">Garantie satisfaction</a></li>
+          <li><a href="{{home}}#garantie">Carte d'authenticité</a></li>
+          <li><a href="{{home}}#offres">Nos offres</a></li>
+          <li><a href="{{home}}#questions">Questions fréquentes</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer__title">Contact</h4>
+        <ul class="footer__list">
+          <li>Cotonou, Bénin</li>
+          <li>Abidjan, Côte d'Ivoire</li>
+          <li><a href="https://wa.me/{{whatsapp}}" target="_blank" rel="noopener">WhatsApp atelier</a></li>
+          <li><a href="mailto:{{email}}">{{email}}</a></li>
+        </ul>
+        <div class="pay-logos" style="margin-top:var(--sp-5)">
+          <span>MTN MoMo</span><span>Moov</span><span>Wave</span><span>Visa</span><span>KkiaPay</span>
+        </div>
+      </div>
+    </div>
+
+    <hr class="stitch">
+
+    <div class="footer__bottom">
+      <span>© <span data-year>2026</span> Yem's. Tous droits réservés.</span>
+      <span>Paiements sécurisés par KkiaPay · Mobile Money, Wave &amp; carte bancaire</span>
+    </div>
+  </div>
+</footer>

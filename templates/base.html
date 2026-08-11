@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<!-- ⚠ Fichier généré par tools/build.py — toute modification directe sera écrasée.
+     Éditer les gabarits dans templates/ ou les données dans data/products.json. -->
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{title}}</title>
+<meta name="description" content="{{description}}">
+<meta name="theme-color" content="#14100D">
+
+<meta property="og:title" content="{{og_title}}">
+<meta property="og:description" content="{{description}}">
+<meta property="og:type" content="{{og_type}}">
+<meta property="og:locale" content="fr_FR">
+{{og_image}}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="{{base}}assets/css/base.css">
+<link rel="stylesheet" href="{{base}}assets/css/components.css">
+<link rel="stylesheet" href="{{base}}assets/css/home.css">
+<link rel="stylesheet" href="{{base}}assets/css/shop.css">
+<link rel="stylesheet" href="{{base}}assets/css/motion.css">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2314100D'/%3E%3Cpath d='M8 9l8 8 8-8M16 17v7' stroke='%23C9A46A' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+{{structured_data}}</head>
+<body>
+
+<a class="skip-link" href="#main">Aller au contenu</a>
+
+{{svg_defs}}
+{{header}}
+<main id="main">
+
+{{content}}
+
+</main>
+
+{{footer}}
+
+<script src="{{base}}assets/js/main.js" defer></script>
+<script src="{{base}}assets/js/motion.js" defer></script>
+</body>
+</html>

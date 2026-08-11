@@ -163,11 +163,115 @@
     });
   }
 
+  function writeCart(items) {
+    try {
+      localStorage.setItem(CART_KEY, JSON.stringify(items));
+    } catch (err) {
+      /* mode privé ou quota atteint : le panier ne persiste pas, le site reste utilisable */
+    }
+    refreshCartCount();
+  }
+
+  function addToCart(item) {
+    const items = readCart();
+    // même produit, même variante = on incrémente au lieu d'ajouter une ligne
+    const key = (i) => [i.id, i.size || '', i.color || ''].join('|');
+    const existing = items.find((i) => key(i) === key(item));
+    if (existing) existing.qty += item.qty || 1;
+    else items.push(Object.assign({ qty: 1 }, item));
+    writeCart(items);
+    return items;
+  }
+
   window.addEventListener('storage', (e) => { if (e.key === CART_KEY) refreshCartCount(); });
   refreshCartCount();
 
-  // Exposé pour les futures pages produit / configurateur
-  window.YemsCart = { read: readCart, refresh: refreshCartCount, KEY: CART_KEY };
+  // Exposé pour les pages produit, le panier et le configurateur
+  window.YemsCart = {
+    read: readCart,
+    write: writeCart,
+    add: addToCart,
+    refresh: refreshCartCount,
+    KEY: CART_KEY,
+  };
+
+  /* ----------------------------------------------------------------------
+     7. Fiche produit : sélecteurs et ajout au panier
+     ---------------------------------------------------------------------- */
+  function initPicker(selector, attr) {
+    const buttons = $$(selector);
+    if (!buttons.length) return null;
+
+    // rien n'est présélectionné : le choix doit être explicite
+    buttons.forEach((btn) => {
+      btn.setAttribute('aria-pressed', 'false');
+      btn.addEventListener('click', () => {
+        buttons.forEach((b) => {
+          b.classList.remove('is-active');
+          b.setAttribute('aria-pressed', 'false');
+        });
+        btn.classList.add('is-active');
+        btn.setAttribute('aria-pressed', 'true');
+      });
+    });
+
+    return () => {
+      const active = buttons.find((b) => b.classList.contains('is-active'));
+      return active ? active.dataset[attr] : null;
+    };
+  }
+
+  const getSize = initPicker('.size', 'size');
+  const getColor = initPicker('.swatch--btn', 'color');
+
+  let toastEl = null;
+  let toastTimer = null;
+
+  function toast(message) {
+    if (!toastEl) {
+      toastEl = document.createElement('div');
+      toastEl.className = 'toast';
+      toastEl.setAttribute('role', 'status');
+      document.body.appendChild(toastEl);
+    }
+    toastEl.innerHTML = message;
+    // force un reflow pour que la transition rejoue à chaque appel
+    void toastEl.offsetWidth;
+    toastEl.classList.add('is-visible');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toastEl.classList.remove('is-visible'), 4200);
+  }
+
+  $$('[data-add-to-cart]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const size = getSize && getSize();
+      const color = getColor && getColor();
+
+      if (getSize && !size) { toast('Choisissez d\'abord une pointure.'); return; }
+      if (getColor && !color) { toast('Choisissez d\'abord un cuir.'); return; }
+
+      addToCart({
+        id: btn.dataset.id,
+        name: btn.dataset.name,
+        price: Number(btn.dataset.price),
+        size: size,
+        color: color,
+        qty: 1,
+      });
+
+      const label = btn.innerHTML;
+      btn.setAttribute('data-added', '');
+      btn.innerHTML = 'Ajouté au panier';
+      setTimeout(() => {
+        btn.removeAttribute('data-added');
+        btn.innerHTML = label;
+      }, 2200);
+
+      const details = [btn.dataset.name, color, size].filter(Boolean).join(' · ');
+      toast('<svg aria-hidden="true"><use href="#i-check"></use></svg>' +
+            details + ' — <a href="' + (btn.dataset.cart || 'panier.html') + '">voir le panier</a>');
+    });
+  });
 
   /* ----------------------------------------------------------------------
      6. Année courante dans le footer
