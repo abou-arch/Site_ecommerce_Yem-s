@@ -36,17 +36,28 @@ node --version
 1. Sur [neon.tech](https://neon.tech), crée un projet. Nomme-le `yems`.
 2. Choisis la région **Europe (Frankfurt)** — c'est la plus proche de l'Afrique
    de l'Ouest parmi celles proposées.
-3. Une fois créé, copie la **chaîne de connexion** (bouton *Connect*). Elle
-   ressemble à :
+3. Clique *Connect*. **Décoche « Pooled connection »** avant de copier.
+
+> ⚠ **Le piège à ne pas rater.** Neon propose par défaut une chaîne « pooled »,
+> reconnaissable au `-pooler` dans le nom d'hôte. Hyperdrive fait déjà le
+> pooling : empiler les deux provoque des erreurs SSL pénibles à diagnostiquer.
+> Il faut la connexion **directe**.
+>
+> Supprime aussi `&channel_binding=require` s'il est présent — il est
+> [connu pour poser problème avec Hyperdrive](https://github.com/cloudflare/workers-sdk/issues/10124).
+
+La chaîne à conserver ressemble à :
 
 ```
-postgresql://yems_owner:xxxxx@ep-quelque-chose.eu-central-1.aws.neon.tech/yems?sslmode=require
+postgresql://neondb_owner:MOT_DE_PASSE@ep-quelque-chose.eu-central-1.aws.neon.tech/neondb?sslmode=require
 ```
 
-Garde-la de côté, tu vas t'en servir deux fois.
+> ✓ **Contrôle** — pas de `-pooler` dans le nom d'hôte, pas de
+> `channel_binding`, et ça finit par `?sslmode=require`.
 
-> ✓ **Contrôle** — tu as une chaîne qui commence par `postgresql://` et finit
-> par `?sslmode=require`.
+> 🔒 **Cette chaîne contient un mot de passe.** Ne la colle jamais dans un chat,
+> un ticket, une capture d'écran ou un fichier du dépôt. Si ça arrive, va
+> immédiatement la réinitialiser dans Neon (*Settings → Reset password*).
 
 ---
 
@@ -85,6 +96,15 @@ Un navigateur s'ouvre, tu autorises Wrangler, tu reviens au terminal.
 Hyperdrive garde les connexions Postgres ouvertes côté Cloudflare. Sans lui,
 chaque commande rouvrirait une connexion jusqu'à Francfort — plusieurs
 centaines de millisecondes perdues à chaque fois.
+
+Sur **Windows / PowerShell** — tout sur une seule ligne. PowerShell n'accepte
+pas le `\` de continuation d'Unix, il utilise l'accent grave `` ` `` :
+
+```powershell
+npx wrangler hyperdrive create yems-db --connection-string="COLLE_TA_CHAINE_NEON_ICI"
+```
+
+Sur **macOS / Linux**, la continuation classique fonctionne :
 
 ```bash
 npx wrangler hyperdrive create yems-db \
@@ -316,6 +336,10 @@ npm run dev          # démarre wrangler sur http://localhost:8787
 | `montant insuffisant` | le client a payé moins que demandé | c'est le comportement voulu — la commande reste en attente |
 | Les pages sont à jour mais pas le style | cache navigateur | `Ctrl + Maj + R` |
 | Le site affiche du code source | `.assetsignore` ignoré | vérifier qu'il est bien à la racine du dépôt |
+| `Missing expression after unary operator '--'` | `\` de continuation sous PowerShell | tout mettre sur une ligne |
+| `Expected "assets.run_worker_first" to be of type boolean` | Wrangler 3 installé | `npm install wrangler@4 --save-dev` |
+| Erreur SSL au premier appel base | chaîne Neon « pooled » | reprendre la chaîne **directe**, sans `-pooler` |
+| `Assertion failed: !(handle->flags…)` | bug Node sur Windows en fin de processus | sans conséquence, à ignorer |
 
 Pour voir ce qui se passe côté serveur en direct :
 

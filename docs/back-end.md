@@ -115,11 +115,14 @@ connexions de la base — sans lui, chaque requête depuis un Worker rouvrirait
 une connexion à travers l'Atlantique.
 
 ```bash
-npx wrangler hyperdrive create yems-db \
-  --connection-string="postgres://user:pass@host/db?sslmode=require"
+npx wrangler hyperdrive create yems-db --connection-string="postgres://user:pass@host/db?sslmode=require"
 ```
 
 Reporter l'identifiant renvoyé dans `wrangler.toml`, champ `id`.
+
+> Utiliser la connexion **directe**, pas la « pooled » (`-pooler` dans le nom
+> d'hôte) : Hyperdrive assure déjà le pooling, et empiler les deux provoque
+> des erreurs SSL. Retirer aussi `channel_binding=require`.
 
 ### 4. Poser les secrets
 
