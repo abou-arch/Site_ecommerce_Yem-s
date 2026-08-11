@@ -1,17 +1,31 @@
-# Fichiers présents dans le dépôt mais qui n'ont rien à faire en ligne.
+# Ce que Wrangler ne doit PAS mettre en ligne comme fichier public.
+# Même format que .gitignore. Doit rester à la racine du dossier d'assets
+# (ici la racine du dépôt, puisque wrangler.toml déclare directory = ".").
+
+# Code serveur et sources du générateur
 api/
 db/
-docs/
 templates/
 tools/
 data/
-node_modules/
 worker.js
+
+# Configuration et documentation
 wrangler.toml
 package.json
 package-lock.json
+node_modules/
+.assetsignore
+.gitignore
+.gitattributes
+.nojekyll
 README.md
-*.dc.html
+docs/
+.env
+.env.example
+
+# Fichiers de travail
 hero.mp4
 course_all.txt
-.env*
+*.jpeg
+.git/
