@@ -8,6 +8,11 @@ course_all.txt
 WhatsApp Image*.jpeg
 WhatsApp Image*.jpg
 
+# ─── Éditeurs ─────────────────────────────────────────────────────────────
+.vs/
+.vscode/
+.idea/
+
 # ─── Système ──────────────────────────────────────────────────────────────
 .DS_Store
 Thumbs.db

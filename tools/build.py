@@ -964,6 +964,50 @@ class Builder:
             extra_css=("checkout",),
         )
 
+
+    def build_404(self):
+        """Page servie par Cloudflare quand aucune URL ne correspond."""
+        content = f"""<section class="section section--top cta grain" style="min-height:72svh;display:grid;place-items:center">
+  <div class="container">
+    <div class="done">
+      <span class="eyebrow eyebrow--center" data-reveal>Erreur 404</span>
+      <h1 style="margin-top:var(--sp-4);font-size:var(--fs-3xl)" data-lines>
+        Cette page n'existe pas.<br>Celles-ci, si.
+      </h1>
+      <p class="lede mx-auto text-center" data-reveal>
+        Le lien est peut-être ancien, ou la pièce n'est plus au catalogue.
+        L'atelier répond sur WhatsApp si vous cherchiez quelque chose de précis.
+      </p>
+      <div class="cta__actions" data-reveal>
+        <a class="btn" href="/chaussures.html">
+          Voir les souliers
+          <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
+        </a>
+        <a class="btn btn--ghost" href="/configurateur.html">Composer ma paire</a>
+      </div>
+      <p class="summary__note" style="margin-top:var(--sp-6)">
+        <a href="/index.html">Retour à l'accueil</a> ·
+        <a href="https://wa.me/{self.site['whatsapp']}" target="_blank" rel="noopener">Écrire à l'atelier</a>
+      </p>
+    </div>
+  </div>
+</section>"""
+
+        self.page(
+            "404.html", content=content,
+            title="Page introuvable — Yem's",
+            description="Cette page n'existe pas ou n'existe plus.",
+            extra_css=("checkout",),
+        )
+
+        # Cette page peut être servie sous n'importe quelle URL, y compris
+        # /produit/inexistant.html. Des chemins relatifs y chercheraient
+        # /produit/assets/… : on les passe donc tous en absolu.
+        path = os.path.join(ROOT, "404.html")
+        html = read(path)
+        html = re.sub(r'(href|src|srcset)="(?!/|https?:|data:|#|mailto:)', r'\1="/', html)
+        write(path, html)
+
     def run(self):
         if os.path.isdir(OUT_PRODUCTS):
             shutil.rmtree(OUT_PRODUCTS)
@@ -978,6 +1022,7 @@ class Builder:
         self.build_cart()
         self.build_checkout()
         self.build_confirmation()
+        self.build_404()
 
         print("%d pages générées :\n" % len(self.written))
         for path, size in self.written:

@@ -63,7 +63,14 @@ export default {
     const { pathname, searchParams } = new URL(request.url);
     const method = request.method;
 
-    if (!pathname.startsWith('/api/')) return fail('route inconnue', 404);
+    // Selon la configuration de wrangler.toml, le Worker peut ne recevoir que
+    // /api/* (run_worker_first ciblé) ou bien toutes les requêtes. Dans le
+    // second cas on repasse la main aux fichiers statiques — ainsi le même
+    // code fonctionne quelle que soit la version de Wrangler.
+    if (!pathname.startsWith('/api/')) {
+      if (env.ASSETS) return env.ASSETS.fetch(request);
+      return fail('route inconnue', 404);
+    }
 
     try {
       /* ------------------------------------------------ création de commande */
