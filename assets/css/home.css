@@ -34,16 +34,32 @@
   object-fit: cover;
 }
 
+/* Deux voiles superposés : l'un assombrit la gauche pour que le texte tienne,
+   l'autre le bas pour asseoir la section. La droite reste claire — c'est là que
+   se joue la composition de la vidéo.
+
+   Le palier à 0,80 court jusqu'à 52 %, soit la largeur maximale du bloc de
+   texte : en dessous, le texte secondaire passerait sous 4,5:1 sur les plans
+   les plus clairs de la vidéo. La chute commence là où le texte s'arrête. */
 .hero__media::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    to top,
-    rgba(20, 16, 13, 0.94) 0%,
-    rgba(20, 16, 13, 0.55) 42%,
-    rgba(20, 16, 13, 0.32) 100%
-  );
+  background:
+    linear-gradient(
+      to right,
+      rgba(20, 16, 13, 0.93) 0%,
+      rgba(20, 16, 13, 0.87) 30%,
+      rgba(20, 16, 13, 0.80) 52%,
+      rgba(20, 16, 13, 0.44) 76%,
+      rgba(20, 16, 13, 0.26) 100%
+    ),
+    linear-gradient(
+      to top,
+      rgba(20, 16, 13, 0.80) 0%,
+      rgba(20, 16, 13, 0.22) 48%,
+      rgba(20, 16, 13, 0.38) 100%
+    );
 }
 
 /* Fil de sellier en filigrane, façon couture d'empeigne */
@@ -55,69 +71,25 @@
   opacity: 0.5;
 }
 
+/* Une seule colonne : la vidéo porte la section, le texte se pose dessus.
+   Le max-width empêche les lignes de courir sur toute la largeur en grand écran. */
 .hero__inner {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 1.06fr) minmax(0, 0.94fr);
   align-items: end;
-  gap: var(--sp-8);
   width: 100%;
 }
 
-.hero h1 { margin-block: var(--sp-5) var(--sp-5); max-width: 16ch; }
+.hero__inner > div { max-width: 62ch; }
 
-.hero__aside {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sp-5);
-  padding-bottom: var(--sp-2);
+.hero h1 { margin-block: var(--sp-5) var(--sp-5); max-width: 14ch; }
+
+.hero__pay {
+  margin-top: var(--sp-5);
+  max-width: 46ch;
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
 }
-
-/* Visuel produit du hero */
-.hero__shot {
-  position: relative;
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  box-shadow: var(--shadow-lg);
-}
-
-.hero__shot img {
-  width: 100%;
-  aspect-ratio: 4 / 5;
-  object-fit: cover;
-}
-
-.hero__shot::after {
-  content: "";
-  position: absolute;
-  inset: 10px;
-  border: 1.5px dashed rgba(201, 164, 106, 0.55);
-  border-radius: var(--radius);
-  pointer-events: none;
-}
-
-.hero__shot .badge { position: absolute; top: var(--sp-4); left: var(--sp-4); z-index: 2; }
-
-.hero__caption {
-  position: absolute;
-  left: var(--sp-4);
-  right: var(--sp-4);
-  bottom: var(--sp-4);
-  z-index: 2;
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: var(--sp-4);
-  padding: var(--sp-4);
-  border-radius: var(--radius);
-  background: rgba(20, 16, 13, 0.82);
-  backdrop-filter: blur(10px);
-  border: 1px solid var(--border);
-}
-
-.hero__caption strong { font-family: var(--font-display); font-size: var(--fs-md); font-weight: 400; }
-.hero__caption span   { display: block; font-size: var(--fs-xs); color: var(--text-subtle); margin-top: 2px; }
-.hero__caption b      { font-size: var(--fs-sm); color: var(--brass-300); white-space: nowrap; }
 
 .hero__actions {
   display: flex;
@@ -149,6 +121,12 @@
   margin-top: var(--sp-1);
 }
 
+/* Dans le hero, le fond n'est plus l'espresso plein mais la vidéo voilée, plus
+   claire. Ce petit texte a donc besoin d'un peu plus d'opacité pour tenir AA
+   jusqu'au bord droit du bloc — 0,52 y tomberait à 3,7:1. */
+.hero .stat__label,
+.hero .scroll-hint { color: rgba(244, 237, 226, 0.72); }
+
 .scroll-hint {
   position: absolute;
   bottom: var(--sp-5);
@@ -176,9 +154,6 @@
 
 @media (max-width: 900px) {
   .hero { min-height: 0; }
-  .hero__inner { grid-template-columns: minmax(0, 1fr); }
-  .hero__aside { border-top: 1px solid var(--border); padding-top: var(--sp-5); }
-  .hero__shot { display: none; }
   .scroll-hint { display: none; }
 }
 
