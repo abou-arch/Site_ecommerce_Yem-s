@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+  body { margin: 0; background: #14100D; color: #F4EDE2; font-family: Inter, -apple-system, "Segoe UI", sans-serif; font-size: 15px; line-height: 1.68; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  a { color: #C9A46A; text-decoration: none; }
+  a:hover { color: #D9B87A; }
+  p { margin: 0; text-wrap: pretty; }
+  h1, h2, h3, h4 { margin: 0; font-weight: 400; }
+  ::selection { background: #B08D57; color: #14100D; }
+  summary::-webkit-details-marker { display: none; }
+  summary { list-style: none; }
+  @keyframes v2pulse { 0%, 100% { box-shadow: 0 0 0 3px rgba(192,138,46,.22); } 50% { box-shadow: 0 0 0 6px rgba(192,138,46,.1); } }
+  @media (max-width: 900px) { .hide-mobile { display: none !important; } }
+  @media (prefers-reduced-motion: reduce) { * { animation-duration: .01ms !important; animation-iteration-count: 1 !important; } }
+</style>
+</helmet>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="i-logo" viewBox="0 0 40 40">
+      <rect x="1" y="1" width="38" height="38" rx="8" fill="none" stroke="currentColor" stroke-opacity=".28"></rect>
+      <path d="M11 11.5l9 9.5 9-9.5" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"></path>
+      <path d="M20 21v8" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"></path>
+      <path d="M14 32.5h12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-dasharray="3 3" stroke-opacity=".75"></path>
+    </symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></symbol>
+    <symbol id="i-arrow-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"></path></symbol>
+    <symbol id="i-bag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8h12l1 12H5L6 8z"></path><path d="M9 8V6a3 3 0 0 1 6 0v2"></path></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5.5 5.5L20 7"></path></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.5 8.2-8 9-4.5-.8-8-4-8-9V6l8-3z"></path><path d="M9 12l2 2 4-4"></path></symbol>
+    <symbol id="i-needle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l7-7"></path><path d="M10 14L20 4"></path><circle cx="20.5" cy="3.5" r="1.5"></circle><path d="M12 12c2 1 4 1 6-1" stroke-dasharray="2 2"></path></symbol>
+    <symbol id="i-truck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6h11v10H2z"></path><path d="M13 9h4l4 4v3h-8z"></path><circle cx="6.5" cy="18.5" r="1.8"></circle><circle cx="17.5" cy="18.5" r="1.8"></circle></symbol>
+  </defs>
+</svg>
+
+<header data-header="true" data-screen-label="Header" style="position:fixed;top:0;left:0;right:0;z-index:100;height:76px;display:flex;align-items:center;border-bottom:1px solid transparent;transition:background-color 450ms,border-color 450ms;background:rgba(20,16,13,.88)">
+  <div style="max-width:1320px;margin:0 auto;padding:0 clamp(20px,4vw,48px);width:100%;display:flex;align-items:center;justify-content:space-between;gap:24px">
+    <a href="Accueil-v2.dc.html" aria-label="Yem's — accueil" style="display:inline-flex;align-items:center;gap:12px;color:#F4EDE2">
+      <svg style="width:34px;height:34px;flex:none" aria-hidden="true"><use href="#i-logo"></use></svg>
+      <span>
+        <span style="display:block;font-family:Fraunces,Georgia,serif;font-size:21px;letter-spacing:.06em;line-height:1">YEM'S</span>
+        <span style="display:block;font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:rgba(244,237,226,.52);margin-top:3px">Différents par les détails</span>
+      </span>
+    </a>
+    <nav class="hide-mobile" aria-label="Navigation principale" style="display:flex;align-items:center;gap:32px">
+      <a href="Accueil-v2.dc.html#collections" style="font-size:13px;letter-spacing:.04em;color:#F4EDE2;transition:color 300ms">Chaussures</a>
+      <a href="Accueil-v2.dc.html#manifeste" style="font-size:13px;letter-spacing:.04em;color:rgba(244,237,226,.62);transition:color 300ms" style-hover="color:#F4EDE2">Savoir-faire</a>
+      <a href="Accueil-v2.dc.html#garantie" style="font-size:13px;letter-spacing:.04em;color:rgba(244,237,226,.62);transition:color 300ms" style-hover="color:#F4EDE2">Garantie</a>
+    </nav>
+    <div style="display:flex;align-items:center;gap:16px">
+      <a class="hide-mobile" href="Configurateur-v2.dc.html" data-mag="true" style="display:inline-flex;align-items:center;padding:11px 20px;background:#C9A46A;color:#14100D;border:1px solid #C9A46A;border-radius:999px;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;transition:background-color 300ms,border-color 300ms" style-hover="background:#D9B87A;border-color:#D9B87A">Sur-mesure</a>
+      <a href="Configurateur-v2.dc.html" aria-label="Panier" style="position:relative;display:grid;place-items:center;width:42px;height:42px;border-radius:999px;border:1px solid rgba(233,222,203,.12);color:#F4EDE2;transition:border-color 300ms,background-color 300ms" style-hover="border-color:#C9A46A;background:rgba(201,164,106,.1)">
+        <svg style="width:18px;height:18px" aria-hidden="true"><use href="#i-bag"></use></svg>
+        <span data-cart-count="true" style="position:absolute;top:-3px;right:-3px;min-width:19px;height:19px;padding:0 5px;display:grid;place-items:center;background:#C9A46A;color:#14100D;border-radius:999px;font-size:10px;font-weight:700;line-height:1">0</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<main data-screen-label="Fiche produit" style="padding-top:76px">
+
+<section style="padding:clamp(32px,4vw,56px) 0 clamp(56px,7vw,96px)">
+  <div style="max-width:1320px;margin:0 auto;padding:0 clamp(20px,4vw,48px)">
+    <nav aria-label="Fil d'Ariane" data-fx="fade" style="display:flex;align-items:center;gap:10px;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:rgba(244,237,226,.52);margin-bottom:clamp(24px,3vw,40px)">
+      <a href="Accueil-v2.dc.html" style="color:rgba(244,237,226,.52);transition:color 300ms" style-hover="color:#D9B87A">Accueil</a>
+      <span aria-hidden="true">/</span>
+      <a href="Accueil-v2.dc.html#collections" style="color:rgba(244,237,226,.52);transition:color 300ms" style-hover="color:#D9B87A">Chaussures</a>
+      <span aria-hidden="true">/</span>
+      <span style="color:#D9B87A">Derby Cotonou</span>
+    </nav>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr));gap:clamp(36px,5vw,72px);align-items:start">
+
+      <div>
+        <figure data-fx="shot" data-zoom="true" style="position:relative;margin:0;border-radius:14px;overflow:hidden;box-shadow:0 30px 70px -28px rgba(0,0,0,.75);background:radial-gradient(120% 90% at 50% 8%,#FBF7F1 0%,#E9DECB 46%,#DACAB0 100%)">
+          <span style="position:absolute;top:16px;left:16px;z-index:3;display:inline-flex;align-items:center;gap:8px;padding:6px 11px;border:1px solid rgba(233,222,203,.12);border-radius:999px;font-size:12px;font-weight:500;color:#E2B764;background:rgba(20,16,13,.55);backdrop-filter:blur(6px)"><span style="width:6px;height:6px;border-radius:50%;background:#C08A2E;animation:v2pulse 2.6s ease-in-out infinite"></span>En route — arrivage sous 10 jours</span>
+          <img id="pv-main" src="assets/img/derby-cotonou.webp" width="992" height="1240" alt="Derby Cotonou en cuir cognac, laçage ouvert, couture apparente sur l'avant" style="display:block;width:100%;aspect-ratio:4/5;object-fit:cover;height:auto">
+          <span aria-hidden="true" style="position:absolute;inset:10px;border:1.5px dashed rgba(201,164,106,.4);border-radius:8px;pointer-events:none;z-index:2"></span>
+        </figure>
+        <div style="display:flex;gap:12px;margin-top:16px">
+          <button type="button" data-thumb="true" data-src="assets/img/derby-cotonou.webp" onClick="{{ pickThumb }}" aria-label="Vue cognac" style="width:84px;height:104px;padding:0;border-radius:8px;overflow:hidden;border:2px solid #C9A46A;background:none;cursor:pointer">
+            <img src="assets/img/derby-cotonou.webp" width="84" height="104" alt="" style="display:block;width:100%;height:100%;object-fit:cover">
+          </button>
+          <button type="button" data-thumb="true" data-src="assets/img/derby-cotonou-alt.webp" onClick="{{ pickThumb }}" aria-label="Vue noir" style="width:84px;height:104px;padding:0;border-radius:8px;overflow:hidden;border:2px solid rgba(233,222,203,.18);background:none;cursor:pointer">
+            <img src="assets/img/derby-cotonou-alt.webp" width="84" height="104" alt="" style="display:block;width:100%;height:100%;object-fit:cover">
+          </button>
+        </div>
+        <p style="font-size:12px;color:rgba(244,237,226,.52);margin-top:12px">Photographié sans retouche de matière — le grain que vous voyez est celui que vous recevrez.</p>
+      </div>
+
+      <div>
+        <span data-fx="up" style="display:inline-flex;align-items:center;gap:12px;font-size:12px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:#D9B87A"><span style="width:28px;height:1px;background:currentColor;opacity:.6"></span>La ligne Derby</span>
+        <h1 data-fx="up" data-fx-delay="80" style="font-family:Fraunces,Georgia,serif;font-size:clamp(2.4rem,4.5vw,3.8rem);line-height:1.05;letter-spacing:-.015em;margin:16px 0 10px;font-variation-settings:'SOFT' 0,'WONK' 1">Derby Cotonou</h1>
+        <div data-fx="up" data-fx-delay="140" style="display:flex;align-items:baseline;gap:16px;margin-bottom:20px">
+          <span style="font-family:Fraunces,Georgia,serif;font-size:28px;color:#D9B87A">98 000 F</span>
+          <span style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:rgba(244,237,226,.52)">FCFA · livraison 48 h Cotonou &amp; Abidjan</span>
+        </div>
+        <p data-fx="up" data-fx-delay="200" style="font-size:16px;color:rgba(244,237,226,.62);max-width:52ch">
+          Laçage ouvert : le coup de pied fort passe, le pied fin se rattrape au laçage.
+          La forme qui pardonne le plus. Cuir pleine fleur tanné végétal, point sellier
+          deux aiguilles, semelle cousue sur trépointe — ressemelable.
+        </p>
+
+        <div aria-hidden="true" style="height:1.5px;width:100%;background-image:repeating-linear-gradient(to right,#B08D57 0,#B08D57 11px,transparent 11px,transparent 20px);opacity:.55;margin:28px 0"></div>
+
+        <div data-fx="up" data-fx-delay="260">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:12px">
+            <span style="font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase">Pointure</span>
+            <span style="font-size:12px;color:rgba(244,237,226,.52)">Entre deux ? Prenez la plus grande.</span>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button type="button" data-size-btn="true" data-size="39" onClick="{{ pickSize }}" aria-pressed="false" style="min-width:48px;height:48px;padding:0 12px;background:transparent;border:1px solid rgba(233,222,203,.24);border-radius:8px;color:#F4EDE2;font-size:14px;cursor:pointer;transition:border-color 250ms,background-color 250ms,color 250ms">39</button>
+            <button type="button" data-size-btn="true" data-size="40" onClick="{{ pickSize }}" aria-pressed="false" style="min-width:48px;height:48px;padding:0 12px;background:transparent;border:1px solid rgba(233,222,203,.24);border-radius:8px;color:#F4EDE2;font-size:14px;cursor:pointer;transition:border-color 250ms,background-color 250ms,color 250ms">40</button>
+            <button type="button" data-size-btn="true" data-size="41" onClick="{{ pickSize }}" aria-pressed="false" style="min-width:48px;height:48px;padding:0 12px;background:transparent;border:1px solid rgba(233,222,203,.24);border-radius:8px;color:#F4EDE2;font-size:14px;cursor:pointer;transition:border-color 250ms,background-color 250ms,color 250ms">41</button>
+            <button type="button" data-size-btn="true" data-size="42" onClick="{{ pickSize }}" aria-pressed="false" style="min-width:48px;height:48px;padding:0 12px;background:transparent;border:1px solid rgba(233,222,203,.24);border-radius:8px;color:#F4EDE2;font-size:14px;cursor:pointer;transition:border-color 250ms,background-color 250ms,color 250ms">42</button>
+            <button type="button" data-size-btn="true" data-size="43" onClick="{{ pickSize }}" aria-pressed="false" style="min-width:48px;height:48px;padding:0 12px;background:transparent;border:1px solid rgba(233,222,203,.24);border-radius:8px;color:#F4EDE2;font-size:14px;cursor:pointer;transition:border-color 250ms,background-color 250ms,color 250ms">43</button>
+            <button type="button" data-size-btn="true" data-size="44" onClick="{{ pickSize }}" aria-pressed="false" style="min-width:48px;height:48px;padding:0 12px;background:transparent;border:1px solid rgba(233,222,203,.24);border-radius:8px;color:#F4EDE2;font-size:14px;cursor:pointer;transition:border-color 250ms,background-color 250ms,color 250ms">44</button>
+            <button type="button" data-size-btn="true" data-size="45" onClick="{{ pickSize }}" aria-pressed="false" style="min-width:48px;height:48px;padding:0 12px;background:transparent;border:1px solid rgba(233,222,203,.24);border-radius:8px;color:#F4EDE2;font-size:14px;cursor:pointer;transition:border-color 250ms,background-color 250ms,color 250ms">45</button>
+          </div>
+        </div>
+
+        <div data-fx="up" data-fx-delay="320" style="margin-top:24px">
+          <span style="display:block;font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px">Cuir</span>
+          <div style="display:flex;gap:12px;align-items:center">
+            <button type="button" data-color-btn="true" data-color="cognac" onClick="{{ pickColor }}" aria-label="Cuir cognac" aria-pressed="false" style="width:34px;height:34px;border-radius:50%;border:1px solid rgba(233,222,203,.28);background:#8C5A3C;cursor:pointer;transition:box-shadow 250ms"></button>
+            <button type="button" data-color-btn="true" data-color="noir" onClick="{{ pickColor }}" aria-label="Cuir noir" aria-pressed="false" style="width:34px;height:34px;border-radius:50%;border:1px solid rgba(233,222,203,.28);background:#1A1614;cursor:pointer;transition:box-shadow 250ms"></button>
+            <button type="button" data-color-btn="true" data-color="espresso" onClick="{{ pickColor }}" aria-label="Cuir espresso" aria-pressed="false" style="width:34px;height:34px;border-radius:50%;border:1px solid rgba(233,222,203,.28);background:#3B2F29;cursor:pointer;transition:box-shadow 250ms"></button>
+            <span data-color-label="true" style="font-size:13px;color:rgba(244,237,226,.52);margin-left:4px">Choisissez une teinte</span>
+          </div>
+        </div>
+
+        <div data-fx="up" data-fx-delay="380" style="display:flex;gap:12px;flex-wrap:wrap;margin-top:32px">
+          <button type="button" data-add-btn="true" onClick="{{ addCart }}" data-mag="true" style="display:inline-flex;align-items:center;gap:12px;padding:17px 34px;background:#C9A46A;color:#14100D;border:1px solid #C9A46A;border-radius:999px;font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:background-color 300ms,border-color 300ms" style-hover="background:#D9B87A;border-color:#D9B87A">
+            <svg style="width:15px;height:15px;flex:none" aria-hidden="true"><use href="#i-bag"></use></svg>
+            Ajouter au panier
+          </button>
+          <a href="Configurateur-v2.dc.html" data-mag="true" style="display:inline-flex;align-items:center;gap:12px;padding:17px 34px;background:transparent;color:#F4EDE2;border:1px solid rgba(233,222,203,.24);border-radius:999px;font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;transition:border-color 300ms,color 300ms" style-hover="border-color:#C9A46A;color:#D9B87A">La version sur-mesure</a>
+        </div>
+        <p style="font-size:12px;color:rgba(244,237,226,.52);margin-top:14px">Mobile Money MTN &amp; Moov, Wave ou carte bancaire — encaissement sécurisé par KkiaPay. Échange de pointure sous 7 jours.</p>
+
+        <div style="display:grid;gap:12px;margin-top:32px">
+          <details style="border:1px solid rgba(233,222,203,.12);border-radius:14px;background:#241C18;overflow:hidden">
+            <summary style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:20px 24px;cursor:pointer;font-family:Fraunces,Georgia,serif;font-size:16px">
+              La construction
+              <span data-caret="true" aria-hidden="true" style="width:11px;height:11px;flex:none;border-right:1.5px solid #C9A46A;border-bottom:1.5px solid #C9A46A;transform:rotate(45deg) translateY(-2px);transition:transform 380ms"></span>
+            </summary>
+            <div style="padding:0 24px 20px;font-size:13px;color:rgba(244,237,226,.62)">
+              <p>Point sellier deux aiguilles, fil de lin poissé. Cuir pleine fleur tanné végétal, 1,8 à 2 mm. Semelle cousue sur trépointe — quand elle s'use, on la découd et on en remonte une neuve.</p>
+            </div>
+          </details>
+          <details style="border:1px solid rgba(233,222,203,.12);border-radius:14px;background:#241C18;overflow:hidden">
+            <summary style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:20px 24px;cursor:pointer;font-family:Fraunces,Georgia,serif;font-size:16px">
+              L'entretien
+              <span data-caret="true" aria-hidden="true" style="width:11px;height:11px;flex:none;border-right:1.5px solid #C9A46A;border-bottom:1.5px solid #C9A46A;transform:rotate(45deg) translateY(-2px);transition:transform 380ms"></span>
+            </summary>
+            <div style="padding:0 24px 20px;font-size:13px;color:rgba(244,237,226,.62)">
+              <p>Brosse après chaque port, crème une fois par mois, embauchoirs bois entre deux sorties. Le cuir tanné végétal fonce et prend une patine propre à votre pied — c'est voulu.</p>
+            </div>
+          </details>
+          <details style="border:1px solid rgba(233,222,203,.12);border-radius:14px;background:#241C18;overflow:hidden">
+            <summary style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:20px 24px;cursor:pointer;font-family:Fraunces,Georgia,serif;font-size:16px">
+              Livraison &amp; retours
+              <span data-caret="true" aria-hidden="true" style="width:11px;height:11px;flex:none;border-right:1.5px solid #C9A46A;border-bottom:1.5px solid #C9A46A;transform:rotate(45deg) translateY(-2px);transition:transform 380ms"></span>
+            </summary>
+            <div style="padding:0 24px 20px;font-size:13px;color:rgba(244,237,226,.62)">
+              <p>Cotonou et Abidjan en 48 h, autres villes du Bénin et de Côte d'Ivoire sous 5 jours. Échange de pointure sous 7 jours, retour pris en charge par l'atelier.</p>
+            </div>
+          </details>
+        </div>
+
+        <ul style="list-style:none;margin:28px 0 0;padding:0;display:flex;gap:24px;flex-wrap:wrap">
+          <li style="display:flex;align-items:center;gap:10px;font-size:12px;color:rgba(244,237,226,.62)"><svg style="width:17px;height:17px;color:#C9A46A;flex:none" aria-hidden="true"><use href="#i-needle"></use></svg>Cousu main à Cotonou</li>
+          <li style="display:flex;align-items:center;gap:10px;font-size:12px;color:rgba(244,237,226,.62)"><svg style="width:17px;height:17px;color:#C9A46A;flex:none" aria-hidden="true"><use href="#i-shield"></use></svg>Carte d'authenticité numérotée</li>
+          <li style="display:flex;align-items:center;gap:10px;font-size:12px;color:rgba(244,237,226,.62)"><svg style="width:17px;height:17px;color:#C9A46A;flex:none" aria-hidden="true"><use href="#i-truck"></use></svg>48 h Cotonou &amp; Abidjan</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section data-screen-label="Compléter" style="background:#1C1613;border-top:1px solid rgba(233,222,203,.12);padding:clamp(56px,7vw,96px) 0">
+  <div style="max-width:1320px;margin:0 auto;padding:0 clamp(20px,4vw,48px)">
+    <div data-fx="up" style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:clamp(32px,4vw,48px)">
+      <h2 style="font-family:Fraunces,Georgia,serif;font-size:clamp(1.8rem,3.4vw,2.8rem);line-height:1.05;letter-spacing:-.015em">Les trois autres formes</h2>
+      <a href="Accueil-v2.dc.html#collections" style="display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:#D9B87A;border-bottom:1px solid currentColor;padding-bottom:4px">
+        Toute la collection
+        <svg style="width:14px;height:14px" aria-hidden="true"><use href="#i-arrow"></use></svg>
+      </a>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:32px 24px">
+      <article data-fx="up">
+        <a href="Accueil-v2.dc.html#collections" style="display:block;color:inherit">
+          <div data-zoom="true" style="position:relative;aspect-ratio:4/5;border-radius:10px;overflow:hidden;background:radial-gradient(120% 90% at 50% 8%,#FBF7F1 0%,#E9DECB 46%,#DACAB0 100%)">
+            <img src="assets/img/loafer-ouidah.webp" width="807" height="1008" loading="lazy" decoding="async" alt="Loafer Ouidah" style="display:block;width:100%;height:100%;object-fit:cover">
+            <img data-swap-alt="true" src="assets/img/loafer-ouidah-alt.webp" width="807" height="1008" loading="lazy" alt="" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;pointer-events:none">
+          </div>
+          <div style="display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-top:14px">
+            <h3 style="font-family:Fraunces,Georgia,serif;font-size:18px">Loafer Ouidah</h3>
+            <span style="font-size:13px;font-weight:600;color:#D9B87A;white-space:nowrap">85 000 F</span>
+          </div>
+        </a>
+      </article>
+      <article data-fx="up" data-fx-delay="90">
+        <a href="Accueil-v2.dc.html#collections" style="display:block;color:inherit">
+          <div data-zoom="true" style="position:relative;aspect-ratio:4/5;border-radius:10px;overflow:hidden;background:radial-gradient(120% 90% at 50% 8%,#FBF7F1 0%,#E9DECB 46%,#DACAB0 100%)">
+            <img src="assets/img/boot-atakora.webp" width="797" height="997" loading="lazy" decoding="async" alt="Boot Atakora" style="display:block;width:100%;height:100%;object-fit:cover">
+          </div>
+          <div style="display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-top:14px">
+            <h3 style="font-family:Fraunces,Georgia,serif;font-size:18px">Boot Atakora</h3>
+            <span style="font-size:13px;font-weight:600;color:#D9B87A;white-space:nowrap">125 000 F</span>
+          </div>
+        </a>
+      </article>
+      <article data-fx="up" data-fx-delay="180">
+        <a href="Accueil-v2.dc.html#collections" style="display:block;color:inherit">
+          <div data-zoom="true" style="position:relative;aspect-ratio:4/5;border-radius:10px;overflow:hidden;background:radial-gradient(120% 90% at 50% 8%,#FBF7F1 0%,#E9DECB 46%,#DACAB0 100%)">
+            <img src="assets/img/richelieu-abidjan.webp" width="1013" height="1266" loading="lazy" decoding="async" alt="Richelieu Abidjan" style="display:block;width:100%;height:100%;object-fit:cover">
+          </div>
+          <div style="display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-top:14px">
+            <h3 style="font-family:Fraunces,Georgia,serif;font-size:18px">Richelieu Abidjan</h3>
+            <span style="font-size:13px;font-weight:600;color:#D9B87A;white-space:nowrap">135 000 F</span>
+          </div>
+        </a>
+      </article>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer style="background:#1C1613;border-top:1px solid rgba(233,222,203,.12);padding:32px 0">
+  <div style="max-width:1320px;margin:0 auto;padding:0 clamp(20px,4vw,48px);display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
+    <a href="Accueil-v2.dc.html" style="display:inline-flex;align-items:center;gap:12px;color:#F4EDE2">
+      <svg style="width:28px;height:28px;flex:none" aria-hidden="true"><use href="#i-logo"></use></svg>
+      <span style="font-family:Fraunces,Georgia,serif;font-size:17px;letter-spacing:.06em">YEM'S</span>
+    </a>
+    <span style="font-size:12px;color:rgba(244,237,226,.52)">© 2026 Yem's · Paiements sécurisés par KkiaPay</span>
+  </div>
+</footer>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  selSize = null;
+  selColor = null;
+
+  componentDidMount() {
+    const s = document.createElement('script');
+    s.src = 'fx.js';
+    s.onload = () => window.YemsFX && window.YemsFX.init();
+    document.body.appendChild(s);
+  }
+
+  pickThumb = (e) => {
+    const src = e.currentTarget.dataset.src;
+    const main = document.getElementById('pv-main');
+    document.querySelectorAll('[data-thumb]').forEach(t => {
+      t.style.borderColor = t === e.currentTarget ? '#C9A46A' : 'rgba(233,222,203,.18)';
+    });
+    if (!main || main.getAttribute('src') === src) return;
+    main.style.transition = 'opacity 200ms linear';
+    main.style.opacity = '0';
+    setTimeout(() => { main.setAttribute('src', src); main.style.opacity = '1'; }, 210);
+  };
+
+  pickSize = (e) => {
+    this.selSize = e.currentTarget.dataset.size;
+    document.querySelectorAll('[data-size-btn]').forEach(b => {
+      const on = b === e.currentTarget;
+      b.style.borderColor = on ? '#C9A46A' : 'rgba(233,222,203,.24)';
+      b.style.backgroundColor = on ? 'rgba(201,164,106,.14)' : 'transparent';
+      b.style.color = on ? '#D9B87A' : '#F4EDE2';
+      b.setAttribute('aria-pressed', String(on));
+    });
+  };
+
+  pickColor = (e) => {
+    this.selColor = e.currentTarget.dataset.color;
+    document.querySelectorAll('[data-color-btn]').forEach(b => {
+      const on = b === e.currentTarget;
+      b.style.boxShadow = on ? '0 0 0 2px #14100D, 0 0 0 4px #C9A46A' : 'none';
+      b.setAttribute('aria-pressed', String(on));
+    });
+    const label = document.querySelector('[data-color-label]');
+    if (label) {
+      label.textContent = { cognac: 'Cognac — patine chaude', noir: 'Noir — cérémonie', espresso: 'Espresso — bureau' }[this.selColor] || '';
+      label.style.color = '#D9B87A';
+    }
+    if (this.selColor === 'noir') this.swapMain('assets/img/derby-cotonou-alt.webp');
+    else this.swapMain('assets/img/derby-cotonou.webp');
+  };
+
+  swapMain(src) {
+    const main = document.getElementById('pv-main');
+    if (!main || main.getAttribute('src') === src) return;
+    main.style.transition = 'opacity 200ms linear';
+    main.style.opacity = '0';
+    setTimeout(() => { main.setAttribute('src', src); main.style.opacity = '1'; }, 210);
+    document.querySelectorAll('[data-thumb]').forEach(t => {
+      t.style.borderColor = t.dataset.src === src ? '#C9A46A' : 'rgba(233,222,203,.18)';
+    });
+  }
+
+  addCart = (e) => {
+    const FX = window.YemsFX;
+    if (!FX) return;
+    if (!this.selSize) { FX.toast('Choisissez d\'abord une pointure.'); return; }
+    if (!this.selColor) { FX.toast('Choisissez d\'abord un cuir.'); return; }
+    FX.addToCart({ id: 'derby-cotonou', name: 'Derby Cotonou', price: 98000, size: this.selSize, color: this.selColor });
+    FX.toast('<strong>Derby Cotonou</strong>&nbsp;· ' + this.selColor + ' · pointure ' + this.selSize + ' — ajouté au panier');
+    const btn = e.currentTarget;
+    if (btn.dataset.busy) return;
+    btn.dataset.busy = '1';
+    const prev = btn.innerHTML;
+    btn.innerHTML = 'Ajouté au panier';
+    btn.style.backgroundColor = '#8FC095';
+    btn.style.borderColor = '#8FC095';
+    setTimeout(() => {
+      btn.innerHTML = prev;
+      btn.style.backgroundColor = '';
+      btn.style.borderColor = '';
+      delete btn.dataset.busy;
+    }, 2000);
+  };
+
+  renderVals() {
+    return {
+      pickThumb: this.pickThumb,
+      pickSize: this.pickSize,
+      pickColor: this.pickColor,
+      addCart: this.addCart,
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -6,11 +6,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Configurateur sur-mesure — Yem's</title>
-<meta name="description" content="Composez votre paire sur-mesure : modèle, cuir, doublure, semelle, fil et initiales. Production en 14 à 20 jours.">
+<meta name="description" content="Composez votre paire sur-mesure : forme, cuir, semelle, pointure et initiales. Prix en direct, 15 jours d&#x27;atelier, acompte 50 % à la commande.">
 <meta name="theme-color" content="#14100D">
 
 <meta property="og:title" content="Configurateur sur-mesure — Yem&#x27;s">
-<meta property="og:description" content="Composez votre paire sur-mesure : modèle, cuir, doublure, semelle, fil et initiales. Production en 14 à 20 jours.">
+<meta property="og:description" content="Composez votre paire sur-mesure : forme, cuir, semelle, pointure et initiales. Prix en direct, 15 jours d&#x27;atelier, acompte 50 % à la commande.">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="fr_FR">
 
@@ -23,6 +23,7 @@
 <link rel="stylesheet" href="assets/css/home.css">
 <link rel="stylesheet" href="assets/css/shop.css">
 <link rel="stylesheet" href="assets/css/motion.css">
+<link rel="stylesheet" href="assets/css/configurator.css">
 
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2314100D'/%3E%3Cpath d='M8 9l8 8 8-8M16 17v7' stroke='%23C9A46A' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
 </head>
@@ -87,9 +88,8 @@
 
     <nav class="nav" aria-label="Navigation principale">
       <a class="nav__link" href="chaussures.html">Chaussures</a>
-      <a class="nav__link" href="ceintures.html">Ceintures</a>
-      <a class="nav__link" href="portefeuilles.html">Portefeuilles</a>
-      <a class="nav__link" href="entretien.html">Entretien</a>
+      <a class="nav__link" href="index.html#manifeste">Savoir-faire</a>
+      <a class="nav__link" href="index.html#garantie">Garantie</a>
     </nav>
 
     <div class="header__actions">
@@ -107,31 +107,231 @@
 
 <div class="mobile-menu" id="mobile-menu">
   <a href="chaussures.html">Chaussures</a>
-  <a href="ceintures.html">Ceintures</a>
-  <a href="portefeuilles.html">Portefeuilles</a>
-  <a href="entretien.html">Entretien</a>
+  <a href="index.html#manifeste">Savoir-faire</a>
+  <a href="index.html#garantie">Garantie</a>
   <a class="btn" href="configurateur.html" style="margin-top:auto">Configurer ma paire</a>
 </div>
 
 <main id="main">
 
-<section class="section section--top cta grain" style="min-height:70svh;display:grid;place-items:center">
-  <div class="container container--narrow">
-    <span class="eyebrow eyebrow--center" data-reveal>Bientôt en ligne</span>
-    <h1 style="margin-top:var(--sp-4);font-size:var(--fs-3xl)" data-lines>Le configurateur<br>arrive</h1>
-    <p class="lede mx-auto text-center" style="margin-top:var(--sp-5)" data-reveal>En attendant, l'atelier prend les commandes sur-mesure directement sur WhatsApp : vous décrivez ce que vous voulez, il vous chiffre la pièce dans la journée.</p>
-    <div class="cta__actions" data-reveal>
-      <a class="btn" href="chaussures.html">
-        Voir les souliers
-        <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
-      </a>
-      <a class="btn btn--ghost" href="https://wa.me/22900000000" target="_blank" rel="noopener">
-        <svg aria-hidden="true"><use href="#i-whatsapp"></use></svg>
-        Commander sur WhatsApp
-      </a>
+<nav class="crumb" aria-label="Fil d'Ariane"><div class="container"><a href="index.html">Accueil</a><span class="crumb__sep" aria-hidden="true">/</span><span aria-current="page">L&#x27;atelier sur-mesure</span></div></nav>
+
+<section class="section section--top">
+  <div class="container">
+    <div class="section-head" data-reveal style="max-width:44ch">
+      <span class="eyebrow">L'atelier</span>
+      <h1 data-lines>Une paire cousue<br>pour un seul pied au monde.<br>Le vôtre.</h1>
+      <p class="lede">
+        Cinq décisions, 15 jours d'atelier. Chaque choix se voit dans l'aperçu et dans le
+        prix — rien ne se découvre à la fin.
+      </p>
+    </div>
+
+    <div class="cfg" data-cfg>
+      <div class="cfg__steps">
+
+        <section class="cfg-step">
+          <div class="cfg-step__head">
+            <span class="cfg-step__num">01</span>
+            <h2>La forme</h2>
+            <p class="cfg-step__hint">Elle fixe le prix de base. Tout le reste s'y ajoute.</p>
+          </div>
+    <div class="cfg-options" data-group="shape">
+      <button class="cfg-opt" type="button" aria-pressed="false" data-id="loafer">
+        <span class="cfg-opt__shot"><img src="assets/img/loafer-ouidah.jpg" width="400" height="275"
+              loading="lazy" decoding="async" alt="Loafer Ouidah"></span>
+        <span class="cfg-opt__top">
+          <span class="cfg-opt__name">Loafer Ouidah</span>
+          <span class="cfg-opt__price">dès 148 000 F</span>
+        </span>
+        <span class="cfg-opt__note">Sans lacet, non doublé</span>
+      </button>
+      <button class="cfg-opt" type="button" aria-pressed="false" data-id="derby">
+        <span class="cfg-opt__shot"><img src="assets/img/derby-cotonou.jpg" width="400" height="275"
+              loading="lazy" decoding="async" alt="Derby Cotonou"></span>
+        <span class="cfg-opt__top">
+          <span class="cfg-opt__name">Derby Cotonou</span>
+          <span class="cfg-opt__price">dès 156 000 F</span>
+        </span>
+        <span class="cfg-opt__note">Laçage ouvert, chaussant large</span>
+      </button>
+      <button class="cfg-opt" type="button" aria-pressed="false" data-id="boot">
+        <span class="cfg-opt__shot"><img src="assets/img/boot-atakora.jpg" width="400" height="275"
+              loading="lazy" decoding="async" alt="Boot Atakora"></span>
+        <span class="cfg-opt__top">
+          <span class="cfg-opt__name">Boot Atakora</span>
+          <span class="cfg-opt__price">dès 172 000 F</span>
+        </span>
+        <span class="cfg-opt__note">Tige montante, semelle gomme</span>
+      </button>
+      <button class="cfg-opt" type="button" aria-pressed="false" data-id="richelieu">
+        <span class="cfg-opt__shot"><img src="assets/img/richelieu-abidjan.jpg" width="400" height="275"
+              loading="lazy" decoding="async" alt="Richelieu Abidjan"></span>
+        <span class="cfg-opt__top">
+          <span class="cfg-opt__name">Richelieu Abidjan</span>
+          <span class="cfg-opt__price">dès 185 000 F</span>
+        </span>
+        <span class="cfg-opt__note">Laçage fermé, empiècement fleuri</span>
+      </button>
+    </div>
+        </section>
+
+        <section class="cfg-step">
+          <div class="cfg-step__head">
+            <span class="cfg-step__num">02</span>
+            <h2>Le cuir</h2>
+            <p class="cfg-step__hint">Pleine fleur, tannage végétal — la patine se creuse avec les années.</p>
+          </div>
+    <div class="cfg-options" data-group="leather">
+      <button class="cfg-opt" type="button" aria-pressed="false" data-id="cognac">
+        <span class="cfg-opt__top">
+          <span style="display:flex;align-items:center;gap:var(--sp-3)">
+            <span class="cfg-opt__chip" style="background:#8C5A3C"></span>
+            <span class="cfg-opt__name">Cognac</span>
+          </span>
+          <span class="cfg-opt__price">inclus</span>
+        </span>
+        <span class="cfg-opt__note">Patine chaude, se creuse avec les années</span>
+      </button>
+      <button class="cfg-opt" type="button" aria-pressed="false" data-id="espresso">
+        <span class="cfg-opt__top">
+          <span style="display:flex;align-items:center;gap:var(--sp-3)">
+            <span class="cfg-opt__chip" style="background:#3B2F29"></span>
+            <span class="cfg-opt__name">Espresso</span>
+          </span>
+          <span class="cfg-opt__price">inclus</span>
+        </span>
+        <span class="cfg-opt__note">Le plus sobre, passe partout</span>
+      </button>
+      <button class="cfg-opt" type="button" aria-pressed="false" data-id="noir">
+        <span class="cfg-opt__top">
+          <span style="display:flex;align-items:center;gap:var(--sp-3)">
+            <span class="cfg-opt__chip" style="background:#1A1614"></span>
+            <span class="cfg-opt__name">Noir</span>
+          </span>
+          <span class="cfg-opt__price">inclus</span>
+        </span>
+        <span class="cfg-opt__note">Cérémonie et bureau</span>
+      </button>
+      <button class="cfg-opt" type="button" aria-pressed="false" data-id="marine">
+        <span class="cfg-opt__top">
+          <span style="display:flex;align-items:center;gap:var(--sp-3)">
+            <span class="cfg-opt__chip" style="background:#232B3D"></span>
+            <span class="cfg-opt__name">Marine</span>
+          </span>
+          <span class="cfg-opt__price">+ 8 000 F</span>
+        </span>
+        <span class="cfg-opt__note">Teinture longue, +2 jours d'atelier</span>
+      </button>
+    </div>
+        </section>
+
+        <section class="cfg-step">
+          <div class="cfg-step__head">
+            <span class="cfg-step__num">03</span>
+            <h2>La semelle</h2>
+            <p class="cfg-step__hint">Les deux se ressemellent. La gomme tient mieux sous la pluie.</p>
+          </div>
+    <div class="cfg-options" data-group="sole">
+      <button class="cfg-opt" type="button" aria-pressed="false" data-id="cuir">
+        <span class="cfg-opt__top">
+          <span class="cfg-opt__name">Cuir cousue sur trépointe</span>
+          <span class="cfg-opt__price">inclus</span>
+        </span>
+        <span class="cfg-opt__note">Ressemelable à vie — la signature Yem's</span>
+      </button>
+      <button class="cfg-opt" type="button" aria-pressed="false" data-id="gomme">
+        <span class="cfg-opt__top">
+          <span class="cfg-opt__name">Gomme ville</span>
+          <span class="cfg-opt__price">+ 8 000 F</span>
+        </span>
+        <span class="cfg-opt__note">Silencieuse, tient le bitume mouillé de juin</span>
+      </button>
+    </div>
+        </section>
+
+        <section class="cfg-step">
+          <div class="cfg-step__head">
+            <span class="cfg-step__num">04</span>
+            <h2>La pointure</h2>
+            <p class="cfg-step__hint">Entre deux&nbsp;? Prenez la plus grande — l'atelier ajuste la forme à vos mesures exactes lors de la prise de cotes.</p>
+          </div>
+          <div class="cfg-sizes" data-group="size">
+        <button class="size" type="button" aria-pressed="false" data-id="39">39</button>
+        <button class="size" type="button" aria-pressed="false" data-id="40">40</button>
+        <button class="size" type="button" aria-pressed="false" data-id="41">41</button>
+        <button class="size" type="button" aria-pressed="false" data-id="42">42</button>
+        <button class="size" type="button" aria-pressed="false" data-id="43">43</button>
+        <button class="size" type="button" aria-pressed="false" data-id="44">44</button>
+        <button class="size" type="button" aria-pressed="false" data-id="45">45</button>
+        <button class="size" type="button" aria-pressed="false" data-id="46">46</button>
+          </div>
+        </section>
+
+        <section class="cfg-step">
+          <div class="cfg-step__head">
+            <span class="cfg-step__num">05</span>
+            <h2>Les initiales</h2>
+            <p class="cfg-step__hint">Marquées à chaud sur la doublure, jamais à l'extérieur.</p>
+          </div>
+          <div class="cfg-initials">
+            <label class="visually-hidden" for="cfg-init">Vos initiales</label>
+            <input id="cfg-init" type="text" placeholder="A. C." maxlength="4"
+                   autocomplete="off" data-cfg-initials>
+            <span class="cfg-opt__price">+ 6 000 F</span>
+          </div>
+        </section>
+
+      </div>
+
+      <aside class="cfg__summary">
+        <div class="cfg-card">
+          <div class="cfg-card__shot" data-cfg-shot></div>
+          <h2>Votre paire</h2>
+
+          <dl class="cfg-lines">
+          <div class="spec-row" data-line="shape" data-empty><dt>Forme</dt><dd><em data-extra></em><span data-value>À choisir</span></dd></div>
+          <div class="spec-row" data-line="leather" data-empty><dt>Cuir</dt><dd><em data-extra></em><span data-value>À choisir</span></dd></div>
+          <div class="spec-row" data-line="sole" data-empty><dt>Semelle</dt><dd><em data-extra></em><span data-value>À choisir</span></dd></div>
+          <div class="spec-row" data-line="size" data-empty><dt>Pointure</dt><dd><em data-extra></em><span data-value>À choisir</span></dd></div>
+          <div class="spec-row" data-line="initials" data-empty><dt>Initiales</dt><dd><em data-extra></em><span data-value>À choisir</span></dd></div>
+          </dl>
+
+          <div class="cfg-total">
+            <span class="cfg-total__label">Total</span>
+            <span class="cfg-total__value" data-total>—</span>
+          </div>
+
+          <button class="btn btn--full" type="button" data-cfg-add data-cart="panier.html" disabled>
+            Ajouter au panier
+            <svg aria-hidden="true"><use href="#i-bag"></use></svg>
+          </button>
+
+          <p class="cfg-card__foot">
+            Acompte 50&nbsp;% à la commande — Mobile Money MTN &amp; Moov, Wave
+            ou carte via KkiaPay. Le solde à la livraison.
+          </p>
+
+          <ul class="cfg-trust">
+            <li><svg aria-hidden="true"><use href="#i-needle"></use></svg>Point sellier main, une retouche offerte</li>
+            <li><svg aria-hidden="true"><use href="#i-card"></use></svg>Carte d'authenticité numérotée</li>
+            <li><svg aria-hidden="true"><use href="#i-truck"></use></svg>Livraison 48&nbsp;h après sortie d'atelier</li>
+          </ul>
+        </div>
+      </aside>
     </div>
   </div>
+
+  <div class="cfg-bar">
+    <span class="cfg-bar__total">
+      <span data-total>—</span>
+      <span class="cfg-bar__label">Cousue à la commande — 15 jours d'atelier</span>
+    </span>
+    <button class="btn btn--sm" type="button" data-cfg-add data-cart="panier.html" disabled>Ajouter</button>
+  </div>
 </section>
+
+<script type="application/json" id="cfg-data">{"base": "", "shapes": [{"id": "loafer", "name": "Loafer Ouidah", "price": 148000, "image": "loafer-ouidah", "note": "Sans lacet, non doublé"}, {"id": "derby", "name": "Derby Cotonou", "price": 156000, "image": "derby-cotonou", "note": "Laçage ouvert, chaussant large"}, {"id": "boot", "name": "Boot Atakora", "price": 172000, "image": "boot-atakora", "note": "Tige montante, semelle gomme"}, {"id": "richelieu", "name": "Richelieu Abidjan", "price": 185000, "image": "richelieu-abidjan", "note": "Laçage fermé, empiècement fleuri"}], "leathers": [{"id": "cognac", "name": "Cognac", "hex": "#8C5A3C", "price": 0, "note": "Patine chaude, se creuse avec les années"}, {"id": "espresso", "name": "Espresso", "hex": "#3B2F29", "price": 0, "note": "Le plus sobre, passe partout"}, {"id": "noir", "name": "Noir", "hex": "#1A1614", "price": 0, "note": "Cérémonie et bureau"}, {"id": "marine", "name": "Marine", "hex": "#232B3D", "price": 8000, "note": "Teinture longue, +2 jours d'atelier"}], "soles": [{"id": "cuir", "name": "Cuir cousue sur trépointe", "price": 0, "note": "Ressemelable à vie — la signature Yem's"}, {"id": "gomme", "name": "Gomme ville", "price": 8000, "note": "Silencieuse, tient le bitume mouillé de juin"}], "initials": {"price": 6000, "note": "Marquées à chaud sur la doublure, jamais à l'extérieur."}}</script>
 
 </main>
 
@@ -204,5 +404,6 @@
 
 <script src="assets/js/main.js" defer></script>
 <script src="assets/js/motion.js" defer></script>
+<script src="assets/js/configurator.js" defer></script>
 </body>
 </html>

@@ -116,6 +116,16 @@
   }
 
   /* ----------------------------------------------------------------------
+     Vidéo hero : coupée si l'utilisateur refuse les animations
+     ---------------------------------------------------------------------- */
+  if (reduce) {
+    $$('.hero__media video').forEach((v) => {
+      v.removeAttribute('autoplay');
+      v.pause();
+    });
+  }
+
+  /* ----------------------------------------------------------------------
      5. Boutons magnétiques — pointeur précis uniquement
      ---------------------------------------------------------------------- */
   const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;

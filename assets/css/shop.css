@@ -79,7 +79,7 @@
    -------------------------------------------------------------------------- */
 .product {
   display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 460px), 1fr));
   gap: clamp(2rem, 5vw, 4.5rem);
   align-items: start;
 }
@@ -104,9 +104,29 @@
 
 .product__price {
   font-family: var(--font-display);
-  font-size: var(--fs-xl);
+  font-size: var(--fs-2xl);
   color: var(--brass-300);
+  line-height: 1.1;
   margin-bottom: var(--sp-5);
+}
+
+.product__price small {
+  display: block;
+  font-family: var(--font-body);
+  font-size: var(--fs-xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--text-subtle);
+  margin-top: var(--sp-2);
+}
+
+/* Le statut se lit juste sous le nom, en toutes lettres */
+.product__info > .badge { margin-block: var(--sp-3) var(--sp-4); }
+
+.picker__help {
+  margin-top: var(--sp-3);
+  font-size: var(--fs-xs);
+  color: var(--text-subtle);
 }
 
 .product__info .lede { margin-bottom: var(--sp-6); }
@@ -211,7 +231,6 @@
 .product__reassure svg { width: 18px; height: 18px; color: var(--brass-400); flex: none; }
 
 @media (max-width: 900px) {
-  .product { grid-template-columns: minmax(0, 1fr); }
   .product__gallery { position: static; }
   .product__name { font-size: var(--fs-2xl); }
 }

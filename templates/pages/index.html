@@ -3,11 +3,15 @@
      HERO
      ═══════════════════════════════════════════════════════════════ -->
 <section class="hero grain">
-  <!-- TODO client : remplacer ce dégradé par la vidéo hero
-       <video autoplay muted loop playsinline poster="assets/img/hero-poster.jpg">
-         <source src="{{base}}assets/video/hero.mp4" type="video/mp4">
-       </video> -->
-  <div class="hero__media" aria-hidden="true"></div>
+  <!-- Le dégradé de .hero__media reste en fond : si la vidéo ne charge pas, ou si
+       le navigateur refuse l'autoplay, la section reste présentable telle quelle. -->
+  <div class="hero__media" aria-hidden="true">
+    <video autoplay muted loop playsinline preload="metadata"
+           poster="{{base}}assets/img/hero-poster.jpg">
+      <source src="{{base}}assets/video/hero.webm" type="video/webm">
+      <source src="{{base}}assets/video/hero.mp4" type="video/mp4">
+    </video>
+  </div>
 
   <svg class="hero__stitching" aria-hidden="true" preserveAspectRatio="none" viewBox="0 0 1440 900">
     <path d="M-40 640 C 320 520, 560 700, 900 560 S 1340 420, 1520 470"

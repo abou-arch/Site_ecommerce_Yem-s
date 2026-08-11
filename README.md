@@ -218,6 +218,36 @@ Ces affirmations sont chiffrées pour être crédibles, mais le client doit pouv
 
 ---
 
+## Le configurateur
+
+`configurateur.html` est généré comme le reste, depuis `site.bespoke` dans
+`data/products.json`. Cinq décisions : forme, cuir, semelle, pointure, initiales.
+
+Le prix est **recalculé depuis les données à chaque changement**, jamais accumulé :
+un bug d'affichage ne peut donc pas devenir un bug de prix. Le bouton reste
+désactivé tant que forme, cuir, semelle et pointure ne sont pas tous choisis.
+
+Pour changer un tarif ou ajouter une option, il suffit d'éditer `site.bespoke`
+puis de relancer le build — le catalogue d'options est injecté dans la page en
+JSON (`#cfg-data`) et lu par `assets/js/configurator.js`.
+
+L'article déposé dans le panier porte le détail complet, prêt pour le back-end :
+
+```json
+{
+  "id": "sur-mesure-derby",
+  "name": "Derby Cotonou — sur-mesure",
+  "price": 164000,
+  "size": 43,
+  "color": "Espresso",
+  "bespoke": { "shape": "derby", "leather": "espresso", "sole": "gomme",
+               "size": 43, "initials": "A.C." },
+  "qty": 1
+}
+```
+
+---
+
 ## À fournir par le client
 
 Emplacements balisés par des commentaires `TODO client` et, côté visuel, par la pastille `.todo-note`.
@@ -234,8 +264,7 @@ Emplacements balisés par des commentaires `TODO client` et, côté visuel, par 
 
 ## Reste à construire
 
-1. **Pages produits** — `produit-loafer.html`, `produit-derby.html`, `produit-boot.html`, `produit-richelieu.html` (les liens pointent déjà dessus).
-2. **Configurateur sur-mesure** — `configurateur.html`. Flow : configuration → facture à l'écran → notification WhatsApp au propriétaire → paiement immédiat **ou différé**. À traiter séparément du tunnel produit standard.
+1. **Configurateur sur-mesure** — `configurateur.html`. Flow : configuration → facture à l'écran → notification WhatsApp au propriétaire → paiement immédiat **ou différé**. À traiter séparément du tunnel produit standard.
 3. **Panier + checkout** — `panier.html`, `checkout.html`.
 4. **KkiaPay** — Mobile Money MTN/Moov, Wave, carte bancaire.
 

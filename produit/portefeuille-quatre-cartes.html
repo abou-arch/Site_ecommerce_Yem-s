@@ -24,6 +24,7 @@
 <link rel="stylesheet" href="../assets/css/shop.css">
 <link rel="stylesheet" href="../assets/css/motion.css">
 
+
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2314100D'/%3E%3Cpath d='M8 9l8 8 8-8M16 17v7' stroke='%23C9A46A' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Product","name":"Portefeuille Quatre Cartes","description":"Quatre emplacements, un soufflet à billets, aucune doublure. Il tient dans une poche de veste sans la déformer.","category":"Portefeuilles","offers":{"@type":"Offer","price":42000,"priceCurrency":"XOF","availability":"https://schema.org/InStock"}}</script>
 </head>
@@ -88,9 +89,8 @@
 
     <nav class="nav" aria-label="Navigation principale">
       <a class="nav__link" href="../chaussures.html">Chaussures</a>
-      <a class="nav__link" href="../ceintures.html">Ceintures</a>
-      <a class="nav__link" href="../portefeuilles.html" aria-current="page">Portefeuilles</a>
-      <a class="nav__link" href="../entretien.html">Entretien</a>
+      <a class="nav__link" href="../index.html#manifeste">Savoir-faire</a>
+      <a class="nav__link" href="../index.html#garantie">Garantie</a>
     </nav>
 
     <div class="header__actions">
@@ -108,9 +108,8 @@
 
 <div class="mobile-menu" id="mobile-menu">
   <a href="../chaussures.html">Chaussures</a>
-  <a href="../ceintures.html">Ceintures</a>
-  <a href="../portefeuilles.html" aria-current="page">Portefeuilles</a>
-  <a href="../entretien.html">Entretien</a>
+  <a href="../index.html#manifeste">Savoir-faire</a>
+  <a href="../index.html#garantie">Garantie</a>
   <a class="btn" href="../configurateur.html" style="margin-top:auto">Configurer ma paire</a>
 </div>
 
@@ -125,10 +124,13 @@
     </div>
 
     <div class="product__info" data-reveal style="--reveal-delay:120ms">
-      <span class="eyebrow">Portefeuilles</span>
+      <span class="eyebrow">La ligne Portefeuilles</span>
       <h1 class="product__name">Portefeuille Quatre Cartes</h1>
-      <p class="product__price">42 000 F</p>
-      <p class="lede">Un portefeuille épais déforme la veste et use le pantalon. Celui-ci est monté sans renfort : quatre cartes, les billets pliés une fois, et rien d'autre. Il s'affine encore avec le temps.</p>
+      <span class="badge badge--green "><span class="badge__dot"></span>En stock à Cotonou — expédié sous 72 h</span>
+      <p class="product__price">42 000 F
+        <small>FCFA · livraison 48 h Cotonou &amp; Abidjan</small></p>
+      <p class="lede">Quatre emplacements, un soufflet à billets, aucune doublure. Il tient dans une poche de veste sans la déformer.</p>
+      <p class="lede" style="margin-top:var(--sp-3)">Un portefeuille épais déforme la veste et use le pantalon. Celui-ci est monté sans renfort : quatre cartes, les billets pliés une fois, et rien d'autre. Il s'affine encore avec le temps.</p>
 
       <div class="product__pickers">
         <div class="picker">
@@ -138,6 +140,7 @@
           <button class="swatch swatch--btn" type="button" style="background:#8C5A3C" data-color="Cognac" aria-label="Cognac"></button>
           <button class="swatch swatch--btn" type="button" style="background:#1A1614" data-color="Noir" aria-label="Noir"></button>
           </div>
+          <p class="picker__help" data-color-label>Choisissez une teinte</p>
         </div>
 
       </div>
@@ -153,7 +156,7 @@
           <svg aria-hidden="true"><use href="#i-bag"></use></svg>
         </button>
         <a class="btn btn--ghost btn--full" href="../configurateur.html"
-           style="margin-top:var(--sp-3)">Le vouloir sur-mesure</a>
+           style="margin-top:var(--sp-3)">La version sur-mesure</a>
       </div>
 
       <dl class="product__specs">
@@ -173,6 +176,25 @@
   </div>
 </section>
 
+<section class="section">
+  <div class="container">
+    <div class="section-head section-head--center" data-reveal>
+      <span class="eyebrow eyebrow--center">Le détail qui compte</span>
+      <h2>Ce qu'on ne voit pas<br>de loin</h2>
+    </div>
+
+    <div class="faq" data-reveal style="--reveal-delay:100ms">
+      <details>
+        <summary>L'entretien</summary>
+        <div class="faq__body"><p>Un coup de brosse après chaque port, une crème nourrissante tous les deux mois, des embauchoirs entre deux sorties. C'est tout. Évitez de sécher un cuir mouillé près d'une source de chaleur : c'est la seule chose qui puisse vraiment l'abîmer.</p></div>
+      </details>
+      <details>
+        <summary>Livraison &amp; retours</summary>
+        <div class="faq__body"><p>Cotonou et Abidjan sous 48 h, autres villes du Bénin et de Côte d'Ivoire sous 5 jours. Échange de pointure sous 7 jours, sans frais. Sur le sur-mesure : une retouche offerte après essayage, puis remboursement intégral si le chaussant ne convient toujours pas.</p></div>
+      </details>
+    </div>
+  </div>
+</section>
 
 </main>
 
@@ -245,5 +267,6 @@
 
 <script src="../assets/js/main.js" defer></script>
 <script src="../assets/js/motion.js" defer></script>
+
 </body>
 </html>

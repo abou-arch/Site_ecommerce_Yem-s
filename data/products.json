@@ -5,7 +5,50 @@
     "whatsapp": "22900000000",
     "email": "contact@yems.example",
     "currency": "F",
-    "cities": ["Cotonou, Bénin", "Abidjan, Côte d'Ivoire"]
+    "cities": ["Cotonou, Bénin", "Abidjan, Côte d'Ivoire"],
+
+    "_bespoke": "Configurateur sur-mesure. Les prix des formes sont des prix de base ; les options s'y ajoutent.",
+    "bespoke": {
+      "lead_days": "15 jours d'atelier",
+      "deposit": 50,
+      "shapes": [
+        { "id": "loafer",    "name": "Loafer Ouidah",     "price": 148000, "image": "loafer-ouidah",     "note": "Sans lacet, non doublé" },
+        { "id": "derby",     "name": "Derby Cotonou",     "price": 156000, "image": "derby-cotonou",     "note": "Laçage ouvert, chaussant large" },
+        { "id": "boot",      "name": "Boot Atakora",      "price": 172000, "image": "boot-atakora",      "note": "Tige montante, semelle gomme" },
+        { "id": "richelieu", "name": "Richelieu Abidjan", "price": 185000, "image": "richelieu-abidjan", "note": "Laçage fermé, empiècement fleuri" }
+      ],
+      "leathers": [
+        { "id": "cognac",   "name": "Cognac",   "hex": "#8C5A3C", "price": 0,     "note": "Patine chaude, se creuse avec les années" },
+        { "id": "espresso", "name": "Espresso", "hex": "#3B2F29", "price": 0,     "note": "Le plus sobre, passe partout" },
+        { "id": "noir",     "name": "Noir",     "hex": "#1A1614", "price": 0,     "note": "Cérémonie et bureau" },
+        { "id": "marine",   "name": "Marine",   "hex": "#232B3D", "price": 8000,  "note": "Teinture longue, +2 jours d'atelier" }
+      ],
+      "soles": [
+        { "id": "cuir",  "name": "Cuir cousue sur trépointe", "price": 0,    "note": "Ressemelable à vie — la signature Yem's" },
+        { "id": "gomme", "name": "Gomme ville",               "price": 8000, "note": "Silencieuse, tient le bitume mouillé de juin" }
+      ],
+      "sizes": [39, 40, 41, 42, 43, 44, 45, 46],
+      "initials": { "price": 6000, "note": "Marquées à chaud sur la doublure, jamais à l'extérieur." }
+    },
+
+    "_accordions": "Blocs dépliables communs à toutes les fiches produit.",
+    "accordions": [
+      {
+        "title": "L'entretien",
+        "body": "Un coup de brosse après chaque port, une crème nourrissante tous les deux mois, des embauchoirs entre deux sorties. C'est tout. Évitez de sécher un cuir mouillé près d'une source de chaleur : c'est la seule chose qui puisse vraiment l'abîmer."
+      },
+      {
+        "title": "Livraison &amp; retours",
+        "body": "Cotonou et Abidjan sous 48 h, autres villes du Bénin et de Côte d'Ivoire sous 5 jours. Échange de pointure sous 7 jours, sans frais. Sur le sur-mesure : une retouche offerte après essayage, puis remboursement intégral si le chaussant ne convient toujours pas."
+      }
+    ],
+
+    "_nav": "Navigation principale. href commençant par # = ancre de la homepage.",
+    "nav": [
+      { "label": "Chaussures",   "href": "chaussures.html" },
+      { "label": "Savoir-faire", "href": "#manifeste" },
+      { "label": "Garantie",     "href": "#garantie" }
+    ]
   },
 
   "categories": [

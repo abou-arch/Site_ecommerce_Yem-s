@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+  body { margin: 0; background: #14100D; color: #F4EDE2; font-family: Inter, -apple-system, "Segoe UI", sans-serif; font-size: 15px; line-height: 1.68; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  a { color: #C9A46A; text-decoration: none; }
+  a:hover { color: #D9B87A; }
+  p { margin: 0; text-wrap: pretty; }
+  h1, h2, h3, h4 { margin: 0; font-weight: 400; }
+  ::selection { background: #B08D57; color: #14100D; }
+  summary::-webkit-details-marker { display: none; }
+  summary { list-style: none; }
+  input { font: inherit; }
+  @keyframes v2m { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  @keyframes v2float { from { transform: translateY(0); } to { transform: translateY(-12px); } }
+  @keyframes v2hint { 0%, 100% { transform: scaleX(.35); opacity: .5; } 50% { transform: scaleX(1); opacity: 1; } }
+  @keyframes v2pulse { 0%, 100% { box-shadow: 0 0 0 3px rgba(76,122,80,.25); } 50% { box-shadow: 0 0 0 6px rgba(76,122,80,.12); } }
+  @keyframes v2sweep { from { transform: translateX(-16%); } to { transform: translateX(16%); } }
+  @keyframes v2breathe { from { opacity: .5; } to { opacity: 1; } }
+  @media (max-width: 900px) { .hide-mobile { display: none !important; } }
+  @media (prefers-reduced-motion: reduce) { * { animation-duration: .01ms !important; animation-iteration-count: 1 !important; } }
+</style>
+</helmet>
+
+<sc-if value="{{ showIntro }}" hint-placeholder-val="{{ false }}">
+  <div data-intro="true" style="position:fixed;inset:0;z-index:999;background:#14100D;display:grid;place-items:center">
+    <div style="display:flex;flex-direction:column;align-items:center;gap:18px">
+      <svg data-intro-mark="true" style="width:54px;height:54px;color:#D9B87A;opacity:0;transform:translateY(18px)" aria-hidden="true"><use href="#i-logo"></use></svg>
+      <span data-intro-word="true" style="font-family:Fraunces,Georgia,serif;font-size:30px;letter-spacing:.14em;opacity:0;transform:translateY(14px)">YEM'S</span>
+      <span data-intro-line="true" style="width:160px;height:2px;transform:scaleX(0);transform-origin:left;background-image:repeating-linear-gradient(to right,#B08D57 0,#B08D57 11px,transparent 11px,transparent 20px)"></span>
+    </div>
+  </div>
+</sc-if>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="i-logo" viewBox="0 0 40 40">
+      <rect x="1" y="1" width="38" height="38" rx="8" fill="none" stroke="currentColor" stroke-opacity=".28"></rect>
+      <path d="M11 11.5l9 9.5 9-9.5" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"></path>
+      <path d="M20 21v8" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"></path>
+      <path d="M14 32.5h12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-dasharray="3 3" stroke-opacity=".75"></path>
+    </symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></symbol>
+    <symbol id="i-arrow-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"></path></symbol>
+    <symbol id="i-bag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8h12l1 12H5L6 8z"></path><path d="M9 8V6a3 3 0 0 1 6 0v2"></path></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5.5 5.5L20 7"></path></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 6.6 7 .9-5.2 4.8 1.4 7L12 18l-6.2 3.3 1.4-7L2 9.5l7-.9L12 2z"></path></symbol>
+    <symbol id="i-whatsapp" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2zm5.6 14.1c-.2.7-1.4 1.3-2 1.4-.5.1-1.1.1-1.8-.1-.4-.1-1-.3-1.7-.6-3-1.3-4.9-4.3-5-4.5-.2-.2-1.2-1.6-1.2-3s.7-2.1 1-2.4c.3-.3.6-.4.8-.4h.6c.2 0 .5-.1.7.5l1 2.3c.1.2.1.4 0 .6l-.4.5-.3.4c-.1.1-.3.3-.1.6.1.3.7 1.2 1.5 1.9 1 .9 1.9 1.2 2.2 1.3.3.1.4.1.6-.1l.8-1c.2-.2.4-.2.6-.1l2.2 1c.2.1.4.2.5.3.1.2.1.6-.1 1.3z"></path></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.5 8.2-8 9-4.5-.8-8-4-8-9V6l8-3z"></path><path d="M9 12l2 2 4-4"></path></symbol>
+    <symbol id="i-needle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l7-7"></path><path d="M10 14L20 4"></path><circle cx="20.5" cy="3.5" r="1.5"></circle><path d="M12 12c2 1 4 1 6-1" stroke-dasharray="2 2"></path></symbol>
+    <symbol id="i-card" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="5" width="19" height="14" rx="2.5"></rect><path d="M2.5 10h19"></path><path d="M6 15h4"></path></symbol>
+    <symbol id="i-truck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6h11v10H2z"></path><path d="M13 9h4l4 4v3h-8z"></path><circle cx="6.5" cy="18.5" r="1.8"></circle><circle cx="17.5" cy="18.5" r="1.8"></circle></symbol>
+  </defs>
+</svg>
+
+<header data-header="true" data-screen-label="Header" style="position:fixed;top:0;left:0;right:0;z-index:100;height:76px;display:flex;align-items:center;border-bottom:1px solid transparent;transition:background-color 450ms,border-color 450ms">
+  <div style="max-width:1320px;margin:0 auto;padding:0 clamp(20px,4vw,48px);width:100%;display:flex;align-items:center;justify-content:space-between;gap:24px">
+    <a href="Accueil-v2.dc.html" aria-label="Yem's — accueil" style="display:inline-flex;align-items:center;gap:12px;color:#F4EDE2">
+      <svg style="width:34px;height:34px;flex:none" aria-hidden="true"><use href="#i-logo"></use></svg>
+      <span>
+        <span style="display:block;font-family:Fraunces,Georgia,serif;font-size:21px;letter-spacing:.06em;line-height:1">YEM'S</span>
+        <span style="display:block;font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:rgba(244,237,226,.52);margin-top:3px">Différents par les détails</span>
+      </span>
+    </a>
+    <nav class="hide-mobile" aria-label="Navigation principale" style="display:flex;align-items:center;gap:32px">
+      <a href="#collections" style="font-size:13px;letter-spacing:.04em;color:rgba(244,237,226,.62);transition:color 300ms" style-hover="color:#F4EDE2">Chaussures</a>
+      <a href="Produit-v2.dc.html" style="font-size:13px;letter-spacing:.04em;color:rgba(244,237,226,.62);transition:color 300ms" style-hover="color:#F4EDE2">Ceintures</a>
+      <a href="Produit-v2.dc.html" style="font-size:13px;letter-spacing:.04em;color:rgba(244,237,226,.62);transition:color 300ms" style-hover="color:#F4EDE2">Portefeuilles</a>
+      <a href="#manifeste" style="font-size:13px;letter-spacing:.04em;color:rgba(244,237,226,.62);transition:color 300ms" style-hover="color:#F4EDE2">Savoir-faire</a>
+    </nav>
+    <div style="display:flex;align-items:center;gap:16px">
+      <a class="hide-mobile" href="Configurateur-v2.dc.html" data-mag="true" style="display:inline-flex;align-items:center;padding:11px 20px;background:#C9A46A;color:#14100D;border:1px solid #C9A46A;border-radius:999px;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;transition:background-color 300ms,border-color 300ms" style-hover="background:#D9B87A;border-color:#D9B87A">Sur-mesure</a>
+      <a href="Configurateur-v2.dc.html" aria-label="Panier" style="position:relative;display:grid;place-items:center;width:42px;height:42px;border-radius:999px;border:1px solid rgba(233,222,203,.12);color:#F4EDE2;transition:border-color 300ms,background-color 300ms" style-hover="border-color:#C9A46A;background:rgba(201,164,106,.1)">
+        <svg style="width:18px;height:18px" aria-hidden="true"><use href="#i-bag"></use></svg>
+        <span data-cart-count="true" style="position:absolute;top:-3px;right:-3px;min-width:19px;height:19px;padding:0 5px;display:grid;place-items:center;background:#C9A46A;color:#14100D;border-radius:999px;font-size:10px;font-weight:700;line-height:1">0</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<section data-screen-label="Hero" style="position:relative;min-height:100svh;display:flex;align-items:flex-end;padding:150px 0 76px;overflow:hidden;isolation:isolate;background:radial-gradient(90% 70% at 78% 18%,rgba(176,141,87,.30) 0%,transparent 60%),radial-gradient(70% 60% at 12% 88%,rgba(140,90,60,.26) 0%,transparent 62%),linear-gradient(168deg,#241C18 0%,#14100D 62%)">
+  <!-- hero-media : simulation CSS de la variante B (lumière rasante sur cuir). À remplacer par le <video> Veo une fois hero.webm/hero.mp4 générés. -->
+  <div data-hero-media="true" aria-hidden="true" style="position:absolute;inset:0;z-index:-1;pointer-events:none;-webkit-mask-image:linear-gradient(100deg,transparent 24%,#000 60%);mask-image:linear-gradient(100deg,transparent 24%,#000 60%)">
+    <div style="position:absolute;inset:0;opacity:.44;mix-blend-mode:screen;background-image:url(data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%27900%27%20height=%27900%27%3E%3Cfilter%20id=%27r%27%3E%3CfeTurbulence%20type=%27fractalNoise%27%20baseFrequency=%270.011%200.017%27%20numOctaves=%275%27%20seed=%277%27/%3E%3CfeDiffuseLighting%20lighting-color=%27%23CBA76D%27%20surfaceScale=%272.8%27%3E%3CfeDistantLight%20azimuth=%27225%27%20elevation=%2742%27/%3E%3C/feDiffuseLighting%3E%3C/filter%3E%3Crect%20width=%27900%27%20height=%27900%27%20filter=%27url(%23r)%27/%3E%3C/svg%3E);background-size:900px 900px"></div>
+    <div style="position:absolute;inset:-30% -20%;mix-blend-mode:soft-light;background:linear-gradient(78deg,transparent 34%,rgba(226,183,100,.85) 47%,rgba(255,235,200,.55) 50%,rgba(226,183,100,.85) 53%,transparent 66%);filter:blur(26px);animation:v2sweep 17s ease-in-out infinite alternate"></div>
+    <div style="position:absolute;inset:-30% -20%;mix-blend-mode:overlay;background:linear-gradient(78deg,transparent 44%,rgba(244,237,226,.5) 50%,transparent 56%);filter:blur(12px);animation:v2sweep 23s ease-in-out infinite alternate-reverse"></div>
+    <div style="position:absolute;inset:0;background:radial-gradient(60% 55% at 76% 42%,rgba(201,164,106,.18) 0%,transparent 70%);animation:v2breathe 9s ease-in-out infinite alternate"></div>
+  </div>
+  <div aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;opacity:.35;mix-blend-mode:overlay;background-image:url(data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%27140%27%20height=%27140%27%3E%3Cfilter%20id=%27n%27%3E%3CfeTurbulence%20type=%27fractalNoise%27%20baseFrequency=%270.85%27%20numOctaves=%273%27/%3E%3C/filter%3E%3Crect%20width=%27140%27%20height=%27140%27%20filter=%27url(%23n)%27%20opacity=%270.5%27/%3E%3C/svg%3E)"></div>
+  <svg aria-hidden="true" preserveAspectRatio="none" viewBox="0 0 1440 900" style="position:absolute;inset:0;width:100%;height:100%;opacity:.5;pointer-events:none">
+    <path d="M-40 640 C 320 520, 560 700, 900 560 S 1340 420, 1520 470" fill="none" stroke="#C9A46A" stroke-width="1.5" stroke-dasharray="12 10" opacity=".5"></path>
+    <path d="M-40 690 C 320 570, 560 750, 900 610 S 1340 470, 1520 520" fill="none" stroke="#C9A46A" stroke-width="1.5" stroke-dasharray="12 10" opacity=".28"></path>
+  </svg>
+  <div style="max-width:1320px;margin:0 auto;padding:0 clamp(20px,4vw,48px);width:100%;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,460px),1fr));gap:clamp(36px,6vw,80px);align-items:end">
+    <div>
+      <span data-fx="up" style="display:inline-flex;align-items:center;gap:12px;font-size:12px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:#D9B87A"><span style="width:28px;height:1px;background:currentColor;opacity:.6"></span>Atelier — Cotonou &amp; Abidjan</span>
+      <h1 data-lines="true" style="font-family:Fraunces,Georgia,serif;font-size:clamp(2.9rem,6.8vw,6.4rem);line-height:1.02;letter-spacing:-.02em;margin:26px 0 30px;max-width:12ch;font-variation-settings:'SOFT' 0,'WONK' 1">
+        Personne ne<br>verra la couture.<br><em style="font-style:italic;color:#D9B87A;font-variation-settings:'SOFT' 100,'WONK' 1">Tout le monde</em><br>verra la différence.
+      </h1>
+      <p data-fx="up" data-fx-delay="520" style="font-size:17px;color:rgba(244,237,226,.62);max-width:52ch">
+        Souliers, ceintures et portefeuilles cousus à la main, pièce par pièce.
+        Ce qui se voit de loin se ressemble — tout se joue de près, au point sellier,
+        au grain du cuir, à la façon dont la semelle est montée.
+      </p>
+      <div data-fx="up" data-fx-delay="640" style="display:flex;gap:12px;flex-wrap:wrap;margin-top:34px">
+        <a href="#collections" data-mag="true" style="display:inline-flex;align-items:center;gap:12px;padding:15px 28px;background:#C9A46A;color:#14100D;border:1px solid #C9A46A;border-radius:999px;font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;transition:background-color 300ms,border-color 300ms" style-hover="background:#D9B87A;border-color:#D9B87A">
+          Voir les quatre lignes
+          <svg style="width:15px;height:15px;flex:none" aria-hidden="true"><use href="#i-arrow"></use></svg>
+        </a>
+        <a href="Configurateur-v2.dc.html" data-mag="true" style="display:inline-flex;align-items:center;gap:12px;padding:15px 28px;background:transparent;color:#F4EDE2;border:1px solid rgba(233,222,203,.24);border-radius:999px;font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;transition:background-color 300ms,border-color 300ms,color 300ms" style-hover="border-color:#C9A46A;color:#D9B87A;background:rgba(233,222,203,.07)">Composer ma paire</a>
+      </div>
+      <div data-fx="up" data-fx-delay="760" style="display:flex;gap:clamp(24px,4vw,48px);flex-wrap:wrap;margin-top:38px;padding-top:26px;border-top:1px solid rgba(233,222,203,.12)">
+        <div>
+          <div style="font-family:Fraunces,Georgia,serif;font-size:26px;color:#D9B87A;line-height:1.1;font-variant-numeric:tabular-nums"><span data-count="14">0</span>–<span data-count="20">0</span> j</div>
+          <div style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:rgba(244,237,226,.52);margin-top:4px">production sur-mesure</div>
+        </div>
+        <div>
+          <div style="font-family:Fraunces,Georgia,serif;font-size:26px;color:#D9B87A;line-height:1.1;font-variant-numeric:tabular-nums"><span data-count="48">0</span> h</div>
+          <div style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:rgba(244,237,226,.52);margin-top:4px">Cotonou &amp; Abidjan</div>
+        </div>
+        <div>
+          <div style="font-family:Fraunces,Georgia,serif;font-size:26px;color:#D9B87A;line-height:1.1;font-variant-numeric:tabular-nums"><span data-count="1">0</span> retouche</div>
+          <div style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:rgba(244,237,226,.52);margin-top:4px">offerte après essayage</div>
+        </div>
+      </div>
+    </div>
+    <div data-para="-0.06" style="display:flex;flex-direction:column;gap:22px;padding-bottom:8px">
+      <div style="animation:v2float 5s ease-in-out infinite alternate">
+        <figure data-fx="shot" data-fx-delay="300" data-zoom="true" style="position:relative;margin:0;border-radius:14px;overflow:hidden;box-shadow:0 30px 70px -28px rgba(0,0,0,.75)">
+          <span style="position:absolute;top:16px;left:16px;z-index:3;display:inline-flex;align-items:center;gap:8px;padding:6px 11px;border:1px solid rgba(233,222,203,.12);border-radius:999px;font-size:12px;font-weight:500;letter-spacing:.04em;color:#8FC095;background:rgba(20,16,13,.55);backdrop-filter:blur(6px)"><span style="width:6px;height:6px;border-radius:50%;background:#4C7A50;animation:v2pulse 2.6s ease-in-out infinite"></span>Au Bénin</span>
+          <img src="assets/img/loafer-ouidah.webp" width="807" height="1008" alt="Loafer Ouidah en cuir noir, semelle crantée, vu de trois quarts" style="display:block;width:100%;aspect-ratio:4/5;object-fit:cover;height:auto">
+          <img data-swap-alt="true" src="assets/img/loafer-ouidah-alt.webp" width="807" height="1008" alt="" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;pointer-events:none">
+          <span aria-hidden="true" style="position:absolute;inset:10px;border:1.5px dashed rgba(201,164,106,.55);border-radius:8px;pointer-events:none;z-index:2"></span>
+          <figcaption style="position:absolute;left:16px;right:16px;bottom:16px;z-index:3;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;padding:16px;border-radius:8px;background:rgba(20,16,13,.82);backdrop-filter:blur(10px);border:1px solid rgba(233,222,203,.12)">
+            <span>
+              <strong style="font-family:Fraunces,Georgia,serif;font-size:17px;font-weight:400">Loafer Ouidah</strong>
+              <span style="display:block;font-size:12px;color:rgba(244,237,226,.52);margin-top:2px">Cuir pleine fleur · semelle crantée</span>
+            </span>
+            <b style="font-size:13px;color:#D9B87A;white-space:nowrap">85 000 F</b>
+          </figcaption>
+        </figure>
+      </div>
+      <p data-fx="fade" data-fx-delay="900" style="font-size:13px;color:rgba(244,237,226,.62)">Mobile Money MTN &amp; Moov, Wave ou carte bancaire — encaissement sécurisé par KkiaPay.</p>
+    </div>
+  </div>
+  <div class="hide-mobile" aria-hidden="true" style="position:absolute;bottom:24px;right:clamp(20px,4vw,48px);display:flex;align-items:center;gap:12px;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:rgba(244,237,226,.52)">
+    <span>Faire défiler</span>
+    <span style="width:46px;height:1px;background:linear-gradient(to right,#C9A46A,transparent);animation:v2hint 2.4s ease infinite;transform-origin:left"></span>
+  </div>
+</section>
+
+<div aria-hidden="true" style="overflow:hidden;border-top:1px solid rgba(233,222,203,.12);border-bottom:1px solid rgba(233,222,203,.12);padding:16px 0;background:#1C1613;mask-image:linear-gradient(to right,transparent,#000 8%,#000 92%,transparent)">
+  <div style="display:flex;align-items:center;gap:24px;width:max-content;animation:v2m 30s linear infinite">
+    <span style="font-family:Fraunces,Georgia,serif;font-size:20px;color:rgba(244,237,226,.62);white-space:nowrap">Point sellier deux aiguilles</span><span style="width:5px;height:5px;border-radius:50%;background:#B08D57;flex:none"></span>
+    <span style="font-family:Fraunces,Georgia,serif;font-size:20px;color:rgba(244,237,226,.62);white-space:nowrap">Cuir pleine fleur tanné végétal</span><span style="width:5px;height:5px;border-radius:50%;background:#B08D57;flex:none"></span>
+    <span style="font-family:Fraunces,Georgia,serif;font-size:20px;color:rgba(244,237,226,.62);white-space:nowrap">Semelle cousue, ressemelable</span><span style="width:5px;height:5px;border-radius:50%;background:#B08D57;flex:none"></span>
+    <span style="font-family:Fraunces,Georgia,serif;font-size:20px;color:rgba(244,237,226,.62);white-space:nowrap">Numéro gravé sur chaque pièce</span><span style="width:5px;height:5px;border-radius:50%;background:#B08D57;flex:none"></span>
+    <span style="font-family:Fraunces,Georgia,serif;font-size:20px;color:rgba(244,237,226,.62);white-space:nowrap">Cotonou &amp; Abidjan en 48 h</span><span style="width:5px;height:5px;border-radius:50%;background:#B08D57;flex:none"></span>
+    <span style="font-family:Fraunces,Georgia,serif;font-size:20px;color:rgba(244,237,226,.62);white-space:nowrap">1 retouche offerte</span><span style="width:5px;height:5px;border-radius:50%;background:#B08D57;flex:none"></span>
+    <span style="font-family:Fraunces,Georgia,serif;font-size:20px;color:rgba(244,237,226,.62);white-space:nowrap">Point sellier deux aiguilles</span><span style="width:5px;height:5px;border-radius:50%;background:#B08D57;flex:none"></span>
+    <span style="font-family:Fraunces,Georgia,serif;font-size:20px;color:rgba(244,237,226,.62);white-space:nowrap">Cuir pleine fleur tanné végétal</span><span style="width:5px;height:5px;border-radius:50%;background:#B08D57;flex:none"></span>
+    <span style="font-family:Fraunces,Georgia,serif;font-size:20px;color:rgba(244,237,226,.62);white-space:nowrap">Semelle cousue, ressemelable</span><span style="width:5px;height:5px;border-radius:50%;background:#B08D57;flex:none"></span>
+    <span style="font-family:Fraunces,Georgia,serif;font-size:20px;color:rgba(244,237,226,.62);white-space:nowrap">Numéro gravé sur chaque pièce</span><span style="width:5px;height:5px;border-radius:50%;background:#B08D57;flex:none"></span>
+    <span style="font-family:Fraunces,Georgia,serif;font-size:20px;color:rgba(244,237,226,.62);white-space:nowrap">Cotonou &amp; Abidjan en 48 h</span><span style="width:5px;height:5px;border-radius:50%;background:#B08D57;flex:none"></span>
+    <span style="font-family:Fraunces,Georgia,serif;font-size:20px;color:rgba(244,237,226,.62);white-space:nowrap">1 retouche offerte</span><span style="width:5px;height:5px;border-radius:50%;background:#B08D57;flex:none"></span>
+  </div>
+</div>
+
+<div data-seam="true" aria-hidden="true" style="position:relative;height:clamp(90px,12vw,190px);width:100%;pointer-events:none;overflow:hidden">
+  <svg viewBox="0 0 1440 160" preserveAspectRatio="none" style="width:100%;height:100%;display:block">
+    <defs>
+      <mask id="v2-seam-a">
+        <path data-seam-reveal="true" pathLength="1" d="M0 118 C 280 118, 400 34, 720 34 S 1160 118, 1440 118" fill="none" stroke="#fff" stroke-width="30" stroke-dasharray="1" stroke-dashoffset="1" vector-effect="non-scaling-stroke"></path>
+      </mask>
+    </defs>
+    <path mask="url(#v2-seam-a)" d="M0 118 C 280 118, 400 34, 720 34 S 1160 118, 1440 118" fill="none" stroke="#B08D57" stroke-width="2" stroke-dasharray="13 10" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+  </svg>
+</div>
+
+<section id="manifeste" data-screen-label="Récit" style="background:#F4EDE2;color:#1C1613;padding:clamp(72px,9vw,136px) 0;position:relative">
+  <div style="max-width:1320px;margin:0 auto;padding:0 clamp(20px,4vw,48px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr));gap:clamp(40px,6vw,88px);align-items:start">
+    <div data-fx="up">
+      <span style="display:inline-flex;align-items:center;gap:12px;font-size:12px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:#7A5E33"><span style="width:28px;height:1px;background:currentColor;opacity:.6"></span>Ce dont personne ne parle</span>
+      <p data-lines="true" style="font-family:Fraunces,Georgia,serif;font-size:clamp(1.7rem,3.2vw,2.6rem);line-height:1.28;letter-spacing:-.01em;margin:20px 0 24px">
+        Une semelle ne lâche<br>jamais un mardi matin.
+      </p>
+      <p style="color:rgba(28,22,19,.66)">
+        Elle lâche le samedi. Entre la cérémonie et la salle, au moment précis où l'on vous
+        présente à quelqu'un. Le reste de la journée, vous marchez autrement. Le pas plus court,
+        le regard qui redescend vers vos pieds toutes les cinq minutes.
+      </p>
+      <p style="color:rgba(28,22,19,.66);margin-top:16px">
+        Et ce n'est pas la chaussure, le vrai problème. C'est d'avoir payé trois fois dans l'année
+        pour le même résultat. C'est de finir par se dire que le solide vient forcément d'ailleurs,
+        et qu'ici, on fait avec.
+      </p>
+      <div style="margin-top:32px;padding:24px;border-left:2px solid #B08D57;background:rgba(122,94,51,.08);border-radius:0 8px 8px 0">
+        <p style="font-size:17px">
+          Nous fabriquons à Cotonou. Cousu main, semelle remplaçable, numéro gravé sous la trépointe.
+          <strong>Rien de tout cela ne se promet — ça se vérifie sur la pièce.</strong>
+        </p>
+      </div>
+      <a href="#collections" style="display:inline-flex;align-items:center;gap:8px;margin-top:32px;font-size:13px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:#7A5E33;border-bottom:1px solid currentColor;padding-bottom:4px" style-hover="color:#8C5A3C">
+        Voir comment c'est monté
+        <svg style="width:14px;height:14px" aria-hidden="true"><use href="#i-arrow"></use></svg>
+      </a>
+    </div>
+    <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column">
+      <li data-fx="up" style="display:grid;grid-template-columns:auto minmax(0,1fr);gap:24px;padding:24px 0;border-top:1px solid rgba(28,22,19,.12)">
+        <span style="font-family:Fraunces,Georgia,serif;font-size:13px;color:#7A5E33;padding-top:4px">01</span>
+        <div>
+          <h3 style="font-family:Fraunces,Georgia,serif;font-size:22px;line-height:1.28;margin-bottom:8px">Le point sellier</h3>
+          <p style="font-size:13px;color:rgba(28,22,19,.66)">Deux aiguilles, un seul fil de lin, chaque point noué séparément. Une couture machine se déroule sur toute sa longueur dès qu'un point casse ; celle-ci s'arrête au point suivant.</p>
+        </div>
+      </li>
+      <li data-fx="up" data-fx-delay="100" style="display:grid;grid-template-columns:auto minmax(0,1fr);gap:24px;padding:24px 0;border-top:1px solid rgba(28,22,19,.12)">
+        <span style="font-family:Fraunces,Georgia,serif;font-size:13px;color:#7A5E33;padding-top:4px">02</span>
+        <div>
+          <h3 style="font-family:Fraunces,Georgia,serif;font-size:22px;line-height:1.28;margin-bottom:8px">Le cuir</h3>
+          <p style="font-size:13px;color:rgba(28,22,19,.66)">Pleine fleur tannée végétal, 1,8 à 2 mm. Il marque, il fonce, il prend la trace de vos plis. Il ne se craquelle pas comme une croûte enduite au bout d'une saison des pluies.</p>
+        </div>
+      </li>
+      <li data-fx="up" data-fx-delay="200" style="display:grid;grid-template-columns:auto minmax(0,1fr);gap:24px;padding:24px 0;border-top:1px solid rgba(28,22,19,.12)">
+        <span style="font-family:Fraunces,Georgia,serif;font-size:13px;color:#7A5E33;padding-top:4px">03</span>
+        <div>
+          <h3 style="font-family:Fraunces,Georgia,serif;font-size:22px;line-height:1.28;margin-bottom:8px">Le montage</h3>
+          <p style="font-size:13px;color:rgba(28,22,19,.66)">Semelle cousue sur trépointe, jamais collée. Quand elle s'use, on la découd et on en remonte une neuve. La paire repart pour un tour au lieu d'aller à la poubelle.</p>
+        </div>
+      </li>
+      <li data-fx="up" data-fx-delay="300" style="display:grid;grid-template-columns:auto minmax(0,1fr);gap:24px;padding:24px 0;border-top:1px solid rgba(28,22,19,.12);border-bottom:1px solid rgba(28,22,19,.12)">
+        <span style="font-family:Fraunces,Georgia,serif;font-size:13px;color:#7A5E33;padding-top:4px">04</span>
+        <div>
+          <h3 style="font-family:Fraunces,Georgia,serif;font-size:22px;line-height:1.28;margin-bottom:8px">Le numéro</h3>
+          <p style="font-size:13px;color:rgba(28,22,19,.66)">Chaque pièce reçoit un numéro et sa carte. Revenez dans quatre ans : nous retrouvons votre pointure, votre cuir et la forme sur laquelle elle a été montée.</p>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<section id="collections" data-screen-label="Collections" style="background:#FBF7F1;color:#1C1613;padding:clamp(72px,9vw,136px) 0">
+  <div style="max-width:1320px;margin:0 auto;padding:0 clamp(20px,4vw,48px)">
+    <div data-fx="up" style="display:flex;align-items:flex-end;justify-content:space-between;gap:32px;flex-wrap:wrap;margin-bottom:clamp(40px,5vw,64px)">
+      <div>
+        <span style="display:inline-flex;align-items:center;gap:12px;font-size:12px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:#7A5E33"><span style="width:28px;height:1px;background:currentColor;opacity:.6"></span>Les lignes</span>
+        <h2 data-lines="true" style="font-family:Fraunces,Georgia,serif;font-size:clamp(2.3rem,4.6vw,4rem);line-height:1.05;letter-spacing:-.015em;margin-top:16px">Quatre formes.<br>Une seule construction.</h2>
+      </div>
+      <p style="font-size:17px;color:rgba(28,22,19,.66);max-width:40ch">
+        Même cuir, même point sellier, même semelle remplaçable sur les quatre.
+        Vous choisissez la forme selon ce que vous en faites — pas selon ce qu'elle vaut.
+      </p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:40px 24px">
+      <article data-fx="up">
+        <a href="Produit-v2.dc.html" aria-label="Découvrir Loafer Ouidah" style="display:block;color:inherit">
+          <div data-fx-child="true" data-zoom="true" style="position:relative;aspect-ratio:4/5;border-radius:10px;overflow:hidden;isolation:isolate;background:radial-gradient(120% 90% at 50% 8%,#FBF7F1 0%,#E9DECB 46%,#DACAB0 100%)">
+            <span style="position:absolute;top:12px;left:12px;z-index:3;display:inline-flex;align-items:center;gap:8px;padding:6px 11px;border:1px solid rgba(233,222,203,.12);border-radius:999px;font-size:12px;font-weight:500;color:#8FC095;background:rgba(20,16,13,.55);backdrop-filter:blur(6px)"><span style="width:6px;height:6px;border-radius:50%;background:#4C7A50;box-shadow:0 0 0 3px rgba(76,122,80,.25)"></span>Au Bénin</span>
+            <img src="assets/img/loafer-ouidah.webp" width="807" height="1008" loading="lazy" decoding="async" alt="Loafer Ouidah en cuir noir avec bride, semelle crantée" style="display:block;width:100%;height:100%;object-fit:cover">
+            <img data-swap-alt="true" src="assets/img/loafer-ouidah-alt.webp" width="807" height="1008" loading="lazy" alt="" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;pointer-events:none">
+          </div>
+          <div style="display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-top:16px">
+            <h3 style="font-family:Fraunces,Georgia,serif;font-size:20px">Loafer Ouidah</h3>
+            <span style="font-size:13px;font-weight:600;letter-spacing:.03em;color:#7A5E33;white-space:nowrap">85 000 F</span>
+          </div>
+          <p style="font-size:13px;color:rgba(28,22,19,.66);margin-top:6px">Sans lacet, non doublé : il se met en quatre secondes et ne serre pas à 14 h. Celui qu'on porte cinq jours sur sept.</p>
+        </a>
+      </article>
+      <article data-fx="up" data-fx-delay="90">
+        <a href="Produit-v2.dc.html" aria-label="Découvrir Derby Cotonou" style="display:block;color:inherit">
+          <div data-zoom="true" style="position:relative;aspect-ratio:4/5;border-radius:10px;overflow:hidden;isolation:isolate;background:radial-gradient(120% 90% at 50% 8%,#FBF7F1 0%,#E9DECB 46%,#DACAB0 100%)">
+            <span style="position:absolute;top:12px;left:12px;z-index:3;display:inline-flex;align-items:center;gap:8px;padding:6px 11px;border:1px solid rgba(233,222,203,.12);border-radius:999px;font-size:12px;font-weight:500;color:#E2B764;background:rgba(20,16,13,.55);backdrop-filter:blur(6px)"><span style="width:6px;height:6px;border-radius:50%;background:#C08A2E;box-shadow:0 0 0 3px rgba(192,138,46,.22)"></span>En route</span>
+            <img src="assets/img/derby-cotonou.webp" width="992" height="1240" loading="lazy" decoding="async" alt="Derby Cotonou en cuir cognac, laçage ouvert" style="display:block;width:100%;height:100%;object-fit:cover">
+            <img data-swap-alt="true" src="assets/img/derby-cotonou-alt.webp" width="992" height="1240" loading="lazy" alt="" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;pointer-events:none">
+          </div>
+          <div style="display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-top:16px">
+            <h3 style="font-family:Fraunces,Georgia,serif;font-size:20px">Derby Cotonou</h3>
+            <span style="font-size:13px;font-weight:600;letter-spacing:.03em;color:#7A5E33;white-space:nowrap">98 000 F</span>
+          </div>
+          <p style="font-size:13px;color:rgba(28,22,19,.66);margin-top:6px">Laçage ouvert : le coup de pied fort passe, le pied fin se rattrape au laçage. La forme qui pardonne le plus.</p>
+        </a>
+      </article>
+      <article data-fx="up" data-fx-delay="180">
+        <a href="Produit-v2.dc.html" aria-label="Découvrir Boot Atakora" style="display:block;color:inherit">
+          <div data-zoom="true" style="position:relative;aspect-ratio:4/5;border-radius:10px;overflow:hidden;isolation:isolate;background:radial-gradient(120% 90% at 50% 8%,#FBF7F1 0%,#E9DECB 46%,#DACAB0 100%)">
+            <span style="position:absolute;top:12px;left:12px;z-index:3;display:inline-flex;align-items:center;gap:8px;padding:6px 11px;border:1px solid rgba(233,222,203,.12);border-radius:999px;font-size:12px;font-weight:500;color:#8FC095;background:rgba(20,16,13,.55);backdrop-filter:blur(6px)"><span style="width:6px;height:6px;border-radius:50%;background:#4C7A50;box-shadow:0 0 0 3px rgba(76,122,80,.25)"></span>Au Bénin</span>
+            <img src="assets/img/boot-atakora.webp" width="797" height="997" loading="lazy" decoding="async" alt="Boot Atakora en cuir noir à élastiques latéraux" style="display:block;width:100%;height:100%;object-fit:cover">
+          </div>
+          <div style="display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-top:16px">
+            <h3 style="font-family:Fraunces,Georgia,serif;font-size:20px">Boot Atakora</h3>
+            <span style="font-size:13px;font-weight:600;letter-spacing:.03em;color:#7A5E33;white-space:nowrap">125 000 F</span>
+          </div>
+          <p style="font-size:13px;color:rgba(28,22,19,.66);margin-top:6px">Tige montante, élastiques latéraux, semelle gomme. Elle tient sur le bitume mouillé de juin comme sur la latérite de janvier.</p>
+        </a>
+      </article>
+      <article data-fx="up" data-fx-delay="270">
+        <a href="Produit-v2.dc.html" aria-label="Découvrir Richelieu Abidjan" style="display:block;color:inherit">
+          <div data-zoom="true" style="position:relative;aspect-ratio:4/5;border-radius:10px;overflow:hidden;isolation:isolate;background:radial-gradient(120% 90% at 50% 8%,#FBF7F1 0%,#E9DECB 46%,#DACAB0 100%)">
+            <span style="position:absolute;top:12px;left:12px;z-index:3;display:inline-flex;align-items:center;gap:8px;padding:6px 11px;border:1px solid rgba(233,222,203,.12);border-radius:999px;font-size:12px;font-weight:500;color:#D89087;background:rgba(20,16,13,.55);backdrop-filter:blur(6px)"><span style="width:6px;height:6px;border-radius:50%;background:#A14A3E;box-shadow:0 0 0 3px rgba(161,74,62,.22)"></span>Indisponible</span>
+            <img src="assets/img/richelieu-abidjan.webp" width="1013" height="1266" loading="lazy" decoding="async" alt="Richelieu Abidjan en cuir noir, laçage fermé" style="display:block;width:100%;height:100%;object-fit:cover">
+          </div>
+          <div style="display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-top:16px">
+            <h3 style="font-family:Fraunces,Georgia,serif;font-size:20px">Richelieu Abidjan</h3>
+            <span style="font-size:13px;font-weight:600;letter-spacing:.03em;color:#7A5E33;white-space:nowrap">135 000 F</span>
+          </div>
+          <p style="font-size:13px;color:rgba(28,22,19,.66);margin-top:6px">Laçage fermé, empiècement fleuri. La pièce de cérémonie — en sur-mesure uniquement, sur vos mesures et vos initiales.</p>
+        </a>
+      </article>
+    </div>
+    <div data-fx="up" style="text-align:center;margin-top:clamp(40px,5vw,56px)">
+      <a href="Produit-v2.dc.html" data-mag="true" style="display:inline-flex;align-items:center;gap:12px;padding:15px 28px;background:transparent;color:#1C1613;border:1px solid rgba(28,22,19,.28);border-radius:999px;font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;transition:background-color 300ms,color 300ms,border-color 300ms" style-hover="background:#1C1613;border-color:#1C1613;color:#F4EDE2">
+        Voir toutes les chaussures
+        <svg style="width:15px;height:15px;flex:none" aria-hidden="true"><use href="#i-arrow"></use></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<div data-seam="true" aria-hidden="true" style="position:relative;height:clamp(90px,12vw,190px);width:100%;pointer-events:none;overflow:hidden">
+  <svg viewBox="0 0 1440 160" preserveAspectRatio="none" style="width:100%;height:100%;display:block">
+    <defs>
+      <mask id="v2-seam-b">
+        <path data-seam-reveal="true" pathLength="1" d="M0 40 C 300 40, 380 126, 720 126 S 1140 40, 1440 40" fill="none" stroke="#fff" stroke-width="30" stroke-dasharray="1" stroke-dashoffset="1" vector-effect="non-scaling-stroke"></path>
+      </mask>
+    </defs>
+    <path mask="url(#v2-seam-b)" d="M0 40 C 300 40, 380 126, 720 126 S 1140 40, 1440 40" fill="none" stroke="#B08D57" stroke-width="2" stroke-dasharray="13 10" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+  </svg>
+</div>
+
+<section id="sur-mesure" data-screen-label="Sur-mesure" style="position:relative;overflow:hidden;padding:clamp(72px,9vw,136px) 0;background:radial-gradient(80% 120% at 88% 12%,rgba(176,141,87,.20) 0%,transparent 58%),#1C1613">
+  <div style="max-width:1320px;margin:0 auto;padding:0 clamp(20px,4vw,48px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr));gap:clamp(40px,6vw,88px);align-items:center">
+    <div data-fx="up">
+      <span style="display:inline-flex;align-items:center;gap:12px;font-size:12px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:#D9B87A"><span style="width:28px;height:1px;background:currentColor;opacity:.6"></span>Le sur-mesure</span>
+      <h2 data-lines="true" style="font-family:Fraunces,Georgia,serif;font-size:clamp(2.3rem,4.6vw,4rem);line-height:1.05;letter-spacing:-.015em;margin-top:16px">Si aucune pointure ne va,<br><em style="font-style:italic;color:#D9B87A">ce n'est pas</em> votre pied.</h2>
+      <p style="font-size:17px;color:rgba(244,237,226,.62);max-width:54ch;margin-top:24px">
+        Un 43 ne veut rien dire pour un pied large ou un coup de pied fort. Le sur-mesure
+        n'est pas un luxe de vitrine : c'est la réponse normale à un pied qui ne rentre
+        dans aucune grille standard.
+      </p>
+      <div style="display:flex;flex-direction:column;gap:16px;margin-top:32px">
+        <div data-fx="up" style="display:grid;grid-template-columns:auto minmax(0,1fr);gap:16px;align-items:start;padding:16px 24px;border:1px solid rgba(233,222,203,.12);border-radius:14px;background:rgba(20,16,13,.5);transition:border-color 400ms,background-color 400ms" style-hover="border-color:rgba(201,164,106,.45);background:rgba(20,16,13,.75)">
+          <span style="display:grid;place-items:center;width:34px;height:34px;border:1px solid rgba(201,164,106,.45);border-radius:50%;font-family:Fraunces,Georgia,serif;font-size:13px;color:#D9B87A;flex:none">1</span>
+          <div>
+            <h4 style="font-size:17px;line-height:1.28;margin-bottom:4px;font-family:Fraunces,Georgia,serif">Vous composez — 2 minutes</h4>
+            <p style="font-size:13px;color:rgba(244,237,226,.62)">Modèle, cuir, doublure, semelle, couleur du fil, pointure, initiales gravées à chaud.</p>
+          </div>
+        </div>
+        <div data-fx="up" data-fx-delay="80" style="display:grid;grid-template-columns:auto minmax(0,1fr);gap:16px;align-items:start;padding:16px 24px;border:1px solid rgba(233,222,203,.12);border-radius:14px;background:rgba(20,16,13,.5);transition:border-color 400ms,background-color 400ms" style-hover="border-color:rgba(201,164,106,.45);background:rgba(20,16,13,.75)">
+          <span style="display:grid;place-items:center;width:34px;height:34px;border:1px solid rgba(201,164,106,.45);border-radius:50%;font-family:Fraunces,Georgia,serif;font-size:13px;color:#D9B87A;flex:none">2</span>
+          <div>
+            <h4 style="font-size:17px;line-height:1.28;margin-bottom:4px;font-family:Fraunces,Georgia,serif">La facture s'affiche — tout de suite</h4>
+            <p style="font-size:13px;color:rgba(244,237,226,.62)">Le prix se met à jour poste par poste pendant que vous choisissez. Pas de devis à attendre.</p>
+          </div>
+        </div>
+        <div data-fx="up" data-fx-delay="160" style="display:grid;grid-template-columns:auto minmax(0,1fr);gap:16px;align-items:start;padding:16px 24px;border:1px solid rgba(233,222,203,.12);border-radius:14px;background:rgba(20,16,13,.5);transition:border-color 400ms,background-color 400ms" style-hover="border-color:rgba(201,164,106,.45);background:rgba(20,16,13,.75)">
+          <span style="display:grid;place-items:center;width:34px;height:34px;border:1px solid rgba(201,164,106,.45);border-radius:50%;font-family:Fraunces,Georgia,serif;font-size:13px;color:#D9B87A;flex:none">3</span>
+          <div>
+            <h4 style="font-size:17px;line-height:1.28;margin-bottom:4px;font-family:Fraunces,Georgia,serif">L'atelier reçoit votre WhatsApp</h4>
+            <p style="font-size:13px;color:rgba(244,237,226,.62)">Votre configuration part au propriétaire, qui confirme la faisabilité et la date de livraison dans la journée.</p>
+          </div>
+        </div>
+        <div data-fx="up" data-fx-delay="240" style="display:grid;grid-template-columns:auto minmax(0,1fr);gap:16px;align-items:start;padding:16px 24px;border:1px solid rgba(233,222,203,.12);border-radius:14px;background:rgba(20,16,13,.5);transition:border-color 400ms,background-color 400ms" style-hover="border-color:rgba(201,164,106,.45);background:rgba(20,16,13,.75)">
+          <span style="display:grid;place-items:center;width:34px;height:34px;border:1px solid rgba(201,164,106,.45);border-radius:50%;font-family:Fraunces,Georgia,serif;font-size:13px;color:#D9B87A;flex:none">4</span>
+          <div>
+            <h4 style="font-size:17px;line-height:1.28;margin-bottom:4px;font-family:Fraunces,Georgia,serif">Vous payez au moment qui vous va</h4>
+            <p style="font-size:13px;color:rgba(244,237,226,.62)">À la commande par Mobile Money, ou à la livraison une fois la paire dans vos mains. C'est vous qui tranchez.</p>
+          </div>
+        </div>
+      </div>
+      <a href="Configurateur-v2.dc.html" data-mag="true" style="display:inline-flex;align-items:center;gap:12px;margin-top:32px;padding:15px 28px;background:#C9A46A;color:#14100D;border:1px solid #C9A46A;border-radius:999px;font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;transition:background-color 300ms,border-color 300ms" style-hover="background:#D9B87A;border-color:#D9B87A">
+        Ouvrir le configurateur
+        <svg style="width:15px;height:15px;flex:none" aria-hidden="true"><use href="#i-arrow"></use></svg>
+      </a>
+    </div>
+    <div data-fx="right" data-fx-delay="140" style="position:relative;padding:32px;border-radius:14px;background:linear-gradient(150deg,#2E2420,#14100D);border:1px solid rgba(233,222,203,.12);box-shadow:0 30px 70px -28px rgba(0,0,0,.75)">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:24px">
+        <span style="display:inline-flex;align-items:center;gap:8px;padding:6px 11px;border:1px solid rgba(201,164,106,.4);border-radius:999px;font-size:12px;font-weight:500;color:#D9B87A"><span style="width:6px;height:6px;border-radius:50%;background:currentColor"></span>Aperçu configurateur</span>
+        <span style="font-size:12px;color:rgba(244,237,226,.62)">Réf. YMS-SM-0142</span>
+      </div>
+      <div data-zoom="true" style="position:relative;aspect-ratio:16/10;border-radius:8px;overflow:hidden;margin-bottom:24px;background:radial-gradient(120% 90% at 50% 8%,#FBF7F1 0%,#E9DECB 46%,#DACAB0 100%)">
+        <img src="assets/img/atelier-bicolore.webp" width="744" height="740" loading="lazy" decoding="async" alt="Paire bicolore noir et blanc montée sur commande" style="display:block;width:100%;height:100%;object-fit:cover">
+      </div>
+      <dl style="margin:0">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px dashed rgba(233,222,203,.14);font-size:13px"><dt style="color:rgba(244,237,226,.52)">Modèle</dt><dd style="margin:0;font-weight:500">Derby Cotonou</dd></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px dashed rgba(233,222,203,.14);font-size:13px"><dt style="color:rgba(244,237,226,.52)">Cuir</dt><dd style="margin:0;font-weight:500">Pleine fleur — cognac</dd></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px dashed rgba(233,222,203,.14);font-size:13px">
+          <dt style="color:rgba(244,237,226,.52)">Fil de couture</dt>
+          <dd style="margin:0;display:flex;gap:8px">
+            <span style="width:22px;height:22px;border-radius:50%;border:1px solid rgba(233,222,203,.28);background:#3B2F29"></span>
+            <span style="width:22px;height:22px;border-radius:50%;border:1px solid rgba(233,222,203,.28);background:#8C5A3C;box-shadow:0 0 0 2px #14100D,0 0 0 3.5px #C9A46A"></span>
+            <span style="width:22px;height:22px;border-radius:50%;border:1px solid rgba(233,222,203,.28);background:#1A1614"></span>
+            <span style="width:22px;height:22px;border-radius:50%;border:1px solid rgba(233,222,203,.28);background:#C4B195"></span>
+          </dd>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px dashed rgba(233,222,203,.14);font-size:13px"><dt style="color:rgba(244,237,226,.52)">Initiales</dt><dd style="margin:0;font-weight:500">A. C.</dd></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 0;font-size:13px"><dt style="color:rgba(244,237,226,.52)">Délai</dt><dd style="margin:0;font-weight:500">14 à 20 jours</dd></div>
+      </dl>
+      <div aria-hidden="true" style="height:1.5px;width:100%;background-image:repeating-linear-gradient(to right,#B08D57 0,#B08D57 11px,transparent 11px,transparent 20px);opacity:.55;margin:24px 0"></div>
+      <div style="display:flex;align-items:baseline;justify-content:space-between;gap:16px">
+        <span style="font-size:13px;color:rgba(244,237,226,.62)">Total estimé</span>
+        <span style="font-family:Fraunces,Georgia,serif;font-size:26px;color:#D9B87A">148 000 F</span>
+      </div>
+      <a href="Configurateur-v2.dc.html" style="display:flex;align-items:center;justify-content:center;gap:12px;width:100%;box-sizing:border-box;margin-top:24px;padding:15px 28px;background:transparent;color:#F4EDE2;border:1px solid rgba(233,222,203,.24);border-radius:999px;font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;transition:border-color 300ms,color 300ms,background-color 300ms" style-hover="border-color:#C9A46A;color:#D9B87A;background:rgba(233,222,203,.07)">
+        <svg style="width:15px;height:15px;flex:none" aria-hidden="true"><use href="#i-whatsapp"></use></svg>
+        Envoyer à l'atelier
+      </a>
+    </div>
+  </div>
+</section>
+
+<section id="offres" data-screen-label="Offres" style="background:#14100D;padding:clamp(72px,9vw,136px) 0">
+  <div style="max-width:1320px;margin:0 auto;padding:0 clamp(20px,4vw,48px)">
+    <div data-fx="up" style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:16px;margin-bottom:clamp(40px,5vw,64px)">
+      <span style="display:inline-flex;align-items:center;gap:12px;font-size:12px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:#D9B87A"><span style="width:28px;height:1px;background:currentColor;opacity:.6"></span>Trois façons d'entrer<span style="width:28px;height:1px;background:currentColor;opacity:.6"></span></span>
+      <h2 data-lines="true" style="font-family:Fraunces,Georgia,serif;font-size:clamp(2.3rem,4.6vw,4rem);line-height:1.05;letter-spacing:-.015em">La même paire.<br>Trois niveaux d'engagement.</h2>
+      <p style="font-size:17px;color:rgba(244,237,226,.62);max-width:54ch">
+        Aucune des trois n'est une version au rabais de l'autre : même cuir, même couture,
+        même semelle remplaçable. Ce qui change, c'est ce qu'on met autour.
+      </p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:24px">
+      <article data-fx="up" style="position:relative;display:flex;flex-direction:column;gap:16px;padding:32px;border:1px solid rgba(233,222,203,.12);border-radius:14px;background:#241C18;transition:transform 420ms,border-color 420ms" style-hover="transform:translateY(-6px);border-color:rgba(233,222,203,.24)">
+        <h3 style="font-family:Fraunces,Georgia,serif;font-size:26px">Achat simple</h3>
+        <p style="font-size:13px;color:rgba(244,237,226,.62)">Une paire en stock, chez vous cette semaine.</p>
+        <div style="font-family:Fraunces,Georgia,serif;font-size:34px;color:#D9B87A;line-height:1.1">dès 85 000 F<small style="display:block;font-family:Inter,sans-serif;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:rgba(244,237,226,.52);margin-top:4px">la pièce</small></div>
+        <ul style="list-style:none;margin:8px 0 auto;padding:16px 0 0;border-top:1px solid rgba(233,222,203,.12);display:flex;flex-direction:column;gap:12px">
+          <li style="display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;font-size:13px;color:rgba(244,237,226,.62)"><svg style="width:15px;height:15px;color:#C9A46A;margin-top:5px;flex:none" aria-hidden="true"><use href="#i-check"></use></svg>Expédiée sous 72 h, pointure standard</li>
+          <li style="display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;font-size:13px;color:rgba(244,237,226,.62)"><svg style="width:15px;height:15px;color:#C9A46A;margin-top:5px;flex:none" aria-hidden="true"><use href="#i-check"></use></svg>Carte d'authenticité numérotée</li>
+          <li style="display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;font-size:13px;color:rgba(244,237,226,.62)"><svg style="width:15px;height:15px;color:#C9A46A;margin-top:5px;flex:none" aria-hidden="true"><use href="#i-check"></use></svg>Cotonou &amp; Abidjan en 48 h</li>
+          <li style="display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;font-size:13px;color:rgba(244,237,226,.62)"><svg style="width:15px;height:15px;color:#C9A46A;margin-top:5px;flex:none" aria-hidden="true"><use href="#i-check"></use></svg>Échange de pointure sous 7 jours</li>
+        </ul>
+        <a href="#collections" style="display:flex;align-items:center;justify-content:center;margin-top:8px;padding:15px 28px;background:transparent;color:#F4EDE2;border:1px solid rgba(233,222,203,.24);border-radius:999px;font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;transition:border-color 300ms,color 300ms" style-hover="border-color:#C9A46A;color:#D9B87A">Voir les modèles</a>
+      </article>
+      <article data-fx="up" data-fx-delay="90" style="position:relative;display:flex;flex-direction:column;gap:16px;padding:32px;border:1px solid rgba(201,164,106,.5);border-radius:14px;background:linear-gradient(165deg,rgba(176,141,87,.14),#241C18 55%);transition:transform 420ms" style-hover="transform:translateY(-6px)">
+        <span style="position:absolute;top:-11px;left:32px;padding:4px 12px;background:#C9A46A;color:#14100D;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase">Le plus choisi</span>
+        <h3 style="font-family:Fraunces,Georgia,serif;font-size:26px">Pack complet</h3>
+        <p style="font-size:13px;color:rgba(244,237,226,.62)">La paire, la ceinture au même cuir, de quoi l'entretenir.</p>
+        <div style="font-family:Fraunces,Georgia,serif;font-size:34px;color:#D9B87A;line-height:1.1">dès 128 000 F<small style="display:block;font-family:Inter,sans-serif;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:rgba(244,237,226,.52);margin-top:4px">22 000 F de moins qu'à la pièce</small></div>
+        <ul style="list-style:none;margin:8px 0 auto;padding:16px 0 0;border-top:1px solid rgba(233,222,203,.12);display:flex;flex-direction:column;gap:12px">
+          <li style="display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;font-size:13px;color:rgba(244,237,226,.62)"><svg style="width:15px;height:15px;color:#C9A46A;margin-top:5px;flex:none" aria-hidden="true"><use href="#i-check"></use></svg>1 paire + ceinture taillée dans la même peau</li>
+          <li style="display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;font-size:13px;color:rgba(244,237,226,.62)"><svg style="width:15px;height:15px;color:#C9A46A;margin-top:5px;flex:none" aria-hidden="true"><use href="#i-check"></use></svg>Crème, brosse et chiffon inclus</li>
+          <li style="display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;font-size:13px;color:rgba(244,237,226,.62)"><svg style="width:15px;height:15px;color:#C9A46A;margin-top:5px;flex:none" aria-hidden="true"><use href="#i-check"></use></svg>Embauchoirs bois — ce qui garde la forme</li>
+          <li style="display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;font-size:13px;color:rgba(244,237,226,.62)"><svg style="width:15px;height:15px;color:#C9A46A;margin-top:5px;flex:none" aria-hidden="true"><use href="#i-check"></use></svg>Livraison offerte</li>
+          <li style="display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;font-size:13px;color:rgba(244,237,226,.62)"><svg style="width:15px;height:15px;color:#C9A46A;margin-top:5px;flex:none" aria-hidden="true"><use href="#i-check"></use></svg>Carte d'authenticité numérotée</li>
+        </ul>
+        <a href="#collections" style="display:flex;align-items:center;justify-content:center;margin-top:8px;padding:15px 28px;background:#C9A46A;color:#14100D;border:1px solid #C9A46A;border-radius:999px;font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;transition:background-color 300ms" style-hover="background:#D9B87A;border-color:#D9B87A">Composer mon pack</a>
+      </article>
+      <article data-fx="up" data-fx-delay="180" style="position:relative;display:flex;flex-direction:column;gap:16px;padding:32px;border:1px solid rgba(233,222,203,.12);border-radius:14px;background:#241C18;transition:transform 420ms,border-color 420ms" style-hover="transform:translateY(-6px);border-color:rgba(233,222,203,.24)">
+        <h3 style="font-family:Fraunces,Georgia,serif;font-size:26px">Sur-mesure</h3>
+        <p style="font-size:13px;color:rgba(244,237,226,.62)">Vos mesures, votre cuir, votre fil, vos initiales.</p>
+        <div style="font-family:Fraunces,Georgia,serif;font-size:34px;color:#D9B87A;line-height:1.1">dès 148 000 F<small style="display:block;font-family:Inter,sans-serif;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:rgba(244,237,226,.52);margin-top:4px">14 à 20 jours de production</small></div>
+        <ul style="list-style:none;margin:8px 0 auto;padding:16px 0 0;border-top:1px solid rgba(233,222,203,.12);display:flex;flex-direction:column;gap:12px">
+          <li style="display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;font-size:13px;color:rgba(244,237,226,.62)"><svg style="width:15px;height:15px;color:#C9A46A;margin-top:5px;flex:none" aria-hidden="true"><use href="#i-check"></use></svg>Prise de mesures guidée, chez vous</li>
+          <li style="display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;font-size:13px;color:rgba(244,237,226,.62)"><svg style="width:15px;height:15px;color:#C9A46A;margin-top:5px;flex:none" aria-hidden="true"><use href="#i-check"></use></svg>Cuir, doublure, semelle et fil au choix</li>
+          <li style="display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;font-size:13px;color:rgba(244,237,226,.62)"><svg style="width:15px;height:15px;color:#C9A46A;margin-top:5px;flex:none" aria-hidden="true"><use href="#i-check"></use></svg>Initiales gravées à chaud</li>
+          <li style="display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;font-size:13px;color:rgba(244,237,226,.62)"><svg style="width:15px;height:15px;color:#C9A46A;margin-top:5px;flex:none" aria-hidden="true"><use href="#i-check"></use></svg>1 retouche gratuite après essayage</li>
+          <li style="display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;font-size:13px;color:rgba(244,237,226,.62)"><svg style="width:15px;height:15px;color:#C9A46A;margin-top:5px;flex:none" aria-hidden="true"><use href="#i-check"></use></svg>Vous payez à la commande ou à la livraison</li>
+        </ul>
+        <a href="Configurateur-v2.dc.html" style="display:flex;align-items:center;justify-content:center;margin-top:8px;padding:15px 28px;background:transparent;color:#F4EDE2;border:1px solid rgba(233,222,203,.24);border-radius:999px;font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;transition:border-color 300ms,color 300ms" style-hover="border-color:#C9A46A;color:#D9B87A">Configurer ma paire</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="garantie" data-screen-label="Garantie" style="background:#1C1613;padding:clamp(72px,9vw,136px) 0">
+  <div style="max-width:1320px;margin:0 auto;padding:0 clamp(20px,4vw,48px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:clamp(40px,6vw,88px);align-items:center">
+    <div data-fx="left" aria-label="Exemple de carte d'authenticité" style="position:relative;aspect-ratio:1.6/1;padding:32px;box-sizing:border-box;border-radius:14px;background:linear-gradient(140deg,#2E2420 0%,#14100D 100%);border:1px solid rgba(201,164,106,.35);box-shadow:0 30px 70px -28px rgba(0,0,0,.75);display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;transform:rotate(-2deg);transition:transform 700ms cubic-bezier(.16,1,.3,1)" style-hover="transform:rotate(0deg) translateY(-6px)">
+      <span aria-hidden="true" style="position:absolute;inset:12px;border:1px dashed rgba(201,164,106,.4);border-radius:8px;pointer-events:none"></span>
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;position:relative">
+        <svg style="width:34px;height:34px;color:#D9B87A" aria-hidden="true"><use href="#i-logo"></use></svg>
+        <span style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(244,237,226,.52)">Carte d'authenticité</span>
+      </div>
+      <div style="position:relative">
+        <span style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(244,237,226,.52)">Pièce numéro</span>
+        <div style="font-family:Fraunces,Georgia,serif;font-size:clamp(1.6rem,3.4vw,2.4rem);color:#D9B87A;letter-spacing:.04em">N° 0142 / 250</div>
+      </div>
+      <div style="position:relative;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;font-size:12px;color:rgba(244,237,226,.62)">
+        <span>Derby Cotonou — cognac<br>Atelier Yem's · Cotonou</span>
+        <span style="text-align:right">Façonné le<br>12.03.2026</span>
+      </div>
+    </div>
+    <div data-fx="up" data-fx-delay="120">
+      <span style="display:inline-flex;align-items:center;gap:12px;font-size:12px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:#D9B87A"><span style="width:28px;height:1px;background:currentColor;opacity:.6"></span>L'engagement</span>
+      <h2 data-lines="true" style="font-family:Fraunces,Georgia,serif;font-size:clamp(2.3rem,4.6vw,4rem);line-height:1.05;letter-spacing:-.015em;margin-top:16px">Le risque est de<br>notre côté, pas du vôtre.</h2>
+      <p style="font-size:17px;color:rgba(244,237,226,.62);max-width:54ch;margin-top:16px">
+        Commander une paire qu'on n'a jamais essayée, à un atelier qu'on ne connaît pas encore,
+        ça se paie d'avance en confiance. Alors nous prenons ce risque à votre place.
+      </p>
+      <ul style="list-style:none;margin:24px 0 0;padding:0;display:flex;flex-direction:column;gap:16px">
+        <li style="display:grid;grid-template-columns:auto minmax(0,1fr);gap:16px;align-items:start">
+          <svg style="width:20px;height:20px;color:#C9A46A;margin-top:3px;flex:none" aria-hidden="true"><use href="#i-needle"></use></svg>
+          <div>
+            <strong style="display:block;font-weight:600;margin-bottom:2px">Une retouche gratuite</strong>
+            <p style="font-size:13px;color:rgba(244,237,226,.62)">Vous essayez, vous marchez avec, vous nous dites ce qui gêne. On reprend le montage sans supplément.</p>
+          </div>
+        </li>
+        <li style="display:grid;grid-template-columns:auto minmax(0,1fr);gap:16px;align-items:start">
+          <svg style="width:20px;height:20px;color:#C9A46A;margin-top:3px;flex:none" aria-hidden="true"><use href="#i-shield"></use></svg>
+          <div>
+            <strong style="display:block;font-weight:600;margin-bottom:2px">Remboursement intégral</strong>
+            <p style="font-size:13px;color:rgba(244,237,226,.62)">Si la retouche ne suffit pas, vous récupérez la totalité de votre argent. Pas 80 %, pas un avoir : la totalité.</p>
+          </div>
+        </li>
+        <li style="display:grid;grid-template-columns:auto minmax(0,1fr);gap:16px;align-items:start">
+          <svg style="width:20px;height:20px;color:#C9A46A;margin-top:3px;flex:none" aria-hidden="true"><use href="#i-card"></use></svg>
+          <div>
+            <strong style="display:block;font-weight:600;margin-bottom:2px">Carte numérotée par pièce</strong>
+            <p style="font-size:13px;color:rgba(244,237,226,.62)">Numéro, modèle, cuir, date de façonnage. C'est ce papier qui nous permet de refaire exactement la même dans trois ans.</p>
+          </div>
+        </li>
+        <li style="display:grid;grid-template-columns:auto minmax(0,1fr);gap:16px;align-items:start">
+          <svg style="width:20px;height:20px;color:#C9A46A;margin-top:3px;flex:none" aria-hidden="true"><use href="#i-truck"></use></svg>
+          <div>
+            <strong style="display:block;font-weight:600;margin-bottom:2px">Livraison sous-région</strong>
+            <p style="font-size:13px;color:rgba(244,237,226,.62)">Cotonou et Abidjan en 48 à 72 h. Autres villes du Bénin et de Côte d'Ivoire sous 5 jours.</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="questions" data-screen-label="Questions" style="background:#14100D;padding:clamp(72px,9vw,136px) 0">
+  <div style="max-width:1320px;margin:0 auto;padding:0 clamp(20px,4vw,48px)">
+    <div data-fx="up" style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:16px;margin-bottom:clamp(40px,5vw,64px)">
+      <span style="display:inline-flex;align-items:center;gap:12px;font-size:12px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:#D9B87A"><span style="width:28px;height:1px;background:currentColor;opacity:.6"></span>Ce qu'on nous demande avant de commander<span style="width:28px;height:1px;background:currentColor;opacity:.6"></span></span>
+      <h2 style="font-family:Fraunces,Georgia,serif;font-size:clamp(2.3rem,4.6vw,4rem);line-height:1.05;letter-spacing:-.015em">Les quatre vraies questions</h2>
+    </div>
+    <div data-fx="up" data-fx-delay="100" style="display:grid;gap:12px;max-width:860px;margin:0 auto">
+      <details style="border:1px solid rgba(233,222,203,.12);border-radius:14px;background:#241C18;overflow:hidden">
+        <summary style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:24px;cursor:pointer;font-family:Fraunces,Georgia,serif;font-size:17px">
+          148 000 F pour des chaussures, c'est cher.
+          <span data-caret="true" aria-hidden="true" style="width:11px;height:11px;flex:none;border-right:1.5px solid #C9A46A;border-bottom:1.5px solid #C9A46A;transform:rotate(45deg) translateY(-2px);transition:transform 380ms"></span>
+        </summary>
+        <div style="padding:0 24px 24px;font-size:13px;color:rgba(244,237,226,.62);max-width:62ch">
+          <p>Comparé à une paire à 45 000 F, oui. Comparé à cinq ans, non.</p>
+          <p style="margin-top:12px">Une paire à 45 000 F remplacée chaque année, c'est <strong style="color:#F4EDE2">225 000 F sur cinq ans</strong>, et quatre fois le désagrément de repartir en chercher une. Une paire cousue ressemelée deux fois, c'est <strong style="color:#F4EDE2">environ 162 000 F sur la même période</strong> — et vous avez porté la bonne pendant cinq ans.</p>
+          <p style="margin-top:12px">La question n'est pas le prix de la paire. C'est le prix de l'année.</p>
+        </div>
+      </details>
+      <details style="border:1px solid rgba(233,222,203,.12);border-radius:14px;background:#241C18;overflow:hidden">
+        <summary style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:24px;cursor:pointer;font-family:Fraunces,Georgia,serif;font-size:17px">
+          Vingt jours, c'est long.
+          <span data-caret="true" aria-hidden="true" style="width:11px;height:11px;flex:none;border-right:1.5px solid #C9A46A;border-bottom:1.5px solid #C9A46A;transform:rotate(45deg) translateY(-2px);transition:transform 380ms"></span>
+        </summary>
+        <div style="padding:0 24px 24px;font-size:13px;color:rgba(244,237,226,.62);max-width:62ch">
+          <p>C'est le temps qu'il faut au cuir pour prendre la forme du montage. On peut aller plus vite : ça ne se voit pas à la livraison, ça se voit au bout de six mois, quand la tige se déforme.</p>
+          <p style="margin-top:12px">Si vous avez une date — un mariage, une cérémonie — dites-la dès la configuration. L'atelier vous confirme si c'est tenable <strong style="color:#F4EDE2">avant</strong> que vous payiez quoi que ce soit.</p>
+        </div>
+      </details>
+      <details style="border:1px solid rgba(233,222,203,.12);border-radius:14px;background:#241C18;overflow:hidden">
+        <summary style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:24px;cursor:pointer;font-family:Fraunces,Georgia,serif;font-size:17px">
+          Et si, à la livraison, ça ne me va pas ?
+          <span data-caret="true" aria-hidden="true" style="width:11px;height:11px;flex:none;border-right:1.5px solid #C9A46A;border-bottom:1.5px solid #C9A46A;transform:rotate(45deg) translateY(-2px);transition:transform 380ms"></span>
+        </summary>
+        <div style="padding:0 24px 24px;font-size:13px;color:rgba(244,237,226,.62);max-width:62ch">
+          <p>Une retouche gratuite d'abord : on reprend le montage sur vos remarques. Si ça ne suffit toujours pas, <strong style="color:#F4EDE2">remboursement intégral</strong>.</p>
+          <p style="margin-top:12px">Le sur-mesure ne marche que si vous pouvez dire non à l'arrivée. Sinon ce n'est plus du sur-mesure, c'est un pari.</p>
+        </div>
+      </details>
+      <details style="border:1px solid rgba(233,222,203,.12);border-radius:14px;background:#241C18;overflow:hidden">
+        <summary style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:24px;cursor:pointer;font-family:Fraunces,Georgia,serif;font-size:17px">
+          Je dois payer avant d'avoir vu la paire ?
+          <span data-caret="true" aria-hidden="true" style="width:11px;height:11px;flex:none;border-right:1.5px solid #C9A46A;border-bottom:1.5px solid #C9A46A;transform:rotate(45deg) translateY(-2px);transition:transform 380ms"></span>
+        </summary>
+        <div style="padding:0 24px 24px;font-size:13px;color:rgba(244,237,226,.62);max-width:62ch">
+          <p>Non. Vous configurez, la facture s'affiche à l'écran, l'atelier confirme sur WhatsApp — et <strong style="color:#F4EDE2">vous choisissez</strong> : payer maintenant par Mobile Money, ou payer à la livraison.</p>
+          <p style="margin-top:12px">MTN MoMo, Moov, Wave et carte bancaire, encaissés par KkiaPay. Aucun numéro de carte ne passe par nous.</p>
+        </div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<div data-seam="true" aria-hidden="true" style="position:relative;height:clamp(90px,12vw,190px);width:100%;pointer-events:none;overflow:hidden">
+  <svg viewBox="0 0 1440 160" preserveAspectRatio="none" style="width:100%;height:100%;display:block">
+    <defs>
+      <mask id="v2-seam-c">
+        <path data-seam-reveal="true" pathLength="1" d="M0 132 C 240 40, 520 40, 720 84 S 1200 128, 1440 36" fill="none" stroke="#fff" stroke-width="30" stroke-dasharray="1" stroke-dashoffset="1" vector-effect="non-scaling-stroke"></path>
+      </mask>
+    </defs>
+    <path mask="url(#v2-seam-c)" d="M0 132 C 240 40, 520 40, 720 84 S 1200 128, 1440 36" fill="none" stroke="#B08D57" stroke-width="2" stroke-dasharray="13 10" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+  </svg>
+</div>
+
+<section id="temoignages" data-screen-label="Témoignages" style="background:#F4EDE2;color:#1C1613;padding:clamp(72px,9vw,136px) 0">
+  <div style="max-width:820px;margin:0 auto;padding:0 clamp(20px,4vw,48px)">
+    <div data-fx="up" style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:16px;margin-bottom:clamp(32px,4vw,48px)">
+      <span style="display:inline-flex;align-items:center;gap:12px;font-size:12px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:#7A5E33"><span style="width:28px;height:1px;background:currentColor;opacity:.6"></span>Ils portent Yem's<span style="width:28px;height:1px;background:currentColor;opacity:.6"></span></span>
+    </div>
+    <div data-fx="up" data-fx-delay="100" style="overflow:hidden">
+      <div data-tst-track="true" data-tst-auto="{{ tstAuto }}" style="display:flex;transition:transform 750ms cubic-bezier(.16,1,.3,1)">
+        <div data-tst-slide="true" style="flex:0 0 100%;padding:0 8px;box-sizing:border-box">
+          <div aria-label="5 sur 5" style="display:flex;justify-content:center;gap:4px;margin-bottom:24px;color:#B08D57">
+            <svg style="width:15px;height:15px" aria-hidden="true"><use href="#i-star"></use></svg><svg style="width:15px;height:15px" aria-hidden="true"><use href="#i-star"></use></svg><svg style="width:15px;height:15px" aria-hidden="true"><use href="#i-star"></use></svg><svg style="width:15px;height:15px" aria-hidden="true"><use href="#i-star"></use></svg><svg style="width:15px;height:15px" aria-hidden="true"><use href="#i-star"></use></svg>
+          </div>
+          <blockquote style="margin:0 auto;font-family:Fraunces,Georgia,serif;font-size:clamp(1.25rem,2.6vw,1.9rem);line-height:1.44;max-width:26ch;text-align:center">
+            « J'ai commandé le derby sur-mesure. Dix-sept jours, et le chaussant était exact du premier coup. »
+          </blockquote>
+          <div style="margin-top:24px;text-align:center;font-size:13px;color:rgba(28,22,19,.66)"><strong style="display:block;font-weight:600;color:#1C1613">Prénom Nom</strong>Cotonou, Bénin</div>
+        </div>
+        <div data-tst-slide="true" style="flex:0 0 100%;padding:0 8px;box-sizing:border-box">
+          <div aria-label="5 sur 5" style="display:flex;justify-content:center;gap:4px;margin-bottom:24px;color:#B08D57">
+            <svg style="width:15px;height:15px" aria-hidden="true"><use href="#i-star"></use></svg><svg style="width:15px;height:15px" aria-hidden="true"><use href="#i-star"></use></svg><svg style="width:15px;height:15px" aria-hidden="true"><use href="#i-star"></use></svg><svg style="width:15px;height:15px" aria-hidden="true"><use href="#i-star"></use></svg><svg style="width:15px;height:15px" aria-hidden="true"><use href="#i-star"></use></svg>
+          </div>
+          <blockquote style="margin:0 auto;font-family:Fraunces,Georgia,serif;font-size:clamp(1.25rem,2.6vw,1.9rem);line-height:1.44;max-width:26ch;text-align:center">
+            « La ceinture assortie au soulier, même cuir, même fil. C'est là qu'on voit le travail. »
+          </blockquote>
+          <div style="margin-top:24px;text-align:center;font-size:13px;color:rgba(28,22,19,.66)"><strong style="display:block;font-weight:600;color:#1C1613">Prénom Nom</strong>Abidjan, Côte d'Ivoire</div>
+        </div>
+        <div data-tst-slide="true" style="flex:0 0 100%;padding:0 8px;box-sizing:border-box">
+          <div aria-label="5 sur 5" style="display:flex;justify-content:center;gap:4px;margin-bottom:24px;color:#B08D57">
+            <svg style="width:15px;height:15px" aria-hidden="true"><use href="#i-star"></use></svg><svg style="width:15px;height:15px" aria-hidden="true"><use href="#i-star"></use></svg><svg style="width:15px;height:15px" aria-hidden="true"><use href="#i-star"></use></svg><svg style="width:15px;height:15px" aria-hidden="true"><use href="#i-star"></use></svg><svg style="width:15px;height:15px" aria-hidden="true"><use href="#i-star"></use></svg>
+          </div>
+          <blockquote style="margin:0 auto;font-family:Fraunces,Georgia,serif;font-size:clamp(1.25rem,2.6vw,1.9rem);line-height:1.44;max-width:26ch;text-align:center">
+            « Paiement Mobile Money, confirmation WhatsApp dans la minute. Rien à redire sur le suivi. »
+          </blockquote>
+          <div style="margin-top:24px;text-align:center;font-size:13px;color:rgba(28,22,19,.66)"><strong style="display:block;font-weight:600;color:#1C1613">Prénom Nom</strong>Porto-Novo, Bénin</div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:center;gap:16px;margin-top:40px">
+      <button data-tst-prev="true" type="button" aria-label="Témoignage précédent" style="display:grid;place-items:center;width:42px;height:42px;background:none;border:1px solid rgba(28,22,19,.22);border-radius:50%;color:#1C1613;cursor:pointer;transition:background-color 300ms,color 300ms" style-hover="background:#1C1613;color:#F4EDE2">
+        <svg style="width:16px;height:16px" aria-hidden="true"><use href="#i-arrow-left"></use></svg>
+      </button>
+      <div data-tst-dots="true" style="display:flex;gap:8px"></div>
+      <button data-tst-next="true" type="button" aria-label="Témoignage suivant" style="display:grid;place-items:center;width:42px;height:42px;background:none;border:1px solid rgba(28,22,19,.22);border-radius:50%;color:#1C1613;cursor:pointer;transition:background-color 300ms,color 300ms" style-hover="background:#1C1613;color:#F4EDE2">
+        <svg style="width:16px;height:16px" aria-hidden="true"><use href="#i-arrow"></use></svg>
+      </button>
+    </div>
+  </div>
+</section>
+
+<section id="contact" data-screen-label="CTA final" style="position:relative;text-align:center;overflow:hidden;padding:clamp(72px,9vw,136px) 0;background:radial-gradient(70% 100% at 50% 0%,rgba(176,141,87,.22) 0%,transparent 62%),#14100D">
+  <div aria-hidden="true" style="position:absolute;inset:0;pointer-events:none;opacity:.35;mix-blend-mode:overlay;background-image:url(data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%27140%27%20height=%27140%27%3E%3Cfilter%20id=%27n2%27%3E%3CfeTurbulence%20type=%27fractalNoise%27%20baseFrequency=%270.85%27%20numOctaves=%273%27/%3E%3C/filter%3E%3Crect%20width=%27140%27%20height=%27140%27%20filter=%27url(%23n2)%27%20opacity=%270.5%27/%3E%3C/svg%3E)"></div>
+  <div style="max-width:1320px;margin:0 auto;padding:0 clamp(20px,4vw,48px);position:relative">
+    <span data-fx="up" style="display:inline-flex;align-items:center;gap:12px;font-size:12px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:#D9B87A"><span style="width:28px;height:1px;background:currentColor;opacity:.6"></span>La suite<span style="width:28px;height:1px;background:currentColor;opacity:.6"></span></span>
+    <h2 data-lines="true" style="font-family:Fraunces,Georgia,serif;font-size:clamp(2.3rem,4.6vw,4rem);line-height:1.05;letter-spacing:-.015em;max-width:18ch;margin:16px auto 0">
+      Deux minutes pour composer.<br><em style="font-style:italic;color:#D9B87A">Vingt jours</em> pour la porter.
+    </h2>
+    <p data-fx="up" style="font-size:17px;color:rgba(244,237,226,.62);max-width:54ch;margin:24px auto 0">
+      Vous ne payez rien pour configurer, rien pour recevoir le chiffrage, rien tant que
+      l'atelier n'a pas confirmé la date. Commencez par voir ce que ça donne.
+    </p>
+    <div data-fx="up" style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:32px">
+      <a href="Configurateur-v2.dc.html" data-mag="true" style="display:inline-flex;align-items:center;gap:12px;padding:15px 28px;background:#C9A46A;color:#14100D;border:1px solid #C9A46A;border-radius:999px;font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;transition:background-color 300ms,border-color 300ms" style-hover="background:#D9B87A;border-color:#D9B87A">
+        Configurer ma paire
+        <svg style="width:15px;height:15px;flex:none" aria-hidden="true"><use href="#i-arrow"></use></svg>
+      </a>
+      <a href="https://wa.me/22900000000?text=Bonjour%20Yem's%2C%20je%20souhaite%20des%20informations." target="_blank" rel="noopener" data-mag="true" style="display:inline-flex;align-items:center;gap:12px;padding:15px 28px;background:transparent;color:#F4EDE2;border:1px solid rgba(233,222,203,.24);border-radius:999px;font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;transition:border-color 300ms,color 300ms" style-hover="border-color:#C9A46A;color:#D9B87A">
+        <svg style="width:15px;height:15px;flex:none" aria-hidden="true"><use href="#i-whatsapp"></use></svg>
+        Écrire sur WhatsApp
+      </a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer data-screen-label="Footer" style="background:#1C1613;border-top:1px solid rgba(233,222,203,.12);padding:64px 0 24px">
+  <div style="max-width:1320px;margin:0 auto;padding:0 clamp(20px,4vw,48px)">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:48px 32px;padding-bottom:48px">
+      <div>
+        <a href="Accueil-v2.dc.html" style="display:inline-flex;align-items:center;gap:12px;color:#F4EDE2">
+          <svg style="width:34px;height:34px;flex:none" aria-hidden="true"><use href="#i-logo"></use></svg>
+          <span>
+            <span style="display:block;font-family:Fraunces,Georgia,serif;font-size:21px;letter-spacing:.06em;line-height:1">YEM'S</span>
+            <span style="display:block;font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:rgba(244,237,226,.52);margin-top:3px">Différents par les détails</span>
+          </span>
+        </a>
+        <p style="font-size:13px;color:rgba(244,237,226,.62);margin-top:16px;max-width:34ch">
+          Souliers et maroquinerie façonnés à la main pour le Bénin et la Côte d'Ivoire.
+        </p>
+        <form style="display:flex;gap:8px;margin-top:16px;max-width:340px">
+          <label for="nl" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Votre adresse e-mail</label>
+          <input id="nl" type="email" placeholder="Votre e-mail" style="flex:1;min-width:0;padding:12px 16px;background:rgba(233,222,203,.05);border:1px solid rgba(233,222,203,.12);border-radius:999px;font-size:13px;color:#F4EDE2;outline:none" style-focus="border-color:#C9A46A">
+          <button type="button" style="display:inline-flex;align-items:center;padding:11px 20px;background:#C9A46A;color:#14100D;border:1px solid #C9A46A;border-radius:999px;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:background-color 300ms" style-hover="background:#D9B87A">S'inscrire</button>
+        </form>
+      </div>
+      <div>
+        <h4 style="font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#D9B87A;margin-bottom:16px">Boutique</h4>
+        <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px">
+          <li><a href="#collections" style="font-size:13px;color:rgba(244,237,226,.62);transition:color 300ms" style-hover="color:#D9B87A">Chaussures</a></li>
+          <li><a href="Produit-v2.dc.html" style="font-size:13px;color:rgba(244,237,226,.62);transition:color 300ms" style-hover="color:#D9B87A">Ceintures</a></li>
+          <li><a href="Produit-v2.dc.html" style="font-size:13px;color:rgba(244,237,226,.62);transition:color 300ms" style-hover="color:#D9B87A">Portefeuilles</a></li>
+          <li><a href="Configurateur-v2.dc.html" style="font-size:13px;color:rgba(244,237,226,.62);transition:color 300ms" style-hover="color:#D9B87A">Sur-mesure</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 style="font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#D9B87A;margin-bottom:16px">La maison</h4>
+        <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px">
+          <li><a href="#manifeste" style="font-size:13px;color:rgba(244,237,226,.62);transition:color 300ms" style-hover="color:#D9B87A">Notre savoir-faire</a></li>
+          <li><a href="#garantie" style="font-size:13px;color:rgba(244,237,226,.62);transition:color 300ms" style-hover="color:#D9B87A">Garantie satisfaction</a></li>
+          <li><a href="#offres" style="font-size:13px;color:rgba(244,237,226,.62);transition:color 300ms" style-hover="color:#D9B87A">Nos offres</a></li>
+          <li><a href="#questions" style="font-size:13px;color:rgba(244,237,226,.62);transition:color 300ms" style-hover="color:#D9B87A">Questions fréquentes</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 style="font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#D9B87A;margin-bottom:16px">Contact</h4>
+        <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px;font-size:13px;color:rgba(244,237,226,.62)">
+          <li>Cotonou, Bénin</li>
+          <li>Abidjan, Côte d'Ivoire</li>
+          <li><a href="https://wa.me/22900000000" target="_blank" rel="noopener" style="font-size:13px;color:rgba(244,237,226,.62);transition:color 300ms" style-hover="color:#D9B87A">WhatsApp atelier</a></li>
+          <li><a href="mailto:contact@yems.example" style="font-size:13px;color:rgba(244,237,226,.62);transition:color 300ms" style-hover="color:#D9B87A">contact@yems.example</a></li>
+        </ul>
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:24px">
+          <span style="padding:5px 10px;border:1px solid rgba(233,222,203,.12);border-radius:3px;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:rgba(244,237,226,.62)">MTN MoMo</span>
+          <span style="padding:5px 10px;border:1px solid rgba(233,222,203,.12);border-radius:3px;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:rgba(244,237,226,.62)">Moov</span>
+          <span style="padding:5px 10px;border:1px solid rgba(233,222,203,.12);border-radius:3px;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:rgba(244,237,226,.62)">Wave</span>
+          <span style="padding:5px 10px;border:1px solid rgba(233,222,203,.12);border-radius:3px;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:rgba(244,237,226,.62)">Visa</span>
+          <span style="padding:5px 10px;border:1px solid rgba(233,222,203,.12);border-radius:3px;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:rgba(244,237,226,.62)">KkiaPay</span>
+        </div>
+      </div>
+    </div>
+    <div aria-hidden="true" style="height:1.5px;width:100%;background-image:repeating-linear-gradient(to right,#B08D57 0,#B08D57 11px,transparent 11px,transparent 20px);opacity:.55"></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding-top:24px;font-size:12px;color:rgba(244,237,226,.52)">
+      <span>© 2026 Yem's. Tous droits réservés.</span>
+      <span>Paiements sécurisés par KkiaPay · Mobile Money, Wave &amp; carte bancaire</span>
+    </div>
+  </div>
+</footer>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;intro&quot;: {&quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Animations&quot;}, &quot;autoplay&quot;: {&quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Témoignages&quot;}}">
+class Component extends DCLogic {
+  componentDidMount() {
+    const s = document.createElement('script');
+    s.src = 'fx.js';
+    s.onload = () => window.YemsFX && window.YemsFX.init();
+    document.body.appendChild(s);
+  }
+  renderVals() {
+    return {
+      showIntro: this.props.intro ?? true,
+      tstAuto: (this.props.autoplay ?? true) ? '1' : '0',
+    };
+  }
+}
+</script>
+</body>
+</html>

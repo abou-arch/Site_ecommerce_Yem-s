@@ -25,6 +25,7 @@
 <link rel="stylesheet" href="assets/css/shop.css">
 <link rel="stylesheet" href="assets/css/motion.css">
 
+
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2314100D'/%3E%3Cpath d='M8 9l8 8 8-8M16 17v7' stroke='%23C9A46A' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Yem's","slogan":"Différents par les détails","areaServed":["Cotonou, Bénin","Abidjan, Côte d'Ivoire"]}</script>
 </head>
@@ -89,9 +90,8 @@
 
     <nav class="nav" aria-label="Navigation principale">
       <a class="nav__link" href="chaussures.html">Chaussures</a>
-      <a class="nav__link" href="ceintures.html">Ceintures</a>
-      <a class="nav__link" href="portefeuilles.html">Portefeuilles</a>
-      <a class="nav__link" href="entretien.html">Entretien</a>
+      <a class="nav__link" href="#manifeste">Savoir-faire</a>
+      <a class="nav__link" href="#garantie">Garantie</a>
     </nav>
 
     <div class="header__actions">
@@ -109,9 +109,8 @@
 
 <div class="mobile-menu" id="mobile-menu">
   <a href="chaussures.html">Chaussures</a>
-  <a href="ceintures.html">Ceintures</a>
-  <a href="portefeuilles.html">Portefeuilles</a>
-  <a href="entretien.html">Entretien</a>
+  <a href="#manifeste">Savoir-faire</a>
+  <a href="#garantie">Garantie</a>
   <a class="btn" href="configurateur.html" style="margin-top:auto">Configurer ma paire</a>
 </div>
 
@@ -122,11 +121,15 @@
      HERO
      ═══════════════════════════════════════════════════════════════ -->
 <section class="hero grain">
-  <!-- TODO client : remplacer ce dégradé par la vidéo hero
-       <video autoplay muted loop playsinline poster="assets/img/hero-poster.jpg">
-         <source src="assets/video/hero.mp4" type="video/mp4">
-       </video> -->
-  <div class="hero__media" aria-hidden="true"></div>
+  <!-- Le dégradé de .hero__media reste en fond : si la vidéo ne charge pas, ou si
+       le navigateur refuse l'autoplay, la section reste présentable telle quelle. -->
+  <div class="hero__media" aria-hidden="true">
+    <video autoplay muted loop playsinline preload="metadata"
+           poster="assets/img/hero-poster.jpg">
+      <source src="assets/video/hero.webm" type="video/webm">
+      <source src="assets/video/hero.mp4" type="video/mp4">
+    </video>
+  </div>
 
   <svg class="hero__stitching" aria-hidden="true" preserveAspectRatio="none" viewBox="0 0 1440 900">
     <path d="M-40 640 C 320 520, 560 700, 900 560 S 1340 420, 1520 470"
@@ -890,5 +893,6 @@
 
 <script src="assets/js/main.js" defer></script>
 <script src="assets/js/motion.js" defer></script>
+
 </body>
 </html>

@@ -61,8 +61,8 @@
   --fs-lg:   1.25rem;    /* 20 */
   --fs-xl:   1.625rem;   /* 26 */
   --fs-2xl:  2.125rem;   /* 34 */
-  --fs-3xl:  clamp(2.25rem, 4.2vw, 3.5rem);
-  --fs-4xl:  clamp(2.75rem, 6.5vw, 5.25rem);
+  --fs-3xl:  clamp(2.3rem, 4.6vw, 4rem);
+  --fs-4xl:  clamp(2.9rem, 6.8vw, 6.4rem);
 
   --lh-tight: 1.08;
   --lh-snug:  1.28;
@@ -86,7 +86,7 @@
   --section-y: clamp(4.5rem, 9vw, 8.5rem);
 
   /* — Layout — */
-  --container: 1240px;
+  --container: 1320px;
   --container-narrow: 820px;
   --gutter: clamp(1.25rem, 4vw, 3rem);
 
@@ -273,20 +273,15 @@ p { text-wrap: pretty; }
 }
 
 .grid { display: grid; gap: var(--sp-5); }
-.grid--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-.grid--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-.grid--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+/* auto-fit : les colonnes se replient d'elles-mêmes, sans point de rupture à
+   maintenir. min(100%, Xpx) évite le débordement sur très petit écran. */
+.grid--2 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr)); }
+.grid--3 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); }
+.grid--4 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); }
 
 @media (max-width: 960px) {
-  .grid--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .grid--3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .section-head--split { flex-direction: column; align-items: flex-start; }
-}
-
-@media (max-width: 640px) {
-  .grid--2,
-  .grid--3,
-  .grid--4 { grid-template-columns: minmax(0, 1fr); }
 }
 
 /* --------------------------------------------------------------------------

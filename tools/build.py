@@ -27,10 +27,12 @@ DATA = os.path.join(ROOT, "data", "products.json")
 TPL = os.path.join(ROOT, "templates")
 OUT_PRODUCTS = os.path.join(ROOT, "produit")
 
+# Libellé court pour les vignettes, libellé explicite pour la fiche produit :
+# « En route » ne dit rien à l'acheteur, « arrivage sous 10 jours » si.
 STATUS = {
-    "green": ("badge--green", "Au Bénin"),
-    "amber": ("badge--amber", "En route"),
-    "red":   ("badge--red",   "Indisponible"),
+    "green": ("badge--green", "Au Bénin",     "En stock à Cotonou — expédié sous 72 h"),
+    "amber": ("badge--amber", "En route",     "En route — arrivage sous 10 jours"),
+    "red":   ("badge--red",   "Indisponible", "Sur commande uniquement"),
 }
 
 
@@ -62,10 +64,10 @@ def price(value):
     return "{:,}".format(int(value)).replace(",", " ") + " F"
 
 
-def badge(status, extra=""):
-    cls, label = STATUS[status]
+def badge(status, extra="", long=False):
+    cls, short, detailed = STATUS[status]
     return ('<span class="badge %s %s"><span class="badge__dot"></span>%s</span>'
-            % (cls, extra, label))
+            % (cls, extra, detailed if long else short))
 
 
 # ─────────────────────────────────────────────────────────── composants
@@ -124,16 +126,27 @@ def grid(products, base, klass="collections__grid", level=3):
     return '    <div class="%s">\n%s\n    </div>' % (klass, "\n\n".join(cards))
 
 
-def nav_links(categories, base, current=None, mobile=False):
+def nav_links(entries, base, home, current=None, mobile=False):
+    """
+    Construit la navigation depuis site.nav.
+    Une entrée dont le href commence par « # » est une ancre de la homepage :
+    elle doit être préfixée par le chemin vers index.html depuis la page courante.
+    """
     out = []
-    for c in categories:
-        aria = ' aria-current="page"' if c["slug"] == current else ""
-        href = "%s%s.html" % (base, c["slug"])
+    for e in entries:
+        href = e["href"]
+        if href.startswith("#"):
+            href = home + href
+            active = False
+        else:
+            href = base + href
+            active = href.endswith("%s.html" % current) if current else False
+        aria = ' aria-current="page"' if active else ""
         if mobile:
-            out.append('  <a href="%s"%s>%s</a>' % (href, aria, c["nav"]))
+            out.append('  <a href="%s"%s>%s</a>' % (href, aria, e["label"]))
         else:
             out.append('      <a class="nav__link" href="%s"%s>%s</a>'
-                       % (href, aria, c["nav"]))
+                       % (href, aria, e["label"]))
     return "\n".join(out)
 
 
@@ -173,11 +186,12 @@ class Builder:
 
     def chrome(self, base, home, current):
         """Header et footer, résolus pour la profondeur de la page."""
+        nav = self.site["nav"]
         header = fill(
             self.header_tpl,
             base=base,
-            nav=nav_links(self.categories, base, current),
-            nav_mobile=nav_links(self.categories, base, current, mobile=True),
+            nav=nav_links(nav, base, home, current),
+            nav_mobile=nav_links(nav, base, home, current, mobile=True),
         )
         footer_cats = "\n".join(
             '          <li><a href="%s%s.html">%s</a></li>' % (base, c["slug"], c["name"])
@@ -194,7 +208,8 @@ class Builder:
 
     def page(self, path, *, content, title, description,
              og_title=None, og_type="website", og_image=None,
-             current=None, depth=0, structured=None):
+             current=None, depth=0, structured=None,
+             extra_css=(), extra_js=()):
         base = "../" * depth
         home = "%sindex.html" % base if path != "index.html" else ""
         header, footer = self.chrome(base, home, current)
@@ -211,6 +226,12 @@ class Builder:
                       % (base, og_image)) if og_image else "",
             structured_data=json_ld(structured) if structured else "",
             base=base,
+            extra_css="\n".join(
+                '<link rel="stylesheet" href="%sassets/css/%s.css">' % (base, f)
+                for f in extra_css),
+            extra_js="\n".join(
+                '<script src="%sassets/js/%s.js" defer></script>' % (base, f)
+                for f in extra_js),
             svg_defs=self.svg_defs,
             header=header,
             footer=footer,
@@ -336,6 +357,7 @@ class Builder:
           <div class="picker__row">
 {buttons}
           </div>
+          <p class="picker__help">Entre deux&nbsp;? Prenez la plus grande — l'atelier ajuste au montage.</p>
         </div>"""
 
         # couleurs
@@ -351,28 +373,40 @@ class Builder:
           <div class="picker__row">
 {swatches}
           </div>
+          <p class="picker__help" data-color-label>Choisissez une teinte</p>
         </div>"""
 
         specs = "\n".join(
             '          <div class="spec-row"><dt>%s</dt><dd>%s</dd></div>'
             % (escape(s["label"]), s["value"]) for s in product["specs"])
 
-        details = ""
+        # Blocs dépliables : la construction propre au modèle, puis
+        # l'entretien et la livraison, communs à toute la boutique.
+        panels = []
         if product.get("details"):
-            blocks = "\n".join(f"""      <div class="card" data-reveal style="--reveal-delay:{i*90}ms">
-        <span class="card__num">0{i+1}</span>
-        <h3>{escape(d['title'])}</h3>
-        <p>{d['text']}</p>
-      </div>""" for i, d in enumerate(product["details"]))
+            body = "".join(
+                "<p><strong>%s</strong> — %s</p>" % (escape(d["title"]), d["text"])
+                for d in product["details"])
+            panels.append(("La construction", body))
+        for acc in self.site.get("accordions", []):
+            panels.append((acc["title"], "<p>%s</p>" % acc["body"]))
+
+        details = ""
+        if panels:
+            items = "\n".join(f"""      <details>
+        <summary>{title}</summary>
+        <div class="faq__body">{body}</div>
+      </details>""" for title, body in panels)
             details = f"""
 <section class="section">
   <div class="container">
-    <div class="section-head" data-reveal>
-      <span class="eyebrow">Le détail qui compte</span>
-      <h2 style="margin-top:var(--sp-3)">Ce qu'on ne voit pas<br>de loin</h2>
+    <div class="section-head section-head--center" data-reveal>
+      <span class="eyebrow eyebrow--center">Le détail qui compte</span>
+      <h2>Ce qu'on ne voit pas<br>de loin</h2>
     </div>
-    <div class="grid grid--2">
-{blocks}
+
+    <div class="faq" data-reveal style="--reveal-delay:100ms">
+{items}
     </div>
   </div>
 </section>"""
@@ -397,7 +431,7 @@ class Builder:
           <svg aria-hidden="true"><use href="#i-bag"></use></svg>
         </button>
         <a class="btn btn--ghost btn--full" href="{base}configurateur.html"
-           style="margin-top:var(--sp-3)">Le vouloir sur-mesure</a>"""
+           style="margin-top:var(--sp-3)">La version sur-mesure</a>"""
 
         related = [p for p in self.by_category(product["category"])
                    if p["slug"] != product["slug"]][:3]
@@ -409,10 +443,10 @@ class Builder:
     <div class="section-head section-head--split" data-reveal>
       <div>
         <span class="eyebrow">La même construction</span>
-        <h2 style="margin-top:var(--sp-4)">Dans la même ligne</h2>
+        <h2 style="margin-top:var(--sp-4)">Les autres formes</h2>
       </div>
       <a class="link-underline" href="{base}{cat['slug']}.html">
-        Voir toute la ligne
+        Toute la collection
         <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
       </a>
     </div>
@@ -432,10 +466,13 @@ class Builder:
     </div>
 
     <div class="product__info" data-reveal style="--reveal-delay:120ms">
-      <span class="eyebrow">{cat['name']}</span>
+      <span class="eyebrow">La ligne {escape(cat['name'])}</span>
       <h1 class="product__name">{escape(product['name'])}</h1>
-      <p class="product__price">{price(product['price'])}</p>
-      <p class="lede">{product['pitch']}</p>
+      {badge(product['status'], long=True)}
+      <p class="product__price">{price(product['price'])}
+        <small>FCFA · livraison 48 h Cotonou &amp; Abidjan</small></p>
+      <p class="lede">{product['short']}</p>
+      <p class="lede" style="margin-top:var(--sp-3)">{product['pitch']}</p>
 
       <div class="product__pickers">
 {colors}
@@ -507,6 +544,190 @@ class Builder:
 </section>"""
         self.page(path, content=content, title=title, description=description)
 
+
+    # ── le configurateur sur-mesure ──────────────────────────────────
+
+    def build_configurator(self):
+        cfg = self.site["bespoke"]
+
+        def opts(group, items, render):
+            return ('    <div class="cfg-options" data-group="%s">\n%s\n    </div>'
+                    % (group, "\n".join(render(o) for o in items)))
+
+        shapes = opts("shape", cfg["shapes"], lambda o: f"""      <button class="cfg-opt" type="button" aria-pressed="false" data-id="{o['id']}">
+        <span class="cfg-opt__shot"><img src="assets/img/{o['image']}.jpg" width="400" height="275"
+              loading="lazy" decoding="async" alt="{escape(o['name'], quote=True)}"></span>
+        <span class="cfg-opt__top">
+          <span class="cfg-opt__name">{escape(o['name'])}</span>
+          <span class="cfg-opt__price">dès {price(o['price'])}</span>
+        </span>
+        <span class="cfg-opt__note">{o['note']}</span>
+      </button>""")
+
+        leathers = opts("leather", cfg["leathers"], lambda o: f"""      <button class="cfg-opt" type="button" aria-pressed="false" data-id="{o['id']}">
+        <span class="cfg-opt__top">
+          <span style="display:flex;align-items:center;gap:var(--sp-3)">
+            <span class="cfg-opt__chip" style="background:{o['hex']}"></span>
+            <span class="cfg-opt__name">{escape(o['name'])}</span>
+          </span>
+          <span class="cfg-opt__price">{"inclus" if not o["price"] else "+ " + price(o["price"])}</span>
+        </span>
+        <span class="cfg-opt__note">{o['note']}</span>
+      </button>""")
+
+        soles = opts("sole", cfg["soles"], lambda o: f"""      <button class="cfg-opt" type="button" aria-pressed="false" data-id="{o['id']}">
+        <span class="cfg-opt__top">
+          <span class="cfg-opt__name">{escape(o['name'])}</span>
+          <span class="cfg-opt__price">{"inclus" if not o["price"] else "+ " + price(o["price"])}</span>
+        </span>
+        <span class="cfg-opt__note">{o['note']}</span>
+      </button>""")
+
+        sizes = "\n".join(
+            '        <button class="size" type="button" aria-pressed="false" data-id="%d">%d</button>' % (n, n)
+            for n in cfg["sizes"])
+
+        def line(key, label):
+            return (f'          <div class="spec-row" data-line="{key}" data-empty>'
+                    f'<dt>{label}</dt>'
+                    f'<dd><em data-extra></em><span data-value>À choisir</span></dd></div>')
+
+        content = f"""{breadcrumb([("Accueil", "index.html"), ("L'atelier sur-mesure", None)])}
+
+<section class="section section--top">
+  <div class="container">
+    <div class="section-head" data-reveal style="max-width:44ch">
+      <span class="eyebrow">L'atelier</span>
+      <h1 data-lines>Une paire cousue<br>pour un seul pied au monde.<br>Le vôtre.</h1>
+      <p class="lede">
+        Cinq décisions, {cfg['lead_days']}. Chaque choix se voit dans l'aperçu et dans le
+        prix — rien ne se découvre à la fin.
+      </p>
+    </div>
+
+    <div class="cfg" data-cfg>
+      <div class="cfg__steps">
+
+        <section class="cfg-step">
+          <div class="cfg-step__head">
+            <span class="cfg-step__num">01</span>
+            <h2>La forme</h2>
+            <p class="cfg-step__hint">Elle fixe le prix de base. Tout le reste s'y ajoute.</p>
+          </div>
+{shapes}
+        </section>
+
+        <section class="cfg-step">
+          <div class="cfg-step__head">
+            <span class="cfg-step__num">02</span>
+            <h2>Le cuir</h2>
+            <p class="cfg-step__hint">Pleine fleur, tannage végétal — la patine se creuse avec les années.</p>
+          </div>
+{leathers}
+        </section>
+
+        <section class="cfg-step">
+          <div class="cfg-step__head">
+            <span class="cfg-step__num">03</span>
+            <h2>La semelle</h2>
+            <p class="cfg-step__hint">Les deux se ressemellent. La gomme tient mieux sous la pluie.</p>
+          </div>
+{soles}
+        </section>
+
+        <section class="cfg-step">
+          <div class="cfg-step__head">
+            <span class="cfg-step__num">04</span>
+            <h2>La pointure</h2>
+            <p class="cfg-step__hint">Entre deux&nbsp;? Prenez la plus grande — l'atelier ajuste la forme à vos mesures exactes lors de la prise de cotes.</p>
+          </div>
+          <div class="cfg-sizes" data-group="size">
+{sizes}
+          </div>
+        </section>
+
+        <section class="cfg-step">
+          <div class="cfg-step__head">
+            <span class="cfg-step__num">05</span>
+            <h2>Les initiales</h2>
+            <p class="cfg-step__hint">{cfg['initials']['note']}</p>
+          </div>
+          <div class="cfg-initials">
+            <label class="visually-hidden" for="cfg-init">Vos initiales</label>
+            <input id="cfg-init" type="text" placeholder="A. C." maxlength="4"
+                   autocomplete="off" data-cfg-initials>
+            <span class="cfg-opt__price">+ {price(cfg['initials']['price'])}</span>
+          </div>
+        </section>
+
+      </div>
+
+      <aside class="cfg__summary">
+        <div class="cfg-card">
+          <div class="cfg-card__shot" data-cfg-shot></div>
+          <h2>Votre paire</h2>
+
+          <dl class="cfg-lines">
+{line("shape", "Forme")}
+{line("leather", "Cuir")}
+{line("sole", "Semelle")}
+{line("size", "Pointure")}
+{line("initials", "Initiales")}
+          </dl>
+
+          <div class="cfg-total">
+            <span class="cfg-total__label">Total</span>
+            <span class="cfg-total__value" data-total>—</span>
+          </div>
+
+          <button class="btn btn--full" type="button" data-cfg-add data-cart="panier.html" disabled>
+            Ajouter au panier
+            <svg aria-hidden="true"><use href="#i-bag"></use></svg>
+          </button>
+
+          <p class="cfg-card__foot">
+            Acompte {cfg['deposit']}&nbsp;% à la commande — Mobile Money MTN &amp; Moov, Wave
+            ou carte via KkiaPay. Le solde à la livraison.
+          </p>
+
+          <ul class="cfg-trust">
+            <li><svg aria-hidden="true"><use href="#i-needle"></use></svg>Point sellier main, une retouche offerte</li>
+            <li><svg aria-hidden="true"><use href="#i-card"></use></svg>Carte d'authenticité numérotée</li>
+            <li><svg aria-hidden="true"><use href="#i-truck"></use></svg>Livraison 48&nbsp;h après sortie d'atelier</li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <div class="cfg-bar">
+    <span class="cfg-bar__total">
+      <span data-total>—</span>
+      <span class="cfg-bar__label">Cousue à la commande — {cfg['lead_days']}</span>
+    </span>
+    <button class="btn btn--sm" type="button" data-cfg-add data-cart="panier.html" disabled>Ajouter</button>
+  </div>
+</section>
+
+<script type="application/json" id="cfg-data">{json.dumps({
+    "base": "",
+    "shapes": cfg["shapes"],
+    "leathers": cfg["leathers"],
+    "soles": cfg["soles"],
+    "initials": cfg["initials"],
+}, ensure_ascii=False)}</script>"""
+
+        self.page(
+            "configurateur.html",
+            content=content,
+            title="Configurateur sur-mesure — Yem's",
+            description="Composez votre paire sur-mesure : forme, cuir, semelle, pointure "
+                        "et initiales. Prix en direct, %s, acompte %d %% à la commande."
+                        % (cfg["lead_days"], cfg["deposit"]),
+            extra_css=("configurator",),
+            extra_js=("configurator",),
+        )
+
     def run(self):
         if os.path.isdir(OUT_PRODUCTS):
             shutil.rmtree(OUT_PRODUCTS)
@@ -517,17 +738,7 @@ class Builder:
         for product in self.products:
             self.build_product(product)
 
-        self.build_stub(
-            "configurateur.html",
-            title="Configurateur sur-mesure — Yem's",
-            description="Composez votre paire sur-mesure : modèle, cuir, doublure, "
-                        "semelle, fil et initiales. Production en 14 à 20 jours.",
-            eyebrow="Bientôt en ligne",
-            heading="Le configurateur<br>arrive",
-            text="En attendant, l'atelier prend les commandes sur-mesure directement sur "
-                 "WhatsApp : vous décrivez ce que vous voulez, il vous chiffre la pièce "
-                 "dans la journée.",
-        )
+        self.build_configurator()
         self.build_stub(
             "panier.html",
             title="Panier — Yem's",

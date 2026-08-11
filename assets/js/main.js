@@ -224,6 +224,14 @@
   const getSize = initPicker('.size', 'size');
   const getColor = initPicker('.swatch--btn', 'color');
 
+  // l'intitulé « Choisissez une teinte » devient le nom du cuir retenu
+  const colorLabel = $('[data-color-label]');
+  if (colorLabel) {
+    $$('.swatch--btn').forEach((btn) => {
+      btn.addEventListener('click', () => { colorLabel.textContent = btn.dataset.color; });
+    });
+  }
+
   let toastEl = null;
   let toastTimer = null;
 
@@ -241,6 +249,9 @@
     clearTimeout(toastTimer);
     toastTimer = setTimeout(() => toastEl.classList.remove('is-visible'), 4200);
   }
+
+  // le configurateur passe par cet événement plutôt que d'appeler toast() directement
+  window.addEventListener('yems:toast', (e) => toast(e.detail.html));
 
   $$('[data-add-to-cart]').forEach((btn) => {
     btn.addEventListener('click', () => {
