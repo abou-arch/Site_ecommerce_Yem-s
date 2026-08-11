@@ -1,320 +1,222 @@
-# Mise en ligne sur Cloudflare — pas à pas
+# Mettre le site en ligne
 
-Guide de mise en route, dans l'ordre. Compte environ une heure la première fois.
-Chaque étape se termine par un point de contrôle : si ce que tu vois ne
-correspond pas, ne passe pas à la suite.
+**Cinq étapes. Trente minutes.** Commandes données pour PowerShell (Windows).
 
-Pour le pourquoi des choix techniques, voir [`back-end.md`](back-end.md).
-
----
-
-## Avant de commencer
-
-Trois comptes à créer, tous gratuits :
-
-| Service | À quoi il sert | Lien |
-|---|---|---|
-| **Neon** | la base de données Postgres | [neon.tech](https://neon.tech) |
-| **Cloudflare** | l'hébergement du site et des fonctions | [dash.cloudflare.com/sign-up](https://dash.cloudflare.com/sign-up) |
-| **KkiaPay** ou **FedaPay** | l'encaissement en ligne — **plus tard** | [kkiapay.me](https://kkiapay.me) · [fedapay.com](https://fedapay.com) |
-
-> **Le paiement en ligne n'est pas un prérequis.** Le site démarre en mode
-> `offline` : la commande est enregistrée, l'atelier reçoit tout le détail sur
-> WhatsApp, et le client règle à la livraison ou par transfert Mobile Money.
-> C'est ainsi que fonctionnent la plupart des ateliers de Cotonou.
->
-> Le compte marchand demande un dossier — pièce d'identité, IFU, parfois RCCM.
-> Ça peut prendre des semaines. Ne bloque pas le lancement pour ça : les étapes
-> 5, 6 (clés) et 9 (webhook) sont **facultatives** au premier déploiement.
-
-Et sur ta machine : **Node.js 20 ou plus**. Pour vérifier :
-
-```bash
-node --version
-```
-
-> **Ce que ça coûte.** Rien au démarrage. Cloudflare offre 100 000 requêtes de
-> base de données par jour et des fichiers statiques illimités sur le plan
-> gratuit. Neon a un palier gratuit suffisant pour une boutique qui démarre.
-> Tu ne paieras que si le trafic décolle vraiment.
+Le paiement en ligne n'est **pas** dans ce guide : il n'est pas nécessaire pour
+lancer la boutique. Il fait l'objet d'une section séparée, tout à la fin, pour
+le jour où le compte marchand sera activé.
 
 ---
 
-## Étape 1 — Créer la base
+## Où tu en es
 
-1. Sur [neon.tech](https://neon.tech), crée un projet. Nomme-le `yems`.
-2. Choisis la région **Europe (Frankfurt)** — c'est la plus proche de l'Afrique
-   de l'Ouest parmi celles proposées.
-3. Clique *Connect*. **Décoche « Pooled connection »** avant de copier.
+Coche au fur et à mesure.
 
-> ⚠ **Le piège à ne pas rater.** Neon propose par défaut une chaîne « pooled »,
-> reconnaissable au `-pooler` dans le nom d'hôte. Hyperdrive fait déjà le
-> pooling : empiler les deux provoque des erreurs SSL pénibles à diagnostiquer.
-> Il faut la connexion **directe**.
->
-> Supprime aussi `&channel_binding=require` s'il est présent — il est
-> [connu pour poser problème avec Hyperdrive](https://github.com/cloudflare/workers-sdk/issues/10124).
-
-La chaîne à conserver ressemble à :
-
-```
-postgresql://neondb_owner:MOT_DE_PASSE@ep-quelque-chose.eu-central-1.aws.neon.tech/neondb?sslmode=require
-```
-
-> ✓ **Contrôle** — pas de `-pooler` dans le nom d'hôte, pas de
-> `channel_binding`, et ça finit par `?sslmode=require`.
-
-> 🔒 **Cette chaîne contient un mot de passe.** Ne la colle jamais dans un chat,
-> un ticket, une capture d'écran ou un fichier du dépôt. Si ça arrive, va
-> immédiatement la réinitialiser dans Neon (*Settings → Reset password*).
+- [ ] **1.** Base de données créée sur Neon
+- [ ] **2.** Tables installées
+- [ ] **3.** Hyperdrive relié
+- [ ] **4.** Réglages posés
+- [ ] **5.** Site déployé et vérifié
 
 ---
 
-## Étape 2 — Installer le schéma
+## 1. Créer la base
 
-Dans le dossier du projet :
+Sur [neon.tech](https://neon.tech) : crée un compte, puis un projet nommé
+`yems`, région **Europe (Frankfurt)**.
 
-```bash
-psql "COLLE_TA_CHAINE_ICI" -f db/schema.sql
+Clique ensuite sur **Connect**, et **décoche la case « Pooled connection »**.
+
+Copie la chaîne obtenue. Elle doit ressembler à ceci :
+
+```
+postgresql://neondb_owner:MOT_DE_PASSE@ep-xxxx.eu-central-1.aws.neon.tech/neondb?sslmode=require
 ```
 
-Si `psql` n'est pas installé, Neon propose un éditeur SQL dans son interface
-(*SQL Editor*) : ouvre `db/schema.sql`, copie tout, colle, exécute.
+Si elle contient `-pooler` dans le nom d'hôte, ou `&channel_binding=require` à
+la fin, tu n'as pas la bonne : reviens décocher la case, et supprime le
+`&channel_binding=require` s'il persiste.
 
-> ✓ **Contrôle** — dans Neon, onglet *Tables*, tu dois voir six tables :
-> `customers`, `orders`, `order_items`, `payments`, `order_events`, `couriers`.
+> Cette chaîne contient un mot de passe. Elle ne va que dans ton terminal —
+> jamais dans un chat, une capture d'écran ou un fichier du projet.
 
 ---
 
-## Étape 3 — Se connecter à Cloudflare
+## 2. Installer les tables
 
-```bash
+Le plus simple : dans Neon, ouvre **SQL Editor**. Ouvre le fichier
+`db/schema.sql` du projet, copie tout son contenu, colle-le dans l'éditeur,
+exécute.
+
+Va ensuite dans l'onglet **Tables**. Tu dois voir six tables :
+
+```
+customers   orders   order_items   payments   order_events   couriers
+```
+
+Si tu les vois, l'étape est finie.
+
+---
+
+## 3. Relier la base à Cloudflare
+
+Crée un compte sur [dash.cloudflare.com/sign-up](https://dash.cloudflare.com/sign-up),
+puis dans le dossier du projet :
+
+```powershell
 npm install
 npx wrangler login
 ```
 
-Un navigateur s'ouvre, tu autorises Wrangler, tu reviens au terminal.
+Un navigateur s'ouvre, tu autorises, tu reviens au terminal.
 
-> ✓ **Contrôle** — `npx wrangler whoami` affiche ton adresse e-mail et ton
-> identifiant de compte.
-
----
-
-## Étape 4 — Créer la liaison Hyperdrive
-
-Hyperdrive garde les connexions Postgres ouvertes côté Cloudflare. Sans lui,
-chaque commande rouvrirait une connexion jusqu'à Francfort — plusieurs
-centaines de millisecondes perdues à chaque fois.
-
-Sur **Windows / PowerShell** — tout sur une seule ligne. PowerShell n'accepte
-pas le `\` de continuation d'Unix, il utilise l'accent grave `` ` `` :
+Ensuite — **tout sur une seule ligne**, PowerShell n'aime pas les commandes
+coupées :
 
 ```powershell
-npx wrangler hyperdrive create yems-db --connection-string="COLLE_TA_CHAINE_NEON_ICI"
+npx wrangler hyperdrive create yems-db --connection-string="COLLE_TA_CHAINE_NEON"
 ```
 
-Sur **macOS / Linux**, la continuation classique fonctionne :
-
-```bash
-npx wrangler hyperdrive create yems-db \
-  --connection-string="COLLE_TA_CHAINE_NEON_ICI"
-```
-
-La commande répond avec un bloc contenant un `id` :
+La réponse contient un identifiant :
 
 ```
-[[hyperdrive]]
-binding = "HYPERDRIVE"
 id = "a1b2c3d4e5f6..."
 ```
 
 **Ouvre `wrangler.toml`** et remplace `REMPLACER_PAR_L_ID_HYPERDRIVE` par cet
 identifiant.
 
-> ✓ **Contrôle** — `npx wrangler hyperdrive list` affiche `yems-db`.
+> À quoi sert Hyperdrive : il garde des connexions ouvertes vers Neon côté
+> Cloudflare. Sans lui, chaque commande passée sur le site rouvrirait une
+> connexion jusqu'à Francfort.
 
 ---
 
-## Étape 5 — Les clés du prestataire *(facultatif au démarrage)*
+## 4. Poser les réglages
 
-**Passe cette étape si le compte marchand n'est pas encore activé.** Laisse
-`PAYMENT_MODE = "offline"` dans `wrangler.toml` et reprends à l'étape 7 : le
-site fonctionnera, simplement sans widget de paiement.
+**Le mot de passe de l'administration.** Génère-le :
 
-> **Dossier bloqué ?** FedaPay propose un
-> [compte Travailleur Indépendant](https://docs.fedapay.com/introduction/fr/compte-fr)
-> qui ne demande **ni RCCM ni société enregistrée** — seulement une pièce
-> d'identité et un IFU. Limites : 10 transactions par semaine, 300 000 F par
-> transaction. Convertible en compte Business plus tard, sans repartir de zéro.
-
-Sur [app.kkiapay.me/dashboard](https://app.kkiapay.me/dashboard), menu
-**Développeurs**. Tu y trouves trois clés.
-
-| Clé | Où elle va |
-|---|---|
-| Publique | descend dans le navigateur — c'est normal, elle ne permet que d'ouvrir le widget |
-| Privée | **ne quitte jamais le serveur** — elle vérifie les transactions |
-| Secrète | **ne quitte jamais le serveur** — elle authentifie les webhooks |
-
-> ⚠ Si la clé privée se retrouve dans le code du site, n'importe qui peut
-> interroger ton compte marchand. Elle ne doit apparaître qu'à l'étape suivante,
-> jamais dans un fichier du dépôt.
-
----
-
-## Étape 6 — Poser les secrets
-
-Chaque commande demande la valeur, que tu colles puis valides. Elles sont
-chiffrées côté Cloudflare et ne réapparaissent jamais en clair.
-
-```bash
-npx wrangler secret put KKIAPAY_PUBLIC_KEY
-npx wrangler secret put KKIAPAY_PRIVATE_KEY
-npx wrangler secret put KKIAPAY_SECRET_KEY
-npx wrangler secret put ADMIN_TOKEN
-```
-
-Pour `ADMIN_TOKEN`, génère-le d'abord :
-
-```bash
+```powershell
 node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 ```
 
-Note-le quelque part de sûr : c'est lui qui ouvrira l'administration.
+Copie le résultat, note-le quelque part de sûr, puis :
 
-Ensuite, ouvre `wrangler.toml` et corrige la section `[vars]` :
+```powershell
+npx wrangler secret put ADMIN_TOKEN
+```
+
+Colle la valeur quand c'est demandé.
+
+**Le numéro WhatsApp de l'atelier.** Ouvre `wrangler.toml` et corrige la
+ligne `OWNER_WHATSAPP` avec le vrai numéro, format international sans le `+` :
 
 ```toml
 [vars]
-KKIAPAY_SANDBOX = "true"          # on reste en test pour l'instant
-OWNER_WHATSAPP = "22997XXXXXX"    # le vrai numéro de l'atelier
+PAYMENT_MODE = "offline"
+KKIAPAY_SANDBOX = "true"
+OWNER_WHATSAPP = "22997000000"     ← le numéro de ton client
 ```
 
-> ✓ **Contrôle** — `npx wrangler secret list` affiche les quatre noms (pas les
-> valeurs, c'est normal).
+Ne touche pas à `PAYMENT_MODE` : `offline` est le mode qui permet de vendre
+sans compte marchand.
 
 ---
 
-## Étape 7 — Premier déploiement
+## 5. Déployer et vérifier
 
-```bash
+```powershell
 npm run deploy
 ```
 
-Cette commande génère les pages avec `build.py`, puis les envoie avec le Worker.
+Wrangler affiche une adresse à la fin, du type
+`https://yems.TON-COMPTE.workers.dev`.
 
-Wrangler affiche à la fin une adresse du type :
+**Ouvre-la.** Tu dois voir la homepage avec la vidéo. Clique sur *Chaussures*,
+puis sur un produit.
 
+**Puis ce test, le plus important.** Remplace l'adresse et le jeton par les
+tiens :
+
+```powershell
+curl.exe https://yems.TON-COMPTE.workers.dev/api/admin/orders -H "Authorization: Bearer TON_ADMIN_TOKEN"
 ```
-https://yems.TON-COMPTE.workers.dev
+
+Réponse attendue :
+
+```json
+{"ok":true,"count":0,"orders":[]}
 ```
 
-> ✓ **Contrôle** — ouvre cette adresse. Tu dois voir la homepage avec la vidéo.
-> Clique sur *Chaussures*, puis sur un produit : les pages doivent s'afficher.
+Si tu vois ça, **tout fonctionne** : le site est en ligne, le serveur répond,
+la base est connectée.
+
+> Sous PowerShell, écris bien `curl.exe` et non `curl` : `curl` seul y est un
+> alias vers une autre commande qui ne comprend pas ces options.
 
 ---
 
-## Étape 8 — Vérifier que le serveur répond
+## 6. Passer une vraie commande
 
-Trois tests rapides, en remplaçant l'adresse par la tienne.
+Sur le site : ajoute une paire au panier, passe commande, choisis
+**« à la livraison »**, valide.
 
-**Le panier vide doit être refusé :**
+Tu arrives sur une page de confirmation avec une référence du type
+`YMS-1108-0001`.
 
-```bash
-curl -X POST https://yems.TON-COMPTE.workers.dev/api/orders/create \
-  -H "Content-Type: application/json" \
-  -d '{"cart":[]}'
-```
+Relance ensuite la commande `curl.exe` de l'étape 5. La commande doit
+apparaître, avec :
 
-Réponse attendue : `{"ok":false,"error":"panier vide"}`
+- `"status":"to_confirm"` — elle attend que l'atelier rappelle
+- `"whatsapp_link":"https://wa.me/..."` — **clique ce lien**
 
-**L'administration doit refuser sans jeton :**
-
-```bash
-curl https://yems.TON-COMPTE.workers.dev/api/admin/orders
-```
-
-Réponse attendue : `{"ok":false,"error":"accès refusé"}`
-
-**Et l'accepter avec :**
-
-```bash
-curl https://yems.TON-COMPTE.workers.dev/api/admin/orders \
-  -H "Authorization: Bearer TON_ADMIN_TOKEN"
-```
-
-Réponse attendue : `{"ok":true,"count":0,"orders":[]}`
-
-> ✓ **Contrôle** — si le troisième test répond `count: 0`, la base est bien
-> connectée. C'est le test le plus important de tous.
+WhatsApp s'ouvre avec le détail complet de la commande et la consigne
+d'encaissement, prêt à envoyer. C'est comme ça que l'atelier travaillera
+chaque jour.
 
 ---
 
-## Étape 9 — Brancher le webhook
+## Au quotidien
 
-Dans KkiaPay → **Développeurs** → **Webhook**, déclare :
+Après chaque modification du site ou du catalogue :
 
+```powershell
+npm run deploy
 ```
-https://yems.TON-COMPTE.workers.dev/api/webhooks/kkiapay
-```
 
-À quoi il sert : si un client paie puis ferme son navigateur avant le retour,
-le site n'apprend jamais que le paiement a réussi. La commande resterait en
-attente alors que l'argent est encaissé. KkiaPay prévient alors le serveur
-directement.
+Trente secondes. Si le site semble ne pas avoir changé, fais `Ctrl + Maj + R`
+dans le navigateur.
 
 ---
 
-## Étape 10 — Commander pour de faux
+## Si ça coince
 
-**En mode `offline`** — ajoute une paire au panier, passe commande, choisis
-« à la livraison ». Tu dois arriver sur la confirmation avec une référence, et
-`/api/admin/orders` doit retourner la commande en statut `to_confirm` avec un
-`whatsapp_link` prêt à cliquer. Clique-le : WhatsApp s'ouvre avec le détail
-complet et la consigne d'encaissement. C'est tout ce dont l'atelier a besoin
-pour travailler.
+| Message | Ce qui se passe | Quoi faire |
+|---|---|---|
+| `Missing expression after unary operator '--'` | commande coupée sur deux lignes | tout remettre sur une seule ligne |
+| `no such binding HYPERDRIVE` | l'identifiant n'a pas été reporté | revoir la fin de l'étape 3 |
+| `aucune chaîne de connexion` | idem | idem |
+| erreur SSL au premier test | chaîne Neon « pooled » | reprendre la chaîne **directe**, sans `-pooler` |
+| `accès refusé` avec le bon jeton | `ADMIN_TOKEN` mal enregistré | refaire `npx wrangler secret put ADMIN_TOKEN` |
+| `Assertion failed: !(handle->flags…)` | bug Node sur Windows | sans conséquence, à ignorer |
+| le site affiche du code source | `.assetsignore` déplacé | il doit rester à la racine du projet |
 
-**En mode `online`**, toujours en `KKIAPAY_SANDBOX = "true"`.
+Pour voir ce qui se passe côté serveur en direct :
 
-1. Va sur le site, ajoute une paire au panier.
-2. Passe commande avec tes vraies coordonnées.
-3. Au moment du paiement, utilise un
-   [numéro de test KkiaPay](https://docs.kkiapay.me/v1/compte/kkiapay-sandbox-guide-de-test).
-
-> ✓ **Contrôle** — après le paiement, tu dois arriver sur la page de
-> confirmation avec une référence du type `YMS-1108-0001`. Et
-> `/api/admin/orders` doit maintenant retourner cette commande avec le statut
-> `paid`, plus un `whatsapp_link` prêt à cliquer.
-
-Si tu cliques ce lien, WhatsApp s'ouvre avec le récapitulatif de la commande
-déjà rédigé. C'est le mode de fonctionnement tant que l'API Meta n'est pas
-configurée — et c'est suffisant pour démarrer.
-
----
-
-## Étape 11 — Passer en production
-
-Quand le compte marchand KkiaPay est activé et que les tests passent :
-
-1. Dans `wrangler.toml`, mets `KKIAPAY_SANDBOX = "false"`.
-2. `npm run deploy`
-3. Fais **une vraie commande, un petit montant**, avec ton propre Mobile Money.
-   Vérifie que l'argent arrive sur le tableau de bord KkiaPay.
-
-> Ne saute pas ce dernier test. Le mode sandbox et le mode réel n'utilisent pas
-> les mêmes serveurs KkiaPay : quelque chose peut marcher en test et échouer en
-> production.
+```powershell
+npx wrangler tail
+```
 
 ---
 
 ## Le nom de domaine
 
-L'adresse `workers.dev` fonctionne, mais pour le client il faut un vrai domaine.
+Quand tu voudras remplacer l'adresse `workers.dev` :
 
-1. Achète le domaine (`yems.bj`, `yems-cotonou.com`, ce que le client préfère).
-2. Dans Cloudflare, **Add a site**, puis suis les instructions pour pointer les
-   serveurs de noms du registrar vers Cloudflare.
-3. Une fois le domaine actif, ajoute dans `wrangler.toml` :
+1. Achète le domaine.
+2. Dans Cloudflare, **Add a site**, puis suis les instructions pour faire
+   pointer les serveurs de noms du registrar vers Cloudflare.
+3. Ajoute dans `wrangler.toml` :
 
 ```toml
 routes = [
@@ -325,64 +227,86 @@ routes = [
 
 4. `npm run deploy`
 
-Le certificat HTTPS est émis automatiquement par Cloudflare.
-
-**N'oublie pas** de mettre à jour l'URL du webhook chez KkiaPay avec le nouveau
-domaine.
+Le certificat HTTPS est émis automatiquement.
 
 ---
 
-## Au quotidien
+---
 
-Après chaque modification du site ou du catalogue :
+# Plus tard : activer le paiement en ligne
 
-```bash
-npm run deploy
+**Rien de ce qui suit n'est nécessaire pour vendre.** À faire le jour où le
+compte marchand est activé.
+
+## Obtenir un compte
+
+Le dossier est le point dur. Deux pistes :
+
+**FedaPay — compte Travailleur Indépendant.** Demande seulement une **pièce
+d'identité** et un **IFU**. Ni RCCM, ni société enregistrée. Limité à 10
+transactions par semaine et 300 000 F par transaction — largement suffisant
+pour démarrer. Convertible en compte Business ensuite, sans repartir de zéro.
+Détail des pièces : [docs.fedapay.com](https://docs.fedapay.com/introduction/fr/compte-fr).
+
+**KkiaPay.** C'est le prestataire déjà intégré dans le code. Renseigne-toi sur
+les pièces exactes auprès de leur support.
+
+Dans les deux cas, fais confirmer la liste par le prestataire avant d'engager
+des démarches — je ne suis ni juriste ni comptable.
+
+## Une fois le compte activé
+
+Récupère les trois clés dans le tableau de bord du prestataire, menu
+**Développeurs**, puis :
+
+```powershell
+npx wrangler secret put KKIAPAY_PUBLIC_KEY
+npx wrangler secret put KKIAPAY_PRIVATE_KEY
+npx wrangler secret put KKIAPAY_SECRET_KEY
 ```
 
-Environ trente secondes. Pas besoin de passer par GitHub.
+La clé **publique** descend dans le navigateur — c'est normal, elle ne permet
+que d'ouvrir la fenêtre de paiement. Les deux autres ne quittent jamais le
+serveur : la privée vérifie les transactions, la secrète authentifie les
+notifications du prestataire.
 
-Pour tester en local avant d'envoyer :
+Puis dans `wrangler.toml` :
 
-```bash
-npm run dev          # démarre wrangler sur http://localhost:8787
+```toml
+PAYMENT_MODE = "online"
 ```
+
+Et `npm run deploy`.
+
+## Déclarer le webhook
+
+Dans le tableau de bord du prestataire → Développeurs → Webhook :
+
+```
+https://TON-ADRESSE/api/webhooks/kkiapay
+```
+
+Il sert de filet : si un client paie puis ferme son navigateur avant le retour
+sur le site, le serveur ne saurait jamais que le paiement a abouti. Le
+prestataire le prévient directement.
+
+## Tester avant d'ouvrir
+
+Garde `KKIAPAY_SANDBOX = "true"` et utilise les
+[numéros de test](https://docs.kkiapay.me/v1/compte/kkiapay-sandbox-guide-de-test).
+
+Puis passe à `"false"` et **fais une vraie commande d'un petit montant** avec
+ton propre Mobile Money. Sandbox et production n'utilisent pas les mêmes
+serveurs : quelque chose peut marcher en test et échouer en réel.
+
+Si tu changes de prestataire, seul `api/_lib/kkiapay.js` est à réécrire —
+environ 130 lignes. Le reste du code ignore qui encaisse.
 
 ---
 
-## Si ça coince
+## Ce qui reste à faire sur le site
 
-| Symptôme | Cause probable | Quoi faire |
-|---|---|---|
-| `no such binding HYPERDRIVE` | l'id n'a pas été reporté | vérifier `wrangler.toml`, étape 4 |
-| `aucune chaîne de connexion` | idem | idem |
-| `/api/admin/orders` → `accès refusé` avec le bon jeton | `ADMIN_TOKEN` mal posé | refaire `wrangler secret put ADMIN_TOKEN` |
-| `clés KkiaPay absentes` | un secret manque | `npx wrangler secret list` |
-| `transaction non aboutie` en test | numéro de test non reconnu | prendre un numéro de la doc sandbox |
-| `montant insuffisant` | le client a payé moins que demandé | c'est le comportement voulu — la commande reste en attente |
-| Les pages sont à jour mais pas le style | cache navigateur | `Ctrl + Maj + R` |
-| Le site affiche du code source | `.assetsignore` ignoré | vérifier qu'il est bien à la racine du dépôt |
-| `Missing expression after unary operator '--'` | `\` de continuation sous PowerShell | tout mettre sur une ligne |
-| `Expected "assets.run_worker_first" to be of type boolean` | Wrangler 3 installé | `npm install wrangler@4 --save-dev` |
-| Erreur SSL au premier appel base | chaîne Neon « pooled » | reprendre la chaîne **directe**, sans `-pooler` |
-| `Assertion failed: !(handle->flags…)` | bug Node sur Windows en fin de processus | sans conséquence, à ignorer |
-
-Pour voir ce qui se passe côté serveur en direct :
-
-```bash
-npx wrangler tail
-```
-
-Les erreurs y apparaissent avec leur détail complet — celui qui n'est jamais
-renvoyé au visiteur.
-
----
-
-## Ce qui reste à construire
-
-- [ ] Page d'administration : `/api/admin/orders` existe, il manque l'écran
-- [ ] Relance du solde sur-mesure à la livraison
-- [ ] Statut VIP — le champ existe, rien ne l'exploite
-- [ ] Affectation d'un livreur — le champ existe, pas d'interface
+- [ ] Page d'administration — l'API existe, il manque l'écran
 - [ ] Remplacer les photos portant des marques de fabricants tiers
 - [ ] Prix définitifs, témoignages réels, numéro WhatsApp de l'atelier
+- [ ] Statut VIP et affectation d'un livreur — les champs existent, pas d'interface
