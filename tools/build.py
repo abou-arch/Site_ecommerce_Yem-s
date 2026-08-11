@@ -92,7 +92,7 @@ def picture(product, base, index=0, lazy=True, sizes=None):
     )
 
 
-def product_card(product, base, delay=0):
+def product_card(product, base, delay=0, level=3):
     """Carte produit, telle qu'elle apparaît dans une grille."""
     href = "%sproduit/%s.html" % (base, product["slug"])
     style = ' style="--reveal-delay:%dms"' % delay if delay else ""
@@ -106,7 +106,7 @@ def product_card(product, base, delay=0):
         </a>
         <div class="pcard__body">
           <div class="pcard__row">
-            <h3 class="pcard__name">{escape(product['name'])}</h3>
+            <h{level} class="pcard__name">{escape(product['name'])}</h{level}>
             <span class="pcard__price">{price(product['price'])}</span>
           </div>
           <p class="pcard__desc">{product['short']}</p>
@@ -114,13 +114,13 @@ def product_card(product, base, delay=0):
       </article>"""
 
 
-def grid(products, base, klass="collections__grid"):
+def grid(products, base, klass="collections__grid", level=3):
     if not products:
         return """      <div class="empty-state">
         <p class="display">Cette ligne arrive bientôt.</p>
         <p class="text-muted">Écrivez-nous sur WhatsApp pour être prévenu du lancement.</p>
       </div>"""
-    cards = [product_card(p, base, delay=i * 90) for i, p in enumerate(products)]
+    cards = [product_card(p, base, delay=i * 90, level=level) for i, p in enumerate(products)]
     return '    <div class="%s">\n%s\n    </div>' % (klass, "\n\n".join(cards))
 
 
@@ -256,7 +256,7 @@ class Builder:
       <p class="lede" style="max-width:40ch">{cat['lede']}</p>
     </div>
 
-{grid(products, "")}
+{grid(products, "", level=2)}
   </div>
 </section>
 
@@ -369,6 +369,7 @@ class Builder:
   <div class="container">
     <div class="section-head" data-reveal>
       <span class="eyebrow">Le détail qui compte</span>
+      <h2 style="margin-top:var(--sp-3)">Ce qu'on ne voit pas<br>de loin</h2>
     </div>
     <div class="grid grid--2">
 {blocks}

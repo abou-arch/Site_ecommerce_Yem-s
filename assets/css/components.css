@@ -375,14 +375,6 @@
   object-fit: cover;
 }
 
-.pshot__glyph {
-  width: 58%;
-  max-width: 240px;
-  color: var(--espresso-500);
-  opacity: 0.5;
-  transition: transform 900ms var(--ease-out-expo);
-}
-
 .pshot__badge {
   position: absolute;
   top: var(--sp-3);
@@ -405,8 +397,6 @@
    CARTE PRODUIT
    -------------------------------------------------------------------------- */
 .pcard { display: flex; flex-direction: column; gap: var(--sp-4); }
-
-.pcard:hover .pshot__glyph { transform: scale(1.06) rotate(-2deg); }
 
 .pcard__body {
   display: flex;
@@ -459,13 +449,6 @@
 .card:hover {
   border-color: var(--border-strong);
   transform: translateY(-4px);
-}
-
-.card__icon {
-  width: 40px;
-  height: 40px;
-  color: var(--brass-400);
-  margin-bottom: var(--sp-2);
 }
 
 .card__num {

@@ -269,23 +269,8 @@
 .faq__body strong { color: var(--text); font-weight: 600; }
 
 /* --------------------------------------------------------------------------
-   MANIFESTE
+   LISTE DES PREUVES — les 4 détails de fabrication, sous le récit
    -------------------------------------------------------------------------- */
-.manifesto__text {
-  font-family: var(--font-display);
-  font-size: clamp(1.4rem, 2.6vw, 2.1rem);
-  line-height: 1.42;
-  letter-spacing: -0.01em;
-  max-width: 30ch;
-}
-
-.manifesto__grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: var(--sp-8);
-  align-items: center;
-}
-
 .detail-list { display: flex; flex-direction: column; }
 
 .detail-list__item {
@@ -310,10 +295,6 @@
 .detail-list__item p {
   font-size: var(--fs-sm);
   color: var(--text-inverse-muted);
-}
-
-@media (max-width: 900px) {
-  .manifesto__grid { grid-template-columns: minmax(0, 1fr); gap: var(--sp-7); }
 }
 
 /* --------------------------------------------------------------------------
