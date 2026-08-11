@@ -206,14 +206,49 @@ l'erreur est journalisée dans `order_events`, la commande reste valide.
 
 ---
 
+---
+
+## Deux modes de règlement
+
+`PAYMENT_MODE` commande tout le tunnel.
+
+| Mode | Ce qui se passe | Statut de la commande |
+|---|---|---|
+| `offline` *(défaut)* | commande enregistrée, atelier prévenu sur WhatsApp | `to_confirm` |
+| `online` | widget du prestataire, vérification serveur | `paid` ou `deposit` |
+
+Le mode `offline` existe parce qu'un compte marchand se mérite : pièce
+d'identité, IFU, parfois RCCM, et des semaines d'instruction. Il n'y a aucune
+raison de bloquer le lancement d'une boutique pour ça — la plupart des ateliers
+de la sous-région encaissent à la livraison de toute façon.
+
+En `offline`, le client choisit entre :
+
+- **à la livraison** — espèces ou Mobile Money à la remise ;
+- **par transfert** — l'atelier envoie son numéro, la production démarre à
+  réception de l'acompte.
+
+Le serveur impose le transfert dès que le panier contient une pièce sur-mesure :
+elle engage de la matière, on ne la lance pas sans acompte. Et si
+`PAYMENT_MODE = "online"` sans clé publique posée, le serveur **retombe seul**
+sur `offline` — la boutique ne peut pas se retrouver avec des commandes
+bloquées en attente d'un paiement impossible.
+
+Le message WhatsApp change selon le mode : il indique à l'atelier ce qu'il
+reste à encaisser et ce qu'il doit faire ensuite.
+
 ## Le cycle de vie d'une commande
 
 ```
-pending ──paiement vérifié──► paid          (achat standard, réglé en entier)
-        └─────────────────► deposit        (sur-mesure, acompte 50 %)
-                                │
-                                ▼
-                          in_workshop ──► shipped ──► delivered
+                    ┌── mode online ──────────────────────────────┐
+pending ──vérifié──►│ paid      (standard, réglé en entier)       │
+                    │ deposit   (sur-mesure, acompte 50 %)        │
+                    └────────────────────┬────────────────────────┘
+                                         │
+to_confirm ──────────────────────────────┤   ← mode offline
+  (l'atelier rappelle, encaisse,         │
+   puis fait avancer le statut)          ▼
+                                   in_workshop ──► shipped ──► delivered
 ```
 
 `cancelled` et `refunded` sont accessibles depuis l'admin à tout moment.

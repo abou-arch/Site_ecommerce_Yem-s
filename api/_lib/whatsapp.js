@@ -26,17 +26,41 @@ export function composeMessage(order, items) {
   });
 
   const reste = order.total - order.amount_due;
+  const mode = order.pay_mode || 'online';
+
+  // Ce que l'atelier doit faire ensuite dépend entièrement du mode de
+  // règlement : autant le dire dans le message plutôt que le laisser deviner.
+  const consigne = {
+    online: [
+      `Encaissé : ${money(order.amount_due)}`,
+      reste > 0 ? `Reste à la livraison : ${money(reste)}` : null,
+    ],
+    delivery: [
+      'RÈGLEMENT À LA LIVRAISON',
+      `À encaisser à la remise : ${money(order.total)}`,
+      '→ Appeler le client pour confirmer la commande et la date.',
+    ],
+    transfer: [
+      'RÈGLEMENT PAR TRANSFERT',
+      `Acompte à recevoir : ${money(order.amount_due)}`,
+      reste > 0 ? `Solde à la livraison : ${money(reste)}` : null,
+      '→ Envoyer le numéro Mobile Money au client, puis confirmer',
+      '   la réception dans l\'administration.',
+    ],
+  }[mode] || [];
 
   return [
-    `Nouvelle commande ${order.reference}`,
+    mode === 'online'
+      ? `Nouvelle commande PAYÉE ${order.reference}`
+      : `Nouvelle commande À CONFIRMER ${order.reference}`,
     '',
     ...lines,
     '',
     `Sous-total : ${money(order.subtotal)}`,
     order.shipping ? `Livraison : ${money(order.shipping)}` : null,
     `Total : ${money(order.total)}`,
-    `Encaissé : ${money(order.amount_due)}`,
-    reste > 0 ? `Reste à la livraison : ${money(reste)}` : null,
+    '',
+    ...consigne,
     '',
     `Client : ${order.ship_name} — ${order.ship_phone}`,
     `Livraison : ${order.ship_address}, ${order.ship_city} (${order.ship_country})`,

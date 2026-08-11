@@ -37,6 +37,9 @@ id = "REMPLACER_PAR_L_ID_HYPERDRIVE"
 
 # ─── Variables non sensibles ───────────────────────────────────────────────
 [vars]
+# "offline" : commande + WhatsApp, règlement convenu de vive voix.
+# "online"  : ajoute le widget de paiement. Exige un compte marchand activé.
+PAYMENT_MODE = "offline"
 KKIAPAY_SANDBOX = "true"
 OWNER_WHATSAPP = "22900000000"
 

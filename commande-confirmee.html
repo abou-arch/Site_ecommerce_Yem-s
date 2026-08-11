@@ -23,7 +23,7 @@
 <link rel="stylesheet" href="assets/css/home.css?v=549b8c3f">
 <link rel="stylesheet" href="assets/css/shop.css?v=55f4c639">
 <link rel="stylesheet" href="assets/css/motion.css?v=b43e4720">
-<link rel="stylesheet" href="assets/css/checkout.css?v=d2c957e0">
+<link rel="stylesheet" href="assets/css/checkout.css?v=8428d4cd">
 
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2314100D'/%3E%3Cpath d='M8 9l8 8 8-8M16 17v7' stroke='%23C9A46A' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
 </head>
@@ -124,10 +124,8 @@
 
       <p class="done__ref" data-order-ref>—</p>
 
-      <p class="lede mx-auto text-center" data-reveal>
+      <p class="lede mx-auto text-center" data-reveal data-done-message>
         Gardez cette référence : elle suffit à retrouver votre commande.
-        L'atelier vous écrit sur WhatsApp dans la journée pour confirmer
-        la date de livraison.
       </p>
 
       <div class="cta__actions" data-reveal>
@@ -142,11 +140,35 @@
 </section>
 
 <script>
-  // La référence arrive en paramètre d'URL, écrite par le tunnel de commande.
+  // Référence et mode de règlement arrivent en paramètres d'URL, écrits par le
+  // tunnel de commande. Les deux sont validés avant affichage : ils viennent
+  // de la barre d'adresse, donc de l'utilisateur.
   (function () {
-    var ref = new URLSearchParams(location.search).get('ref');
-    var el = document.querySelector('[data-order-ref]');
-    if (el) el.textContent = ref && /^[A-Z0-9-]{6,24}$/.test(ref) ? ref : 'Référence envoyée sur WhatsApp';
+    var params = new URLSearchParams(location.search);
+
+    var ref = params.get('ref');
+    var refEl = document.querySelector('[data-order-ref]');
+    if (refEl) {
+      refEl.textContent = ref && /^[A-Z0-9-]{6,24}$/.test(ref)
+        ? ref : 'Référence envoyée sur WhatsApp';
+    }
+
+    var messages = {
+      online: "Votre paiement est enregistré. L'atelier vous écrit sur WhatsApp "
+            + "dans la journée pour confirmer la date de livraison.",
+      delivery: "Vous ne payez rien pour l'instant. L'atelier vous appelle dans "
+              + "la journée pour confirmer la commande, puis vous réglez à la "
+              + "remise, en espèces ou par Mobile Money.",
+      transfer: "L'atelier vous écrit sur WhatsApp dans la journée avec son "
+              + "numéro Mobile Money. La production démarre dès réception de "
+              + "l'acompte."
+    };
+
+    var mode = params.get('mode');
+    var msgEl = document.querySelector('[data-done-message]');
+    if (msgEl && messages[mode]) {
+      msgEl.textContent = 'Gardez cette référence. ' + messages[mode];
+    }
   })();
 </script>
 

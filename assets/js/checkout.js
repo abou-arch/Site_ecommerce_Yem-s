@@ -107,6 +107,25 @@
       window.location.href = 'panier.html';
       return;
     }
+
+    // Une pièce sur-mesure engage de la matière : elle ne part pas sans
+    // acompte. Le paiement à la livraison est donc retiré du choix.
+    const bespoke = items.some((i) => i.bespoke);
+    const delivery = $('[data-pay-delivery]');
+    if (delivery) {
+      delivery.hidden = bespoke;
+      const input = $('input', delivery);
+      if (input) {
+        input.disabled = bespoke;
+        if (bespoke) input.checked = false;
+      }
+      if (bespoke) {
+        const transfer = $('[data-pay-transfer] input');
+        if (transfer) transfer.checked = true;
+      }
+    }
+    const notice = $('[data-bespoke-notice]');
+    if (notice) notice.hidden = !bespoke;
     if (recap) {
       recap.innerHTML = items.map((i) => `
         <div class="spec-row">
@@ -128,6 +147,16 @@
 
   let busy = false;
 
+  // Le bouton doit dire ce qui va se passer : « Payer maintenant » sur une
+  // commande réglée à la livraison serait un mensonge.
+  function syncSubmitLabel() {
+    const mode = form.querySelector('input[name="pay_mode"]:checked')?.value;
+    if (!submit) return;
+    submit.textContent = mode === 'online' ? 'Payer maintenant' : 'Valider ma commande';
+  }
+  form.addEventListener('change', syncSubmitLabel);
+  syncSubmitLabel();
+
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     if (busy) return;
@@ -142,7 +171,7 @@
       const res = await fetch('/api/orders/create', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...data, cart: cart() }),
+        body: JSON.stringify({ ...data, pay_mode: data.pay_mode || 'delivery', cart: cart() }),
       });
       order = await res.json();
       if (!res.ok || !order.ok) throw new Error(order.error || 'commande refusée');
@@ -153,11 +182,12 @@
       return;
     }
 
-    if (!order.public_key) {
-      busy = false;
-      submit.disabled = false;
-      say('Le paiement en ligne n\'est pas encore activé. Votre commande '
-          + order.reference + ' est enregistrée — l\'atelier vous contacte.', 'error');
+    // Règlement hors ligne : la commande est enregistrée, l'atelier a déjà
+    // été prévenu côté serveur. On envoie directement sur la confirmation.
+    if (order.pay_mode !== 'online' || !order.public_key) {
+      window.YemsCart.write([]);
+      window.location.href = 'commande-confirmee.html?ref='
+        + encodeURIComponent(order.reference) + '&mode=' + encodeURIComponent(order.pay_mode);
       return;
     }
 

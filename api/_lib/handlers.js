@@ -19,9 +19,21 @@ const ko = (message, status = 400) => ({ status, body: { ok: false, error: messa
 const env0 = (env, key) => env?.[key] ?? globalThis.process?.env?.[key];
 
 const STATUSES = [
-  'pending', 'paid', 'deposit', 'in_workshop',
+  'pending', 'to_confirm', 'paid', 'deposit', 'in_workshop',
   'shipped', 'delivered', 'cancelled', 'refunded',
 ];
+
+const PAY_MODES = ['online', 'delivery', 'transfer'];
+
+/**
+ * Le paiement en ligne n'est disponible que si l'atelier a un compte marchand
+ * activé ET les clés posées. Sans ça, PAYMENT_MODE reste sur « offline » et
+ * la boutique fonctionne quand même : la commande part, l'atelier rappelle.
+ */
+function onlineAvailable(env) {
+  return env0(env, 'PAYMENT_MODE') === 'online'
+      && Boolean(env0(env, 'KKIAPAY_PUBLIC_KEY'));
+}
 
 /* ═══════════════════════════════════════════════════ création de commande */
 
@@ -43,6 +55,18 @@ export async function createOrder(payload, env) {
   // Les montants sortent d'ici, jamais du panier envoyé par le navigateur.
   const priced = priceCart(payload.cart);
   if (priced.error) return ko(priced.error);
+
+  // Mode de règlement. Le client propose, le serveur tranche : si le paiement
+  // en ligne n'est pas ouvert, on bascule sur un règlement hors ligne quoi
+  // qu'il arrive — sinon la commande resterait bloquée en « pending ».
+  const online = onlineAvailable(env);
+  let payMode = PAY_MODES.includes(payload.pay_mode) ? payload.pay_mode : 'delivery';
+  if (payMode === 'online' && !online) payMode = 'delivery';
+  if (!online && payMode === 'online') payMode = 'delivery';
+
+  // Une pièce sur-mesure engage de la matière : on ne la lance pas sans
+  // acompte. Le paiement à la livraison y est donc écarté.
+  if (payMode === 'delivery' && priced.kind !== 'standard') payMode = 'transfer';
 
   const shipping = shippingFor(country);
   const total = priced.subtotal + shipping;
@@ -67,11 +91,13 @@ export async function createOrder(payload, env) {
 
       const [created] = await tx`
         INSERT INTO orders (
-          reference, customer_id, status, kind,
+          reference, customer_id, status, kind, pay_mode,
           subtotal, shipping, total, amount_due,
           ship_name, ship_phone, ship_address, ship_city, ship_country, ship_note
         ) VALUES (
-          ${reference}, ${customer.id}, 'pending', ${priced.kind},
+          ${reference}, ${customer.id},
+          ${payMode === 'online' ? 'pending' : 'to_confirm'},
+          ${priced.kind}, ${payMode},
           ${priced.subtotal}, ${shipping}, ${total}, ${due},
           ${name}, ${phone}, ${address}, ${city}, ${country}, ${note || null}
         )
@@ -91,18 +117,31 @@ export async function createOrder(payload, env) {
       }
 
       await logEvent(tx, created.id, 'commande créée', {
-        kind: priced.kind, total, due, vip: customer.is_vip,
+        kind: priced.kind, pay_mode: payMode, total, due, vip: customer.is_vip,
       });
       return created;
     });
+
+    // Règlement hors ligne : rien d'autre ne viendra déclencher la
+    // notification, on prévient l'atelier dès maintenant.
+    if (payMode !== 'online') {
+      const [full] = await sql`
+        SELECT id, reference, status, kind, pay_mode, subtotal, shipping,
+               total, amount_due, ship_name, ship_phone, ship_address,
+               ship_city, ship_country, ship_note
+        FROM orders WHERE id = ${order.id}
+      `;
+      await announce(sql, full, env);
+    }
 
     return ok({
       order_id: order.id,
       reference: order.reference,
       total: order.total,
       amount_due: order.amount_due,
+      pay_mode: payMode,
       // Seule la clé PUBLIQUE descend au navigateur. La privée reste ici.
-      public_key: env0(env, 'KKIAPAY_PUBLIC_KEY') || null,
+      public_key: payMode === 'online' ? env0(env, 'KKIAPAY_PUBLIC_KEY') : null,
       sandbox: env0(env, 'KKIAPAY_SANDBOX') === 'true',
     }, 201);
   } finally {
@@ -277,7 +316,7 @@ export async function listOrders({ status, limit }, env) {
 
   try {
     const rows = await sql`
-      SELECT o.id, o.reference, o.status, o.kind,
+      SELECT o.id, o.reference, o.status, o.kind, o.pay_mode,
              o.subtotal, o.shipping, o.total, o.amount_due,
              o.ship_name, o.ship_phone, o.ship_address, o.ship_city,
              o.ship_country, o.ship_note, o.notified_at, o.created_at,

@@ -16,7 +16,16 @@ Trois comptes à créer, tous gratuits :
 |---|---|---|
 | **Neon** | la base de données Postgres | [neon.tech](https://neon.tech) |
 | **Cloudflare** | l'hébergement du site et des fonctions | [dash.cloudflare.com/sign-up](https://dash.cloudflare.com/sign-up) |
-| **KkiaPay** | l'encaissement Mobile Money, Wave et carte | [kkiapay.me](https://kkiapay.me) |
+| **KkiaPay** ou **FedaPay** | l'encaissement en ligne — **plus tard** | [kkiapay.me](https://kkiapay.me) · [fedapay.com](https://fedapay.com) |
+
+> **Le paiement en ligne n'est pas un prérequis.** Le site démarre en mode
+> `offline` : la commande est enregistrée, l'atelier reçoit tout le détail sur
+> WhatsApp, et le client règle à la livraison ou par transfert Mobile Money.
+> C'est ainsi que fonctionnent la plupart des ateliers de Cotonou.
+>
+> Le compte marchand demande un dossier — pièce d'identité, IFU, parfois RCCM.
+> Ça peut prendre des semaines. Ne bloque pas le lancement pour ça : les étapes
+> 5, 6 (clés) et 9 (webhook) sont **facultatives** au premier déploiement.
 
 Et sur ta machine : **Node.js 20 ou plus**. Pour vérifier :
 
@@ -126,7 +135,17 @@ identifiant.
 
 ---
 
-## Étape 5 — Récupérer les clés KkiaPay
+## Étape 5 — Les clés du prestataire *(facultatif au démarrage)*
+
+**Passe cette étape si le compte marchand n'est pas encore activé.** Laisse
+`PAYMENT_MODE = "offline"` dans `wrangler.toml` et reprends à l'étape 7 : le
+site fonctionnera, simplement sans widget de paiement.
+
+> **Dossier bloqué ?** FedaPay propose un
+> [compte Travailleur Indépendant](https://docs.fedapay.com/introduction/fr/compte-fr)
+> qui ne demande **ni RCCM ni société enregistrée** — seulement une pièce
+> d'identité et un IFU. Limites : 10 transactions par semaine, 300 000 F par
+> transaction. Convertible en compte Business plus tard, sans repartir de zéro.
 
 Sur [app.kkiapay.me/dashboard](https://app.kkiapay.me/dashboard), menu
 **Développeurs**. Tu y trouves trois clés.
@@ -248,7 +267,14 @@ directement.
 
 ## Étape 10 — Commander pour de faux
 
-Toujours en `KKIAPAY_SANDBOX = "true"`.
+**En mode `offline`** — ajoute une paire au panier, passe commande, choisis
+« à la livraison ». Tu dois arriver sur la confirmation avec une référence, et
+`/api/admin/orders` doit retourner la commande en statut `to_confirm` avec un
+`whatsapp_link` prêt à cliquer. Clique-le : WhatsApp s'ouvre avec le détail
+complet et la consigne d'encaissement. C'est tout ce dont l'atelier a besoin
+pour travailler.
+
+**En mode `online`**, toujours en `KKIAPAY_SANDBOX = "true"`.
 
 1. Va sur le site, ajoute une paire au panier.
 2. Passe commande avec tes vraies coordonnées.

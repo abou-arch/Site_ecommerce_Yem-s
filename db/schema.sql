@@ -35,7 +35,8 @@ COMMENT ON COLUMN customers.phone IS
 DO $$ BEGIN
   CREATE TYPE order_status AS ENUM (
     'pending',     -- créée, paiement pas encore confirmé
-    'paid',        -- paiement vérifié auprès de KkiaPay
+    'to_confirm',  -- règlement hors ligne : l'atelier rappelle pour convenir
+    'paid',        -- paiement vérifié auprès du prestataire
     'deposit',     -- acompte encaissé (sur-mesure), solde à la livraison
     'in_workshop', -- en production
     'shipped',
@@ -49,12 +50,24 @@ DO $$ BEGIN
   CREATE TYPE order_kind AS ENUM ('standard', 'bespoke', 'mixed');
 EXCEPTION WHEN duplicate_object THEN NULL; END $$;
 
+-- Comment le client règle. Tant que l'atelier n'a pas de compte marchand
+-- activé, tout passe par 'delivery' ou 'transfer' : la commande est bien
+-- enregistrée, le règlement se convient sur WhatsApp.
+DO $$ BEGIN
+  CREATE TYPE payment_mode AS ENUM (
+    'online',     -- widget du prestataire, vérifié côté serveur
+    'delivery',   -- espèces ou Mobile Money à la remise
+    'transfer'    -- transfert Mobile Money avant expédition
+  );
+EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+
 CREATE TABLE IF NOT EXISTS orders (
   id              BIGSERIAL PRIMARY KEY,
   reference       TEXT NOT NULL,            -- YMS-2608-0042, montré au client
   customer_id     BIGINT REFERENCES customers(id) ON DELETE SET NULL,
   status          order_status NOT NULL DEFAULT 'pending',
   kind            order_kind   NOT NULL DEFAULT 'standard',
+  pay_mode        payment_mode NOT NULL DEFAULT 'online',
 
   -- Montants en francs CFA, entiers : le FCFA n'a pas de sous-unité,
   -- et un entier évite tout arrondi flottant sur les totaux.

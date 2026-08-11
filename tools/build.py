@@ -875,8 +875,36 @@ class Builder:
                     placeholder="Un repère, un horaire, une consigne…"></textarea>
         </label>
 
+        <fieldset class="pay-choice">
+          <legend>Comment souhaitez-vous régler&nbsp;?</legend>
+
+          <label class="pay-opt" data-pay-delivery>
+            <input type="radio" name="pay_mode" value="delivery" checked>
+            <span>
+              <strong>À la livraison</strong>
+              Espèces ou Mobile Money au moment de la remise. Vous ne payez
+              rien avant d'avoir la paire en main.
+            </span>
+          </label>
+
+          <label class="pay-opt" data-pay-transfer>
+            <input type="radio" name="pay_mode" value="transfer">
+            <span>
+              <strong>Par transfert Mobile Money</strong>
+              L'atelier vous envoie son numéro MTN ou Moov sur WhatsApp.
+              Nécessaire pour le sur-mesure, qui engage la matière.
+            </span>
+          </label>
+
+          <p class="field__hint" data-bespoke-notice hidden>
+            Votre panier contient une pièce sur-mesure : seul le transfert est
+            possible, avec un acompte de {self.site['bespoke']['deposit']}&nbsp;%.
+            Le solde se règle à la livraison.
+          </p>
+        </fieldset>
+
         <button class="btn btn--full" type="submit" data-checkout-submit>
-          Payer maintenant
+          Valider ma commande
           <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
         </button>
 
@@ -884,7 +912,7 @@ class Builder:
 
         <p class="summary__note">
           En validant, vous acceptez d'être recontacté sur WhatsApp pour la confirmation
-          et le suivi de la livraison. Aucun numéro de carte ne transite par nos serveurs.
+          et le suivi de la livraison. Aucune donnée bancaire ne transite par nos serveurs.
         </p>
       </form>
     </div>
@@ -898,12 +926,13 @@ class Builder:
           <span data-cart-subtotal>—</span>
         </div>
         <p class="summary__note">
-          Le montant exact, frais de livraison compris, est calculé par l'atelier
-          au moment du paiement et s'affiche dans la fenêtre KkiaPay.
+          Le montant définitif, frais de livraison compris, vous est confirmé
+          par l'atelier sur WhatsApp avant tout règlement.
         </p>
         <ul class="cfg-trust">
-          <li><svg aria-hidden="true"><use href="#i-card"></use></svg>MTN MoMo, Moov, Wave et carte bancaire</li>
+          <li><svg aria-hidden="true"><use href="#i-whatsapp"></use></svg>L'atelier vous rappelle dans la journée</li>
           <li><svg aria-hidden="true"><use href="#i-shield"></use></svg>Remboursement intégral si la paire ne va pas</li>
+          <li><svg aria-hidden="true"><use href="#i-truck"></use></svg>Cotonou &amp; Abidjan en 48&nbsp;h</li>
         </ul>
       </div>
     </aside>
@@ -931,10 +960,8 @@ class Builder:
 
       <p class="done__ref" data-order-ref>—</p>
 
-      <p class="lede mx-auto text-center" data-reveal>
+      <p class="lede mx-auto text-center" data-reveal data-done-message>
         Gardez cette référence : elle suffit à retrouver votre commande.
-        L'atelier vous écrit sur WhatsApp dans la journée pour confirmer
-        la date de livraison.
       </p>
 
       <div class="cta__actions" data-reveal>
@@ -949,11 +976,35 @@ class Builder:
 </section>
 
 <script>
-  // La référence arrive en paramètre d'URL, écrite par le tunnel de commande.
+  // Référence et mode de règlement arrivent en paramètres d'URL, écrits par le
+  // tunnel de commande. Les deux sont validés avant affichage : ils viennent
+  // de la barre d'adresse, donc de l'utilisateur.
   (function () {{
-    var ref = new URLSearchParams(location.search).get('ref');
-    var el = document.querySelector('[data-order-ref]');
-    if (el) el.textContent = ref && /^[A-Z0-9-]{{6,24}}$/.test(ref) ? ref : 'Référence envoyée sur WhatsApp';
+    var params = new URLSearchParams(location.search);
+
+    var ref = params.get('ref');
+    var refEl = document.querySelector('[data-order-ref]');
+    if (refEl) {{
+      refEl.textContent = ref && /^[A-Z0-9-]{{6,24}}$/.test(ref)
+        ? ref : 'Référence envoyée sur WhatsApp';
+    }}
+
+    var messages = {{
+      online: "Votre paiement est enregistré. L'atelier vous écrit sur WhatsApp "
+            + "dans la journée pour confirmer la date de livraison.",
+      delivery: "Vous ne payez rien pour l'instant. L'atelier vous appelle dans "
+              + "la journée pour confirmer la commande, puis vous réglez à la "
+              + "remise, en espèces ou par Mobile Money.",
+      transfer: "L'atelier vous écrit sur WhatsApp dans la journée avec son "
+              + "numéro Mobile Money. La production démarre dès réception de "
+              + "l'acompte."
+    }};
+
+    var mode = params.get('mode');
+    var msgEl = document.querySelector('[data-done-message]');
+    if (msgEl && messages[mode]) {{
+      msgEl.textContent = 'Gardez cette référence. ' + messages[mode];
+    }}
   }})();
 </script>"""
 
