@@ -129,17 +129,35 @@ sans compte marchand.
 npm run deploy
 ```
 
-Wrangler affiche une adresse à la fin, du type
-`https://yems.TON-COMPTE.workers.dev`.
+### Note bien ton adresse
 
-**Ouvre-la.** Tu dois voir la homepage avec la vidéo. Clique sur *Chaussures*,
-puis sur un produit.
+Wrangler termine par quelques lignes dont celle-ci :
 
-**Puis ce test, le plus important.** Remplace l'adresse et le jeton par les
-tiens :
+```
+Deployed yems triggers
+  https://yems.a1b2c3.workers.dev      ← LA TIENNE sera différente
+```
+
+**Copie cette adresse**, tu vas t'en servir plusieurs fois. Si tu la perds :
+[dash.cloudflare.com](https://dash.cloudflare.com) → **Compute (Workers)** →
+clique sur `yems`, elle est affichée en haut.
+
+**Ouvre-la dans ton navigateur.** Tu dois voir la homepage avec la vidéo.
+Clique sur *Chaussures*, puis sur un produit.
+
+### Le test qui compte
+
+Dans la commande ci-dessous, remplace **les deux parties en majuscules** par
+tes vraies valeurs — l'adresse que tu viens de copier, et ton jeton admin :
 
 ```powershell
-curl.exe https://yems.TON-COMPTE.workers.dev/api/admin/orders -H "Authorization: Bearer TON_ADMIN_TOKEN"
+curl.exe https://TON-ADRESSE.workers.dev/api/admin/orders -H "Authorization: Bearer TON-JETON"
+```
+
+Concrètement, ça donnera quelque chose comme :
+
+```powershell
+curl.exe https://yems.a1b2c3.workers.dev/api/admin/orders -H "Authorization: Bearer 4f8a2c...9e1b"
 ```
 
 Réponse attendue :
@@ -198,6 +216,7 @@ dans le navigateur.
 | `aucune chaîne de connexion` | idem | idem |
 | erreur SSL au premier test | chaîne Neon « pooled » | reprendre la chaîne **directe**, sans `-pooler` |
 | `accès refusé` avec le bon jeton | `ADMIN_TOKEN` mal enregistré | refaire `npx wrangler secret put ADMIN_TOKEN` |
+| `Could not resolve host: TON-ADRESSE...` | le texte à remplacer a été copié tel quel | mettre ta vraie adresse, celle affichée par `npm run deploy` |
 | `Assertion failed: !(handle->flags…)` | bug Node sur Windows | sans conséquence, à ignorer |
 | le site affiche du code source | `.assetsignore` déplacé | il doit rester à la racine du projet |
 
