@@ -1,0 +1,146 @@
+/* ==========================================================================
+   YEM'S — Motion
+   Cinq gestes seulement, tous réversibles sous prefers-reduced-motion :
+   1. le fil de sellier qui se coud au scroll
+   2. les titres qui montent ligne par ligne derrière un masque
+   3. les photos qui se dévoilent par volet
+   4. les chiffres qui s'incrémentent
+   5. les boutons magnétiques
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. LE FIL QUI SE COUD
+   -------------------------------------------------------------------------- */
+.seam {
+  position: relative;
+  height: clamp(90px, 12vw, 190px);
+  width: 100%;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.seam svg { width: 100%; height: 100%; display: block; }
+
+/* vector-effect garde une épaisseur de fil constante malgré l'étirement du viewBox */
+.seam__thread {
+  fill: none;
+  stroke: var(--brass-500);
+  stroke-width: 2;
+  stroke-dasharray: 13 10;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+
+/* Le masque révèle le fil de gauche à droite ; --seam va de 1 (rien) à 0 (tout) */
+.seam__reveal {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 30;
+  stroke-dasharray: 1;
+  stroke-dashoffset: var(--seam, 1);
+  vector-effect: non-scaling-stroke;
+}
+
+.seam--light .seam__thread { stroke: var(--brass-600); }
+
+/* --------------------------------------------------------------------------
+   2. TITRES LIGNE PAR LIGNE
+   -------------------------------------------------------------------------- */
+[data-lines] .line {
+  display: block;
+  overflow: hidden;
+  /* laisse respirer jambages et italiques sans décaler la mise en page */
+  padding-bottom: 0.16em;
+  margin-bottom: -0.16em;
+}
+
+[data-lines] .line > span {
+  display: block;
+  transform: translateY(115%);
+  opacity: 0;
+  transition:
+    transform 1050ms var(--ease-out-expo),
+    opacity 620ms linear;
+  transition-delay: calc(var(--i, 0) * 115ms);
+}
+
+[data-lines].is-lines-in .line > span {
+  transform: none;
+  opacity: 1;
+}
+
+/* --------------------------------------------------------------------------
+   3. PHOTOS EN VOLET
+   -------------------------------------------------------------------------- */
+[data-shot] img {
+  clip-path: inset(0 0 100% 0);
+  transform: scale(1.14);
+  transition:
+    clip-path 1150ms var(--ease-out-expo),
+    transform 1500ms var(--ease-out-expo);
+}
+
+[data-shot].is-shown img {
+  clip-path: inset(0 0 0 0);
+  transform: none;
+}
+
+/* Le fil de sellier descend avec le volet, comme l'aiguille qui pique */
+[data-shot]::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 2px;
+  z-index: 3;
+  opacity: 0;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    to right,
+    var(--brass-400) 0, var(--brass-400) 11px,
+    transparent 11px, transparent 20px);
+}
+
+[data-shot].is-shown::before {
+  animation: seam-run 1150ms var(--ease-out-expo) forwards;
+}
+
+@keyframes seam-run {
+  0%   { opacity: 0; top: 0; }
+  10%  { opacity: 1; }
+  85%  { opacity: 1; }
+  100% { opacity: 0; top: 100%; }
+}
+
+/* Zoom lent au survol d'une carte produit */
+.pcard .pshot img,
+.hero__shot img { will-change: transform; }
+
+/* une fois le volet ouvert, le survol reprend la main sur une durée courte */
+[data-shot].is-shown img { transition: transform 850ms var(--ease-out-expo); }
+.pcard:hover .pshot.is-shown img { transform: scale(1.045); }
+
+/* --------------------------------------------------------------------------
+   4. CHIFFRES
+   -------------------------------------------------------------------------- */
+[data-count] { font-variant-numeric: tabular-nums; }
+
+/* --------------------------------------------------------------------------
+   5. BOUTONS MAGNÉTIQUES
+   -------------------------------------------------------------------------- */
+.btn {
+  will-change: transform;
+  transform: translate3d(var(--mx, 0px), calc(var(--my, 0px) + var(--lift, 0px)), 0);
+}
+
+/* --------------------------------------------------------------------------
+   RETRAIT COMPLET SI L'UTILISATEUR LE DEMANDE
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  [data-lines] .line > span { transform: none; opacity: 1; }
+  [data-shot] img { clip-path: none; transform: none; }
+  [data-shot]::before { display: none; }
+  .seam__reveal { stroke-dashoffset: 0; }
+  .btn { transform: none; }
+}

@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Yem's — Maroquinerie & souliers sur-mesure | Différents par les détails</title>
+<meta name="description" content="Yem's — souliers, ceintures et portefeuilles cousus à la main à Cotonou. Point sellier, cuir pleine fleur, semelle ressemelable. Sur-mesure en 14 à 20 jours, livré au Bénin et en Côte d'Ivoire.">
+<meta name="theme-color" content="#14100D">
+
+<meta property="og:title" content="Yem's — Personne ne verra la couture. Tout le monde verra la différence.">
+<meta property="og:description" content="Souliers, ceintures et portefeuilles cousus à la main à Cotonou. Sur-mesure, carte d'authenticité numérotée, une retouche offerte.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fr_FR">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="assets/css/base.css">
+<link rel="stylesheet" href="assets/css/components.css">
+<link rel="stylesheet" href="assets/css/home.css">
+<link rel="stylesheet" href="assets/css/motion.css">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2314100D'/%3E%3Cpath d='M8 9l8 8 8-8M16 17v7' stroke='%23C9A46A' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+</head>
+<body>
+
+<a class="skip-link" href="#main">Aller au contenu</a>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     DÉFINITIONS SVG PARTAGÉES
+     ═══════════════════════════════════════════════════════════════ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <!-- Logo Yem's : monogramme Y + point de sellier -->
+    <symbol id="i-logo" viewBox="0 0 40 40">
+      <rect x="1" y="1" width="38" height="38" rx="8" fill="none" stroke="currentColor" stroke-opacity=".28"/>
+      <path d="M11 11.5l9 9.5 9-9.5" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M20 21v8" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"/>
+      <path d="M14 32.5h12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-dasharray="3 3" stroke-opacity=".75"/>
+    </symbol>
+
+
+    <!-- Icônes UI -->
+    <symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M5 12h14M13 6l6 6-6 6"/>
+    </symbol>
+    <symbol id="i-arrow-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M19 12H5M11 6l-6 6 6 6"/>
+    </symbol>
+    <symbol id="i-bag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M6 8h12l1 12H5L6 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/>
+    </symbol>
+    <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4 12.5l5.5 5.5L20 7"/>
+    </symbol>
+    <symbol id="i-star" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 2l3 6.6 7 .9-5.2 4.8 1.4 7L12 18l-6.2 3.3 1.4-7L2 9.5l7-.9L12 2z"/>
+    </symbol>
+    <symbol id="i-whatsapp" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2zm5.6 14.1c-.2.7-1.4 1.3-2 1.4-.5.1-1.1.1-1.8-.1-.4-.1-1-.3-1.7-.6-3-1.3-4.9-4.3-5-4.5-.2-.2-1.2-1.6-1.2-3s.7-2.1 1-2.4c.3-.3.6-.4.8-.4h.6c.2 0 .5-.1.7.5l1 2.3c.1.2.1.4 0 .6l-.4.5-.3.4c-.1.1-.3.3-.1.6.1.3.7 1.2 1.5 1.9 1 .9 1.9 1.2 2.2 1.3.3.1.4.1.6-.1l.8-1c.2-.2.4-.2.6-.1l2.2 1c.2.1.4.2.5.3.1.2.1.6-.1 1.3z"/>
+    </symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 3l8 3v6c0 5-3.5 8.2-8 9-4.5-.8-8-4-8-9V6l8-3z"/><path d="M9 12l2 2 4-4"/>
+    </symbol>
+    <symbol id="i-needle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 21l7-7"/><path d="M10 14L20 4"/><circle cx="20.5" cy="3.5" r="1.5"/><path d="M12 12c2 1 4 1 6-1" stroke-dasharray="2 2"/>
+    </symbol>
+    <symbol id="i-card" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="M2.5 10h19"/><path d="M6 15h4"/>
+    </symbol>
+    <symbol id="i-truck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M2 6h11v10H2z"/><path d="M13 9h4l4 4v3h-8z"/><circle cx="6.5" cy="18.5" r="1.8"/><circle cx="17.5" cy="18.5" r="1.8"/>
+    </symbol>
+  </defs>
+</svg>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     HEADER
+     ═══════════════════════════════════════════════════════════════ -->
+<header class="header" id="header">
+  <div class="container header__inner">
+    <a class="logo" href="index.html" aria-label="Yem's — accueil">
+      <svg class="logo__mark" aria-hidden="true"><use href="#i-logo"></use></svg>
+      <span>
+        <span class="logo__word">YEM'S</span>
+        <span class="logo__tag">Différents par les détails</span>
+      </span>
+    </a>
+
+    <nav class="nav" aria-label="Navigation principale">
+      <a class="nav__link" href="#collections">Collections</a>
+      <a class="nav__link" href="#sur-mesure">Sur-mesure</a>
+      <a class="nav__link" href="#offres">Offres</a>
+      <a class="nav__link" href="#garantie">Garantie</a>
+      <a class="nav__link" href="#questions">Questions</a>
+    </nav>
+
+    <div class="header__actions">
+      <a class="btn btn--sm" href="#sur-mesure">Configurer</a>
+      <a class="icon-btn" href="panier.html" aria-label="Panier (0 article)">
+        <svg aria-hidden="true"><use href="#i-bag"></use></svg>
+        <span class="cart-count" data-cart-count>0</span>
+      </a>
+      <button class="burger" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Ouvrir le menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobile-menu">
+  <a href="#collections">Collections</a>
+  <a href="#sur-mesure">Sur-mesure</a>
+  <a href="#offres">Offres</a>
+  <a href="#garantie">Garantie</a>
+  <a href="#questions">Questions</a>
+  <a class="btn" href="#sur-mesure" style="margin-top:auto">Configurer ma paire</a>
+</div>
+
+<main id="main">
+
+<!-- ═══════════════════════════════════════════════════════════════
+     HERO
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="hero grain">
+  <!-- TODO client : remplacer ce dégradé par la vidéo hero
+       <video autoplay muted loop playsinline poster="assets/img/hero-poster.jpg">
+         <source src="assets/video/hero.mp4" type="video/mp4">
+       </video> -->
+  <div class="hero__media" aria-hidden="true"></div>
+
+  <svg class="hero__stitching" aria-hidden="true" preserveAspectRatio="none" viewBox="0 0 1440 900">
+    <path d="M-40 640 C 320 520, 560 700, 900 560 S 1340 420, 1520 470"
+          fill="none" stroke="#C9A46A" stroke-width="1.5" stroke-dasharray="12 10" opacity=".5"/>
+    <path d="M-40 690 C 320 570, 560 750, 900 610 S 1340 470, 1520 520"
+          fill="none" stroke="#C9A46A" stroke-width="1.5" stroke-dasharray="12 10" opacity=".28"/>
+  </svg>
+
+  <div class="container hero__inner">
+    <div>
+      <span class="eyebrow" data-reveal>Atelier — Cotonou &amp; Abidjan</span>
+      <h1 data-lines>
+        Personne ne verra la couture.<br>Tout le monde verra <span class="italic-accent">la différence</span>.
+      </h1>
+      <p class="lede" data-reveal style="--reveal-delay:520ms">
+        Souliers, ceintures et portefeuilles cousus à la main, pièce par pièce.
+        Ce qui se voit de loin se ressemble et tout se joue de près, au point sellier,
+        au grain du cuir, à la façon dont la semelle est montée.
+      </p>
+      <div class="hero__actions" data-reveal style="--reveal-delay:600ms">
+        <a class="btn" href="#collections">
+          Voir les quatre lignes
+          <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
+        </a>
+        <a class="btn btn--ghost" href="#sur-mesure">Composer ma paire</a>
+      </div>
+
+      <div class="hero__stats" data-reveal style="--reveal-delay:680ms">
+        <div class="stat">
+          <div class="stat__value"><span data-count="14">0</span>–<span data-count="20">0</span> j</div>
+          <div class="stat__label">production sur-mesure</div>
+        </div>
+        <div class="stat">
+          <div class="stat__value"><span data-count="48">0</span> h</div>
+          <div class="stat__label">Cotonou &amp; Abidjan</div>
+        </div>
+        <div class="stat">
+          <div class="stat__value"><span data-count="1">0</span> retouche</div>
+          <div class="stat__label">offerte après essayage</div>
+        </div>
+      </div>
+    </div>
+
+    <aside class="hero__aside" data-reveal style="--reveal-delay:760ms">
+      <figure class="hero__shot" data-shot>
+        <span class="badge badge--green"><span class="badge__dot"></span>Au Bénin</span>
+        <picture>
+          <source srcset="assets/img/loafer-ouidah.webp" type="image/webp">
+          <img src="assets/img/loafer-ouidah.jpg" width="807" height="1008"
+               alt="Loafer Ouidah en cuir noir, semelle crantée, vu de trois quarts">
+        </picture>
+        <figcaption class="hero__caption">
+          <span>
+            <strong>Loafer Ouidah</strong>
+            <span>Cuir pleine fleur · semelle crantée</span>
+          </span>
+          <b>85 000 F</b>
+        </figcaption>
+      </figure>
+      <p class="text-muted" style="font-size:var(--fs-sm)">
+        Mobile Money MTN &amp; Moov, Wave ou carte bancaire <br> encaissement sécurisé par KkiaPay.
+      </p>
+    </aside>
+  </div>
+
+  <div class="scroll-hint" aria-hidden="true">
+    <span>Faire défiler</span>
+    <span class="scroll-hint__line"></span>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BANDEAU DÉFILANT
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee__track">
+    <span class="marquee__item">Point sellier deux aiguilles</span>
+    <span class="marquee__item">Cuir pleine fleur tanné végétal</span>
+    <span class="marquee__item">Semelle cousue, ressemelable</span>
+    <span class="marquee__item">Numéro gravé sur chaque pièce</span>
+    <span class="marquee__item">Cotonou &amp; Abidjan en 48 h</span>
+    <span class="marquee__item">1 retouche offerte</span>
+    <span class="marquee__item">Point sellier deux aiguilles</span>
+    <span class="marquee__item">Cuir pleine fleur tanné végétal</span>
+    <span class="marquee__item">Semelle cousue, ressemelable</span>
+    <span class="marquee__item">Numéro gravé sur chaque pièce</span>
+    <span class="marquee__item">Cotonou &amp; Abidjan en 48 h</span>
+    <span class="marquee__item">1 retouche offerte</span>
+  </div>
+</div>
+
+<!-- Le fil se coud au fil du scroll -->
+<div class="seam" data-seam aria-hidden="true">
+  <svg viewBox="0 0 1440 160" preserveAspectRatio="none">
+    <defs>
+      <mask id="seam-a">
+        <path class="seam__reveal" pathLength="1" d="M0 118 C 280 118, 400 34, 720 34 S 1160 118, 1440 118"/>
+      </mask>
+    </defs>
+    <path class="seam__thread" mask="url(#seam-a)" d="M0 118 C 280 118, 400 34, 720 34 S 1160 118, 1440 118"/>
+  </svg>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     RÉCIT — problème externe → interne → philosophique → solution
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="section section--light" id="manifeste">
+  <div class="container story__grid story">
+    <div data-reveal>
+      <span class="eyebrow">Ce dont personne ne parle</span>
+      <p class="story__lead" data-lines style="margin-top:var(--sp-4)">
+        Une semelle ne lâche jamais<br>un mardi matin.
+      </p>
+      <p>
+        Elle lâche le samedi. Entre la cérémonie et la salle, au moment précis où l'on vous
+        présente à quelqu'un. Le reste de la journée, vous marchez autrement. Le pas plus court,
+        le regard qui redescend vers vos pieds toutes les cinq minutes.
+      </p>
+      <p>
+        Et ce n'est pas la chaussure, le vrai problème. C'est d'avoir payé trois fois dans l'année
+        pour le même résultat. C'est de finir par se dire que le solide vient forcément d'ailleurs,
+        et qu'ici, on fait avec.
+      </p>
+
+      <div class="story__turn">
+        <p>
+          Nous fabriquons à Cotonou. Cousu main, semelle remplaçable, numéro gravé sous la trépointe.
+          <strong>Rien de tout cela ne se promet et ça se vérifie sur la pièce.</strong>
+        </p>
+      </div>
+
+      <a class="link-underline" href="#collections" style="margin-top:var(--sp-6)">
+        Voir comment c'est monté
+        <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
+      </a>
+    </div>
+
+    <ul class="detail-list" data-reveal style="--reveal-delay:120ms">
+      <li class="detail-list__item">
+        <span class="detail-list__idx">01</span>
+        <div>
+          <h3>Le point sellier</h3>
+          <p>Deux aiguilles, un seul fil de lin, chaque point noué séparément. Une couture machine se déroule sur toute sa longueur dès qu'un point casse ; celle-ci s'arrête au point suivant.</p>
+        </div>
+      </li>
+      <li class="detail-list__item">
+        <span class="detail-list__idx">02</span>
+        <div>
+          <h3>Le cuir</h3>
+          <p>Pleine fleur tannée végétal, 1,8 à 2 mm. Il marque, il fonce, il prend la trace de vos plis. Il ne se craquelle pas comme une croûte enduite au bout d'une saison des pluies.</p>
+        </div>
+      </li>
+      <li class="detail-list__item">
+        <span class="detail-list__idx">03</span>
+        <div>
+          <h3>Le montage</h3>
+          <p>Semelle cousue sur trépointe, jamais collée. Quand elle s'use, on la découd et on en remonte une neuve. La paire repart pour un tour au lieu d'aller à la poubelle.</p>
+        </div>
+      </li>
+      <li class="detail-list__item">
+        <span class="detail-list__idx">04</span>
+        <div>
+          <h3>Le numéro</h3>
+          <p>Chaque pièce reçoit un numéro et sa carte. Revenez dans quatre ans : nous retrouvons votre pointure, votre cuir et la forme sur laquelle elle a été montée.</p>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     COLLECTIONS
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="section" id="collections">
+  <div class="container">
+    <div class="section-head section-head--split" data-reveal>
+      <div>
+        <span class="eyebrow">Les lignes</span>
+        <h2 data-lines style="margin-top:var(--sp-4)">Quatre formes.<br>Une seule construction.</h2>
+      </div>
+      <p class="lede" style="max-width:40ch">
+        Même cuir, même point sellier, même semelle remplaçable sur les quatre.
+        Vous choisissez la forme selon ce que vous en faites et pas selon ce qu'elle vaut.
+      </p>
+    </div>
+
+    <div class="collections__grid">
+      <!-- LOAFER -->
+      <article class="pcard" data-reveal>
+        <a href="produit-loafer.html" aria-label="Découvrir le loafer Ouidah">
+          <div class="pshot" data-shot>
+            <span class="badge badge--green pshot__badge"><span class="badge__dot"></span>Au Bénin</span>
+            <picture>
+              <source srcset="assets/img/loafer-ouidah.webp" type="image/webp">
+              <img src="assets/img/loafer-ouidah.jpg" width="807" height="1008" loading="lazy" decoding="async"
+                   alt="Loafer Ouidah en cuir noir avec bride, semelle crantée">
+            </picture>
+          </div>
+        </a>
+        <div class="pcard__body">
+          <div class="pcard__row">
+            <h3 class="pcard__name">Loafer Ouidah</h3>
+            <span class="pcard__price">85 000 F</span>
+          </div>
+          <p class="pcard__desc">Sans lacet, non doublé : il se met en quatre secondes et ne serre pas à 14 h. Celui qu'on porte cinq jours sur sept.</p>
+        </div>
+      </article>
+
+      <!-- DERBY -->
+      <article class="pcard" data-reveal style="--reveal-delay:90ms">
+        <a href="produit-derby.html" aria-label="Découvrir le derby Cotonou">
+          <div class="pshot" data-shot>
+            <span class="badge badge--amber pshot__badge"><span class="badge__dot"></span>En route</span>
+            <picture>
+              <source srcset="assets/img/derby-cotonou.webp" type="image/webp">
+              <img src="assets/img/derby-cotonou.jpg" width="992" height="1240" loading="lazy" decoding="async"
+                   alt="Derby Cotonou en cuir cognac, laçage ouvert, couture apparente sur l'avant">
+            </picture>
+          </div>
+        </a>
+        <div class="pcard__body">
+          <div class="pcard__row">
+            <h3 class="pcard__name">Derby Cotonou</h3>
+            <span class="pcard__price">98 000 F</span>
+          </div>
+          <p class="pcard__desc">Laçage ouvert : le coup de pied fort passe, le pied fin se rattrape au laçage. La forme qui pardonne le plus.</p>
+        </div>
+      </article>
+
+      <!-- BOOT -->
+      <article class="pcard" data-reveal style="--reveal-delay:180ms">
+        <a href="produit-boot.html" aria-label="Découvrir la boot Atakora">
+          <div class="pshot" data-shot>
+            <span class="badge badge--green pshot__badge"><span class="badge__dot"></span>Au Bénin</span>
+            <picture>
+              <source srcset="assets/img/boot-atakora.webp" type="image/webp">
+              <img src="assets/img/boot-atakora.jpg" width="796" height="996" loading="lazy" decoding="async"
+                   alt="Boot Atakora en cuir noir à élastiques latéraux, vue de dessus">
+            </picture>
+          </div>
+        </a>
+        <div class="pcard__body">
+          <div class="pcard__row">
+            <h3 class="pcard__name">Boot Atakora</h3>
+            <span class="pcard__price">125 000 F</span>
+          </div>
+          <p class="pcard__desc">Tige montante, élastiques latéraux, semelle gomme. Elle tient sur le bitume mouillé de juin comme sur la latérite de janvier.</p>
+        </div>
+      </article>
+
+      <!-- RICHELIEU -->
+      <article class="pcard" data-reveal style="--reveal-delay:270ms">
+        <a href="produit-richelieu.html" aria-label="Découvrir le richelieu Abidjan">
+          <div class="pshot" data-shot>
+            <span class="badge badge--red pshot__badge"><span class="badge__dot"></span>Indisponible</span>
+            <picture>
+              <source srcset="assets/img/richelieu-abidjan.webp" type="image/webp">
+              <img src="assets/img/richelieu-abidjan.jpg" width="1013" height="1266" loading="lazy" decoding="async"
+                   alt="Richelieu Abidjan en cuir noir, laçage fermé et empiècement façon croco perforé">
+            </picture>
+          </div>
+        </a>
+        <div class="pcard__body">
+          <div class="pcard__row">
+            <h3 class="pcard__name">Richelieu Abidjan</h3>
+            <span class="pcard__price">135 000 F</span>
+          </div>
+          <p class="pcard__desc">Laçage fermé, empiècement fleuri. La pièce de cérémonie — en sur-mesure uniquement, sur vos mesures et vos initiales.</p>
+        </div>
+      </article>
+    </div>
+
+    <p class="text-muted text-center" style="margin-top:var(--sp-7);font-size:var(--fs-sm)">
+      <span class="todo-note">À valider</span>
+      &nbsp; Prix indicatifs en FCFA — à confirmer avant mise en ligne.
+    </p>
+  </div>
+</section>
+
+<!-- Le fil se coud au fil du scroll -->
+<div class="seam" data-seam aria-hidden="true">
+  <svg viewBox="0 0 1440 160" preserveAspectRatio="none">
+    <defs>
+      <mask id="seam-b">
+        <path class="seam__reveal" pathLength="1" d="M0 40 C 300 40, 380 126, 720 126 S 1140 40, 1440 40"/>
+      </mask>
+    </defs>
+    <path class="seam__thread" mask="url(#seam-b)" d="M0 40 C 300 40, 380 126, 720 126 S 1140 40, 1440 40"/>
+  </svg>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SUR-MESURE
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="section bespoke grain" id="sur-mesure">
+  <div class="container bespoke__grid">
+    <div data-reveal>
+      <span class="eyebrow">Le sur-mesure</span>
+      <h2 data-lines style="margin-top:var(--sp-4)">Si aucune pointure ne vous va,<br><span class="italic-accent">ce n'est pas</span> votre pied</h2>
+      <p class="lede" style="margin-top:var(--sp-5)">
+        Un 43 ne veut rien dire pour un pied large ou un coup de pied fort. Le sur-mesure
+        n'est pas un luxe de vitrine : c'est la réponse normale à un pied qui ne rentre
+        dans aucune grille standard.
+      </p>
+
+      <div class="steps" style="margin-top:var(--sp-6)">
+        <div class="step">
+          <span class="step__num">1</span>
+          <div>
+            <h4>Vous composez — 2 minutes</h4>
+            <p>Modèle, cuir, doublure, semelle, couleur du fil, pointure, initiales gravées à chaud.</p>
+          </div>
+        </div>
+        <div class="step">
+          <span class="step__num">2</span>
+          <div>
+            <h4>La facture s'affiche — tout de suite</h4>
+            <p>Le prix se met à jour poste par poste pendant que vous choisissez. Pas de devis à attendre, pas de « on vous rappelle ».</p>
+          </div>
+        </div>
+        <div class="step">
+          <span class="step__num">3</span>
+          <div>
+            <h4>L'atelier reçoit votre WhatsApp</h4>
+            <p>Votre configuration part au propriétaire, qui confirme la faisabilité et la date de livraison dans la journée.</p>
+          </div>
+        </div>
+        <div class="step">
+          <span class="step__num">4</span>
+          <div>
+            <h4>Vous payez au moment qui vous va</h4>
+            <p>À la commande par Mobile Money, ou à la livraison une fois la paire dans vos mains. C'est vous qui tranchez.</p>
+          </div>
+        </div>
+      </div>
+
+      <a class="btn" href="configurateur.html" style="margin-top:var(--sp-6)">
+        Ouvrir le configurateur
+        <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
+      </a>
+    </div>
+
+    <!-- Aperçu du configurateur -->
+    <div class="bespoke__panel" data-reveal style="--reveal-delay:140ms">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:var(--sp-4);margin-bottom:var(--sp-5)">
+        <span class="badge badge--brass"><span class="badge__dot"></span>Aperçu configurateur</span>
+        <span class="text-muted" style="font-size:var(--fs-xs)">Réf. YMS-SM-0142</span>
+      </div>
+
+      <div class="pshot" data-shot style="aspect-ratio:16/10;margin-bottom:var(--sp-5)">
+        <picture>
+          <source srcset="assets/img/atelier-bicolore.webp" type="image/webp">
+          <img src="assets/img/atelier-bicolore.jpg" width="744" height="740" loading="lazy" decoding="async"
+               alt="Paire bicolore noir et blanc montée sur commande, exemple de personnalisation">
+        </picture>
+      </div>
+
+      <dl style="margin:0">
+        <div class="spec-row"><dt>Modèle</dt><dd>Derby Cotonou</dd></div>
+        <div class="spec-row"><dt>Cuir</dt><dd>Pleine fleur — cognac</dd></div>
+        <div class="spec-row">
+          <dt>Fil de couture</dt>
+          <dd>
+            <span class="swatches">
+              <span class="swatch swatch--espresso"></span>
+              <span class="swatch swatch--cognac is-active"></span>
+              <span class="swatch swatch--noir"></span>
+              <span class="swatch swatch--sable"></span>
+            </span>
+          </dd>
+        </div>
+        <div class="spec-row"><dt>Initiales</dt><dd>A. C.</dd></div>
+        <div class="spec-row"><dt>Délai</dt><dd>14 à 20 jours</dd></div>
+      </dl>
+
+      <hr class="stitch" style="margin-block:var(--sp-5)">
+
+      <div style="display:flex;align-items:baseline;justify-content:space-between;gap:var(--sp-4)">
+        <span class="text-muted" style="font-size:var(--fs-sm)">Total estimé</span>
+        <span class="offer__price" style="font-size:var(--fs-xl)">148 000 F</span>
+      </div>
+
+      <a class="btn btn--ghost btn--full" href="configurateur.html" style="margin-top:var(--sp-5)">
+        <svg aria-hidden="true"><use href="#i-whatsapp"></use></svg>
+        Envoyer à l'atelier
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     OFFRES
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="section" id="offres">
+  <div class="container">
+    <div class="section-head section-head--center" data-reveal>
+      <span class="eyebrow eyebrow--center">Trois façons d'entrer</span>
+      <h2 data-lines>La même paire.<br>Trois niveaux d'engagement.</h2>
+      <p class="lede text-center">
+        Aucune des trois n'est une version au rabais de l'autre : même cuir, même couture,
+        même semelle remplaçable. Ce qui change, c'est ce qu'on met autour.
+      </p>
+    </div>
+
+    <div class="offers">
+      <!-- ACHAT SIMPLE -->
+      <article class="offer" data-reveal>
+        <h3 class="offer__name">Achat simple</h3>
+        <p class="text-muted" style="font-size:var(--fs-sm)">Une paire en stock, chez vous cette semaine.</p>
+        <div class="offer__price">dès 85 000 F<small>la pièce</small></div>
+        <ul class="offer__list">
+          <li><svg aria-hidden="true"><use href="#i-check"></use></svg>Expédiée sous 72 h, pointure standard</li>
+          <li><svg aria-hidden="true"><use href="#i-check"></use></svg>Carte d'authenticité numérotée</li>
+          <li><svg aria-hidden="true"><use href="#i-check"></use></svg>Cotonou &amp; Abidjan en 48 h</li>
+          <li><svg aria-hidden="true"><use href="#i-check"></use></svg>Échange de pointure sous 7 jours</li>
+        </ul>
+        <a class="btn btn--ghost btn--full" href="#collections" style="margin-top:var(--sp-5)">Voir les modèles</a>
+      </article>
+
+      <!-- PACK -->
+      <article class="offer offer--featured" data-reveal style="--reveal-delay:90ms">
+        <span class="offer__flag">Le plus choisi</span>
+        <h3 class="offer__name">Pack complet</h3>
+        <p class="text-muted" style="font-size:var(--fs-sm)">La paire, la ceinture au même cuir, de quoi l'entretenir.</p>
+        <div class="offer__price">dès 128 000 F<small>22 000 F de moins qu'à la pièce</small></div>
+        <ul class="offer__list">
+          <li><svg aria-hidden="true"><use href="#i-check"></use></svg>1 paire + ceinture taillée dans la même peau</li>
+          <li><svg aria-hidden="true"><use href="#i-check"></use></svg>Crème, brosse et chiffon inclus</li>
+          <li><svg aria-hidden="true"><use href="#i-check"></use></svg>Embauchoirs bois — ce qui garde la forme</li>
+          <li><svg aria-hidden="true"><use href="#i-check"></use></svg>Livraison offerte</li>
+          <li><svg aria-hidden="true"><use href="#i-check"></use></svg>Carte d'authenticité numérotée</li>
+        </ul>
+        <a class="btn btn--full" href="#collections" style="margin-top:var(--sp-5)">Composer mon pack</a>
+      </article>
+
+      <!-- SUR-MESURE -->
+      <article class="offer" data-reveal style="--reveal-delay:180ms">
+        <h3 class="offer__name">Sur-mesure</h3>
+        <p class="text-muted" style="font-size:var(--fs-sm)">Vos mesures, votre cuir, votre fil, vos initiales.</p>
+        <div class="offer__price">dès 148 000 F<small>14 à 20 jours de production</small></div>
+        <ul class="offer__list">
+          <li><svg aria-hidden="true"><use href="#i-check"></use></svg>Prise de mesures guidée, chez vous</li>
+          <li><svg aria-hidden="true"><use href="#i-check"></use></svg>Cuir, doublure, semelle et fil au choix</li>
+          <li><svg aria-hidden="true"><use href="#i-check"></use></svg>Initiales gravées à chaud</li>
+          <li><svg aria-hidden="true"><use href="#i-check"></use></svg>1 retouche gratuite après essayage</li>
+          <li><svg aria-hidden="true"><use href="#i-check"></use></svg>Vous payez à la commande ou à la livraison</li>
+        </ul>
+        <a class="btn btn--ghost btn--full" href="configurateur.html" style="margin-top:var(--sp-5)">Configurer ma paire</a>
+      </article>
+    </div>
+
+    <p class="text-muted text-center" style="margin-top:var(--sp-6);font-size:var(--fs-sm);max-width:56ch;margin-inline:auto">
+      <span class="todo-note">Capacité à confirmer</span><br>
+      L'atelier lance un nombre limité de paires sur-mesure par mois. Au-delà, la commande
+      bascule sur le lancement suivant.
+    </p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     GARANTIE + CARTE D'AUTHENTICITÉ
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="section" id="garantie" style="background:var(--espresso-800)">
+  <div class="container assurance__grid">
+    <div class="auth-card grain" data-reveal aria-label="Exemple de carte d'authenticité">
+      <div class="auth-card__top">
+        <svg class="logo__mark" style="color:var(--brass-300)" aria-hidden="true"><use href="#i-logo"></use></svg>
+        <span class="auth-card__label">Carte d'authenticité</span>
+      </div>
+      <div>
+        <span class="auth-card__label">Pièce numéro</span>
+        <div class="auth-card__serial">N° 0142 / 250</div>
+      </div>
+      <div class="auth-card__foot">
+        <span>Derby Cotonou — cognac<br>Atelier Yem's · Cotonou</span>
+        <span style="text-align:right">Façonné le<br>12.03.2026</span>
+      </div>
+    </div>
+
+    <div data-reveal style="--reveal-delay:120ms">
+      <span class="eyebrow">L'engagement</span>
+      <h2 data-lines style="margin-top:var(--sp-4)">Le risque est de<br>notre côté, pas du vôtre</h2>
+      <p class="lede" style="margin-top:var(--sp-4)">
+        Commander une paire qu'on n'a jamais essayée, à un atelier qu'on ne connaît pas encore,
+        ça se paie d'avance en confiance. Alors nous prenons ce risque à votre place.
+      </p>
+
+      <ul class="guarantee-list">
+        <li>
+          <svg aria-hidden="true"><use href="#i-needle"></use></svg>
+          <div>
+            <strong>Une retouche gratuite</strong>
+            <p>Vous essayez, vous marchez avec, vous nous dites ce qui gêne. On reprend le montage sans supplément.</p>
+          </div>
+        </li>
+        <li>
+          <svg aria-hidden="true"><use href="#i-shield"></use></svg>
+          <div>
+            <strong>Remboursement intégral</strong>
+            <p>Si la retouche ne suffit pas, vous récupérez la totalité de votre argent. Pas 80 %, pas un avoir : la totalité.</p>
+          </div>
+        </li>
+        <li>
+          <svg aria-hidden="true"><use href="#i-card"></use></svg>
+          <div>
+            <strong>Carte numérotée par pièce</strong>
+            <p>Numéro, modèle, cuir, date de façonnage. C'est ce papier qui nous permet de refaire exactement la même dans trois ans.</p>
+          </div>
+        </li>
+        <li>
+          <svg aria-hidden="true"><use href="#i-truck"></use></svg>
+          <div>
+            <strong>Livraison sous-région</strong>
+            <p>Cotonou et Abidjan en 48 à 72 h. Autres villes du Bénin et de Côte d'Ivoire sous 5 jours.</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     OBJECTIONS
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="section" id="questions">
+  <div class="container">
+    <div class="section-head section-head--center" data-reveal>
+      <span class="eyebrow eyebrow--center">Ce qu'on nous demande avant de commander</span>
+      <h2>Les quatre vraies questions</h2>
+    </div>
+
+    <div class="faq" data-reveal style="--reveal-delay:100ms">
+      <details>
+        <summary>148 000 F pour des chaussures, c'est cher.</summary>
+        <div class="faq__body">
+          <p>Comparé à une paire à 45 000 F, oui. Comparé à cinq ans, non.</p>
+          <p>
+            Une paire à 45 000 F remplacée chaque année, c'est <strong>225 000 F sur cinq ans</strong>,
+            et quatre fois le désagrément de repartir en chercher une. Une paire cousue ressemelée
+            deux fois, c'est <strong>environ 162 000 F sur la même période</strong> — et vous avez
+            porté la bonne pendant cinq ans.
+          </p>
+          <p>La question n'est pas le prix de la paire. C'est le prix de l'année.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Vingt jours, c'est long.</summary>
+        <div class="faq__body">
+          <p>
+            C'est le temps qu'il faut au cuir pour prendre la forme du montage. On peut aller plus
+            vite : ça ne se voit pas à la livraison, ça se voit au bout de six mois, quand la tige
+            se déforme.
+          </p>
+          <p>
+            Si vous avez une date — un mariage, une cérémonie — dites-la dès la configuration.
+            L'atelier vous confirme si c'est tenable <strong>avant</strong> que vous payiez quoi que ce soit.
+          </p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Et si, à la livraison, ça ne me va pas ?</summary>
+        <div class="faq__body">
+          <p>
+            Une retouche gratuite d'abord : on reprend le montage sur vos remarques. Si ça ne suffit
+            toujours pas, <strong>remboursement intégral</strong>.
+          </p>
+          <p>
+            Le sur-mesure ne marche que si vous pouvez dire non à l'arrivée. Sinon ce n'est plus du
+            sur-mesure, c'est un pari.
+          </p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Je dois payer avant d'avoir vu la paire ?</summary>
+        <div class="faq__body">
+          <p>
+            Non. Vous configurez, la facture s'affiche à l'écran, l'atelier confirme sur WhatsApp —
+            et <strong>vous choisissez</strong> : payer maintenant par Mobile Money, ou payer à la livraison.
+          </p>
+          <p>
+            MTN MoMo, Moov, Wave et carte bancaire, encaissés par KkiaPay. Aucun numéro de carte ne
+            passe par nous.
+          </p>
+        </div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- Le fil se coud au fil du scroll -->
+<div class="seam" data-seam aria-hidden="true">
+  <svg viewBox="0 0 1440 160" preserveAspectRatio="none">
+    <defs>
+      <mask id="seam-c">
+        <path class="seam__reveal" pathLength="1" d="M0 132 C 240 40, 520 40, 720 84 S 1200 128, 1440 36"/>
+      </mask>
+    </defs>
+    <path class="seam__thread" mask="url(#seam-c)" d="M0 132 C 240 40, 520 40, 720 84 S 1200 128, 1440 36"/>
+  </svg>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     TÉMOIGNAGES
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="section section--light testimonials" id="temoignages">
+  <div class="container container--narrow">
+    <div class="section-head section-head--center" data-reveal>
+      <span class="eyebrow eyebrow--center">Ils portent Yem's</span>
+      <span class="todo-note">Témoignages à collecter</span>
+    </div>
+
+    <div class="tst-viewport" data-reveal style="--reveal-delay:100ms">
+      <div class="tst-track" data-tst-track>
+        <div class="tst-slide">
+          <div class="tst-stars" aria-label="5 sur 5">
+            <svg aria-hidden="true"><use href="#i-star"></use></svg><svg aria-hidden="true"><use href="#i-star"></use></svg><svg aria-hidden="true"><use href="#i-star"></use></svg><svg aria-hidden="true"><use href="#i-star"></use></svg><svg aria-hidden="true"><use href="#i-star"></use></svg>
+          </div>
+          <blockquote class="tst-quote">
+            « J'ai commandé le derby sur-mesure. Dix-sept jours, et le chaussant était exact du premier coup. »
+          </blockquote>
+          <div class="tst-meta"><strong>Prénom Nom</strong>Cotonou, Bénin</div>
+        </div>
+
+        <div class="tst-slide">
+          <div class="tst-stars" aria-label="5 sur 5">
+            <svg aria-hidden="true"><use href="#i-star"></use></svg><svg aria-hidden="true"><use href="#i-star"></use></svg><svg aria-hidden="true"><use href="#i-star"></use></svg><svg aria-hidden="true"><use href="#i-star"></use></svg><svg aria-hidden="true"><use href="#i-star"></use></svg>
+          </div>
+          <blockquote class="tst-quote">
+            « La ceinture assortie au soulier, même cuir, même fil. C'est là qu'on voit le travail. »
+          </blockquote>
+          <div class="tst-meta"><strong>Prénom Nom</strong>Abidjan, Côte d'Ivoire</div>
+        </div>
+
+        <div class="tst-slide">
+          <div class="tst-stars" aria-label="5 sur 5">
+            <svg aria-hidden="true"><use href="#i-star"></use></svg><svg aria-hidden="true"><use href="#i-star"></use></svg><svg aria-hidden="true"><use href="#i-star"></use></svg><svg aria-hidden="true"><use href="#i-star"></use></svg><svg aria-hidden="true"><use href="#i-star"></use></svg>
+          </div>
+          <blockquote class="tst-quote">
+            « Paiement Mobile Money, confirmation WhatsApp dans la minute. Rien à redire sur le suivi. »
+          </blockquote>
+          <div class="tst-meta"><strong>Prénom Nom</strong>Porto-Novo, Bénin</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tst-nav">
+      <button class="tst-btn" type="button" data-tst-prev aria-label="Témoignage précédent">
+        <svg aria-hidden="true"><use href="#i-arrow-left"></use></svg>
+      </button>
+      <div class="tst-dots" data-tst-dots></div>
+      <button class="tst-btn" type="button" data-tst-next aria-label="Témoignage suivant">
+        <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     CTA FINAL
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="section cta grain" id="contact">
+  <div class="container">
+    <span class="eyebrow eyebrow--center" data-reveal>La suite</span>
+    <h2 data-lines style="margin-top:var(--sp-4)">
+      Deux minutes pour composer.<br><span class="italic-accent">Vingt jours</span> pour la porter.
+    </h2>
+    <p class="lede mx-auto text-center" style="margin-top:var(--sp-5)" data-reveal>
+      Vous ne payez rien pour configurer, rien pour recevoir le chiffrage, rien tant que
+      l'atelier n'a pas confirmé la date. Commencez par voir ce que ça donne.
+    </p>
+    <div class="cta__actions" data-reveal>
+      <a class="btn" href="configurateur.html">
+        Configurer ma paire
+        <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
+      </a>
+      <!-- TODO client : renseigner le numéro WhatsApp de l'atelier -->
+      <a class="btn btn--ghost" href="https://wa.me/22900000000?text=Bonjour%20Yem's%2C%20je%20souhaite%20des%20informations." target="_blank" rel="noopener">
+        <svg aria-hidden="true"><use href="#i-whatsapp"></use></svg>
+        Écrire sur WhatsApp
+      </a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     FOOTER
+     ═══════════════════════════════════════════════════════════════ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer__grid">
+      <div>
+        <a class="logo" href="index.html">
+          <svg class="logo__mark" aria-hidden="true"><use href="#i-logo"></use></svg>
+          <span>
+            <span class="logo__word">YEM'S</span>
+            <span class="logo__tag">Différents par les détails</span>
+          </span>
+        </a>
+        <p class="text-muted" style="font-size:var(--fs-sm);margin-top:var(--sp-4);max-width:34ch">
+          Souliers et maroquinerie façonnés à la main pour le Bénin et la Côte d'Ivoire.
+        </p>
+        <form class="newsletter" onsubmit="return false">
+          <label class="visually-hidden" for="nl">Votre adresse e-mail</label>
+          <input id="nl" type="email" placeholder="Votre e-mail" required>
+          <button class="btn btn--sm" type="submit">S'inscrire</button>
+        </form>
+      </div>
+
+      <div>
+        <h4 class="footer__title">Collections</h4>
+        <ul class="footer__list">
+          <li><a href="produit-loafer.html">Loafer Ouidah</a></li>
+          <li><a href="produit-derby.html">Derby Cotonou</a></li>
+          <li><a href="produit-boot.html">Boot Atakora</a></li>
+          <li><a href="produit-richelieu.html">Richelieu Abidjan</a></li>
+          <li><a href="#collections">Ceintures &amp; portefeuilles</a></li>
+          <li><a href="#collections">Produits d'entretien</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer__title">La maison</h4>
+        <ul class="footer__list">
+          <li><a href="#manifeste">Notre savoir-faire</a></li>
+          <li><a href="configurateur.html">Sur-mesure</a></li>
+          <li><a href="#garantie">Garantie satisfaction</a></li>
+          <li><a href="#garantie">Carte d'authenticité</a></li>
+          <li><a href="#offres">Nos offres</a></li>
+          <li><a href="#questions">Questions fréquentes</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer__title">Contact</h4>
+        <ul class="footer__list">
+          <li>Cotonou, Bénin</li>
+          <li>Abidjan, Côte d'Ivoire</li>
+          <li><a href="https://wa.me/22900000000" target="_blank" rel="noopener">WhatsApp atelier</a></li>
+          <li><a href="mailto:contact@yems.example">contact@yems.example</a></li>
+        </ul>
+        <div class="pay-logos" style="margin-top:var(--sp-5)">
+          <span>MTN MoMo</span><span>Moov</span><span>Wave</span><span>Visa</span><span>KkiaPay</span>
+        </div>
+      </div>
+    </div>
+
+    <hr class="stitch">
+
+    <div class="footer__bottom">
+      <span>© <span data-year>2026</span> Yem's. Tous droits réservés.</span>
+      <span>Paiements sécurisés par KkiaPay · Mobile Money, Wave &amp; carte bancaire</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/main.js" defer></script>
+<script src="assets/js/motion.js" defer></script>
+</body>
+</html>
