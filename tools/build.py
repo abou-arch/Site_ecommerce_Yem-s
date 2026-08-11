@@ -16,6 +16,7 @@ Sortie, à la racine du dépôt :
 Usage :  python3 tools/build.py
 """
 
+import hashlib
 import json
 import os
 import re
@@ -167,6 +168,33 @@ def json_ld(payload):
             % json.dumps(payload, ensure_ascii=False, separators=(",", ":")))
 
 
+def version_assets(html, root):
+    """
+    Ajoute une empreinte du contenu à chaque CSS et JS : assets/css/base.css
+    devient assets/css/base.css?v=a1b2c3d4.
+
+    Sans ça, le navigateur garde en cache l'ancienne feuille de style et
+    l'applique au nouveau HTML — on croit alors que la mise en ligne a échoué.
+    L'empreinte ne bouge que si le fichier a réellement changé.
+    """
+    cache = {}
+
+    def stamp(m):
+        rel = m.group(2)                      # ex. assets/css/base.css
+        path = os.path.join(root, rel)
+        if rel not in cache:
+            if not os.path.exists(path):
+                cache[rel] = None
+            else:
+                with open(path, "rb") as f:
+                    cache[rel] = hashlib.sha1(f.read()).hexdigest()[:8]
+        h = cache[rel]
+        return m.group(0) if h is None else '%s%s?v=%s"' % (m.group(1), rel, h)
+
+    return re.sub(r'((?:href|src)="(?:\.\./)*)((?:assets/(?:css|js)/[\w.-]+\.(?:css|js)))"',
+                  stamp, html)
+
+
 # ─────────────────────────────────────────────────────────── assemblage
 
 class Builder:
@@ -237,6 +265,7 @@ class Builder:
             footer=footer,
             content=content,
         )
+        html = version_assets(html, ROOT)
         write(os.path.join(ROOT, path), html)
         self.written.append((path, len(html.encode())))
 
