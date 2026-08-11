@@ -1,0 +1,222 @@
+/* ==========================================================================
+   YEM'S — Panier et tunnel de commande
+   ========================================================================== */
+
+.shop-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+  gap: clamp(2rem, 5vw, 4rem);
+  align-items: start;
+}
+
+@media (min-width: 1000px) {
+  .shop-grid { grid-template-columns: minmax(0, 1.2fr) minmax(340px, 0.8fr); }
+}
+
+.shop-aside {
+  position: sticky;
+  top: calc(var(--header-h) + var(--sp-4));
+}
+
+@media (max-width: 999px) {
+  .shop-aside { position: static; }
+}
+
+/* --------------------------------------------------------------------------
+   LIGNES DE PANIER
+   -------------------------------------------------------------------------- */
+.line {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  grid-template-areas:
+    "body qty total"
+    "body remove remove";
+  gap: var(--sp-3) var(--sp-5);
+  align-items: center;
+  padding-block: var(--sp-5);
+  border-bottom: 1px solid var(--border);
+}
+
+.line:first-child { border-top: 1px solid var(--border); }
+
+.line__body  { grid-area: body; }
+.line__qty   { grid-area: qty; }
+.line__total { grid-area: total; }
+.line__remove{ grid-area: remove; justify-self: end; }
+
+.line__name { font-family: var(--font-display); font-size: var(--fs-lg); }
+.line__opts { font-size: var(--fs-sm); color: var(--text-muted); margin-top: 2px; }
+.line__unit { font-size: var(--fs-xs); color: var(--text-subtle); margin-top: var(--sp-1); }
+
+.line__qty {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  padding: 2px;
+}
+
+.line__qty button {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  font-size: var(--fs-md);
+  line-height: 1;
+  color: var(--text-muted);
+  transition: background-color 240ms var(--ease), color 240ms var(--ease);
+}
+
+.line__qty button:hover { background: rgba(201, 164, 106, 0.16); color: var(--text); }
+.line__qty span { min-width: 26px; text-align: center; font-variant-numeric: tabular-nums; }
+
+.line__total {
+  font-family: var(--font-display);
+  font-size: var(--fs-lg);
+  color: var(--brass-300);
+  white-space: nowrap;
+}
+
+.line__remove {
+  font-size: var(--fs-xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--text-subtle);
+  transition: color 240ms var(--ease);
+}
+
+.line__remove:hover { color: #D89087; }
+
+@media (max-width: 560px) {
+  .line {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "body  body"
+      "qty   total"
+      "remove remove";
+  }
+}
+
+/* --------------------------------------------------------------------------
+   RÉCAPITULATIF
+   -------------------------------------------------------------------------- */
+.summary {
+  padding: var(--sp-6);
+  border: 1px solid rgba(201, 164, 106, 0.32);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(155deg, var(--espresso-600), var(--espresso-900) 65%);
+  box-shadow: var(--shadow-lg);
+}
+
+.summary h2 { font-size: var(--fs-lg); margin-bottom: var(--sp-4); }
+
+.summary dl { margin: 0 0 var(--sp-4); }
+.summary .spec-row dt small { color: var(--text-subtle); font-size: var(--fs-xs); }
+
+.summary__total {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  padding-top: var(--sp-4);
+  border-top: 1px solid var(--border);
+}
+
+.summary__total span:first-child { font-size: var(--fs-sm); color: var(--text-muted); }
+
+.summary__total span:last-child {
+  font-family: var(--font-display);
+  font-size: var(--fs-2xl);
+  color: var(--brass-300);
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+
+.summary__note {
+  margin-top: var(--sp-4);
+  font-size: var(--fs-xs);
+  color: var(--text-subtle);
+  line-height: 1.6;
+}
+
+.summary .btn { margin-top: var(--sp-5); }
+
+/* --------------------------------------------------------------------------
+   FORMULAIRE
+   -------------------------------------------------------------------------- */
+.field { display: block; margin-bottom: var(--sp-5); }
+
+.field > span {
+  display: block;
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  color: var(--text-subtle);
+  margin-bottom: var(--sp-2);
+}
+
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  background: rgba(233, 222, 203, 0.05);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: var(--fs-base);
+  color: var(--text);
+}
+
+.field textarea { min-height: 92px; resize: vertical; }
+.field input::placeholder, .field textarea::placeholder { color: var(--text-subtle); }
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus { border-color: var(--brass-400); outline: none; }
+
+.field input:invalid:not(:placeholder-shown) { border-color: rgba(161, 74, 62, 0.7); }
+
+.field__hint { font-size: var(--fs-xs); color: var(--text-subtle); margin-top: var(--sp-2); }
+
+.field-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+  gap: 0 var(--sp-4);
+}
+
+/* --------------------------------------------------------------------------
+   MESSAGES D'ÉTAT
+   -------------------------------------------------------------------------- */
+.status {
+  margin-top: var(--sp-4);
+  padding: var(--sp-4);
+  border-radius: var(--radius);
+  border-left: 2px solid var(--brass-500);
+  background: rgba(201, 164, 106, 0.08);
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+}
+
+.status[data-kind="error"] {
+  border-left-color: #A14A3E;
+  background: rgba(161, 74, 62, 0.12);
+  color: #E8C4BE;
+}
+
+/* --------------------------------------------------------------------------
+   CONFIRMATION
+   -------------------------------------------------------------------------- */
+.done { text-align: center; max-width: 620px; margin-inline: auto; }
+
+.done__ref {
+  display: inline-block;
+  margin-block: var(--sp-5);
+  padding: var(--sp-3) var(--sp-5);
+  border: 1px dashed rgba(201, 164, 106, 0.5);
+  border-radius: var(--radius);
+  font-family: var(--font-display);
+  font-size: var(--fs-xl);
+  color: var(--brass-300);
+  letter-spacing: 0.06em;
+}

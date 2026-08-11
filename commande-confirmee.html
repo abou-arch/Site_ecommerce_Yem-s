@@ -5,12 +5,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Panier — Yem's</title>
-<meta name="description" content="Votre panier Yem&#x27;s. Paiement Mobile Money MTN et Moov, Wave ou carte bancaire, sécurisé par KkiaPay.">
+<title>Commande confirmée — Yem's</title>
+<meta name="description" content="Votre commande Yem&#x27;s est enregistrée. L&#x27;atelier vous contacte sur WhatsApp.">
 <meta name="theme-color" content="#14100D">
 
-<meta property="og:title" content="Panier — Yem&#x27;s">
-<meta property="og:description" content="Votre panier Yem&#x27;s. Paiement Mobile Money MTN et Moov, Wave ou carte bancaire, sécurisé par KkiaPay.">
+<meta property="og:title" content="Commande confirmée — Yem&#x27;s">
+<meta property="og:description" content="Votre commande Yem&#x27;s est enregistrée. L&#x27;atelier vous contacte sur WhatsApp.">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="fr_FR">
 
@@ -114,46 +114,41 @@
 
 <main id="main">
 
-<nav class="crumb" aria-label="Fil d'Ariane"><div class="container"><a href="index.html">Accueil</a><span class="crumb__sep" aria-hidden="true">/</span><span aria-current="page">Panier</span></div></nav>
+<section class="section section--top cta grain" style="min-height:70svh;display:grid;place-items:center">
+  <div class="container">
+    <div class="done">
+      <span class="eyebrow eyebrow--center" data-reveal>Commande enregistrée</span>
+      <h1 style="margin-top:var(--sp-4);font-size:var(--fs-3xl)" data-lines>
+        C'est noté.<br>L'atelier s'en occupe.
+      </h1>
 
-<section class="section section--top">
-  <div class="container shop-grid">
-    <div>
-      <div class="section-head" data-reveal>
-        <span class="eyebrow">Votre sélection</span>
-        <h1 class="page-title" data-lines>Votre panier</h1>
-      </div>
-      <div data-cart-list></div>
-    </div>
+      <p class="done__ref" data-order-ref>—</p>
 
-    <aside class="shop-aside" data-cart-summary hidden>
-      <div class="summary">
-        <h2>Récapitulatif</h2>
-        <div class="summary__total">
-          <span>Sous-total</span>
-          <span data-cart-subtotal>—</span>
-        </div>
-        <p class="summary__note">
-          Livraison offerte au Bénin et en Côte d'Ivoire. Les frais pour les autres
-          pays s'affichent à l'étape suivante.
-        </p>
-        <p class="summary__note" data-deposit-notice hidden>
-          Votre panier contient une pièce sur-mesure : seul l'acompte de
-          50&nbsp;% est prélevé maintenant, le solde à la livraison.
-        </p>
-        <a class="btn btn--full" href="checkout.html">
-          Passer commande
-          <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
+      <p class="lede mx-auto text-center" data-reveal>
+        Gardez cette référence : elle suffit à retrouver votre commande.
+        L'atelier vous écrit sur WhatsApp dans la journée pour confirmer
+        la date de livraison.
+      </p>
+
+      <div class="cta__actions" data-reveal>
+        <a class="btn" href="chaussures.html">Continuer mes achats</a>
+        <a class="btn btn--ghost" href="https://wa.me/22900000000" target="_blank" rel="noopener">
+          <svg aria-hidden="true"><use href="#i-whatsapp"></use></svg>
+          Écrire à l'atelier
         </a>
-        <ul class="cfg-trust">
-          <li><svg aria-hidden="true"><use href="#i-shield"></use></svg>1 retouche offerte, puis remboursement intégral</li>
-          <li><svg aria-hidden="true"><use href="#i-card"></use></svg>Mobile Money, Wave ou carte — via KkiaPay</li>
-          <li><svg aria-hidden="true"><use href="#i-truck"></use></svg>Cotonou &amp; Abidjan en 48&nbsp;h</li>
-        </ul>
       </div>
-    </aside>
+    </div>
   </div>
 </section>
+
+<script>
+  // La référence arrive en paramètre d'URL, écrite par le tunnel de commande.
+  (function () {
+    var ref = new URLSearchParams(location.search).get('ref');
+    var el = document.querySelector('[data-order-ref]');
+    if (el) el.textContent = ref && /^[A-Z0-9-]{6,24}$/.test(ref) ? ref : 'Référence envoyée sur WhatsApp';
+  })();
+</script>
 
 </main>
 
@@ -226,6 +221,6 @@
 
 <script src="assets/js/main.js?v=044648de" defer></script>
 <script src="assets/js/motion.js?v=8f03829d" defer></script>
-<script src="assets/js/checkout.js?v=926013a7" defer></script>
+
 </body>
 </html>

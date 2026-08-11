@@ -22,3 +22,12 @@ desktop.ini
 # ─── Python ───────────────────────────────────────────────────────────────
 __pycache__/
 *.pyc
+
+# ─── Node et secrets ──────────────────────────────────────────────────────
+node_modules/
+.vercel/
+.env
+.env.local
+.env*.local
+# .env.example est volontairement suivi : c'est le modèle, sans valeurs.
+!.env.example

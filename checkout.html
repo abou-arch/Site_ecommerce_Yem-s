@@ -5,12 +5,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Panier — Yem's</title>
-<meta name="description" content="Votre panier Yem&#x27;s. Paiement Mobile Money MTN et Moov, Wave ou carte bancaire, sécurisé par KkiaPay.">
+<title>Commande — Yem's</title>
+<meta name="description" content="Renseignez votre adresse de livraison et réglez par Mobile Money, Wave ou carte bancaire.">
 <meta name="theme-color" content="#14100D">
 
-<meta property="og:title" content="Panier — Yem&#x27;s">
-<meta property="og:description" content="Votre panier Yem&#x27;s. Paiement Mobile Money MTN et Moov, Wave ou carte bancaire, sécurisé par KkiaPay.">
+<meta property="og:title" content="Commande — Yem&#x27;s">
+<meta property="og:description" content="Renseignez votre adresse de livraison et réglez par Mobile Money, Wave ou carte bancaire.">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="fr_FR">
 
@@ -114,46 +114,103 @@
 
 <main id="main">
 
-<nav class="crumb" aria-label="Fil d'Ariane"><div class="container"><a href="index.html">Accueil</a><span class="crumb__sep" aria-hidden="true">/</span><span aria-current="page">Panier</span></div></nav>
+<nav class="crumb" aria-label="Fil d'Ariane"><div class="container"><a href="index.html">Accueil</a><span class="crumb__sep" aria-hidden="true">/</span><a href="panier.html">Panier</a><span class="crumb__sep" aria-hidden="true">/</span><span aria-current="page">Commande</span></div></nav>
 
 <section class="section section--top">
   <div class="container shop-grid">
     <div>
       <div class="section-head" data-reveal>
-        <span class="eyebrow">Votre sélection</span>
-        <h1 class="page-title" data-lines>Votre panier</h1>
+        <span class="eyebrow">Dernière étape</span>
+        <h1 class="page-title" data-lines>Où livrons-nous<br>votre commande&nbsp;?</h1>
       </div>
-      <div data-cart-list></div>
+
+      <form data-checkout-form novalidate>
+        <label class="field">
+          <span>Nom et prénom</span>
+          <input name="name" type="text" required minlength="3" maxlength="120"
+                 autocomplete="name" placeholder="Votre nom complet">
+        </label>
+
+        <div class="field-row">
+          <label class="field">
+            <span>Téléphone</span>
+            <input name="phone" type="tel" required autocomplete="tel"
+                   placeholder="97 00 00 00">
+            <span class="field__hint">Celui de votre Mobile Money — c'est par là que l'atelier vous joindra.</span>
+          </label>
+          <label class="field">
+            <span>Pays</span>
+            <select name="country">
+            <option value="BJ" selected>Bénin</option>
+            <option value="CI">Côte d'Ivoire</option>
+            <option value="TG">Togo</option>
+            <option value="SN">Sénégal</option>
+            <option value="NE">Niger</option>
+            </select>
+          </label>
+        </div>
+
+        <label class="field">
+          <span>Adresse de livraison</span>
+          <input name="address" type="text" required minlength="5" maxlength="300"
+                 autocomplete="street-address" placeholder="Quartier, rue, repère">
+        </label>
+
+        <div class="field-row">
+          <label class="field">
+            <span>Ville</span>
+            <input name="city" type="text" required maxlength="120"
+                   autocomplete="address-level2" placeholder="Cotonou">
+          </label>
+          <label class="field">
+            <span>E-mail <small style="text-transform:none;letter-spacing:0">(facultatif)</small></span>
+            <input name="email" type="email" maxlength="160"
+                   autocomplete="email" placeholder="vous@exemple.com">
+          </label>
+        </div>
+
+        <label class="field">
+          <span>Précision pour le livreur <small style="text-transform:none;letter-spacing:0">(facultatif)</small></span>
+          <textarea name="note" maxlength="500"
+                    placeholder="Un repère, un horaire, une consigne…"></textarea>
+        </label>
+
+        <button class="btn btn--full" type="submit" data-checkout-submit>
+          Payer maintenant
+          <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
+        </button>
+
+        <p class="status" data-checkout-status role="status" hidden></p>
+
+        <p class="summary__note">
+          En validant, vous acceptez d'être recontacté sur WhatsApp pour la confirmation
+          et le suivi de la livraison. Aucun numéro de carte ne transite par nos serveurs.
+        </p>
+      </form>
     </div>
 
-    <aside class="shop-aside" data-cart-summary hidden>
+    <aside class="shop-aside">
       <div class="summary">
-        <h2>Récapitulatif</h2>
+        <h2>Votre commande</h2>
+        <dl data-checkout-recap></dl>
         <div class="summary__total">
           <span>Sous-total</span>
           <span data-cart-subtotal>—</span>
         </div>
         <p class="summary__note">
-          Livraison offerte au Bénin et en Côte d'Ivoire. Les frais pour les autres
-          pays s'affichent à l'étape suivante.
+          Le montant exact, frais de livraison compris, est calculé par l'atelier
+          au moment du paiement et s'affiche dans la fenêtre KkiaPay.
         </p>
-        <p class="summary__note" data-deposit-notice hidden>
-          Votre panier contient une pièce sur-mesure : seul l'acompte de
-          50&nbsp;% est prélevé maintenant, le solde à la livraison.
-        </p>
-        <a class="btn btn--full" href="checkout.html">
-          Passer commande
-          <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
-        </a>
         <ul class="cfg-trust">
-          <li><svg aria-hidden="true"><use href="#i-shield"></use></svg>1 retouche offerte, puis remboursement intégral</li>
-          <li><svg aria-hidden="true"><use href="#i-card"></use></svg>Mobile Money, Wave ou carte — via KkiaPay</li>
-          <li><svg aria-hidden="true"><use href="#i-truck"></use></svg>Cotonou &amp; Abidjan en 48&nbsp;h</li>
+          <li><svg aria-hidden="true"><use href="#i-card"></use></svg>MTN MoMo, Moov, Wave et carte bancaire</li>
+          <li><svg aria-hidden="true"><use href="#i-shield"></use></svg>Remboursement intégral si la paire ne va pas</li>
         </ul>
       </div>
     </aside>
   </div>
 </section>
+
+<script src="https://cdn.kkiapay.me/k.js"></script>
 
 </main>
 

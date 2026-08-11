@@ -757,6 +757,213 @@ class Builder:
             extra_js=("configurator",),
         )
 
+
+    # ── panier, checkout, confirmation ───────────────────────────────
+
+    def build_cart(self):
+        content = f"""{breadcrumb([("Accueil", "index.html"), ("Panier", None)])}
+
+<section class="section section--top">
+  <div class="container shop-grid">
+    <div>
+      <div class="section-head" data-reveal>
+        <span class="eyebrow">Votre sélection</span>
+        <h1 class="page-title" data-lines>Votre panier</h1>
+      </div>
+      <div data-cart-list></div>
+    </div>
+
+    <aside class="shop-aside" data-cart-summary hidden>
+      <div class="summary">
+        <h2>Récapitulatif</h2>
+        <div class="summary__total">
+          <span>Sous-total</span>
+          <span data-cart-subtotal>—</span>
+        </div>
+        <p class="summary__note">
+          Livraison offerte au Bénin et en Côte d'Ivoire. Les frais pour les autres
+          pays s'affichent à l'étape suivante.
+        </p>
+        <p class="summary__note" data-deposit-notice hidden>
+          Votre panier contient une pièce sur-mesure : seul l'acompte de
+          {self.site['bespoke']['deposit']}&nbsp;% est prélevé maintenant, le solde à la livraison.
+        </p>
+        <a class="btn btn--full" href="checkout.html">
+          Passer commande
+          <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
+        </a>
+        <ul class="cfg-trust">
+          <li><svg aria-hidden="true"><use href="#i-shield"></use></svg>1 retouche offerte, puis remboursement intégral</li>
+          <li><svg aria-hidden="true"><use href="#i-card"></use></svg>Mobile Money, Wave ou carte — via KkiaPay</li>
+          <li><svg aria-hidden="true"><use href="#i-truck"></use></svg>Cotonou &amp; Abidjan en 48&nbsp;h</li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+</section>"""
+
+        self.page(
+            "panier.html", content=content,
+            title="Panier — Yem's",
+            description="Votre panier Yem's. Paiement Mobile Money MTN et Moov, Wave "
+                        "ou carte bancaire, sécurisé par KkiaPay.",
+            extra_css=("checkout",), extra_js=("checkout",),
+        )
+
+    def build_checkout(self):
+        countries = "\n".join(
+            '            <option value="%s"%s>%s</option>' % (code, sel, label)
+            for code, label, sel in [
+                ("BJ", "Bénin", ' selected'), ("CI", "Côte d'Ivoire", ''),
+                ("TG", "Togo", ''), ("SN", "Sénégal", ''), ("NE", "Niger", ''),
+            ])
+
+        content = f"""{breadcrumb([("Accueil", "index.html"), ("Panier", "panier.html"), ("Commande", None)])}
+
+<section class="section section--top">
+  <div class="container shop-grid">
+    <div>
+      <div class="section-head" data-reveal>
+        <span class="eyebrow">Dernière étape</span>
+        <h1 class="page-title" data-lines>Où livrons-nous<br>votre commande&nbsp;?</h1>
+      </div>
+
+      <form data-checkout-form novalidate>
+        <label class="field">
+          <span>Nom et prénom</span>
+          <input name="name" type="text" required minlength="3" maxlength="120"
+                 autocomplete="name" placeholder="Votre nom complet">
+        </label>
+
+        <div class="field-row">
+          <label class="field">
+            <span>Téléphone</span>
+            <input name="phone" type="tel" required autocomplete="tel"
+                   placeholder="97 00 00 00">
+            <span class="field__hint">Celui de votre Mobile Money — c'est par là que l'atelier vous joindra.</span>
+          </label>
+          <label class="field">
+            <span>Pays</span>
+            <select name="country">
+{countries}
+            </select>
+          </label>
+        </div>
+
+        <label class="field">
+          <span>Adresse de livraison</span>
+          <input name="address" type="text" required minlength="5" maxlength="300"
+                 autocomplete="street-address" placeholder="Quartier, rue, repère">
+        </label>
+
+        <div class="field-row">
+          <label class="field">
+            <span>Ville</span>
+            <input name="city" type="text" required maxlength="120"
+                   autocomplete="address-level2" placeholder="Cotonou">
+          </label>
+          <label class="field">
+            <span>E-mail <small style="text-transform:none;letter-spacing:0">(facultatif)</small></span>
+            <input name="email" type="email" maxlength="160"
+                   autocomplete="email" placeholder="vous@exemple.com">
+          </label>
+        </div>
+
+        <label class="field">
+          <span>Précision pour le livreur <small style="text-transform:none;letter-spacing:0">(facultatif)</small></span>
+          <textarea name="note" maxlength="500"
+                    placeholder="Un repère, un horaire, une consigne…"></textarea>
+        </label>
+
+        <button class="btn btn--full" type="submit" data-checkout-submit>
+          Payer maintenant
+          <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
+        </button>
+
+        <p class="status" data-checkout-status role="status" hidden></p>
+
+        <p class="summary__note">
+          En validant, vous acceptez d'être recontacté sur WhatsApp pour la confirmation
+          et le suivi de la livraison. Aucun numéro de carte ne transite par nos serveurs.
+        </p>
+      </form>
+    </div>
+
+    <aside class="shop-aside">
+      <div class="summary">
+        <h2>Votre commande</h2>
+        <dl data-checkout-recap></dl>
+        <div class="summary__total">
+          <span>Sous-total</span>
+          <span data-cart-subtotal>—</span>
+        </div>
+        <p class="summary__note">
+          Le montant exact, frais de livraison compris, est calculé par l'atelier
+          au moment du paiement et s'affiche dans la fenêtre KkiaPay.
+        </p>
+        <ul class="cfg-trust">
+          <li><svg aria-hidden="true"><use href="#i-card"></use></svg>MTN MoMo, Moov, Wave et carte bancaire</li>
+          <li><svg aria-hidden="true"><use href="#i-shield"></use></svg>Remboursement intégral si la paire ne va pas</li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<script src="https://cdn.kkiapay.me/k.js"></script>"""
+
+        self.page(
+            "checkout.html", content=content,
+            title="Commande — Yem's",
+            description="Renseignez votre adresse de livraison et réglez par Mobile Money, "
+                        "Wave ou carte bancaire.",
+            extra_css=("checkout",), extra_js=("checkout",),
+        )
+
+    def build_confirmation(self):
+        content = f"""<section class="section section--top cta grain" style="min-height:70svh;display:grid;place-items:center">
+  <div class="container">
+    <div class="done">
+      <span class="eyebrow eyebrow--center" data-reveal>Commande enregistrée</span>
+      <h1 style="margin-top:var(--sp-4);font-size:var(--fs-3xl)" data-lines>
+        C'est noté.<br>L'atelier s'en occupe.
+      </h1>
+
+      <p class="done__ref" data-order-ref>—</p>
+
+      <p class="lede mx-auto text-center" data-reveal>
+        Gardez cette référence : elle suffit à retrouver votre commande.
+        L'atelier vous écrit sur WhatsApp dans la journée pour confirmer
+        la date de livraison.
+      </p>
+
+      <div class="cta__actions" data-reveal>
+        <a class="btn" href="chaussures.html">Continuer mes achats</a>
+        <a class="btn btn--ghost" href="https://wa.me/{self.site['whatsapp']}" target="_blank" rel="noopener">
+          <svg aria-hidden="true"><use href="#i-whatsapp"></use></svg>
+          Écrire à l'atelier
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // La référence arrive en paramètre d'URL, écrite par le tunnel de commande.
+  (function () {{
+    var ref = new URLSearchParams(location.search).get('ref');
+    var el = document.querySelector('[data-order-ref]');
+    if (el) el.textContent = ref && /^[A-Z0-9-]{{6,24}}$/.test(ref) ? ref : 'Référence envoyée sur WhatsApp';
+  }})();
+</script>"""
+
+        self.page(
+            "commande-confirmee.html", content=content,
+            title="Commande confirmée — Yem's",
+            description="Votre commande Yem's est enregistrée. L'atelier vous contacte sur WhatsApp.",
+            extra_css=("checkout",),
+        )
+
     def run(self):
         if os.path.isdir(OUT_PRODUCTS):
             shutil.rmtree(OUT_PRODUCTS)
@@ -768,17 +975,9 @@ class Builder:
             self.build_product(product)
 
         self.build_configurator()
-        self.build_stub(
-            "panier.html",
-            title="Panier — Yem's",
-            description="Votre panier Yem's. Paiement Mobile Money MTN et Moov, "
-                        "Wave ou carte bancaire, sécurisé par KkiaPay.",
-            eyebrow="Bientôt en ligne",
-            heading="Le paiement en ligne<br>arrive",
-            text="Vos articles sont bien enregistrés sur cet appareil. Le règlement par "
-                 "Mobile Money, Wave et carte arrive avec l'intégration KkiaPay — d'ici là, "
-                 "l'atelier finalise la commande sur WhatsApp.",
-        )
+        self.build_cart()
+        self.build_checkout()
+        self.build_confirmation()
 
         print("%d pages générées :\n" % len(self.written))
         for path, size in self.written:
