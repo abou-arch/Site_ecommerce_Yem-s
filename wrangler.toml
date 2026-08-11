@@ -33,7 +33,7 @@ not_found_handling = "404-page"
 #   npx wrangler hyperdrive create yems-db --connection-string="postgres://…"
 [[hyperdrive]]
 binding = "HYPERDRIVE"
-id = "REMPLACER_PAR_L_ID_HYPERDRIVE"
+id = "3579ef8baef64ecdb4c59c6a97379e71"
 
 # ─── Variables non sensibles ───────────────────────────────────────────────
 [vars]
@@ -41,7 +41,7 @@ id = "REMPLACER_PAR_L_ID_HYPERDRIVE"
 # "online"  : ajoute le widget de paiement. Exige un compte marchand activé.
 PAYMENT_MODE = "offline"
 KKIAPAY_SANDBOX = "true"
-OWNER_WHATSAPP = "22900000000"
+OWNER_WHATSAPP = "2290191380234"
 
 # ─── Secrets — NE JAMAIS les écrire ici ────────────────────────────────────
 # Ils se posent en ligne de commande, ils sont alors chiffrés côté Cloudflare :
