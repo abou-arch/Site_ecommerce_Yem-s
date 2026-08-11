@@ -1,0 +1,24 @@
+# ─── Matériel de travail, à ne pas publier ────────────────────────────────
+# Support de formation tiers (Pen to Profit) — contenu sous droits,
+# le republier dans un dépôt public serait de la redistribution.
+course_all.txt
+
+# Photos sources brutes envoyées par le client.
+# Les versions retravaillées et utilisées par le site vivent dans assets/img/.
+WhatsApp Image*.jpeg
+WhatsApp Image*.jpg
+
+# ─── Système ──────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+*.tmp
+
+# ─── Vidéos lourdes ───────────────────────────────────────────────────────
+# Décommenter si les fichiers dépassent 50 Mo : GitHub refuse au-delà de 100 Mo.
+# assets/video/*.mp4
+# assets/video/*.webm
+
+# ─── Python ───────────────────────────────────────────────────────────────
+__pycache__/
+*.pyc
