@@ -1,0 +1,17 @@
+# Fichiers présents dans le dépôt mais qui n'ont rien à faire en ligne.
+api/
+db/
+docs/
+templates/
+tools/
+data/
+node_modules/
+worker.js
+wrangler.toml
+package.json
+package-lock.json
+README.md
+*.dc.html
+hero.mp4
+course_all.txt
+.env*

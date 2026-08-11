@@ -53,14 +53,15 @@ export function waLink(to, message) {
  * Envoie le message. Ne lève jamais.
  * @returns {Promise<{sent:boolean, mode:'cloud'|'link', link?:string, error?:string}>}
  */
-export async function notifyOwner(order, items) {
-  const to = process.env.OWNER_WHATSAPP;
+export async function notifyOwner(order, items, env = {}) {
+  const pick = (k) => env[k] ?? globalThis.process?.env?.[k];
+  const to = pick('OWNER_WHATSAPP');
   const message = composeMessage(order, items);
 
   if (!to) return { sent: false, mode: 'link', error: 'OWNER_WHATSAPP non configuré' };
 
-  const token = process.env.WHATSAPP_TOKEN;
-  const phoneId = process.env.WHATSAPP_PHONE_ID;
+  const token = pick('WHATSAPP_TOKEN');
+  const phoneId = pick('WHATSAPP_PHONE_ID');
 
   if (!token || !phoneId) {
     return { sent: false, mode: 'link', link: waLink(to, message) };

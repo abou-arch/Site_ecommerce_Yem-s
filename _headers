@@ -1,0 +1,29 @@
+# ===========================================================================
+# Yem's — En-têtes servis par Cloudflare
+# Format Cloudflare Pages : un motif, puis les en-têtes indentés.
+# ===========================================================================
+
+# Les CSS et JS portent une empreinte de contenu (?v=…) : leur URL change dès
+# que le fichier change, on peut donc les garder en cache indéfiniment.
+/assets/css/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/assets/js/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Images et vidéo : noms stables, cache d'un mois.
+/assets/img/*
+  Cache-Control: public, max-age=2592000
+
+/assets/video/*
+  Cache-Control: public, max-age=2592000
+
+# Le HTML est régénéré à chaque build : cache court, revalidation systématique.
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()

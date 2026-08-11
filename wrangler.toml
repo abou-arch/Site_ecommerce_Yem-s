@@ -1,0 +1,52 @@
+# ===========================================================================
+# Yem's — Cloudflare Workers + Pages
+#
+# Le Worker sert les routes /api/* ; les pages générées par tools/build.py
+# sont servies en statique par le même déploiement (assets).
+# ===========================================================================
+
+name = "yems"
+main = "worker.js"
+
+# 2025-09-01 ou plus récent : c'est à partir de cette date que node:fs est
+# disponible sous nodejs_compat. Nous ne nous en servons pas — le catalogue
+# est importé — mais le driver postgres réclame des primitives Node.
+compatibility_date = "2026-08-01"
+compatibility_flags = ["nodejs_compat"]
+
+# ─── Pages statiques ───────────────────────────────────────────────────────
+# Le Worker ne reçoit que ce que le statique ne sait pas servir, donc /api/*.
+[assets]
+directory = "."
+binding = "ASSETS"
+not_found_handling = "404-page"
+run_worker_first = ["/api/*"]
+
+# ─── Base de données ───────────────────────────────────────────────────────
+# Hyperdrive maintient le pool de connexions côté Cloudflare et rapproche les
+# connexions de la base. Créer la liaison puis reporter l'id :
+#   npx wrangler hyperdrive create yems-db --connection-string="postgres://…"
+[[hyperdrive]]
+binding = "HYPERDRIVE"
+id = "REMPLACER_PAR_L_ID_HYPERDRIVE"
+
+# ─── Variables non sensibles ───────────────────────────────────────────────
+[vars]
+KKIAPAY_SANDBOX = "true"
+OWNER_WHATSAPP = "22900000000"
+
+# ─── Secrets — NE JAMAIS les écrire ici ────────────────────────────────────
+# Ils se posent en ligne de commande, ils sont alors chiffrés côté Cloudflare :
+#
+#   npx wrangler secret put KKIAPAY_PUBLIC_KEY
+#   npx wrangler secret put KKIAPAY_PRIVATE_KEY
+#   npx wrangler secret put KKIAPAY_SECRET_KEY
+#   npx wrangler secret put ADMIN_TOKEN
+#   npx wrangler secret put WHATSAPP_TOKEN      # facultatif
+#   npx wrangler secret put WHATSAPP_PHONE_ID   # facultatif
+
+[observability]
+enabled = true
+
+[observability.logs]
+head_sampling_rate = 1

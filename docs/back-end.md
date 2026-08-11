@@ -1,12 +1,50 @@
 # Back-end — mise en route
 
 Le site reste généré par `tools/build.py`. Ce qui change : il n'est plus servi
-par GitHub Pages mais par **Vercel**, qui héberge en plus les fonctions serveur.
+par GitHub Pages mais par **Cloudflare**, qui héberge en plus les fonctions
+serveur.
 
 GitHub Pages ne peut pas faire tourner de code serveur. Or la clé privée KkiaPay
 ne doit jamais descendre dans le navigateur, et toute transaction doit être
 vérifiée côté serveur — c'est explicite dans la documentation KkiaPay. D'où le
 déménagement.
+
+Cloudflare plutôt qu'un autre : ses points de présence en Afrique de l'Ouest
+raccourcissent le trajet depuis Cotonou et Abidjan, et c'est là que sont les
+clients.
+
+## Une architecture qui ne dépend pas de l'hébergeur
+
+```
+                      Cloudflare
+   navigateur ──────► Pages (statique)      pages générées par build.py
+        │             Worker (/api/*)  ◄──  worker.js   ← le seul fichier
+        │                   │                             qui connaît
+        │                   ▼                             Request/Response
+        │             api/_lib/handlers.js  ← toute la logique, portable
+        │                   │
+        │                   ├─► Hyperdrive ──► Postgres (Neon)
+        │                   ├─► api.kkiapay.me   (fetch, sans SDK)
+        │                   └─► graph.facebook.com (WhatsApp, facultatif)
+        │
+        └──────────────────► cdn.kkiapay.me/k.js  (widget, clé publique)
+```
+
+`api/_lib/` ne connaît ni Request, ni Response, ni `process.env` : chaque
+fonction reçoit `env` en argument et rend `{ status, body }`. Changer
+d'hébergeur ne toucherait que `worker.js`, une centaine de lignes.
+
+Deux dépendances ont été supprimées pour y arriver :
+
+- **`node:fs`** — le catalogue est importé (`import data from '.../products.json'`)
+  au lieu d'être lu sur disque. Sur Workers, [le système de fichiers est virtuel
+  et vidé à chaque requête](https://developers.cloudflare.com/changelog/post/2025-08-15-nodejs-fs/) :
+  le fichier n'y serait pas.
+- **`@kkiapay-org/nodejs-sdk`** — ce paquet n'est qu'un habillage `axios` autour
+  de deux routes REST (`/api/v1/transactions/status` et `/revert`, avec trois
+  en-têtes). Vingt lignes de `fetch` font la même chose, sans dépendance.
+
+Il ne reste qu'une dépendance d'exécution : le driver `postgres`.
 
 ---
 
@@ -70,17 +108,47 @@ Générer le jeton admin :
 node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 ```
 
-### 3. Déployer
+### 3. Relier la base à Cloudflare
+
+Hyperdrive maintient le pool de connexions côté Cloudflare et rapproche les
+connexions de la base — sans lui, chaque requête depuis un Worker rouvrirait
+une connexion à travers l'Atlantique.
+
+```bash
+npx wrangler hyperdrive create yems-db \
+  --connection-string="postgres://user:pass@host/db?sslmode=require"
+```
+
+Reporter l'identifiant renvoyé dans `wrangler.toml`, champ `id`.
+
+### 4. Poser les secrets
+
+Ils sont chiffrés côté Cloudflare, jamais écrits dans le dépôt :
+
+```bash
+npx wrangler secret put KKIAPAY_PUBLIC_KEY
+npx wrangler secret put KKIAPAY_PRIVATE_KEY
+npx wrangler secret put KKIAPAY_SECRET_KEY
+npx wrangler secret put ADMIN_TOKEN
+npx wrangler secret put WHATSAPP_TOKEN      # facultatif
+npx wrangler secret put WHATSAPP_PHONE_ID   # facultatif
+```
+
+`KKIAPAY_SANDBOX` et `OWNER_WHATSAPP` sont dans `[vars]` de `wrangler.toml` :
+ils ne sont pas secrets.
+
+### 5. Déployer
 
 ```bash
 npm install
-npx vercel            # première fois : lie le projet
-npx vercel --prod
+npm run deploy        # build.py puis wrangler deploy
 ```
 
-Puis reporter les variables dans **Vercel → Settings → Environment Variables**.
+`.assetsignore` empêche la mise en ligne des sources : `api/`, `templates/`,
+`tools/`, `data/`, la documentation et les fichiers de travail restent hors du
+déploiement statique.
 
-### 4. Le webhook
+### 6. Le webhook
 
 Dans le tableau de bord KkiaPay → Développeurs → Webhook, déclarer :
 
@@ -92,7 +160,7 @@ Il sert de filet : si le client ferme son navigateur juste après avoir payé,
 `/api/payments/verify` n'est jamais appelé et la commande resterait « pending »
 alors que l'argent est encaissé. KkiaPay prévient alors le serveur directement.
 
-### 5. Tester avant d'ouvrir
+### 7. Tester avant d'ouvrir
 
 Garder `KKIAPAY_SANDBOX=true` et utiliser les
 [numéros de test KkiaPay](https://docs.kkiapay.me/v1/compte/kkiapay-sandbox-guide-de-test).
@@ -156,7 +224,7 @@ pending ──paiement vérifié──► paid          (achat standard, réglé
 - [ ] Statut VIP : le champ `customers.is_vip` existe, rien ne l'exploite encore
 - [ ] Affectation d'un livreur : `orders.courier_id` existe, pas d'interface
 - [ ] Facture PDF pour le sur-mesure
-- [ ] Migrer le domaine depuis GitHub Pages une fois Vercel validé
+- [ ] Migrer le domaine depuis GitHub Pages une fois Cloudflare validé
 
 ---
 

@@ -10,20 +10,18 @@
    recalcule à partir de data/products.json, qui est dans le dépôt.
    =========================================================================== */
 
-import fs from 'node:fs';
-import path from 'node:path';
-
-let cache = null;
+/* Le catalogue est importé, pas lu sur disque : il est ainsi empaqueté au
+   build. Sur Cloudflare Workers il n'y a pas de système de fichiers durable —
+   node:fs y est virtuel et vidé à chaque requête. Un import fonctionne
+   partout, et évite un accès disque à chaque appel. */
+import data from '../../data/products.json' with { type: 'json' };
 
 function catalog() {
-  if (cache) return cache;
-  const file = path.join(process.cwd(), 'data', 'products.json');
-  cache = JSON.parse(fs.readFileSync(file, 'utf8'));
-  return cache;
+  return data;
 }
 
 export function site() {
-  return catalog().site;
+  return data.site;
 }
 
 /** Frais de port par pays, en FCFA. */

@@ -11,11 +11,14 @@
     "build": "python3 tools/build.py",
     "images": "python3 tools/process_images.py",
     "db:schema": "psql \"$DATABASE_URL\" -f db/schema.sql",
-    "dev": "vercel dev",
-    "test:pricing": "node tools/test-pricing.mjs"
+    "dev": "wrangler dev",
+    "test:pricing": "node tools/test-pricing.mjs",
+    "deploy": "python3 tools/build.py && wrangler deploy"
   },
   "dependencies": {
-    "@kkiapay-org/nodejs-sdk": "^0.2.0",
     "postgres": "^3.4.4"
+  },
+  "devDependencies": {
+    "wrangler": "^3.90.0"
   }
 }
