@@ -19,8 +19,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="../assets/css/base.css?v=2cf40c81">
-<link rel="stylesheet" href="../assets/css/components.css?v=3a1168d5">
+<link rel="stylesheet" href="../assets/css/base.css?v=dc7fd206">
+<link rel="stylesheet" href="../assets/css/components.css?v=d4b2bae9">
 <link rel="stylesheet" href="../assets/css/home.css?v=a6c36e07">
 <link rel="stylesheet" href="../assets/css/shop.css?v=fc5a7d98">
 <link rel="stylesheet" href="../assets/css/motion.css?v=b43e4720">
@@ -35,12 +35,17 @@
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
   <defs>
-    <!-- Logo Yem's : monogramme Y + point de sellier -->
+    <!-- Logo Yem's : monogramme Y dont la hampe est un point de sellier.
+
+         L'ancien dessin (cadre + Y à hampe longue + trait pointillé au pied)
+         se lisait comme un verre posé sur un sous-bock à 34 px. Trois
+         corrections : le cadre disparaît, les bras s'ouvrent et remplissent
+         la largeur, la hampe raccourcit et devient la couture elle-même. -->
     <symbol id="i-logo" viewBox="0 0 40 40">
-      <rect x="1" y="1" width="38" height="38" rx="8" fill="none" stroke="currentColor" stroke-opacity=".28"/>
-      <path d="M11 11.5l9 9.5 9-9.5" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M20 21v8" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"/>
-      <path d="M14 32.5h12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-dasharray="3 3" stroke-opacity=".75"/>
+      <path d="M7 8.5L20 22.5 33 8.5" fill="none" stroke="currentColor"
+            stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M20 23v9" fill="none" stroke="currentColor" stroke-width="2.6"
+            stroke-linecap="round" stroke-dasharray="3.4 3.2"/>
     </symbol>
 
 
@@ -79,7 +84,7 @@
 </svg>
 <!-- Généré par tools/build.py, ne pas modifier les fichiers HTML de sortie -->
 <header class="header" id="header">
-  <div class="container header__inner">
+  <div class="container container--wide header__inner">
     <a class="logo" href="../index.html" aria-label="Yem's, accueil">
       <svg class="logo__mark" aria-hidden="true"><use href="#i-logo"></use></svg>
       <span>
@@ -90,12 +95,14 @@
 
     <nav class="nav" aria-label="Navigation principale">
       <a class="nav__link" href="../chaussures.html" aria-current="page">Chaussures</a>
-      <a class="nav__link" href="../index.html#manifeste">Savoir-faire</a>
-      <a class="nav__link" href="../index.html#garantie">Garantie</a>
+      <a class="nav__link" href="../ceintures.html">Ceintures</a>
+      <a class="nav__link" href="../portefeuilles.html">Portefeuilles</a>
+      <a class="nav__link" href="../entretien.html">Entretien</a>
+      <a class="nav__link" href="../index.html#manifeste">L'atelier</a>
     </nav>
 
     <div class="header__actions">
-      <a class="btn btn--sm" href="../configurateur.html">Sur-mesure</a>
+      <a class="btn btn--sm btn--quiet" href="../configurateur.html">Composer ma paire</a>
       <a class="icon-btn" href="../panier.html" aria-label="Panier (0 article)">
         <svg aria-hidden="true"><use href="#i-bag"></use></svg>
         <span class="cart-count" data-cart-count>0</span>
@@ -109,8 +116,10 @@
 
 <div class="mobile-menu" id="mobile-menu">
   <a href="../chaussures.html" aria-current="page">Chaussures</a>
-  <a href="../index.html#manifeste">Savoir-faire</a>
-  <a href="../index.html#garantie">Garantie</a>
+  <a href="../ceintures.html">Ceintures</a>
+  <a href="../portefeuilles.html">Portefeuilles</a>
+  <a href="../entretien.html">Entretien</a>
+  <a href="../index.html#manifeste">L'atelier</a>
   <a class="btn" href="../configurateur.html" style="margin-top:auto">Configurer ma paire</a>
 </div>
 
@@ -282,7 +291,7 @@
 </main>
 
 <footer class="footer">
-  <div class="container">
+  <div class="container container--wide">
     <div class="footer__grid">
       <div>
         <a class="logo" href="../index.html">

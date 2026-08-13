@@ -41,6 +41,25 @@
 
 .btn:active { --lift: 0px; }
 
+/* Variante du header. Un aplat de laiton en haut de page tire l'œil vers le
+   coin au moment où le hero devrait le retenir : ici le bouton se contente
+   d'un contour, et ne se remplit qu'au survol. Les capitales tombent aussi,
+   « Composer ma paire » se lit mieux en bas de casse. */
+.btn--quiet {
+  --btn-bg: transparent;
+  --btn-fg: var(--brass-300);
+  --btn-border: rgba(201, 164, 106, 0.55);
+  text-transform: none;
+  letter-spacing: 0.01em;
+  font-weight: 500;
+}
+
+.btn--quiet:hover {
+  background: var(--brass-300);
+  border-color: var(--brass-300);
+  color: var(--espresso-900);
+}
+
 .btn svg { width: 15px; height: 15px; flex: none; }
 
 .btn--ghost {
@@ -134,23 +153,35 @@
   color: var(--text);
 }
 
-.logo__mark { width: 34px; height: 34px; flex: none; }
+.logo__mark {
+  width: 30px;
+  height: 30px;
+  flex: none;
+  color: var(--brass-300);   /* le monogramme prend l'accent, le mot reste clair */
+}
 
 .logo__word {
   font-family: var(--font-display);
-  font-size: 1.3rem;
-  letter-spacing: 0.06em;
+  font-size: 1.42rem;
+  letter-spacing: 0.05em;
   line-height: 1;
 }
 
+/* 8 px, c'était illisible : sous le seuil où des capitales espacées restent
+   déchiffrables. 11 px et un interlettrage réduit d'un tiers. */
 .logo__tag {
   display: block;
   font-family: var(--font-body);
-  font-size: 0.5rem;
-  letter-spacing: var(--tracking-wider);
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--text-subtle);
-  margin-top: 3px;
+  margin-top: 4px;
+}
+
+/* Sous 720 px, la signature encombre : le mot-symbole suffit. */
+@media (max-width: 720px) {
+  .logo__tag { display: none; }
 }
 
 /* --------------------------------------------------------------------------

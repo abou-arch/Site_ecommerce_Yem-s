@@ -91,9 +91,14 @@
      de la page. */
   --section-y: clamp(3.25rem, 6vw, 5.75rem);
 
-  /* — Layout — */
+  /* — Layout —
+     Trois largeurs, parce qu'un texte et une barre de navigation n'ont pas
+     les mêmes besoins. --container borne la lecture ; --container-wide sert
+     au mobilier (header, footer, grilles de produits), qui doit tenir les
+     bords sinon la page paraît flotter au milieu de l'écran. */
   --container: 1180px;
   --container-narrow: 700px;
+  --container-wide: 1560px;
   --gutter: clamp(1.25rem, 4vw, 3rem);
 
   /* — Divers — */
@@ -251,6 +256,7 @@ p { text-wrap: pretty; }
 }
 
 .container--narrow { max-width: var(--container-narrow); }
+.container--wide   { max-width: var(--container-wide); }
 
 .section { padding-block: var(--section-y); position: relative; }
 
