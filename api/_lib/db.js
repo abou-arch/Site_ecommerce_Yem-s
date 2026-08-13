@@ -14,6 +14,8 @@ import postgres from 'postgres';
 
 /** Ouvre une connexion. À refermer avec close() une fois la requête traitée. */
 export function connect(env = {}) {
+  const viaHyperdrive = Boolean(env.HYPERDRIVE?.connectionString);
+
   const url =
     env.HYPERDRIVE?.connectionString ||
     env.DATABASE_URL ||
@@ -21,13 +23,24 @@ export function connect(env = {}) {
 
   if (!url) throw new Error('aucune chaîne de connexion (HYPERDRIVE ou DATABASE_URL)');
 
+  /* SSL — le point qui coûte cher si on se trompe.
+
+     Derrière Hyperdrive, il ne faut PAS le demander. Hyperdrive chiffre
+     lui-même le trajet jusqu'à Neon ; le tronçon Worker → Hyperdrive est
+     local et ne parle pas TLS. Exiger 'require' fait attendre au driver une
+     poignée de main que personne ne lui rendra : CONNECT_TIMEOUT.
+
+     En direct (DATABASE_URL, local ou autre hébergeur), c'est l'inverse :
+     le chiffrement est à notre charge, sauf sur une base locale. */
+  const ssl = viaHyperdrive || url.includes('localhost') ? false : 'require';
+
   return postgres(url, {
     max: 1,
     fetch_types: false,   // évite un aller-retour de découverte des types au démarrage
     prepare: false,       // requis derrière un pooler (Hyperdrive, PgBouncer)
     idle_timeout: 20,
     connect_timeout: 10,
-    ssl: url.includes('localhost') ? false : 'require',
+    ssl,
     onnotice: () => {},
   });
 }

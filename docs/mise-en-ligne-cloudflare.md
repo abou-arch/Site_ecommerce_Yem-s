@@ -138,27 +138,40 @@ Deployed yems triggers
   https://yems.a1b2c3.workers.dev      ← LA TIENNE sera différente
 ```
 
-**Copie cette adresse**, tu vas t'en servir plusieurs fois. Si tu la perds :
-[dash.cloudflare.com](https://dash.cloudflare.com) → **Compute (Workers)** →
-clique sur `yems`, elle est affichée en haut.
+**Sélectionne cette adresse à la souris et fais `Ctrl + C`.** Ne la retape pas :
+`*.workers.dev` accepte n'importe quel sous-domaine, donc une lettre oubliée ne
+donne pas « host introuvable » — elle donne une **page d'erreur Cloudflare en
+HTML**, qu'on prend facilement pour un bug du serveur. C'est le piège numéro un.
+
+Si tu perds l'adresse : [dash.cloudflare.com](https://dash.cloudflare.com) →
+**Compute (Workers)** → clique sur `yems`, elle est affichée en haut.
 
 **Ouvre-la dans ton navigateur.** Tu dois voir la homepage avec la vidéo.
 Clique sur *Chaussures*, puis sur un produit.
 
 ### D'abord, le Worker répond-il ?
 
+Le `-i` affiche les en-têtes : c'est eux qui disent qui a répondu.
+
 ```powershell
-curl.exe https://TON-ADRESSE.workers.dev/api/health
+curl.exe -i https://COLLE_TON_ADRESSE/api/health
 ```
 
 Réponse attendue — du JSON, pas du HTML :
 
-```json
+```
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+
 {"ok":true,"worker":"yems","payment_mode":"offline","configured":{"hyperdrive":true,"admin_token":true,...}}
 ```
 
-Si tu reçois du HTML à la place, le Worker n'est pas atteint : redéploie, et
-vérifie que `wrangler.toml` contient bien `run_worker_first = ["/api/*"]`.
+Si tu reçois du HTML, lis d'abord les en-têtes :
+
+| En-têtes | Ce qui se passe |
+|---|---|
+| `content-type: text/html` + page Cloudflare générique | **l'adresse est fausse** — recopie-la depuis `npm run deploy` |
+| `content-type: text/html` + ta page 404 à toi | le Worker n'est pas atteint : vérifie `run_worker_first = ["/api/*"]` et l'absence de `not_found_handling`, puis redéploie |
 
 Cette route ne demande aucun mot de passe et ne touche pas à la base. Elle dit
 seulement quels réglages sont posés — jamais leur valeur.
@@ -241,6 +254,9 @@ dans le navigateur.
 | `python3 : terme non reconnu` | Python s'appelle `python` sur Windows | déjà géré par le script npm, relancer `npm run deploy` |
 | `/api/...` renvoie du HTML au lieu du JSON | le Worker n'est pas atteint | tester `/api/health` ; vérifier `run_worker_first = ["/api/*"]` et l'absence de `not_found_handling` dans `wrangler.toml`, puis redéployer |
 | `Expected "assets.run_worker_first" to be of type boolean` | Wrangler 3 installé | `npm install wrangler@4 --save-dev` |
+| `CONNECT_TIMEOUT …hyperdrive.local:5432` | le driver réclame du TLS à Hyperdrive, qui n'en parle pas sur ce tronçon | vérifier que `api/_lib/db.js` passe `ssl: false` quand `env.HYPERDRIVE` existe |
+| `relation "orders" does not exist` | le `db/schema.sql` n'a jamais été exécuté | refaire l'étape 2 |
+| `column o.pay_mode does not exist` | schéma installé avant le mode hors ligne | exécuter `db/migration-001-paiement-hors-ligne.sql` dans Neon |
 
 Pour voir ce qui se passe côté serveur en direct :
 
