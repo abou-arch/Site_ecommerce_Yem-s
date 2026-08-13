@@ -24,6 +24,11 @@ docs/
 .env
 .env.example
 
+# Fichiers internes de Wrangler — le déploiement y dépose un source map,
+# qui se retrouvait publié et exposait le code serveur.
+.wrangler/
+*.map
+
 # Fichiers de travail
 hero.mp4
 course_all.txt
