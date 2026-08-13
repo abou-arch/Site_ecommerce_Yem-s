@@ -145,6 +145,24 @@ clique sur `yems`, elle est affichée en haut.
 **Ouvre-la dans ton navigateur.** Tu dois voir la homepage avec la vidéo.
 Clique sur *Chaussures*, puis sur un produit.
 
+### D'abord, le Worker répond-il ?
+
+```powershell
+curl.exe https://TON-ADRESSE.workers.dev/api/health
+```
+
+Réponse attendue — du JSON, pas du HTML :
+
+```json
+{"ok":true,"worker":"yems","payment_mode":"offline","configured":{"hyperdrive":true,"admin_token":true,...}}
+```
+
+Si tu reçois du HTML à la place, le Worker n'est pas atteint : redéploie, et
+vérifie que `wrangler.toml` contient bien `run_worker_first = ["/api/*"]`.
+
+Cette route ne demande aucun mot de passe et ne touche pas à la base. Elle dit
+seulement quels réglages sont posés — jamais leur valeur.
+
 ### Le test qui compte
 
 Dans la commande ci-dessous, remplace **les deux parties en majuscules** par
@@ -221,7 +239,7 @@ dans le navigateur.
 | le site affiche du code source | `.assetsignore` déplacé | il doit rester à la racine du projet |
 | `you should use a local Postgres connection string` | c'est `npm run dev`, pas le déploiement | utiliser `npm run deploy` |
 | `python3 : terme non reconnu` | Python s'appelle `python` sur Windows | déjà géré par le script npm, relancer `npm run deploy` |
-| `/api/...` renvoie du HTML au lieu du JSON | `run_worker_first` absent de `wrangler.toml` | vérifier la ligne `run_worker_first = ["/api/*"]`, puis redéployer |
+| `/api/...` renvoie du HTML au lieu du JSON | le Worker n'est pas atteint | tester `/api/health` ; vérifier `run_worker_first = ["/api/*"]` et l'absence de `not_found_handling` dans `wrangler.toml`, puis redéployer |
 | `Expected "assets.run_worker_first" to be of type boolean` | Wrangler 3 installé | `npm install wrangler@4 --save-dev` |
 
 Pour voir ce qui se passe côté serveur en direct :

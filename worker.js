@@ -63,16 +63,45 @@ export default {
     const { pathname, searchParams } = new URL(request.url);
     const method = request.method;
 
-    // Selon la configuration de wrangler.toml, le Worker peut ne recevoir que
-    // /api/* (run_worker_first ciblé) ou bien toutes les requêtes. Dans le
-    // second cas on repasse la main aux fichiers statiques — ainsi le même
-    // code fonctionne quelle que soit la version de Wrangler.
+    // Tout ce qui n'est pas une route d'API repart vers les fichiers statiques.
+    // La page 404 est servie ici plutôt que par not_found_handling : ce réglage
+    // court-circuitait le Worker et répondait du HTML sur les routes /api/*.
     if (!pathname.startsWith('/api/')) {
-      if (env.ASSETS) return env.ASSETS.fetch(request);
-      return fail('route inconnue', 404);
+      if (!env.ASSETS) return fail('route inconnue', 404);
+
+      const asset = await env.ASSETS.fetch(request);
+      if (asset.status !== 404) return asset;
+
+      const notFound = await env.ASSETS.fetch(new URL('/404.html', request.url));
+      return new Response(notFound.body, {
+        status: 404,
+        headers: { 'Content-Type': 'text/html; charset=utf-8' },
+      });
     }
 
     try {
+      /* ------------------------------------------------------- diagnostic
+         Répond sans authentification et sans toucher à la base : si cette
+         route renvoie du JSON, c'est que le Worker est bien atteint. Elle
+         indique quels réglages sont posés, jamais leur valeur. */
+      if (pathname === '/api/health') {
+        return reply({
+          status: 200,
+          body: {
+            ok: true,
+            worker: 'yems',
+            payment_mode: env.PAYMENT_MODE || 'offline',
+            configured: {
+              hyperdrive: Boolean(env.HYPERDRIVE),
+              admin_token: Boolean(env.ADMIN_TOKEN),
+              owner_whatsapp: Boolean(env.OWNER_WHATSAPP),
+              kkiapay_public: Boolean(env.KKIAPAY_PUBLIC_KEY),
+              kkiapay_private: Boolean(env.KKIAPAY_PRIVATE_KEY),
+            },
+          },
+        });
+      }
+
       /* ------------------------------------------------ création de commande */
       if (pathname === '/api/orders/create') {
         if (method !== 'POST') return fail('méthode non autorisée', 405);

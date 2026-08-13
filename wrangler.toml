@@ -25,8 +25,11 @@ compatibility_flags = ["nodejs_compat"]
 [assets]
 directory = "."
 binding = "ASSETS"
-not_found_handling = "404-page"
 run_worker_first = ["/api/*"]
+
+# not_found_handling est volontairement absent : il court-circuitait le Worker
+# et renvoyait 404.html sur les routes /api/*. La page 404 est désormais servie
+# par worker.js, qui garde ainsi la main sur tout ce qui n'est pas un fichier.
 
 # ─── Base de données ───────────────────────────────────────────────────────
 # Hyperdrive maintient le pool de connexions côté Cloudflare et rapproche les
