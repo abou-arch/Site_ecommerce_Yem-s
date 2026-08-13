@@ -296,6 +296,7 @@ p { text-wrap: pretty; }
    .shop-grid) : celle-ci ne sert plus qu'aux blocs éditoriaux. */
 .grid { display: grid; gap: var(--sp-5); }
 .grid--2 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr)); }
+.grid--3 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 290px), 1fr)); }
 
 @media (max-width: 960px) {
   .section-head--split { flex-direction: column; align-items: flex-start; }

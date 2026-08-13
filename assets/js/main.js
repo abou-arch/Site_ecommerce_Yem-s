@@ -87,58 +87,6 @@
   }
 
   /* ----------------------------------------------------------------------
-     4. Carrousel témoignages
-     ---------------------------------------------------------------------- */
-  const track = $('[data-tst-track]');
-
-  if (track) {
-    const slides = $$('.tst-slide', track);
-    const dotsWrap = $('[data-tst-dots]');
-    const prevBtn = $('[data-tst-prev]');
-    const nextBtn = $('[data-tst-next]');
-    let index = 0;
-    let autoplayId = null;
-
-    const dots = slides.map((_, i) => {
-      const dot = document.createElement('button');
-      dot.type = 'button';
-      dot.className = 'tst-dot';
-      dot.setAttribute('aria-label', `Témoignage ${i + 1}`);
-      dot.addEventListener('click', () => { goTo(i); restartAutoplay(); });
-      dotsWrap && dotsWrap.appendChild(dot);
-      return dot;
-    });
-
-    function goTo(i) {
-      index = (i + slides.length) % slides.length;
-      track.style.transform = `translateX(-${index * 100}%)`;
-      dots.forEach((d, n) => d.classList.toggle('is-active', n === index));
-      slides.forEach((s, n) => s.setAttribute('aria-hidden', String(n !== index)));
-    }
-
-    function restartAutoplay() {
-      if (reduceMotion) return;
-      clearInterval(autoplayId);
-      autoplayId = setInterval(() => goTo(index + 1), 7000);
-    }
-
-    prevBtn && prevBtn.addEventListener('click', () => { goTo(index - 1); restartAutoplay(); });
-    nextBtn && nextBtn.addEventListener('click', () => { goTo(index + 1); restartAutoplay(); });
-
-    // Support tactile
-    let startX = 0;
-    let delta = 0;
-    track.addEventListener('touchstart', (e) => { startX = e.touches[0].clientX; delta = 0; }, { passive: true });
-    track.addEventListener('touchmove',  (e) => { delta = e.touches[0].clientX - startX; }, { passive: true });
-    track.addEventListener('touchend', () => {
-      if (Math.abs(delta) > 45) { goTo(index + (delta < 0 ? 1 : -1)); restartAutoplay(); }
-    });
-
-    goTo(0);
-    restartAutoplay();
-  }
-
-  /* ----------------------------------------------------------------------
      5. Compteur panier (localStorage — partagé avec panier/checkout)
      ---------------------------------------------------------------------- */
   const CART_KEY = 'yems.cart';

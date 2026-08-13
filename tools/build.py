@@ -39,6 +39,23 @@ STATUS = {
 
 # ─────────────────────────────────────────────────────────── utilitaires
 
+# Les notes de travail (« À valider », « Capacité à confirmer »…) servent à
+# Abou, pas au visiteur : lire « prix indicatifs à confirmer » sur une boutique
+# ouverte suffit à faire renoncer quelqu'un. Elles ne sortent donc que si on
+# le demande explicitement :
+#     BROUILLON=1 python3 tools/build.py
+BROUILLON = os.environ.get("BROUILLON") == "1"
+
+
+def strip_notes(html):
+    """Retire les blocs <p>…<span class="todo-note">…</span>…</p> du rendu public."""
+    if BROUILLON:
+        return html
+    # Le paragraphe entier part, pas seulement l'étiquette : sans elle, la
+    # phrase qui suit resterait orpheline au milieu de la page.
+    return re.sub(r'\n?\s*<p[^>]*>(?:(?!</p>).)*?todo-note.*?</p>', '', html, flags=re.S)
+
+
 def read(path):
     with open(path, encoding="utf-8") as f:
         return f.read()
@@ -267,6 +284,7 @@ class Builder:
             footer=footer,
             content=content,
         )
+        html = strip_notes(html)
         html = version_assets(html, ROOT)
         write(os.path.join(ROOT, path), html)
         self.written.append((path, len(html.encode())))
