@@ -8,12 +8,12 @@
     "node": ">=20"
   },
   "scripts": {
-    "build": "python3 tools/build.py",
-    "images": "python3 tools/process_images.py",
+    "build": "python3 tools/build.py || python tools/build.py",
+    "images": "python3 tools/process_images.py || python tools/process_images.py",
     "db:schema": "psql \"$DATABASE_URL\" -f db/schema.sql",
-    "dev": "wrangler dev",
+    "dev": "echo \"Le developpement local demande un Postgres local. Utilise plutot : npm run deploy\"",
     "test:pricing": "node tools/test-pricing.mjs",
-    "deploy": "python3 tools/build.py && wrangler deploy"
+    "deploy": "npm run build && wrangler deploy"
   },
   "dependencies": {
     "postgres": "^3.4.4"
