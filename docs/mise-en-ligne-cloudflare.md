@@ -219,6 +219,8 @@ dans le navigateur.
 | `Could not resolve host: TON-ADRESSE...` | le texte à remplacer a été copié tel quel | mettre ta vraie adresse, celle affichée par `npm run deploy` |
 | `Assertion failed: !(handle->flags…)` | bug Node sur Windows | sans conséquence, à ignorer |
 | le site affiche du code source | `.assetsignore` déplacé | il doit rester à la racine du projet |
+| `/api/...` renvoie du HTML au lieu du JSON | `run_worker_first` absent de `wrangler.toml` | vérifier la ligne `run_worker_first = ["/api/*"]`, puis redéployer |
+| `Expected "assets.run_worker_first" to be of type boolean` | Wrangler 3 installé | `npm install wrangler@4 --save-dev` |
 
 Pour voir ce qui se passe côté serveur en direct :
 

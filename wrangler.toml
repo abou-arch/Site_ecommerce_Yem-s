@@ -15,17 +15,18 @@ compatibility_date = "2026-08-01"
 compatibility_flags = ["nodejs_compat"]
 
 # ─── Pages statiques ───────────────────────────────────────────────────────
-# Les fichiers statiques sont servis en priorité ; le Worker n'est invoqué que
-# pour ce qu'aucun fichier ne couvre, c'est-à-dire /api/*. Il repasse la main
-# aux assets via env.ASSETS pour tout le reste.
+# run_worker_first envoie /api/* au Worker AVANT toute recherche de fichier.
+# Sans lui, not_found_handling intercepte les routes d'API et renvoie la page
+# 404 en HTML au lieu du JSON attendu.
 #
-# Wrangler 4 accepte run_worker_first = ["/api/*"], ce qui évite au Worker de
-# voir passer les requêtes de fichiers. Wrangler 3 n'accepte qu'un booléen —
-# on s'en passe donc, le comportement par défaut convient.
+# La forme tableau demande Wrangler 4. Si une erreur signale que la valeur
+# doit être booléenne, c'est que Wrangler 3 est installé :
+#   npm install wrangler@4 --save-dev
 [assets]
 directory = "."
 binding = "ASSETS"
 not_found_handling = "404-page"
+run_worker_first = ["/api/*"]
 
 # ─── Base de données ───────────────────────────────────────────────────────
 # Hyperdrive maintient le pool de connexions côté Cloudflare et rapproche les
