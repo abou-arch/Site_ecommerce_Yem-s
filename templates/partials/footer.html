@@ -10,13 +10,18 @@
           </span>
         </a>
         <p class="text-muted" style="font-size:var(--fs-sm);margin-top:var(--sp-4);max-width:34ch">
-          Souliers et maroquinerie façonnés à la main pour le Bénin et la Côte d'Ivoire.
+          Souliers et maroquinerie cousus à la main à Cotonou, pour le Bénin
+          et la Côte d'Ivoire.
         </p>
-        <form class="newsletter" onsubmit="return false">
-          <label class="visually-hidden" for="nl">Votre adresse e-mail</label>
-          <input id="nl" type="email" placeholder="Votre e-mail" required>
-          <button class="btn btn--sm" type="submit">S'inscrire</button>
-        </form>
+
+        <!-- Le formulaire d'inscription a été retiré : il n'était relié à rien et
+             faisait disparaître les adresses saisies. À remettre le jour où une
+             liste de diffusion existe vraiment. -->
+        <a class="btn btn--ghost btn--sm" style="margin-top:var(--sp-5)"
+           href="https://wa.me/{{whatsapp}}" target="_blank" rel="noopener">
+          <svg aria-hidden="true"><use href="#i-whatsapp"></use></svg>
+          Écrire à l'atelier
+        </a>
       </div>
 
       <div>
@@ -44,10 +49,10 @@
           <li>Cotonou, Bénin</li>
           <li>Abidjan, Côte d'Ivoire</li>
           <li><a href="https://wa.me/{{whatsapp}}" target="_blank" rel="noopener">WhatsApp atelier</a></li>
-          <li><a href="mailto:{{email}}">{{email}}</a></li>
+          <li>Du lundi au samedi, 8 h – 19 h</li>
         </ul>
         <div class="pay-logos" style="margin-top:var(--sp-5)">
-          <span>MTN MoMo</span><span>Moov</span><span>Wave</span><span>Visa</span><span>KkiaPay</span>
+          <span>MTN MoMo</span><span>Moov</span><span>Wave</span><span>Espèces</span>
         </div>
       </div>
     </div>
@@ -56,7 +61,7 @@
 
     <div class="footer__bottom">
       <span>© <span data-year>2026</span> Yem's. Tous droits réservés.</span>
-      <span>Paiements sécurisés par KkiaPay · Mobile Money, Wave &amp; carte bancaire</span>
+      <span>Réglé à la livraison ou par Mobile Money, convenu avec l'atelier</span>
     </div>
   </div>
 </footer>

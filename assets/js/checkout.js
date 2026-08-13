@@ -36,8 +36,8 @@
     if (items.length === 0) {
       list.innerHTML = `
         <div class="empty-state">
-          <p class="display">Votre panier est vide.</p>
-          <p class="text-muted">Les quatre lignes vous attendent — ou composez votre paire sur-mesure.</p>
+          <p class="display">Rien dans le panier pour l'instant.</p>
+          <p class="text-muted">Quatre formes sont montées et prêtes à partir. Si aucune ne vous va, on en fait une à vos mesures.</p>
           <div class="cta__actions" style="margin-top:var(--sp-5)">
             <a class="btn" href="chaussures.html">Voir les souliers</a>
             <a class="btn btn--ghost" href="configurateur.html">Composer ma paire</a>
@@ -178,7 +178,7 @@
     } catch (err) {
       busy = false;
       submit.disabled = false;
-      say(err.message || 'Commande impossible. Réessayez ou écrivez-nous sur WhatsApp.', 'error');
+      say(err.message || "La commande n'est pas passée. Réessayez dans un instant, ou écrivez-nous sur WhatsApp : on la prend à la main.", 'error');
       return;
     }
 
@@ -198,7 +198,7 @@
       return;
     }
 
-    say(`Commande ${order.reference} — ouverture du paiement…`);
+    say(`Commande ${order.reference}, ouverture du paiement…`);
 
     // Le montant vient du serveur, jamais du panier local.
     window.openKkiapayWidget({
@@ -217,7 +217,7 @@
     });
 
     window.addSuccessListener(async (response) => {
-      say('Paiement reçu — vérification en cours…');
+      say('Paiement reçu, vérification en cours…');
       try {
         const res = await fetch('/api/payments/verify', {
           method: 'POST',

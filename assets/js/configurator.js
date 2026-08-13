@@ -78,7 +78,7 @@
 
     const sum = total();
     $$('[data-total]').forEach((el) => {
-      el.textContent = sum ? fmt(sum) : '—';
+      el.textContent = sum ? fmt(sum) : '…';
     });
 
     // aperçu : la photo du modèle retenu
@@ -134,7 +134,7 @@
 
       const item = {
         id: 'sur-mesure-' + choice.shape,
-        name: shape.name + ' — sur-mesure',
+        name: shape.name + ' sur-mesure',
         price: total(),
         size: choice.size,
         color: leather.name,
@@ -155,7 +155,7 @@
       const cart = btn.dataset.cart || 'panier.html';
       window.dispatchEvent(new CustomEvent('yems:toast', {
         detail: { html: '<svg aria-hidden="true"><use href="#i-check"></use></svg>' +
-                        detail + ' — <a href="' + cart + '">voir le panier</a>' },
+                        detail + '. <a href="' + cart + '">voir le panier</a>' },
       }));
     });
   });

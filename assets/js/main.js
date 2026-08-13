@@ -280,7 +280,7 @@
 
       const details = [btn.dataset.name, color, size].filter(Boolean).join(' · ');
       toast('<svg aria-hidden="true"><use href="#i-check"></use></svg>' +
-            details + ' — <a href="' + (btn.dataset.cart || 'panier.html') + '">voir le panier</a>');
+            details + '. <a href="' + (btn.dataset.cart || 'panier.html') + '">voir le panier</a>');
     });
   });
 

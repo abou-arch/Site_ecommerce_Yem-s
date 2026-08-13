@@ -31,8 +31,8 @@ OUT_PRODUCTS = os.path.join(ROOT, "produit")
 # Libellé court pour les vignettes, libellé explicite pour la fiche produit :
 # « En route » ne dit rien à l'acheteur, « arrivage sous 10 jours » si.
 STATUS = {
-    "green": ("badge--green", "Au Bénin",     "En stock à Cotonou — expédié sous 72 h"),
-    "amber": ("badge--amber", "En route",     "En route — arrivage sous 10 jours"),
+    "green": ("badge--green", "Au Bénin",     "En stock à Cotonou, expédié sous 72 h"),
+    "amber": ("badge--amber", "En route",     "En route, arrivage sous 10 jours"),
     "red":   ("badge--red",   "Indisponible", "Sur commande uniquement"),
 }
 
@@ -279,11 +279,11 @@ class Builder:
         self.page(
             "index.html",
             content=body,
-            title="Yem's — Souliers et maroquinerie cousus main | Différents par les détails",
-            description=("Yem's — souliers, ceintures et portefeuilles cousus à la main à "
+            title="Yem's : souliers et maroquinerie cousus main | Différents par les détails",
+            description=("Yem's : souliers, ceintures et portefeuilles cousus à la main à "
                          "Cotonou. Point sellier, cuir pleine fleur, semelle ressemelable. "
                          "Sur-mesure en 14 à 20 jours, livré au Bénin et en Côte d'Ivoire."),
-            og_title="Yem's — Personne ne verra la couture. Tout le monde verra la différence.",
+            og_title="Yem's. Personne ne verra la couture. Tout le monde verra la différence.",
             og_image="loafer-ouidah",
             structured={
                 "@context": "https://schema.org",
@@ -342,7 +342,7 @@ class Builder:
         self.page(
             "%s.html" % cat["slug"],
             content=crumb + "\n\n" + content,
-            title="%s — Yem's" % cat["title"],
+            title="%s | Yem's" % cat["title"],
             description=cat["description"],
             current=cat["slug"],
             structured={
@@ -386,7 +386,7 @@ class Builder:
           <div class="picker__row">
 {buttons}
           </div>
-          <p class="picker__help">Entre deux&nbsp;? Prenez la plus grande — l'atelier ajuste au montage.</p>
+          <p class="picker__help">Entre deux&nbsp;? Prenez la plus grande, l'atelier ajuste au montage.</p>
         </div>"""
 
         # couleurs
@@ -414,7 +414,7 @@ class Builder:
         panels = []
         if product.get("details"):
             body = "".join(
-                "<p><strong>%s</strong> — %s</p>" % (escape(d["title"]), d["text"])
+                "<p><strong>%s</strong> : %s</p>" % (escape(d["title"]), d["text"])
                 for d in product["details"])
             panels.append(("La construction", body))
         for acc in self.site.get("accordions", []):
@@ -529,7 +529,7 @@ class Builder:
         self.page(
             "produit/%s.html" % product["slug"],
             content=content,
-            title="%s — %s | Yem's" % (product["name"], cat["name"]),
+            title="%s, %s | Yem's" % (product["name"], cat["name"]),
             description=product["short"],
             og_type="product",
             og_image=images[0]["file"] if images else None,
@@ -629,8 +629,8 @@ class Builder:
       <span class="eyebrow">L'atelier</span>
       <h1 data-lines>Une paire cousue<br>pour un seul pied au monde.<br>Le vôtre.</h1>
       <p class="lede">
-        Cinq décisions, {cfg['lead_days']}. Chaque choix se voit dans l'aperçu et dans le
-        prix — rien ne se découvre à la fin.
+        Six décisions, {cfg['lead_days']}. Chaque choix se voit dans l'aperçu et dans
+        le prix. Rien ne se découvre à la fin.
       </p>
     </div>
 
@@ -650,14 +650,40 @@ class Builder:
           <div class="cfg-step__head">
             <span class="cfg-step__num">02</span>
             <h2>Le cuir</h2>
-            <p class="cfg-step__hint">Pleine fleur, tannage végétal — la patine se creuse avec les années.</p>
+            <p class="cfg-step__hint">Pleine fleur, tannage végétal. Il foncera et se creusera avec les années, c'est voulu.</p>
           </div>
 {leathers}
+
+          <figure class="cfg-film">
+            <video autoplay muted loop playsinline preload="none"
+                   poster="assets/img/cuirs-poster.jpg">
+              <source src="assets/video/cuirs.webm" type="video/webm">
+              <source src="assets/video/cuirs.mp4" type="video/mp4">
+            </video>
+            <figcaption>Illustration&nbsp;: les quatre familles de grain, du plus marqué au velours. Le vrai cuir de l'atelier se voit mieux en main que sur un écran, demandez un échantillon sur WhatsApp avant de trancher.</figcaption>
+          </figure>
         </section>
 
         <section class="cfg-step">
           <div class="cfg-step__head">
             <span class="cfg-step__num">03</span>
+            <h2>Le fil</h2>
+            <p class="cfg-step__hint">Lin ciré, quatre teintes. Ton sur ton, la couture se devine. Contrastée, elle se voit à trois mètres. L'atelier vous demandera votre choix au moment de confirmer.</p>
+          </div>
+
+          <figure class="cfg-film">
+            <video autoplay muted loop playsinline preload="none"
+                   poster="assets/img/fils-poster.jpg">
+              <source src="assets/video/fils.webm" type="video/webm">
+              <source src="assets/video/fils.mp4" type="video/mp4">
+            </video>
+            <figcaption>Illustration&nbsp;: espresso, cognac, noir, sable. Les quatre teintes proposées, sur du lin ciré.</figcaption>
+          </figure>
+        </section>
+
+        <section class="cfg-step">
+          <div class="cfg-step__head">
+            <span class="cfg-step__num">04</span>
             <h2>La semelle</h2>
             <p class="cfg-step__hint">Les deux se ressemellent. La gomme tient mieux sous la pluie.</p>
           </div>
@@ -666,9 +692,9 @@ class Builder:
 
         <section class="cfg-step">
           <div class="cfg-step__head">
-            <span class="cfg-step__num">04</span>
+            <span class="cfg-step__num">05</span>
             <h2>La pointure</h2>
-            <p class="cfg-step__hint">Entre deux&nbsp;? Prenez la plus grande — l'atelier ajuste la forme à vos mesures exactes lors de la prise de cotes.</p>
+            <p class="cfg-step__hint">Entre deux&nbsp;? Prenez la plus grande, l'atelier ajuste la forme à vos mesures exactes lors de la prise de cotes.</p>
           </div>
           <div class="cfg-sizes" data-group="size">
 {sizes}
@@ -677,7 +703,7 @@ class Builder:
 
         <section class="cfg-step">
           <div class="cfg-step__head">
-            <span class="cfg-step__num">05</span>
+            <span class="cfg-step__num">06</span>
             <h2>Les initiales</h2>
             <p class="cfg-step__hint">{cfg['initials']['note']}</p>
           </div>
@@ -706,7 +732,7 @@ class Builder:
 
           <div class="cfg-total">
             <span class="cfg-total__label">Total</span>
-            <span class="cfg-total__value" data-total>—</span>
+            <span class="cfg-total__value" data-total>…</span>
           </div>
 
           <button class="btn btn--full" type="button" data-cfg-add data-cart="panier.html" disabled>
@@ -715,8 +741,9 @@ class Builder:
           </button>
 
           <p class="cfg-card__foot">
-            Acompte {cfg['deposit']}&nbsp;% à la commande — Mobile Money MTN &amp; Moov, Wave
-            ou carte via KkiaPay. Le solde à la livraison.
+            Rien à payer maintenant. L'atelier vous écrit dans la journée pour
+            confirmer la date, puis vous versez un acompte de {cfg['deposit']}&nbsp;% :
+            Mobile Money MTN ou Moov, Wave, ou en espèces. Le solde à la livraison.
           </p>
 
           <ul class="cfg-trust">
@@ -731,8 +758,8 @@ class Builder:
 
   <div class="cfg-bar">
     <span class="cfg-bar__total">
-      <span data-total>—</span>
-      <span class="cfg-bar__label">Cousue à la commande — {cfg['lead_days']}</span>
+      <span data-total>…</span>
+      <span class="cfg-bar__label">Cousue à la commande, {cfg['lead_days']}</span>
     </span>
     <button class="btn btn--sm" type="button" data-cfg-add data-cart="panier.html" disabled>Ajouter</button>
   </div>
@@ -749,7 +776,7 @@ class Builder:
         self.page(
             "configurateur.html",
             content=content,
-            title="Configurateur sur-mesure — Yem's",
+            title="Configurateur sur-mesure | Yem's",
             description="Composez votre paire sur-mesure : forme, cuir, semelle, pointure "
                         "et initiales. Prix en direct, %s, acompte %d %% à la commande."
                         % (cfg["lead_days"], cfg["deposit"]),
@@ -778,7 +805,7 @@ class Builder:
         <h2>Récapitulatif</h2>
         <div class="summary__total">
           <span>Sous-total</span>
-          <span data-cart-subtotal>—</span>
+          <span data-cart-subtotal>…</span>
         </div>
         <p class="summary__note">
           Livraison offerte au Bénin et en Côte d'Ivoire. Les frais pour les autres
@@ -794,7 +821,7 @@ class Builder:
         </a>
         <ul class="cfg-trust">
           <li><svg aria-hidden="true"><use href="#i-shield"></use></svg>1 retouche offerte, puis remboursement intégral</li>
-          <li><svg aria-hidden="true"><use href="#i-card"></use></svg>Mobile Money, Wave ou carte — via KkiaPay</li>
+          <li><svg aria-hidden="true"><use href="#i-card"></use></svg>Rien à payer maintenant, réglé à la remise</li>
           <li><svg aria-hidden="true"><use href="#i-truck"></use></svg>Cotonou &amp; Abidjan en 48&nbsp;h</li>
         </ul>
       </div>
@@ -804,9 +831,9 @@ class Builder:
 
         self.page(
             "panier.html", content=content,
-            title="Panier — Yem's",
-            description="Votre panier Yem's. Paiement Mobile Money MTN et Moov, Wave "
-                        "ou carte bancaire, sécurisé par KkiaPay.",
+            title="Panier | Yem's",
+            description="Votre panier Yem's. Commandez sans payer d'avance : l'atelier "
+                        "vous rappelle et vous réglez à la livraison ou par Mobile Money.",
             extra_css=("checkout",), extra_js=("checkout",),
         )
 
@@ -840,7 +867,7 @@ class Builder:
             <span>Téléphone</span>
             <input name="phone" type="tel" required autocomplete="tel"
                    placeholder="97 00 00 00">
-            <span class="field__hint">Celui de votre Mobile Money — c'est par là que l'atelier vous joindra.</span>
+            <span class="field__hint">Celui de votre Mobile Money, c'est par là que l'atelier vous joindra.</span>
           </label>
           <label class="field">
             <span>Pays</span>
@@ -923,7 +950,7 @@ class Builder:
         <dl data-checkout-recap></dl>
         <div class="summary__total">
           <span>Sous-total</span>
-          <span data-cart-subtotal>—</span>
+          <span data-cart-subtotal>…</span>
         </div>
         <p class="summary__note">
           Le montant définitif, frais de livraison compris, vous est confirmé
@@ -943,9 +970,9 @@ class Builder:
 
         self.page(
             "checkout.html", content=content,
-            title="Commande — Yem's",
-            description="Renseignez votre adresse de livraison et réglez par Mobile Money, "
-                        "Wave ou carte bancaire.",
+            title="Commande | Yem's",
+            description="Laissez votre adresse de livraison. L'atelier vous rappelle "
+                        "dans la journée pour confirmer et convenir du règlement.",
             extra_css=("checkout",), extra_js=("checkout",),
         )
 
@@ -958,10 +985,10 @@ class Builder:
         C'est noté.<br>L'atelier s'en occupe.
       </h1>
 
-      <p class="done__ref" data-order-ref>—</p>
+      <p class="done__ref" data-order-ref>…</p>
 
       <p class="lede mx-auto text-center" data-reveal data-done-message>
-        Gardez cette référence : elle suffit à retrouver votre commande.
+        Notez cette référence quelque part, elle suffit à retrouver votre commande.
       </p>
 
       <div class="cta__actions" data-reveal>
@@ -992,12 +1019,12 @@ class Builder:
     var messages = {{
       online: "Votre paiement est enregistré. L'atelier vous écrit sur WhatsApp "
             + "dans la journée pour confirmer la date de livraison.",
-      delivery: "Vous ne payez rien pour l'instant. L'atelier vous appelle dans "
-              + "la journée pour confirmer la commande, puis vous réglez à la "
-              + "remise, en espèces ou par Mobile Money.",
+      delivery: "Vous n'avez rien payé, et c'est normal. L'atelier vous appelle "
+              + "dans la journée pour confirmer, puis vous réglez au moment où "
+              + "on vous remet la paire : espèces ou Mobile Money.",
       transfer: "L'atelier vous écrit sur WhatsApp dans la journée avec son "
-              + "numéro Mobile Money. La production démarre dès réception de "
-              + "l'acompte."
+              + "numéro Mobile Money. Le travail commence dès que l'acompte "
+              + "est arrivé."
     }};
 
     var mode = params.get('mode');
@@ -1010,7 +1037,7 @@ class Builder:
 
         self.page(
             "commande-confirmee.html", content=content,
-            title="Commande confirmée — Yem's",
+            title="Commande confirmée | Yem's",
             description="Votre commande Yem's est enregistrée. L'atelier vous contacte sur WhatsApp.",
             extra_css=("checkout",),
         )
@@ -1046,7 +1073,7 @@ class Builder:
 
         self.page(
             "404.html", content=content,
-            title="Page introuvable — Yem's",
+            title="Page introuvable | Yem's",
             description="Cette page n'existe pas ou n'existe plus.",
             extra_css=("checkout",),
         )

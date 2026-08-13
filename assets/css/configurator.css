@@ -270,3 +270,29 @@
   .cfg-bar { display: flex; }
   body:has(.cfg-bar) { padding-bottom: 76px; }
 }
+
+/* --------------------------------------------------------------------------
+   FILM D'ÉTAPE — les cuirs et les fils en mouvement
+   preload="none" côté HTML : rien ne se télécharge tant qu'on n'est pas
+   descendu jusqu'ici. Sur une connexion mobile, ça compte.
+   -------------------------------------------------------------------------- */
+.cfg-film {
+  margin: var(--sp-5) 0 0;
+  display: grid;
+  gap: var(--sp-3);
+}
+
+.cfg-film video {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--espresso-800);
+}
+
+.cfg-film figcaption {
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+  max-width: 56ch;
+}
