@@ -1,0 +1,187 @@
+/* ==========================================================================
+   YEM'S — Suivi des commandes, côté atelier
+
+   Écran de travail, pas de vitrine : la lisibilité passe avant le geste.
+   Aucune animation d'apparition, rien qui bouge au survol d'une carte.
+   ========================================================================== */
+
+.admin__head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--sp-5);
+  flex-wrap: wrap;
+  margin-bottom: var(--sp-6);
+}
+
+/* ─────────────────────────────────────────────── écran de mot de passe */
+
+.admin__gate {
+  max-width: 30rem;
+  display: grid;
+  gap: var(--sp-4);
+  padding: var(--sp-6);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+
+.admin__error {
+  font-size: var(--fs-sm);
+  color: #E0917F;   /* 6.1:1 sur espresso-700 */
+}
+
+/* ──────────────────────────────────────────────────────────── filtres */
+
+.admin__filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-4);
+}
+
+.chip {
+  padding: 0.5rem 1rem;
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  transition: color 200ms var(--ease), border-color 200ms var(--ease);
+}
+
+.chip:hover { color: var(--text); border-color: var(--border-strong); }
+
+.chip[aria-pressed="true"] {
+  color: var(--espresso-900);
+  background: var(--brass-300);
+  border-color: var(--brass-300);
+}
+
+.admin__count {
+  font-size: var(--fs-sm);
+  color: var(--text-subtle);
+  margin-bottom: var(--sp-4);
+}
+
+.admin__list { display: grid; gap: var(--sp-4); }
+.admin__list[aria-busy="true"] { opacity: 0.5; }
+
+/* ─────────────────────────────────────────────────── carte de commande */
+
+.cmd {
+  padding: var(--sp-5);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+
+.cmd__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  flex-wrap: wrap;
+  padding-bottom: var(--sp-4);
+  border-bottom: 1px solid var(--border);
+}
+
+.cmd__ref {
+  font-family: var(--font-mono, ui-monospace, "SF Mono", Menlo, monospace);
+  font-size: var(--fs-md);
+  letter-spacing: 0.04em;
+  color: var(--text);
+}
+
+.cmd__when { font-size: var(--fs-sm); color: var(--text-subtle); margin-top: 2px; }
+.cmd__when strong { color: var(--brass-300); font-weight: 500; }
+
+/* Le statut porte une couleur, mais le mot suffit : personne ne doit avoir
+   à distinguer deux teintes pour comprendre où en est une commande. */
+.cmd__status {
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  padding: 0.4rem 0.85rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid currentColor;
+  white-space: nowrap;
+}
+
+.cmd__status[data-ton="urgent"]  { color: #F0A96B; }
+.cmd__status[data-ton="ok"]      { color: #8FBF93; }
+.cmd__status[data-ton="cours"]   { color: var(--brass-300); }
+.cmd__status[data-ton="fini"]    { color: var(--text-subtle); }
+.cmd__status[data-ton="attente"] { color: var(--text-muted); }
+.cmd__status[data-ton="mort"]    { color: #E0917F; }
+
+.cmd__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  gap: var(--sp-5);
+  padding-block: var(--sp-4);
+}
+
+.cmd__label {
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  color: var(--brass-300);
+  margin-bottom: var(--sp-3);
+}
+
+.cmd__who   { font-weight: 600; }
+.cmd__addr  { font-size: var(--fs-sm); color: var(--text-muted); }
+.cmd__addr a { color: var(--brass-300); }
+.cmd__note  { font-size: var(--fs-sm); color: var(--text-muted); font-style: italic; margin-top: var(--sp-3); }
+
+.cmd__items { display: grid; gap: var(--sp-2); margin-bottom: var(--sp-4); }
+
+.cmd__items li {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  font-size: var(--fs-sm);
+}
+
+.cmd__items small { color: var(--text-subtle); }
+
+.cmd__money { display: grid; gap: var(--sp-2); padding-top: var(--sp-3); border-top: 1px solid var(--border); }
+.cmd__money > div { display: flex; justify-content: space-between; gap: var(--sp-4); font-size: var(--fs-sm); }
+.cmd__money dt { color: var(--text-subtle); }
+.cmd__money dd { font-weight: 600; }
+.cmd__due dd { color: var(--brass-300); }
+
+.cmd__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+  padding-top: var(--sp-4);
+  border-top: 1px solid var(--border);
+}
+
+.cmd__next select {
+  padding: 0.7rem 1rem;
+  font-size: var(--fs-sm);
+  color: var(--text);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+}
+
+.cmd__next select:disabled { opacity: 0.5; }
+
+.cmd__feedback { margin-top: var(--sp-3); font-size: var(--fs-sm); }
+.cmd__feedback[data-kind="ok"]    { color: #8FBF93; }
+.cmd__feedback[data-kind="error"] { color: #E0917F; }
+
+/* Sur téléphone, une carte doit tenir dans le pouce : c'est là que l'atelier
+   consultera ses commandes le plus souvent. */
+@media (max-width: 560px) {
+  .cmd { padding: var(--sp-4); }
+  .cmd__actions { flex-direction: column; align-items: stretch; }
+  .cmd__next select { width: 100%; }
+}

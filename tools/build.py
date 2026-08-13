@@ -237,7 +237,7 @@ class Builder:
     def page(self, path, *, content, title, description,
              og_title=None, og_type="website", og_image=None,
              current=None, depth=0, structured=None,
-             extra_css=(), extra_js=()):
+             extra_css=(), extra_js=(), noindex=False):
         base = "../" * depth
         home = "%sindex.html" % base if path != "index.html" else ""
         header, footer = self.chrome(base, home, current)
@@ -248,6 +248,8 @@ class Builder:
             # apostrophes n'ont pas à être échappées (html.escape échappe par défaut)
             title=escape(title, quote=False),
             description=escape(description, quote=True),
+            robots=('<meta name="robots" content="noindex, nofollow">\n'
+                    if noindex else ""),
             og_title=escape(og_title or title, quote=True),
             og_type=og_type,
             og_image=('<meta property="og:image" content="%sassets/img/%s.jpg">\n'
@@ -1043,6 +1045,65 @@ class Builder:
         )
 
 
+    def build_admin(self):
+        """
+        Écran de suivi des commandes, pour l'atelier.
+
+        Rien n'est rendu ici : la page arrive vide et se remplit depuis
+        /api/admin/orders. Aucune donnée client ne se trouve donc dans un
+        fichier statique servi publiquement, et le jeton reste le seul
+        gardien. La page est en noindex et n'est liée depuis nulle part.
+        """
+        filtres = "\n".join(
+            '        <button class="chip" type="button" data-filter="%s"%s>%s</button>'
+            % (val, ' aria-pressed="true"' if val == "" else ' aria-pressed="false"', libelle)
+            for val, libelle in [
+                ("", "Tout"), ("to_confirm", "À confirmer"), ("deposit", "Acompte reçu"),
+                ("paid", "Payées"), ("in_workshop", "En atelier"),
+                ("shipped", "Expédiées"), ("delivered", "Livrées"),
+            ])
+
+        content = f"""<section class="section section--top admin" id="admin">
+  <div class="container container--wide">
+
+    <div class="admin__head">
+      <div>
+        <span class="eyebrow">Atelier</span>
+        <h1 class="page-title" style="margin-top:var(--sp-3)">Les commandes</h1>
+      </div>
+      <button class="btn btn--sm btn--quiet" type="button" data-refresh hidden>Actualiser</button>
+    </div>
+
+    <form class="admin__gate" data-gate>
+      <label class="field">
+        <span class="field__label">Mot de passe de l'atelier</span>
+        <input type="password" name="token" autocomplete="current-password"
+               required minlength="16" spellcheck="false">
+        <span class="field__hint">Celui généré à l'installation. Il n'est gardé
+          que le temps de l'onglet : refermez-le et il faudra le ressaisir.</span>
+      </label>
+      <button class="btn" type="submit">Ouvrir</button>
+      <p class="admin__error" data-gate-error hidden></p>
+    </form>
+
+    <div class="admin__body" data-body hidden>
+      <div class="admin__filters" role="group" aria-label="Filtrer par statut">
+{filtres}
+      </div>
+      <p class="admin__count" data-count aria-live="polite"></p>
+      <div class="admin__list" data-list></div>
+    </div>
+
+  </div>
+</section>"""
+
+        self.page(
+            "admin.html", content=content,
+            title="Suivi des commandes | Yem's",
+            description="Espace réservé à l'atelier.",
+            extra_css=("admin",), extra_js=("admin",), noindex=True,
+        )
+
     def build_404(self):
         """Page servie par Cloudflare quand aucune URL ne correspond."""
         content = f"""<section class="section section--top cta grain" style="min-height:72svh;display:grid;place-items:center">
@@ -1100,6 +1161,7 @@ class Builder:
         self.build_cart()
         self.build_checkout()
         self.build_confirmation()
+        self.build_admin()
         self.build_404()
 
         print("%d pages générées :\n" % len(self.written))

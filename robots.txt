@@ -1,0 +1,16 @@
+# Yem's
+
+User-agent: *
+Allow: /
+
+# Espace de l'atelier et routes serveur : rien à indexer, et rien qui doive
+# apparaître dans un résultat de recherche. La page admin.html est déjà en
+# noindex ; cette ligne évite en plus qu'un robot la parcoure.
+Disallow: /admin.html
+Disallow: /api/
+
+# Le tunnel de commande n'a aucun intérêt en référencement, et une page de
+# confirmation indexée renverrait les visiteurs sur une commande vide.
+Disallow: /panier.html
+Disallow: /checkout.html
+Disallow: /commande-confirmee.html

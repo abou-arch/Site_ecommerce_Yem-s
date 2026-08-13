@@ -361,9 +361,29 @@ environ 130 lignes. Le reste du code ignore qui encaisse.
 
 ---
 
+## L'écran de l'atelier
+
+Adresse : **`https://TON-ADRESSE/admin.html`**
+
+Ton client y entre le mot de passe généré à l'étape 4, et voit ses commandes.
+Il peut filtrer par statut, cliquer pour prévenir le client sur WhatsApp, et
+faire avancer une commande (à confirmer → acompte reçu → en atelier → expédiée
+→ livrée).
+
+Trois choses à lui dire :
+
+- **La page n'est liée depuis nulle part.** Il faut mettre l'adresse en favori.
+  C'est volontaire : aucun visiteur ne doit tomber dessus par hasard.
+- **Le mot de passe est oublié à la fermeture de l'onglet.** Un peu pénible,
+  mais un mot de passe qui donne les coordonnées de tous les clients n'a rien
+  à faire stocké durablement dans un navigateur.
+- **La page ne contient aucune donnée en elle-même.** Tout arrive du serveur
+  après vérification du mot de passe. Même téléchargée, elle est vide.
+
+---
+
 ## Ce qui reste à faire sur le site
 
-- [ ] Page d'administration — l'API existe, il manque l'écran
 - [ ] Remplacer les photos portant des marques de fabricants tiers
 - [ ] Prix définitifs, témoignages réels, numéro WhatsApp de l'atelier
 - [ ] Statut VIP et affectation d'un livreur — les champs existent, pas d'interface
