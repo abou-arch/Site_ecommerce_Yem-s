@@ -5,13 +5,16 @@
 /* --------------------------------------------------------------------------
    HERO
    -------------------------------------------------------------------------- */
+/* Plein écran plafonné : sur un grand moniteur, 100svh donnait un hero de
+   1100 px que personne ne voit en entier. Le plafond garde la vidéo ample
+   sans repousser le reste de la page hors de vue. */
 .hero {
   position: relative;
-  min-height: 100svh;
+  min-height: min(92svh, 820px);
   display: flex;
   align-items: flex-end;
-  padding-top: calc(var(--header-h) + var(--sp-7));
-  padding-bottom: var(--sp-8);
+  padding-top: calc(var(--header-h) + var(--sp-6));
+  padding-bottom: var(--sp-7);
   overflow: hidden;
   isolation: isolate;
 }
@@ -80,9 +83,9 @@
   width: 100%;
 }
 
-.hero__inner > div { max-width: 62ch; }
+.hero__inner > div { max-width: 50ch; }
 
-.hero h1 { margin-block: var(--sp-5) var(--sp-5); max-width: 14ch; }
+.hero h1 { margin-block: var(--sp-4) var(--sp-4); max-width: 15ch; }
 
 .hero__pay {
   margin-top: var(--sp-5);
@@ -190,7 +193,7 @@
 /* --------------------------------------------------------------------------
    OBJECTIONS / FAQ
    -------------------------------------------------------------------------- */
-.faq { display: grid; gap: var(--sp-3); max-width: 860px; margin-inline: auto; }
+.faq { display: grid; gap: var(--sp-2); max-width: 720px; margin-inline: auto; }
 
 .faq details {
   border: 1px solid var(--border);
@@ -271,10 +274,23 @@
 /* --------------------------------------------------------------------------
    COLLECTIONS
    -------------------------------------------------------------------------- */
+/* Accueil : quatre pièces de front sur grand écran, deux sur tablette, une
+   sur téléphone — sans point de rupture à maintenir. Photos carrées : la
+   grille perd un cinquième de sa hauteur sans rien perdre en lisibilité. */
 .collections__grid {
+  --shot-ratio: 1 / 1;
+  display: grid;
+  gap: var(--sp-5) var(--sp-4);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+}
+
+/* Pages catégorie : trois par rangée, format portrait. On y vient pour
+   comparer les pièces, pas pour traverser la page. */
+.shop-grid {
+  --shot-ratio: 4 / 5;
   display: grid;
   gap: var(--sp-6) var(--sp-5);
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
 }
 
 /* --------------------------------------------------------------------------

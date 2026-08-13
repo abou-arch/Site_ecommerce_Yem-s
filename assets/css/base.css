@@ -61,8 +61,11 @@
   --fs-lg:   1.25rem;    /* 20 */
   --fs-xl:   1.625rem;   /* 26 */
   --fs-2xl:  2.125rem;   /* 34 */
-  --fs-3xl:  clamp(2.3rem, 4.6vw, 4rem);
-  --fs-4xl:  clamp(2.9rem, 6.8vw, 6.4rem);
+  /* Les bornes hautes tenaient du poster, pas de la page : 64 px et 102 px
+     sur un écran de bureau. Ramenées à 45 px et 67 px — l'échelle reste
+     éditoriale, le titre cesse d'occuper l'écran à lui seul. */
+  --fs-3xl:  clamp(1.85rem, 3.3vw, 2.8rem);
+  --fs-4xl:  clamp(2.4rem, 5vw, 4.2rem);
 
   --lh-tight: 1.08;
   --lh-snug:  1.28;
@@ -83,11 +86,14 @@
   --sp-9: 6rem;
   --sp-10: 8rem;
 
-  --section-y: clamp(4.5rem, 9vw, 8.5rem);
+  /* Appliqué en haut ET en bas : 8,5rem faisait 272 px de vide entre deux
+     sections, multiplié par neuf sections. C'est là que partait la longueur
+     de la page. */
+  --section-y: clamp(3.25rem, 6vw, 5.75rem);
 
   /* — Layout — */
-  --container: 1320px;
-  --container-narrow: 820px;
+  --container: 1180px;
+  --container-narrow: 700px;
   --gutter: clamp(1.25rem, 4vw, 3rem);
 
   /* — Divers — */
@@ -222,11 +228,17 @@ p { text-wrap: pretty; }
   opacity: 0.6;
 }
 
+/* 46 caractères par ligne. Au-delà de ~50, l'œil perd le début de la ligne
+   suivante et la lecture ralentit — c'est ça, « le texte est trop large ». */
 .lede {
   font-size: var(--fs-md);
   color: var(--text-muted);
-  max-width: 54ch;
+  max-width: 46ch;
 }
+
+/* Filet de sécurité : aucun paragraphe courant ne dépasse la mesure, même
+   ceux qui n'ont pas de classe. */
+.section p:not([class]) { max-width: 62ch; }
 
 /* --------------------------------------------------------------------------
    4. LAYOUT
@@ -255,8 +267,8 @@ p { text-wrap: pretty; }
 .section-head {
   display: flex;
   flex-direction: column;
-  gap: var(--sp-4);
-  margin-bottom: var(--sp-8);
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-6);
 }
 
 .section-head--center {
@@ -272,13 +284,12 @@ p { text-wrap: pretty; }
   flex-wrap: wrap;
 }
 
-.grid { display: grid; gap: var(--sp-5); }
-
 /* auto-fit : les colonnes se replient d'elles-mêmes, sans point de rupture à
-   maintenir. min(100%, Xpx) évite le débordement sur très petit écran. */
+   maintenir. min(100%, Xpx) évite le débordement sur très petit écran.
+   Les grilles de produits ont leurs propres classes (.collections__grid,
+   .shop-grid) : celle-ci ne sert plus qu'aux blocs éditoriaux. */
+.grid { display: grid; gap: var(--sp-5); }
 .grid--2 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr)); }
-.grid--3 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); }
-.grid--4 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); }
 
 @media (max-width: 960px) {
   .section-head--split { flex-direction: column; align-items: flex-start; }

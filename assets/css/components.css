@@ -357,9 +357,12 @@
 /* --------------------------------------------------------------------------
    VISUEL PRODUIT — placeholder dégradé beige (à remplacer par photos)
    -------------------------------------------------------------------------- */
+/* Le format se règle par contexte via --shot-ratio : carré sur l'accueil, où
+   la grille ne doit pas dévorer la page ; portrait sur les pages catégorie,
+   où l'on vient précisément pour regarder les pièces. */
 .pshot {
   position: relative;
-  aspect-ratio: 4 / 5;
+  aspect-ratio: var(--shot-ratio, 4 / 5);
   border-radius: var(--radius);
   overflow: hidden;
   background:

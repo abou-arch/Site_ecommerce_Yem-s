@@ -306,7 +306,7 @@ class Builder:
       <p class="lede" style="max-width:40ch">{cat['lede']}</p>
     </div>
 
-{grid(products, "", level=2)}
+{grid(products, "", klass="shop-grid", level=2)}
   </div>
 </section>
 
@@ -480,7 +480,7 @@ class Builder:
       </a>
     </div>
 
-{grid(related, base, klass='grid grid--3')}
+{grid(related, base, klass='shop-grid')}
   </div>
 </section>"""
 

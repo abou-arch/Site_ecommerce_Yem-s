@@ -35,7 +35,7 @@
   display: grid;
   place-items: center;
   width: 100%;
-  aspect-ratio: 4 / 5;
+  aspect-ratio: var(--shot-ratio, 4 / 5);
   border-radius: var(--radius);
   overflow: hidden;
   background:
