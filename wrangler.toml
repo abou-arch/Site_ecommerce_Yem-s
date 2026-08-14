@@ -39,6 +39,15 @@ run_worker_first = ["/api/*"]
 binding = "HYPERDRIVE"
 id = "3579ef8baef64ecdb4c59c6a97379e71"
 
+# ─── Photos déposées par l'atelier ─────────────────────────────────────────
+# Les images du dépôt restent dans le dépôt ; celles que le client ajoute
+# depuis son écran vont ici. Créer le bucket avant le premier déploiement :
+#   npx wrangler r2 bucket create yems-photos
+# Gratuit jusqu'à 10 Go, et aucun frais de sortie chez Cloudflare.
+[[r2_buckets]]
+binding = "MEDIA"
+bucket_name = "yems-photos"
+
 # ─── Variables non sensibles ───────────────────────────────────────────────
 [vars]
 # "offline" : commande + WhatsApp, règlement convenu de vive voix.

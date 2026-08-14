@@ -257,6 +257,249 @@
     }
   });
 
+
+  /* ═══════════════════════════════════════════════════════════ onglets */
+
+  const panneaux = {
+    commandes: $('[data-panneau="commandes"]'),
+    catalogue: $('[data-panneau="catalogue"]'),
+  };
+  let catalogueCharge = false;
+
+  $$('[data-onglet]').forEach((bouton) => {
+    bouton.addEventListener('click', () => {
+      const vise = bouton.dataset.onglet;
+      $$('[data-onglet]').forEach((b) =>
+        b.setAttribute('aria-selected', String(b === bouton)));
+      Object.entries(panneaux).forEach(([nom, el]) => { el.hidden = nom !== vise; });
+      // Le catalogue ne se charge qu'à la première ouverture de son onglet :
+      // inutile d'interroger la base pour quelqu'un venu voir ses commandes.
+      if (vise === 'catalogue' && !catalogueCharge) chargerCatalogue();
+    });
+  });
+
+  /* ═════════════════════════════════════════════════ ménage des commandes */
+
+  const menage = $('[data-menage]');
+  if (menage) {
+    menage.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const retour = $('[data-menage-retour]');
+      const avant = new FormData(menage).get('before');
+      const bouton = $('button', menage);
+      bouton.disabled = true;
+      try {
+        const r = await appel('/api/admin/orders/anonymize', {
+          method: 'POST', body: JSON.stringify({ before: avant }),
+        });
+        retour.textContent = r.count === 0
+          ? 'Aucune commande terminée avant cette date.'
+          : `${r.count} commande${r.count > 1 ? 's' : ''} anonymisée${r.count > 1 ? 's' : ''}. Les montants sont conservés.`;
+        retour.dataset.kind = 'ok';
+        retour.hidden = false;
+        charger();
+      } catch (err) {
+        if (err.message === 'AUTH') { deconnecter('Session expirée.'); return; }
+        retour.textContent = "Le ménage n'a pas pu se faire : " + err.message;
+        retour.dataset.kind = 'error';
+        retour.hidden = false;
+      } finally {
+        bouton.disabled = false;
+      }
+    });
+  }
+
+  /* ═══════════════════════════════════════════════════════════ catalogue */
+
+  const listeCatalogue = $('[data-catalogue]');
+
+  const DISPOS = [
+    ['green', 'Au Bénin, en stock'],
+    ['amber', 'En route, sous 10 jours'],
+    ['red', 'Indisponible, sur commande'],
+  ];
+
+  /* Les photos du dépôt sont référencées sans extension (« loafer-ouidah »)
+     et servies depuis assets/img. Celles déposées par l'atelier portent leur
+     extension et viennent de R2. Ce seul critère suffit à les distinguer. */
+  const adressePhoto = (fichier) =>
+    /\.(jpe?g|png|webp)$/i.test(fichier) ? `/media/${fichier}` : `assets/img/${fichier}.jpg`;
+
+  function fichePiece(p) {
+    const c = p.correction || {};
+    const modifie = (champ) => (c[champ] != null && c[champ] !== '')
+      ? '<span class="fiche__modifie">modifié</span>' : '';
+
+    return `<article class="fiche" data-fiche="${echappe(p.slug)}">
+      <div class="fiche__tete">
+        <h2 class="fiche__nom">${echappe(p.name)}</h2>
+        ${p.hidden ? '<span class="fiche__retire">Retiré de la vente</span>' : ''}
+      </div>
+
+      <form class="fiche__form" data-form="${echappe(p.slug)}">
+        <label class="field">
+          <span class="field__label">Prix ${modifie('price')}</span>
+          <input type="number" name="price" inputmode="numeric" min="500" max="5000000"
+                 step="500" value="${c.price ?? ''}" placeholder="${p.prix_catalogue}">
+          <span class="field__hint">Vide = ${new Intl.NumberFormat('fr-FR').format(p.prix_catalogue)} F, le prix d'origine.</span>
+        </label>
+
+        <label class="field">
+          <span class="field__label">Disponibilité ${modifie('status')}</span>
+          <select name="status">
+            <option value="">Valeur d'origine</option>
+            ${DISPOS.map(([v, l]) =>
+              `<option value="${v}"${c.status === v ? ' selected' : ''}>${l}</option>`).join('')}
+          </select>
+        </label>
+
+        <label class="field field--large">
+          <span class="field__label">Phrase de présentation ${modifie('short')}</span>
+          <textarea name="short" rows="2" maxlength="240"
+                    placeholder="${echappe(p.short_catalogue)}">${echappe(c.short || '')}</textarea>
+        </label>
+
+        <div class="fiche__photos">
+          <span class="field__label">Photos</span>
+          <div class="fiche__vignettes" data-vignettes="${echappe(p.slug)}">
+            ${(p.images || []).map((im) =>
+              `<img src="${echappe(adressePhoto(im.file))}" alt="" width="64" height="80" loading="lazy">`
+            ).join('') || '<span class="fiche__vide">Aucune photo</span>'}
+          </div>
+          <label class="fiche__depot">
+            <input type="file" accept="image/jpeg,image/png,image/webp" data-photo="${echappe(p.slug)}" hidden>
+            <span>Ajouter une photo</span>
+          </label>
+          <span class="field__hint">JPEG, PNG ou WebP. 400×400 minimum, 6 Mo maximum.</span>
+        </div>
+
+        <div class="fiche__pied">
+          <label class="fiche__retrait">
+            <input type="checkbox" name="hidden"${p.hidden ? ' checked' : ''}>
+            Retirer de la vente
+          </label>
+          <button class="btn btn--sm" type="submit">Enregistrer</button>
+        </div>
+        <p class="fiche__retour" data-retour hidden></p>
+      </form>
+    </article>`;
+  }
+
+  async function chargerCatalogue() {
+    listeCatalogue.setAttribute('aria-busy', 'true');
+    try {
+      const data = await appel('/api/admin/catalogue');
+      listeCatalogue.innerHTML = (data.produits || []).map(fichePiece).join('');
+      catalogueCharge = true;
+
+      const journal = $('[data-journal]');
+      const liste = $('[data-journal-liste]');
+      if ((data.journal || []).length) {
+        liste.innerHTML = data.journal.map((e) => `<li>
+          <strong>${echappe(e.slug)}</strong> · ${echappe(e.champ)} :
+          ${echappe(e.avant ?? "valeur d'origine")} → ${echappe(e.apres ?? "valeur d'origine")}
+          <span>${quand(e.created_at)}</span></li>`).join('');
+        journal.hidden = false;
+      }
+    } catch (err) {
+      if (err.message === 'AUTH') { deconnecter('Session expirée.'); return; }
+      listeCatalogue.innerHTML = `<div class="empty-state">
+        <p class="display">Catalogue indisponible.</p>
+        <p class="text-muted">${echappe(err.message)}</p>
+        <p class="text-muted">Si le message parle d'une table manquante, la migration
+        002 n'a pas encore été exécutée dans Neon.</p>
+      </div>`;
+    } finally {
+      listeCatalogue.removeAttribute('aria-busy');
+    }
+  }
+
+  /* Enregistrement d'une fiche. Un champ vide renvoie null : c'est ce qui
+     permet de revenir à la valeur du catalogue sans se souvenir de laquelle. */
+  listeCatalogue.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const form = e.target.closest('[data-form]');
+    if (!form) return;
+
+    const slug = form.dataset.form;
+    const d = new FormData(form);
+    const retour = $('[data-retour]', form);
+    const bouton = $('button[type="submit"]', form);
+    bouton.disabled = true;
+
+    const payload = {
+      slug,
+      price: d.get('price') === '' ? null : Number(d.get('price')),
+      status: d.get('status') || null,
+      short: d.get('short')?.trim() || null,
+      hidden: d.get('hidden') === 'on',
+    };
+
+    try {
+      await appel('/api/admin/catalogue', { method: 'POST', body: JSON.stringify(payload) });
+      retour.textContent = 'Enregistré. La boutique affiche déjà la nouvelle valeur.';
+      retour.dataset.kind = 'ok';
+      retour.hidden = false;
+      setTimeout(chargerCatalogue, 900);
+    } catch (err) {
+      if (err.message === 'AUTH') { deconnecter('Session expirée.'); return; }
+      retour.textContent = err.message;
+      retour.dataset.kind = 'error';
+      retour.hidden = false;
+    } finally {
+      bouton.disabled = false;
+    }
+  });
+
+  /* Dépôt d'une photo. Le fichier part brut, sans enveloppe multipart : sur un
+     Worker, lire un multipart oblige à tout charger en mémoire. */
+  listeCatalogue.addEventListener('change', async (e) => {
+    const champ = e.target.closest('[data-photo]');
+    if (!champ || !champ.files?.length) return;
+
+    const slug = champ.dataset.photo;
+    const fichier = champ.files[0];
+    const form = $(`[data-form="${slug}"]`);
+    const retour = $('[data-retour]', form);
+    retour.textContent = `Envoi de ${fichier.name}…`;
+    retour.dataset.kind = 'ok';
+    retour.hidden = false;
+
+    try {
+      const r = await fetch(`/api/admin/media?slug=${encodeURIComponent(slug)}`, {
+        method: 'POST',
+        headers: { 'Content-Type': fichier.type, Authorization: 'Bearer ' + token() },
+        body: fichier,
+      });
+      const data = await r.json().catch(() => ({}));
+      if (r.status === 401) { deconnecter('Session expirée.'); return; }
+      if (!r.ok || !data.ok) throw new Error(data.error || 'envoi refusé');
+
+      // On repart des photos connues du serveur plutôt que de relire le DOM :
+      // une vignette encore en cours de chargement donnerait des dimensions
+      // nulles, qui seraient enregistrées telles quelles.
+      const actuel = await appel('/api/admin/catalogue');
+      const piece = (actuel.produits || []).find((x) => x.slug === slug);
+      const anciennes = (piece?.correction?.images) || [];
+
+      await appel('/api/admin/catalogue', {
+        method: 'POST',
+        body: JSON.stringify({
+          slug,
+          images: [{ ...data.photo, alt: `${slug.replace(/-/g, ' ')} — atelier Yem's` },
+                   ...anciennes].slice(0, 6),
+        }),
+      });
+
+      retour.textContent = `Photo ajoutée (${data.photo.w}×${data.photo.h}).`;
+      champ.value = '';
+      setTimeout(chargerCatalogue, 700);
+    } catch (err) {
+      retour.textContent = "La photo n'a pas été acceptée : " + err.message;
+      retour.dataset.kind = 'error';
+    }
+  });
+
   // Rechargement de la page dans le même onglet : on reprend où on en était.
   if (token()) ouvrir();
 })();

@@ -33,13 +33,41 @@ export function shippingFor(country) {
 
 /* --------------------------------------------------------------- produits */
 
-function findProduct(slug) {
-  return catalog().products.find((p) => p.slug === slug) || null;
+/**
+ * Le produit du catalogue, corrigé par ce que l'atelier a modifié.
+ *
+ * C'EST LE POINT CRITIQUE DE TOUT L'ÉDIFICE. Le prix affiché sur la page est
+ * réécrit en bordure à partir de ces mêmes corrections. Si cette fonction les
+ * ignorait, la boutique afficherait 92 000 F et facturerait 85 000 : l'atelier
+ * vendrait à perte sans jamais s'en apercevoir. Une seule source, lue des
+ * deux côtés.
+ */
+function findProduct(slug, corrections = {}) {
+  const base = catalog().products.find((p) => p.slug === slug) || null;
+  if (!base) return null;
+
+  const c = corrections[slug];
+  if (!c) return base;
+
+  return {
+    ...base,
+    price: c.price ?? base.price,
+    status: c.status ?? base.status,
+    short: c.short ?? base.short,
+    images: c.images ?? base.images,
+    hidden: Boolean(c.hidden),
+  };
 }
 
-function priceStandard(item) {
-  const product = findProduct(item.id);
+function priceStandard(item, corrections) {
+  const product = findProduct(item.id, corrections);
   if (!product) return { error: `produit inconnu : ${item.id}` };
+
+  // Une pièce retirée de la vente ne peut plus entrer au panier, même si le
+  // client avait gardé l'onglet ouvert avant le retrait.
+  if (product.hidden) {
+    return { error: `${product.name} n'est plus disponible` };
+  }
 
   // Un modèle vendu uniquement sur-mesure ne peut pas entrer au panier
   // par la voie standard, même si le client force la requête.
@@ -112,7 +140,7 @@ function priceBespoke(item) {
  * Transforme un panier client en lignes de commande vérifiées.
  * Retourne { items, subtotal, kind } ou { error }.
  */
-export function priceCart(rawCart) {
+export function priceCart(rawCart, corrections = {}) {
   if (!Array.isArray(rawCart) || rawCart.length === 0) {
     return { error: 'panier vide' };
   }
@@ -132,7 +160,7 @@ export function priceCart(rawCart) {
     }
 
     const isBespoke = Boolean(raw.bespoke) || String(raw.id || '').startsWith('sur-mesure-');
-    const priced = isBespoke ? priceBespoke(raw) : priceStandard(raw);
+    const priced = isBespoke ? priceBespoke(raw) : priceStandard(raw, corrections);
     if (priced.error) return { error: priced.error };
 
     if (isBespoke) hasBespoke = true; else hasStandard = true;
@@ -154,6 +182,29 @@ export function priceCart(rawCart) {
  * Le sur-mesure part en production avant d'être payé en entier : on prend
  * l'acompte prévu au catalogue, le solde est réglé à la livraison.
  */
+/**
+ * Le catalogue tel qu'il doit apparaître : corrections appliquées, pièces
+ * masquées retirées. Sert à l'écran d'administration et à la réécriture des
+ * pages en bordure, pour que les deux lisent exactement la même chose.
+ */
+export function catalogueVisible(corrections = {}) {
+  return catalog().products
+    .map((p) => findProduct(p.slug, corrections))
+    .filter((p) => p && !p.hidden);
+}
+
+/** Toutes les pièces, y compris masquées, avec l'état de leur correction.
+ *  L'atelier doit voir ce qu'il a retiré pour pouvoir le remettre. */
+export function catalogueComplet(corrections = {}) {
+  return catalog().products.map((p) => ({
+    ...findProduct(p.slug, corrections),
+    correction: corrections[p.slug] || null,
+    prix_catalogue: p.price,
+    statut_catalogue: p.status,
+    short_catalogue: p.short,
+  }));
+}
+
 export function amountDue(total, kind) {
   if (kind === 'standard') return total;
   const pct = site().bespoke.deposit ?? 50;

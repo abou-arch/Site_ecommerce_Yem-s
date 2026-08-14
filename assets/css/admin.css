@@ -185,3 +185,183 @@
   .cmd__actions { flex-direction: column; align-items: stretch; }
   .cmd__next select { width: 100%; }
 }
+
+/* ──────────────────────────────────────────────────────────── onglets */
+
+.admin__onglets {
+  display: flex;
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-5);
+  border-bottom: 1px solid var(--border);
+}
+
+.onglet {
+  padding: var(--sp-3) var(--sp-5);
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: color 200ms var(--ease), border-color 200ms var(--ease);
+}
+
+.onglet:hover { color: var(--text); }
+
+.onglet[aria-selected="true"] {
+  color: var(--brass-300);
+  border-bottom-color: var(--brass-300);
+}
+
+/* ──────────────────────────────────────── ménage des anciennes commandes */
+
+.menage {
+  margin-top: var(--sp-7);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  overflow: hidden;
+}
+
+.menage summary {
+  padding: var(--sp-4) var(--sp-5);
+  cursor: pointer;
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+}
+
+.menage[open] summary { color: var(--text); border-bottom: 1px solid var(--border); }
+
+.menage__corps { padding: var(--sp-5); display: grid; gap: var(--sp-4); }
+.menage__corps p { font-size: var(--fs-sm); color: var(--text-muted); max-width: 62ch; }
+.menage__corps strong { color: var(--text); }
+
+.menage__form {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--sp-4);
+  flex-wrap: wrap;
+}
+
+.menage__retour { font-size: var(--fs-sm); }
+.menage__retour[data-kind="ok"]    { color: #8FBF93; }
+.menage__retour[data-kind="error"] { color: #E0917F; }
+
+/* ───────────────────────────────────────────────── fiche de catalogue */
+
+.fiche {
+  padding: var(--sp-5);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+
+.fiche__tete {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-4);
+  flex-wrap: wrap;
+  padding-bottom: var(--sp-4);
+  margin-bottom: var(--sp-4);
+  border-bottom: 1px solid var(--border);
+}
+
+.fiche__nom { font-family: var(--font-display); font-size: var(--fs-lg); }
+
+.fiche__retire {
+  font-size: var(--fs-xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: #E0917F;
+  border: 1px solid currentColor;
+  border-radius: var(--radius-pill);
+  padding: 0.25rem 0.7rem;
+}
+
+/* Le repère « modifié » évite la question la plus fréquente devant ce genre
+   d'écran : est-ce que ce champ est encore celui d'origine ? */
+.fiche__modifie {
+  font-size: 0.625rem;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--brass-300);
+  border: 1px solid currentColor;
+  border-radius: var(--radius-pill);
+  padding: 1px 7px;
+  margin-left: var(--sp-2);
+}
+
+.fiche__form {
+  display: grid;
+  gap: var(--sp-4);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+}
+
+.fiche__form .field--large { grid-column: 1 / -1; }
+
+.fiche__form textarea,
+.fiche__form select,
+.fiche__form input[type="number"] {
+  width: 100%;
+  padding: 0.7rem 0.9rem;
+  color: var(--text);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  font-size: var(--fs-sm);
+}
+
+.fiche__photos { grid-column: 1 / -1; display: grid; gap: var(--sp-3); }
+
+.fiche__vignettes { display: flex; gap: var(--sp-3); flex-wrap: wrap; align-items: center; }
+.fiche__vignettes img {
+  width: 64px; height: 80px; object-fit: cover;
+  border-radius: var(--radius-sm); border: 1px solid var(--border);
+}
+.fiche__vide { font-size: var(--fs-sm); color: var(--text-subtle); }
+
+.fiche__depot span {
+  display: inline-block;
+  padding: 0.6rem 1.1rem;
+  font-size: var(--fs-sm);
+  color: var(--brass-300);
+  border: 1px dashed rgba(201, 164, 106, 0.55);
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: background-color 200ms var(--ease);
+}
+
+.fiche__depot:hover span { background: rgba(201, 164, 106, 0.09); }
+
+.fiche__pied {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  flex-wrap: wrap;
+  padding-top: var(--sp-4);
+  border-top: 1px solid var(--border);
+}
+
+.fiche__retrait {
+  display: flex; align-items: center; gap: var(--sp-3);
+  font-size: var(--fs-sm); color: var(--text-muted);
+}
+
+.fiche__retour { grid-column: 1 / -1; font-size: var(--fs-sm); }
+.fiche__retour[data-kind="ok"]    { color: #8FBF93; }
+.fiche__retour[data-kind="error"] { color: #E0917F; }
+
+/* ────────────────────────────────────────── journal des modifications */
+
+.journal { margin-top: var(--sp-7); padding-top: var(--sp-5); border-top: 1px solid var(--border); }
+.journal__titre { font-size: var(--fs-md); margin-bottom: var(--sp-4); }
+.journal__liste { display: grid; gap: var(--sp-2); }
+
+.journal__liste li {
+  display: flex; justify-content: space-between; gap: var(--sp-4); flex-wrap: wrap;
+  font-size: var(--fs-sm); color: var(--text-muted);
+  padding-bottom: var(--sp-2); border-bottom: 1px solid var(--border);
+}
+
+.journal__liste strong { color: var(--brass-300); font-weight: 500; }
+.journal__liste span { color: var(--text-subtle); }

@@ -361,6 +361,25 @@ environ 130 lignes. Le reste du code ignore qui encaisse.
 
 ---
 
+## Avant de déployer : deux ajouts
+
+**1. La migration du catalogue.** Dans Neon → SQL Editor, exécute le contenu de
+`db/migration-002-catalogue-editable.sql`. Sans elle, l'onglet Catalogue de
+l'écran d'administration affichera une erreur — le reste du site continuera de
+fonctionner normalement.
+
+**2. Le bucket pour les photos.** Une seule commande :
+
+```powershell
+npx wrangler r2 bucket create yems-photos
+```
+
+Gratuit jusqu'à 10 Go, et Cloudflare ne facture pas la bande passante sortante.
+Les photos que ton client dépose depuis son écran y vont ; celles du dépôt ne
+bougent pas.
+
+---
+
 ## L'écran de l'atelier
 
 Adresse : **`https://TON-ADRESSE/admin.html`**
@@ -369,6 +388,37 @@ Ton client y entre le mot de passe généré à l'étape 4, et voit ses commande
 Il peut filtrer par statut, cliquer pour prévenir le client sur WhatsApp, et
 faire avancer une commande (à confirmer → acompte reçu → en atelier → expédiée
 → livrée).
+
+### L'onglet Catalogue
+
+Ton client y modifie **le prix, la disponibilité et la phrase de présentation**
+de chaque pièce, et y **dépose des photos**. Il peut aussi retirer une pièce de
+la vente sans l'effacer : elle disparaît des grilles, mais les anciennes
+commandes qui la mentionnent restent lisibles.
+
+Comment ça marche, en une phrase : le site reste entièrement statique, et le
+serveur ne réécrit que les quelques valeurs modifiées, au moment où la page
+part vers le visiteur. Rien à reconstruire, rien à redéployer, la vitesse ne
+change pas.
+
+**Le point important :** le prix affiché et le prix facturé viennent de la même
+source. Un prix modifié dans cet écran est immédiatement celui qui sera
+encaissé. Il n'y a aucun moment où la boutique afficherait un montant et en
+prélèverait un autre.
+
+Laisser un champ vide fait revenir la valeur d'origine du catalogue — pas
+besoin de se souvenir de l'ancien prix.
+
+### Le ménage dans les commandes
+
+Sous la liste des commandes, un panneau permet d'**anonymiser** les commandes
+terminées avant une date donnée : le nom, le téléphone et l'adresse
+disparaissent, la commande et ses montants restent.
+
+C'est volontairement l'anonymisation qui est proposée, et non la suppression.
+Effacer une commande livrée effacerait aussi son chiffre d'affaires, et ça se
+verrait au bilan de fin d'année. Une commande en cours, elle, ne peut être ni
+anonymisée ni supprimée : l'atelier a encore besoin du téléphone pour livrer.
 
 Trois choses à lui dire :
 

@@ -12,7 +12,11 @@
 import {
   createOrder, verifyPayment, handleWebhook,
   adminAuthorized, listOrders, setOrderStatus,
+  listCatalogue, saveProduct, anonymizeOrder, deleteOrder,
 } from './api/_lib/handlers.js';
+import { lireCorrections } from './api/_lib/overrides.js';
+import { deposer, servir } from './api/_lib/media.js';
+import { reecrire } from './api/_lib/rewrite.js';
 
 const JSON_HEADERS = {
   'Content-Type': 'application/json; charset=utf-8',
@@ -63,6 +67,23 @@ export default {
     const { pathname, searchParams } = new URL(request.url);
     const method = request.method;
 
+    /* ------------------------------------------------------------- photos
+       Les fichiers déposés par l'atelier vivent dans R2, pas dans le dépôt.
+       Leur nom contient un jeton aléatoire, donc leur contenu ne change
+       jamais : ils peuvent être gardés en cache pour un an. */
+    if (pathname.startsWith('/media/')) {
+      const fichier = decodeURIComponent(pathname.slice(7));
+      const photo = await servir(env.MEDIA, fichier);
+      if (!photo) return fail('photo introuvable', 404);
+      return new Response(photo.corps, {
+        headers: {
+          'Content-Type': photo.type,
+          'Cache-Control': 'public, max-age=31536000, immutable',
+          ETag: photo.etag,
+        },
+      });
+    }
+
     // Tout ce qui n'est pas une route d'API repart vers les fichiers statiques.
     // La page 404 est servie ici plutôt que par not_found_handling : ce réglage
     // court-circuitait le Worker et répondait du HTML sur les routes /api/*.
@@ -70,6 +91,21 @@ export default {
       if (!env.ASSETS) return fail('route inconnue', 404);
 
       const asset = await env.ASSETS.fetch(request);
+
+      /* Le catalogue statique est corrigé au vol par ce que l'atelier a
+         modifié. Quand rien n'a été modifié — le cas courant — reecrire()
+         rend la réponse telle quelle, sans rien analyser. */
+      if (asset.status === 200 &&
+          (asset.headers.get('content-type') || '').includes('text/html')) {
+        try {
+          return reecrire(asset, await lireCorrections(env));
+        } catch (err) {
+          // Une correction ratée ne doit jamais faire tomber la boutique :
+          // on sert la page d'origine, prix d'hier compris.
+          console.error('[reecriture]', err?.message);
+          return asset;
+        }
+      }
       if (asset.status !== 404) return asset;
 
       const notFound = await env.ASSETS.fetch(new URL('/404.html', request.url));
@@ -140,6 +176,45 @@ export default {
           return reply(await setOrderStatus(await body(request), env));
         }
         return fail('méthode non autorisée', 405);
+      }
+
+      /* ------------------------------------------- nettoyage des commandes */
+      if (pathname === '/api/admin/orders/anonymize' ||
+          pathname === '/api/admin/orders/delete') {
+        if (method !== 'POST') return fail('méthode non autorisée', 405);
+        if (!adminAuthorized(bearer(request), env)) return fail('accès refusé', 401);
+        const payload = await body(request);
+        return reply(pathname.endsWith('/anonymize')
+          ? await anonymizeOrder(payload, env)
+          : await deleteOrder(payload, env));
+      }
+
+      /* ------------------------------------------------ catalogue, atelier */
+      if (pathname === '/api/admin/catalogue') {
+        if (throttled(request, 60)) return fail('trop de requêtes', 429);
+        if (!adminAuthorized(bearer(request), env)) return fail('accès refusé', 401);
+        if (method === 'GET') return reply(await listCatalogue(env));
+        if (method === 'POST') return reply(await saveProduct(await body(request), env));
+        return fail('méthode non autorisée', 405);
+      }
+
+      /* ------------------------------------------------------ dépôt d'une photo
+         Le corps est le fichier brut, pas un formulaire multipart : sur un
+         Worker, lire un multipart demande de tout charger en mémoire, alors
+         qu'ici le flux part directement vers R2. */
+      if (pathname === '/api/admin/media') {
+        if (method !== 'POST') return fail('méthode non autorisée', 405);
+        if (!adminAuthorized(bearer(request), env)) return fail('accès refusé', 401);
+        if (throttled(request, 30)) return fail('trop d’envois, patientez une minute', 429);
+
+        const slug = searchParams.get('slug') || 'piece';
+        const taille = Number(request.headers.get('content-length') || 0);
+        if (taille > 6 * 1024 * 1024) return fail('photo trop lourde : 6 Mo maximum', 413);
+
+        const buffer = await request.arrayBuffer();
+        const rangee = await deposer(env.MEDIA, slug, buffer);
+        if (rangee.error) return fail(rangee.error, 400);
+        return reply({ status: 201, body: { ok: true, photo: rangee } });
       }
 
       return fail('route inconnue', 404);

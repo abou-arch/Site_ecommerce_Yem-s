@@ -40,7 +40,7 @@
 <link rel="stylesheet" href="assets/css/home.css?v=45d64b6b">
 <link rel="stylesheet" href="assets/css/shop.css?v=5071bb37">
 <link rel="stylesheet" href="assets/css/motion.css?v=b43e4720">
-<link rel="stylesheet" href="assets/css/admin.css?v=8b134542">
+<link rel="stylesheet" href="assets/css/admin.css?v=0eae7e2a">
 
 <!-- Favicone : mêmes proportions que le monogramme de svg-defs.html, mais la
      hampe reste pleine. À 16 px dans un onglet, un pointillé de 3 px disparaît
@@ -230,7 +230,16 @@
     </form>
 
     <div class="admin__body" data-body hidden>
-      <div class="admin__filters" role="group" aria-label="Filtrer par statut">
+
+      <div class="admin__onglets" role="tablist">
+        <button class="onglet" type="button" role="tab" data-onglet="commandes"
+                aria-selected="true">Commandes</button>
+        <button class="onglet" type="button" role="tab" data-onglet="catalogue"
+                aria-selected="false">Catalogue</button>
+      </div>
+
+      <div data-panneau="commandes">
+        <div class="admin__filters" role="group" aria-label="Filtrer par statut">
         <button class="chip" type="button" data-filter="" aria-pressed="true">Tout</button>
         <button class="chip" type="button" data-filter="to_confirm" aria-pressed="false">À confirmer</button>
         <button class="chip" type="button" data-filter="deposit" aria-pressed="false">Acompte reçu</button>
@@ -238,9 +247,47 @@
         <button class="chip" type="button" data-filter="in_workshop" aria-pressed="false">En atelier</button>
         <button class="chip" type="button" data-filter="shipped" aria-pressed="false">Expédiées</button>
         <button class="chip" type="button" data-filter="delivered" aria-pressed="false">Livrées</button>
+        </div>
+        <p class="admin__count" data-count aria-live="polite"></p>
+        <div class="admin__list" data-list></div>
+
+        <details class="menage">
+          <summary>Faire le ménage dans les anciennes commandes</summary>
+          <div class="menage__corps">
+            <p>
+              Une commande livrée contient encore le nom, le téléphone et
+              l'adresse de votre client. Les garder des années sans raison
+              n'est ni utile ni prudent.
+            </p>
+            <p>
+              <strong>Anonymiser</strong> efface ces coordonnées et conserve la
+              commande : vos totaux de l'année restent justes. C'est ce qu'il
+              faut faire dans presque tous les cas.
+            </p>
+            <form class="menage__form" data-menage>
+              <label class="field">
+                <span class="field__label">Anonymiser les commandes terminées avant le</span>
+                <input type="date" name="before" required>
+              </label>
+              <button class="btn btn--sm btn--quiet" type="submit">Anonymiser</button>
+            </form>
+            <p class="menage__retour" data-menage-retour hidden></p>
+          </div>
+        </details>
       </div>
-      <p class="admin__count" data-count aria-live="polite"></p>
-      <div class="admin__list" data-list></div>
+
+      <div data-panneau="catalogue" hidden>
+        <p class="admin__count">
+          Modifiez le prix, la disponibilité et la phrase de présentation.
+          Laissez un champ vide pour revenir à la valeur d'origine.
+        </p>
+        <div class="admin__list" data-catalogue></div>
+        <div class="journal" data-journal hidden>
+          <h2 class="journal__titre">Dernières modifications</h2>
+          <ul class="journal__liste" data-journal-liste></ul>
+        </div>
+      </div>
+
     </div>
 
   </div>
@@ -323,6 +370,6 @@
 
 <script src="assets/js/main.js?v=3fdda5f8" defer></script>
 <script src="assets/js/motion.js?v=8f03829d" defer></script>
-<script src="assets/js/admin.js?v=3a7dff63" defer></script>
+<script src="assets/js/admin.js?v=c29c1431" defer></script>
 </body>
 </html>

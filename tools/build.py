@@ -82,10 +82,20 @@ def price(value):
     return "{:,}".format(int(value)).replace(",", " ") + " F"
 
 
-def badge(status, extra="", long=False):
+def badge(status, extra="", long=False, slug=None):
+    """
+    Pastille de disponibilité.
+
+    L'attribut data-badge sert de point d'ancrage : quand l'atelier change la
+    disponibilité depuis son écran, le Worker réécrit cette pastille au vol
+    dans la page statique, sans qu'il faille reconstruire le site. Le suffixe
+    dit s'il faut le libellé court (vignette) ou détaillé (fiche produit).
+    """
     cls, short, detailed = STATUS[status]
-    return ('<span class="badge %s %s"><span class="badge__dot"></span>%s</span>'
-            % (cls, extra, detailed if long else short))
+    ancre = (' data-badge="%s" data-badge-long="%s"' % (slug, "1" if long else "0")
+             if slug else "")
+    return ('<span class="badge %s %s"%s><span class="badge__dot"></span>%s</span>'
+            % (cls, extra, ancre, detailed if long else short))
 
 
 # ─────────────────────────────────────────────────────────── composants
@@ -117,19 +127,19 @@ def product_card(product, base, delay=0, level=3):
     href = "%sproduit/%s.html" % (base, product["slug"])
     style = ' style="--reveal-delay:%dms"' % delay if delay else ""
     empty = "" if product.get("images") else " pshot--empty"
-    return f"""      <article class="pcard" data-reveal{style}>
+    return f"""      <article class="pcard" data-reveal{style} data-piece="{product['slug']}">
         <a href="{href}" aria-label="Découvrir {escape(product['name'])}">
           <div class="pshot{empty}" data-shot>
-            {badge(product['status'], 'pshot__badge')}
+            {badge(product['status'], 'pshot__badge', slug=product['slug'])}
             {picture(product, base)}
           </div>
         </a>
         <div class="pcard__body">
           <div class="pcard__row">
             <h{level} class="pcard__name">{escape(product['name'])}</h{level}>
-            <span class="pcard__price">{price(product['price'])}</span>
+            <span class="pcard__price" data-prix="{product['slug']}">{price(product['price'])}</span>
           </div>
-          <p class="pcard__desc">{product['short']}</p>
+          <p class="pcard__desc" data-court="{product['slug']}">{product['short']}</p>
         </div>
       </article>"""
 
@@ -517,10 +527,10 @@ class Builder:
     <div class="product__info" data-reveal style="--reveal-delay:120ms">
       <span class="eyebrow">La ligne {escape(cat['name'])}</span>
       <h1 class="product__name">{escape(product['name'])}</h1>
-      {badge(product['status'], long=True)}
-      <p class="product__price">{price(product['price'])}
+      {badge(product['status'], long=True, slug=product['slug'])}
+      <p class="product__price"><span data-prix="{product['slug']}">{price(product['price'])}</span>
         <small>FCFA · livraison 48 h Cotonou &amp; Abidjan</small></p>
-      <p class="lede">{product['short']}</p>
+      <p class="lede" data-court="{product['slug']}">{product['short']}</p>
       <p class="lede" style="margin-top:var(--sp-3)">{product['pitch']}</p>
 
       <div class="product__pickers">
@@ -1163,11 +1173,58 @@ class Builder:
     </form>
 
     <div class="admin__body" data-body hidden>
-      <div class="admin__filters" role="group" aria-label="Filtrer par statut">
-{filtres}
+
+      <div class="admin__onglets" role="tablist">
+        <button class="onglet" type="button" role="tab" data-onglet="commandes"
+                aria-selected="true">Commandes</button>
+        <button class="onglet" type="button" role="tab" data-onglet="catalogue"
+                aria-selected="false">Catalogue</button>
       </div>
-      <p class="admin__count" data-count aria-live="polite"></p>
-      <div class="admin__list" data-list></div>
+
+      <div data-panneau="commandes">
+        <div class="admin__filters" role="group" aria-label="Filtrer par statut">
+{filtres}
+        </div>
+        <p class="admin__count" data-count aria-live="polite"></p>
+        <div class="admin__list" data-list></div>
+
+        <details class="menage">
+          <summary>Faire le ménage dans les anciennes commandes</summary>
+          <div class="menage__corps">
+            <p>
+              Une commande livrée contient encore le nom, le téléphone et
+              l'adresse de votre client. Les garder des années sans raison
+              n'est ni utile ni prudent.
+            </p>
+            <p>
+              <strong>Anonymiser</strong> efface ces coordonnées et conserve la
+              commande : vos totaux de l'année restent justes. C'est ce qu'il
+              faut faire dans presque tous les cas.
+            </p>
+            <form class="menage__form" data-menage>
+              <label class="field">
+                <span class="field__label">Anonymiser les commandes terminées avant le</span>
+                <input type="date" name="before" required>
+              </label>
+              <button class="btn btn--sm btn--quiet" type="submit">Anonymiser</button>
+            </form>
+            <p class="menage__retour" data-menage-retour hidden></p>
+          </div>
+        </details>
+      </div>
+
+      <div data-panneau="catalogue" hidden>
+        <p class="admin__count">
+          Modifiez le prix, la disponibilité et la phrase de présentation.
+          Laissez un champ vide pour revenir à la valeur d'origine.
+        </p>
+        <div class="admin__list" data-catalogue></div>
+        <div class="journal" data-journal hidden>
+          <h2 class="journal__titre">Dernières modifications</h2>
+          <ul class="journal__liste" data-journal-liste></ul>
+        </div>
+      </div>
+
     </div>
 
   </div>

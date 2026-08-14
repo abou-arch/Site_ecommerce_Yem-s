@@ -8,7 +8,12 @@
    =========================================================================== */
 
 import { connect, nextReference, logEvent } from './db.js';
-import { priceCart, amountDue, shippingFor } from './catalog.js';
+import {
+  priceCart, amountDue, shippingFor, catalogueComplet,
+} from './catalog.js';
+import {
+  lireCorrections, ecrireCorrection, journalCatalogue,
+} from './overrides.js';
 import { verifyTransaction, webhookIsAuthentic } from './kkiapay.js';
 import { notifyOwner, waLink, composeMessage } from './whatsapp.js';
 import { cleanText, cleanPhone, isEmail, COUNTRIES } from './http.js';
@@ -53,7 +58,10 @@ export async function createOrder(payload, env) {
   if (!isEmail(email)) return ko('adresse e-mail invalide');
 
   // Les montants sortent d'ici, jamais du panier envoyé par le navigateur.
-  const priced = priceCart(payload.cart);
+  // Les corrections de l'atelier sont chargées AVANT le calcul : c'est ce qui
+  // garantit que le prix facturé est celui que la page affichait.
+  const corrections = await lireCorrections(env);
+  const priced = priceCart(payload.cart, corrections);
   if (priced.error) return ko(priced.error);
 
   // Mode de règlement. Le client propose, le serveur tranche : si le paiement
@@ -369,6 +377,160 @@ export async function setOrderStatus({ order_id, status }, env) {
 
     await logEvent(sql, id, `statut → ${status}`, null, 'admin');
     return ok({ order: updated });
+  } finally {
+    await sql.end({ timeout: 5 });
+  }
+}
+
+/* ═══════════════════════════════════════════════════════ catalogue, atelier */
+
+/** Le catalogue tel que l'atelier doit le voir : valeur du fichier, valeur
+ *  corrigée, et ce qui a été modifié récemment. */
+export async function listCatalogue(env) {
+  const corrections = await lireCorrections(env);
+  return ok({
+    produits: catalogueComplet(corrections),
+    journal: await journalCatalogue(env, 20),
+  });
+}
+
+const STATUTS_PRODUIT = ['green', 'amber', 'red'];
+
+/**
+ * Applique une correction à une pièce.
+ *
+ * Chaque champ est validé ici et pas seulement dans le formulaire : un champ
+ * HTML ne protège de rien, et ce prix sera facturé tel quel.
+ */
+export async function saveProduct(payload, env) {
+  const slug = cleanText(payload.slug, 80);
+  if (!slug) return ko('pièce non identifiée');
+
+  const corrections = await lireCorrections(env);
+  const connu = catalogueComplet(corrections).some((p) => p.slug === slug);
+  if (!connu) return ko('cette pièce n’est pas au catalogue', 404);
+
+  const patch = {};
+
+  if ('price' in payload) {
+    if (payload.price === null || payload.price === '') {
+      patch.price = null;                       // revenir au prix du catalogue
+    } else {
+      const p = Math.round(Number(payload.price));
+      if (!Number.isFinite(p) || p < 500 || p > 5_000_000) {
+        return ko('prix invalide : entre 500 et 5 000 000 F');
+      }
+      patch.price = p;
+    }
+  }
+
+  if ('status' in payload) {
+    if (payload.status === null || payload.status === '') patch.status = null;
+    else if (!STATUTS_PRODUIT.includes(payload.status)) return ko('disponibilité inconnue');
+    else patch.status = payload.status;
+  }
+
+  if ('short' in payload) {
+    const t = cleanText(payload.short, 240);
+    patch.short = t || null;
+  }
+
+  if ('hidden' in payload) patch.hidden = Boolean(payload.hidden);
+
+  if ('images' in payload) {
+    if (payload.images === null) {
+      patch.images = null;
+    } else if (Array.isArray(payload.images)) {
+      if (payload.images.length > 6) return ko('six photos au maximum par pièce');
+      const propres = [];
+      for (const im of payload.images) {
+        const file = cleanText(im?.file, 160);
+        // Le chemin est contraint : une valeur libre permettrait de pointer
+        // vers n'importe quelle adresse, y compris hostile.
+        if (!/^[a-z0-9][a-z0-9._-]{2,80}$/i.test(file)) return ko('nom de photo invalide');
+        const w = Math.round(Number(im?.w)) || 0;
+        const h = Math.round(Number(im?.h)) || 0;
+        if (w < 1 || h < 1 || w > 8000 || h > 8000) return ko('dimensions de photo invalides');
+        propres.push({ file, w, h, alt: cleanText(im?.alt, 220) || 'Pièce Yem\'s' });
+      }
+      patch.images = propres;
+    } else {
+      return ko('liste de photos invalide');
+    }
+  }
+
+  if (Object.keys(patch).length === 0) return ko('rien à modifier');
+
+  await ecrireCorrection(slug, patch, env);
+  const apres = await lireCorrections(env);
+  return ok({ produit: catalogueComplet(apres).find((p) => p.slug === slug) });
+}
+
+/* ═══════════════════════════════════════════ nettoyage des commandes */
+
+// Une commande en cours ne se touche pas : ni anonymisation, ni suppression.
+// L'atelier a encore besoin du téléphone pour livrer.
+const TERMINEES = ['delivered', 'cancelled', 'refunded'];
+
+/**
+ * Retire les coordonnées du client, garde la commande.
+ *
+ * C'est l'action par défaut, et de loin la plus raisonnable : les montants
+ * restent pour la comptabilité, les données personnelles disparaissent. Une
+ * suppression pure ferait perdre le chiffre d'affaires du mois.
+ */
+export async function anonymizeOrder({ order_id, before }, env) {
+  const sql = connect(env);
+  try {
+    const cible = order_id
+      ? sql`id = ${Number(order_id)}`
+      : sql`created_at < ${new Date(before || 0).toISOString()}`;
+
+    if (!order_id && !before) return ko('préciser une commande ou une date');
+    if (before && Number.isNaN(new Date(before).getTime())) return ko('date invalide');
+
+    const touchees = await sql`
+      UPDATE orders SET
+        ship_name    = 'Client anonymisé',
+        ship_phone   = '',
+        ship_address = '',
+        ship_note    = NULL,
+        anonymized_at = now()
+      WHERE ${cible}
+        AND status = ANY(${TERMINEES})
+        AND anonymized_at IS NULL
+      RETURNING id, reference
+    `;
+
+    for (const o of touchees) {
+      await logEvent(sql, o.id, 'coordonnées anonymisées', null, 'admin');
+    }
+    return ok({ count: touchees.length, references: touchees.map((o) => o.reference) });
+  } finally {
+    await sql.end({ timeout: 5 });
+  }
+}
+
+/**
+ * Suppression définitive. Les articles, paiements et événements partent avec,
+ * par cascade déclarée au schéma.
+ */
+export async function deleteOrder({ order_id }, env) {
+  const id = Number(order_id);
+  if (!Number.isInteger(id) || id <= 0) return ko('commande invalide');
+
+  const sql = connect(env);
+  try {
+    const [ligne] = await sql`
+      SELECT reference, status, total FROM orders WHERE id = ${id}
+    `;
+    if (!ligne) return ko('commande introuvable', 404);
+    if (!TERMINEES.includes(ligne.status)) {
+      return ko('une commande en cours ne peut pas être supprimée : '
+              + 'marquez-la livrée ou annulée d’abord');
+    }
+    await sql`DELETE FROM orders WHERE id = ${id}`;
+    return ok({ reference: ligne.reference });
   } finally {
     await sql.end({ timeout: 5 });
   }
