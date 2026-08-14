@@ -40,13 +40,25 @@ binding = "HYPERDRIVE"
 id = "3579ef8baef64ecdb4c59c6a97379e71"
 
 # ─── Photos déposées par l'atelier ─────────────────────────────────────────
-# Les images du dépôt restent dans le dépôt ; celles que le client ajoute
-# depuis son écran vont ici. Créer le bucket avant le premier déploiement :
-#   npx wrangler r2 bucket create yems-photos
-# Gratuit jusqu'à 10 Go, et aucun frais de sortie chez Cloudflare.
-[[r2_buckets]]
-binding = "MEDIA"
-bucket_name = "yems-photos"
+#
+# DÉSACTIVÉ tant que R2 n'est pas activé sur le compte. Une liaison qui pointe
+# vers un bucket inexistant fait échouer le déploiement entier : le reste du
+# site ne partirait pas non plus.
+#
+# Pour l'activer, dans l'ordre :
+#   1. dash.cloudflare.com -> R2 Object Storage -> Enable
+#      (Cloudflare demande une carte même pour le palier gratuit : 10 Go
+#      offerts, aucun frais de sortie, rien n'est prélevé en dessous)
+#   2. npx wrangler r2 bucket create yems-photos
+#   3. retirer les # des trois lignes ci-dessous
+#   4. npm run deploy
+#
+# Sans cette liaison, tout fonctionne sauf le dépôt de photos depuis l'écran
+# d'administration, qui affiche un message explicite plutôt que de planter.
+#
+# [[r2_buckets]]
+# binding = "MEDIA"
+# bucket_name = "yems-photos"
 
 # ─── Variables non sensibles ───────────────────────────────────────────────
 [vars]

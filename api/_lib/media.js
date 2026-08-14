@@ -85,7 +85,13 @@ const EXTENSIONS = { 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'web
  * Rend { file, w, h } — ce que product_overrides.images attend.
  */
 export async function deposer(bucket, slug, buffer) {
-  if (!bucket) return { error: 'stockage des photos non configuré' };
+  // Message destiné à Abou plutôt qu'au client de l'atelier : c'est lui qui
+  // verra ça, et il doit savoir quoi faire sans relire la documentation.
+  if (!bucket) {
+    return { error: 'Le stockage des photos n’est pas encore activé. '
+                  + 'Activer R2 sur dash.cloudflare.com, créer le bucket '
+                  + 'yems-photos, puis décommenter [[r2_buckets]] dans wrangler.toml.' };
+  }
   if (buffer.byteLength > TAILLE_MAX) {
     return { error: `photo trop lourde : ${Math.round(buffer.byteLength / 1024 / 1024)} Mo, 6 Mo maximum` };
   }
