@@ -16,9 +16,25 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<!-- Les polices ne bloquent plus l'affichage. « media=print » fait charger la
+     feuille sans qu'elle retarde le rendu ; onload la réactive dès qu'elle est
+     là. Le texte s'affiche donc immédiatement en Georgia et en police système,
+     puis bascule sur Fraunces et Inter. Sur une 3G, ça évite plusieurs
+     centaines de millisecondes de page blanche.
 
-<link rel="stylesheet" href="assets/css/base.css?v=8bb2b545">
+     Le <noscript> garde le comportement classique pour qui n'exécute pas de
+     script : mieux vaut attendre les polices que ne jamais les recevoir.
+
+     Poids demandé aussi allégé : la graisse 300 d'Inter n'était utilisée
+     nulle part dans les feuilles de style. -->
+<link rel="stylesheet" media="print" onload="this.media='all'"
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Inter:wght@400;500;600;700&display=swap">
+<noscript>
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Inter:wght@400;500;600;700&display=swap">
+</noscript>
+
+<link rel="stylesheet" href="assets/css/base.css?v=702e3b97">
 <link rel="stylesheet" href="assets/css/components.css?v=d4b2bae9">
 <link rel="stylesheet" href="assets/css/home.css?v=45d64b6b">
 <link rel="stylesheet" href="assets/css/shop.css?v=fc5a7d98">
@@ -26,9 +42,59 @@
 
 
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2314100D'/%3E%3Cpath d='M8 9l8 8 8-8M16 17v7' stroke='%23C9A46A' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+
+<!-- Rideau d'ouverture. Trois règles ont guidé sa construction :
+
+     1. Il ne peut pas rester bloqué. La disparition est une animation CSS
+        avec « forwards » : elle se produit même si le JavaScript ne se
+        charge jamais. Le script ne fait que l'accélérer.
+     2. Il n'ajoute aucune requête. Style et logique sont écrits ici, dans le
+        document, et pèsent moins d'un kilo-octet.
+     3. Il ne se montre qu'une fois. Sans ça, chaque clic dans le menu
+        rejouerait le rideau, ce qui est vite insupportable.
+
+     Il est enfin désactivé pour qui a demandé moins d'animations. -->
+<style>
+.curtain { position: fixed; inset: 0; z-index: 9999; display: grid; place-items: center;
+  background: #14100D; animation: curtain-lift 620ms cubic-bezier(.16,1,.3,1) 780ms forwards; }
+.curtain svg { width: 74px; height: 74px; color: #D9B87A; }
+/* Le V se dessine, puis la couture apparaît. La hampe garde son propre
+   pointillé : lui appliquer un stroke-dasharray de tracé l'aurait effacé. */
+.curtain path:first-child { stroke-dasharray: 60; stroke-dashoffset: 60;
+  animation: curtain-stitch 760ms cubic-bezier(.16,1,.3,1) forwards; }
+.curtain path:last-child { opacity: 0;
+  animation: curtain-thread 320ms ease-out 520ms forwards; }
+@keyframes curtain-stitch { to { stroke-dashoffset: 0 } }
+@keyframes curtain-thread { to { opacity: 1 } }
+@keyframes curtain-lift { to { opacity: 0; visibility: hidden; pointer-events: none } }
+.is-ready .curtain { animation-delay: 0ms; animation-duration: 420ms; }
+.curtain-off .curtain, .no-js-never .curtain { display: none; }
+@media (prefers-reduced-motion: reduce) { .curtain { display: none } }
+</style>
+<script>
+(function () {
+  // Le rideau n'a de sens qu'à la toute première page ouverte. Ensuite, la
+  // navigation interne doit être immédiate.
+  try {
+    if (sessionStorage.getItem('yems.entered')) {
+      document.documentElement.className += ' curtain-off';
+    } else {
+      sessionStorage.setItem('yems.entered', '1');
+    }
+  } catch (e) { /* navigation privée : le rideau se montrera, sans conséquence */ }
+})();
+</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","name":"Ceintures","description":"Ceintures Yem's taillées dans la même peau que nos souliers. Boucle laiton, longueur ajustée à votre tour de taille."}</script>
 </head>
 <body>
+
+<div class="curtain" aria-hidden="true">
+  <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2.6"
+       stroke-linecap="round" stroke-linejoin="round">
+    <path d="M7 8.5L20 22.5 33 8.5"/>
+    <path d="M20 23v9" stroke-dasharray="3.4 3.2"/>
+  </svg>
+</div>
 
 <a class="skip-link" href="#main">Aller au contenu</a>
 
@@ -258,7 +324,7 @@
 </footer>
 
 
-<script src="assets/js/main.js?v=5c55d832" defer></script>
+<script src="assets/js/main.js?v=3b13b2b5" defer></script>
 <script src="assets/js/motion.js?v=8f03829d" defer></script>
 
 </body>

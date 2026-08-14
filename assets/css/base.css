@@ -412,6 +412,33 @@ p { text-wrap: pretty; }
 /* --------------------------------------------------------------------------
    8. ANIMATIONS AU SCROLL
    -------------------------------------------------------------------------- */
+/* Le contenu situé au-dessus de la ligne de flottaison ne passe pas par
+   l'observateur : il s'anime tout seul, en CSS. Deux raisons.
+
+   La première tient à la panne : [data-reveal] démarre à opacity 0 et attend
+   que main.js le révèle. Si le script tarde ou échoue — connexion mobile
+   coupée, blocage d'un script tiers — le hero reste vide pour toujours. Une
+   animation CSS s'exécute quoi qu'il arrive.
+
+   La seconde tient à l'attente : les délais cumulés retardaient la lisibilité
+   complète du hero de 1,7 s. Ici, le texte principal est là immédiatement et
+   seuls les blocs secondaires glissent. */
+.hero [data-reveal] {
+  opacity: 1;
+  transform: none;
+  animation: hero-in 600ms var(--ease-out-expo) both;
+  animation-delay: var(--reveal-delay, 0ms);
+}
+
+@keyframes hero-in {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* Le titre, lui, ne bouge pas du tout : c'est la première chose que le
+   visiteur doit lire, elle n'a pas à se faire attendre. */
+.hero h1 { opacity: 1; }
+
 [data-reveal] {
   opacity: 0;
   transform: translateY(26px);

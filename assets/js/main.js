@@ -237,3 +237,16 @@
      ---------------------------------------------------------------------- */
   $$('[data-year]').forEach((el) => { el.textContent = new Date().getFullYear(); });
 })();
+
+/* --------------------------------------------------------------------------
+   Rideau d'ouverture
+
+   Le rideau se lève tout seul au bout de 780 ms, par animation CSS. Ce qui
+   suit ne fait que raccourcir l'attente quand la page est prête plus tôt.
+   Si ce fichier ne se charge jamais, le rideau se lève quand même.
+   -------------------------------------------------------------------------- */
+(function () {
+  const lever = () => document.documentElement.classList.add('is-ready');
+  if (document.readyState === 'complete') lever();
+  else window.addEventListener('load', lever, { once: true });
+})();
