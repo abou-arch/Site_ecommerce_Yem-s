@@ -153,9 +153,12 @@
   color: var(--text);
 }
 
+/* Le monogramme est passé du trait au plein : à taille égale il pèse
+   nettement plus lourd et écrasait le mot « YEM'S » à côté. Réduit de 30 à
+   26 px, il retrouve son rang de compagnon plutôt que de rival. */
 .logo__mark {
-  width: 30px;
-  height: 30px;
+  width: 26px;
+  height: 26px;
   flex: none;
   color: var(--brass-300);   /* le monogramme prend l'accent, le mot reste clair */
 }

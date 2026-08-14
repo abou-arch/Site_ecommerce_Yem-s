@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<!-- Planche d'identité Yem's.
+
+     Livrée en HTML plutôt qu'en image pour une raison précise : Fraunces et
+     Inter se chargent ici depuis Google, donc la planche s'affiche avec les
+     vraies polices de la marque. Une version PNG aurait obligé à substituer
+     une police approchante, ce qui se voit.
+
+     Pour en faire un PDF : ouvrir dans un navigateur, Ctrl+P, « Enregistrer
+     au format PDF ». Les styles d'impression sont prévus. -->
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Yem's — Identité de marque</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --espresso-900:#14100D; --espresso-800:#1C1613; --espresso-700:#241C18;
+  --beige-50:#FBF7F1; --beige-100:#F4EDE2; --beige-200:#E9DECB; --beige-300:#DACAB0;
+  --brass-300:#D9B87A; --brass-400:#C9A46A; --brass-500:#B08D57; --brass-600:#7A5E33;
+  --clay-500:#8C5A3C;
+  --serif:"Fraunces",Georgia,serif; --sans:"Inter",system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0}
+body{background:var(--beige-100);color:var(--espresso-800);font-family:var(--sans);
+  font-size:15px;line-height:1.7;-webkit-font-smoothing:antialiased}
+.page{max-width:1080px;margin:0 auto;padding:64px 40px}
+h1,h2,h3{font-family:var(--serif);font-weight:400;line-height:1.1;letter-spacing:-.015em}
+h1{font-size:clamp(2.4rem,5vw,3.6rem)}
+h2{font-size:1.9rem;margin-bottom:8px}
+h3{font-size:1.15rem;line-height:1.3}
+.sur{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--brass-600);
+  font-weight:600;display:block;margin-bottom:10px}
+section{margin-top:72px;padding-top:40px;border-top:1px solid rgba(28,22,19,.14)}
+.lede{font-size:17px;color:rgba(28,22,19,.66);max-width:52ch;margin-top:12px}
+.note{font-size:13px;color:rgba(28,22,19,.62)}
+
+/* ── couverture ── */
+.cover{background:var(--espresso-900);color:var(--beige-100);margin:-64px -40px 0;
+  padding:80px 40px;text-align:center}
+.cover h1{color:var(--beige-100)}
+.cover .sur{color:var(--brass-300)}
+.cover p{color:rgba(244,237,226,.66);margin-top:14px}
+.cover svg{width:96px;height:96px;color:var(--brass-300);margin-bottom:28px}
+
+/* ── grilles ── */
+.grid{display:grid;gap:20px;margin-top:28px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr))}
+.g4{grid-template-columns:repeat(auto-fit,minmax(min(100%,160px),1fr))}
+
+/* ── logo ── */
+.lockup{display:flex;align-items:center;gap:16px}
+.lockup svg{width:46px;height:46px;flex:none}
+.mot{font-family:var(--serif);font-size:2rem;letter-spacing:.05em;line-height:1}
+.signature{display:block;font-family:var(--sans);font-size:11px;letter-spacing:.12em;
+  text-transform:uppercase;opacity:.62;margin-top:5px}
+.boite{padding:32px;border-radius:14px;display:grid;place-items:center;min-height:150px}
+.sombre{background:var(--espresso-900);color:var(--beige-100)}
+.sombre .lockup svg{color:var(--brass-300)}
+.clair{background:var(--beige-50);color:var(--espresso-900);border:1px solid rgba(28,22,19,.12)}
+.clair .lockup svg{color:var(--brass-600)}
+
+/* ── couleurs ── */
+.pastille{border-radius:12px;overflow:hidden;border:1px solid rgba(28,22,19,.1)}
+.pastille .aplat{height:96px}
+.pastille .info{padding:12px 14px;background:var(--beige-50)}
+.pastille b{display:block;font-size:13px;font-weight:600}
+.pastille code{font-family:ui-monospace,Menlo,monospace;font-size:12px;color:rgba(28,22,19,.62)}
+.pastille small{display:block;font-size:11.5px;color:rgba(28,22,19,.62);margin-top:4px;line-height:1.5}
+
+/* ── typo ── */
+.specimen{background:var(--beige-50);border:1px solid rgba(28,22,19,.1);
+  border-radius:14px;padding:28px}
+.specimen .demo{font-family:var(--serif);font-size:2.6rem;line-height:1.1;margin-bottom:6px}
+.specimen .demo-s{font-family:var(--sans);font-size:1.15rem;line-height:1.6}
+.echelle{display:grid;gap:6px;margin-top:20px;font-size:13px;color:rgba(28,22,19,.66)}
+.echelle span{font-family:ui-monospace,Menlo,monospace;font-size:12px;color:var(--brass-600)}
+
+/* ── couture ── */
+.couture{height:2px;background:repeating-linear-gradient(to right,
+  var(--brass-500) 0,var(--brass-500) 11px,transparent 11px,transparent 20px);opacity:.6}
+
+/* ── applications ── */
+.carte{background:var(--espresso-800);color:var(--beige-100);border-radius:12px;
+  padding:24px;position:relative;overflow:hidden}
+.carte::after{content:"";position:absolute;inset:9px;border:1.5px dashed var(--brass-500);
+  border-radius:7px;opacity:.32;pointer-events:none}
+.carte .num{font-family:var(--serif);font-size:1.8rem;color:var(--brass-300);margin:14px 0 4px}
+.carte .lab{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(244,237,226,.62)}
+.rond{width:104px;height:104px;border-radius:50%;overflow:hidden;display:grid;place-items:center;
+  background:var(--espresso-900);margin:0 auto}
+.rond svg{width:54px;height:54px;color:var(--brass-300)}
+
+/* ── à faire / à éviter ── */
+.regle{border-left:3px solid;padding:14px 18px;border-radius:0 8px 8px 0;font-size:14px}
+.oui{border-color:#4C7A50;background:rgba(76,122,80,.07)}
+.non{border-color:#A14A3E;background:rgba(161,74,62,.07)}
+.regle b{display:block;margin-bottom:3px}
+
+@media print{
+  body{background:#fff}
+  .page{padding:0;max-width:none}
+  .cover{margin:0}
+  section{break-inside:avoid;page-break-inside:avoid}
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<header class="cover">
+  <svg viewBox="0 0 100 100">
+    <path fill="currentColor" fill-rule="evenodd"
+          d="M17 22h15.2L50 46.6 67.8 22H83L55.6 59.4V80H44.4V59.4z
+             M46.6 61.5h6.8a1.7 1.7 0 0 1 0 3.4h-6.8a1.7 1.7 0 0 1 0-3.4z
+             M46.6 68.5h6.8a1.7 1.7 0 0 1 0 3.4h-6.8a1.7 1.7 0 0 1 0-3.4z
+             M46.6 75.5h6.8a1.7 1.7 0 0 1 0 3.4h-6.8a1.7 1.7 0 0 1 0-3.4z"/>
+  </svg>
+  <span class="sur">Identité de marque</span>
+  <h1>Yem's</h1>
+  <p>Différents par les détails</p>
+</header>
+
+<section style="border:0;padding-top:56px;margin-top:0">
+  <span class="sur">Le principe</span>
+  <h2>Un monogramme qui est aussi une couture</h2>
+  <p class="lede">
+    Le Y de Yem's est percé de trois trous d'alêne. Ils ne sont pas dessinés
+    par-dessus la lettre : ils la traversent, et c'est le fond qui apparaît
+    au travers, exactement comme l'alêne traverse le cuir avant que le fil
+    ne passe. La marque ne raconte pas son savoir-faire, elle le porte.
+  </p>
+  <div class="couture" style="margin-top:28px"></div>
+</section>
+
+<section>
+  <span class="sur">Le logo</span>
+  <h2>Deux fonds, jamais d'autre</h2>
+  <p class="lede">Le monogramme se pose sur l'espresso ou sur le beige. Sur une photo, on utilise la version laiton, et seulement si le fond est assez sombre.</p>
+  <div class="grid g2">
+    <div class="boite sombre">
+      <div class="lockup">
+        <svg viewBox="0 0 100 100">
+    <path fill="currentColor" fill-rule="evenodd"
+          d="M17 22h15.2L50 46.6 67.8 22H83L55.6 59.4V80H44.4V59.4z
+             M46.6 61.5h6.8a1.7 1.7 0 0 1 0 3.4h-6.8a1.7 1.7 0 0 1 0-3.4z
+             M46.6 68.5h6.8a1.7 1.7 0 0 1 0 3.4h-6.8a1.7 1.7 0 0 1 0-3.4z
+             M46.6 75.5h6.8a1.7 1.7 0 0 1 0 3.4h-6.8a1.7 1.7 0 0 1 0-3.4z"/>
+  </svg>
+        <span><span class="mot">YEM'S</span><span class="signature">Différents par les détails</span></span>
+      </div>
+    </div>
+    <div class="boite clair">
+      <div class="lockup">
+        <svg viewBox="0 0 100 100">
+    <path fill="currentColor" fill-rule="evenodd"
+          d="M17 22h15.2L50 46.6 67.8 22H83L55.6 59.4V80H44.4V59.4z
+             M46.6 61.5h6.8a1.7 1.7 0 0 1 0 3.4h-6.8a1.7 1.7 0 0 1 0-3.4z
+             M46.6 68.5h6.8a1.7 1.7 0 0 1 0 3.4h-6.8a1.7 1.7 0 0 1 0-3.4z
+             M46.6 75.5h6.8a1.7 1.7 0 0 1 0 3.4h-6.8a1.7 1.7 0 0 1 0-3.4z"/>
+  </svg>
+        <span><span class="mot">YEM'S</span><span class="signature">Différents par les détails</span></span>
+      </div>
+    </div>
+  </div>
+  <p class="note" style="margin-top:16px">
+    <b>Zone de respect :</b> laisser autour du logo au moins la hauteur du monogramme.
+    <b>Taille minimale :</b> 24 px de haut à l'écran, 8 mm à l'impression. En dessous,
+    utiliser la variante pleine (<code>petit-</code>) : sous cette taille les trous se bouchent.
+  </p>
+</section>
+
+<section>
+  <span class="sur">Les couleurs</span>
+  <h2>Trois familles, pas une de plus</h2>
+  <p class="lede">L'espresso porte, le beige repose, le laiton signale. Toute autre couleur affaiblit l'ensemble.</p>
+
+  <div class="grid g4">
+    <div class="pastille"><div class="aplat" style="background:#14100D"></div>
+      <div class="info"><b>Espresso</b><code>#14100D</code><small>Fond principal, texte sur clair</small></div></div>
+    <div class="pastille"><div class="aplat" style="background:#241C18"></div>
+      <div class="info"><b>Espresso surface</b><code>#241C18</code><small>Cartes, panneaux</small></div></div>
+    <div class="pastille"><div class="aplat" style="background:#F4EDE2"></div>
+      <div class="info"><b>Beige</b><code>#F4EDE2</code><small>Sections claires, texte sur sombre</small></div></div>
+    <div class="pastille"><div class="aplat" style="background:#D9B87A"></div>
+      <div class="info"><b>Laiton clair</b><code>#D9B87A</code><small>Accent sur fond sombre</small></div></div>
+    <div class="pastille"><div class="aplat" style="background:#B08D57"></div>
+      <div class="info"><b>Laiton</b><code>#B08D57</code><small>Boutons, fil de couture</small></div></div>
+    <div class="pastille"><div class="aplat" style="background:#7A5E33"></div>
+      <div class="info"><b>Laiton sombre</b><code>#7A5E33</code><small>Accent sur fond clair — le seul lisible</small></div></div>
+    <div class="pastille"><div class="aplat" style="background:#8C5A3C"></div>
+      <div class="info"><b>Terre</b><code>#8C5A3C</code><small>Cuir cognac, usage rare</small></div></div>
+    <div class="pastille"><div class="aplat" style="background:linear-gradient(90deg,#4C7A50 33%,#C08A2E 33% 66%,#A14A3E 66%)"></div>
+      <div class="info"><b>Disponibilité</b><code>vert · ambre · rouge</code><small>Au Bénin · En route · Indisponible</small></div></div>
+  </div>
+
+  <p class="note" style="margin-top:18px">
+    <b>Règle de lisibilité :</b> le laiton clair ne se pose jamais sur le beige (3,1:1, illisible).
+    Sur fond clair, c'est le laiton sombre. Toutes les combinaisons de cette planche
+    dépassent 4,5:1, le seuil d'accessibilité.
+  </p>
+</section>
+
+<section>
+  <span class="sur">La typographie</span>
+  <h2>Une serif qui a du caractère,<br>une sans qui s'efface</h2>
+
+  <div class="grid g2">
+    <div class="specimen">
+      <div class="demo">Fraunces</div>
+      <p class="note">Titres, prix, noms de pièces. Ses formes légèrement irrégulières évoquent le tracé à la main. Graisse 400 uniquement, jamais en gras.</p>
+      <div class="echelle">
+        <div><span>67 px</span> — titre de page</div>
+        <div><span>45 px</span> — titre de section</div>
+        <div><span>26 px</span> — nom de pièce</div>
+      </div>
+    </div>
+    <div class="specimen">
+      <div class="demo-s" style="font-size:2.6rem;font-weight:600;line-height:1.1;margin-bottom:6px">Inter</div>
+      <p class="note">Textes courants, boutons, étiquettes. Choisie pour sa lisibilité sur petit écran, à la lumière du jour. Graisses 400, 500, 600 et 700.</p>
+      <div class="echelle">
+        <div><span>17 px</span> — chapeau</div>
+        <div><span>15 px</span> — texte courant</div>
+        <div><span>12 px</span> — étiquette, capitales espacées</div>
+      </div>
+    </div>
+  </div>
+  <p class="note" style="margin-top:16px">
+    Les deux sont gratuites et libres d'usage commercial. À télécharger sur
+    fonts.google.com si le client en a besoin dans Canva ou Word.
+  </p>
+</section>
+
+<section>
+  <span class="sur">Le motif</span>
+  <h2>Le point de sellier</h2>
+  <p class="lede">Il revient partout : sous les titres, autour de la carte d'authenticité, dans la hampe du monogramme. C'est le fil conducteur, au sens propre.</p>
+  <div style="margin-top:26px;display:grid;gap:20px">
+    <div class="couture"></div>
+    <div class="couture" style="opacity:.35"></div>
+    <div style="height:60px;border:1.5px dashed var(--brass-500);border-radius:8px;opacity:.5"></div>
+  </div>
+</section>
+
+<section>
+  <span class="sur">Applications</span>
+  <h2>Ce que ça donne en vrai</h2>
+  <div class="grid g3">
+    <div>
+      <div class="rond">
+        <svg viewBox="0 0 100 100">
+    <path fill="currentColor" fill-rule="evenodd"
+          d="M17 22h15.2L50 46.6 67.8 22H83L55.6 59.4V80H44.4V59.4z
+             M46.6 61.5h6.8a1.7 1.7 0 0 1 0 3.4h-6.8a1.7 1.7 0 0 1 0-3.4z
+             M46.6 68.5h6.8a1.7 1.7 0 0 1 0 3.4h-6.8a1.7 1.7 0 0 1 0-3.4z
+             M46.6 75.5h6.8a1.7 1.7 0 0 1 0 3.4h-6.8a1.7 1.7 0 0 1 0-3.4z"/>
+  </svg>
+      </div>
+      <p class="note" style="text-align:center;margin-top:12px">Photo de profil<br>WhatsApp Business, Instagram</p>
+    </div>
+    <div>
+      <div class="carte">
+        <span class="lab">Carte d'authenticité</span>
+        <div class="num">N° 0142 / 250</div>
+        <span class="lab">Derby Cotonou · cognac<br>Atelier Yem's · Cotonou</span>
+      </div>
+      <p class="note" style="text-align:center;margin-top:12px">Carte numérotée<br>glissée dans chaque boîte</p>
+    </div>
+    <div>
+      <div class="boite sombre" style="min-height:104px;padding:20px">
+        <div class="lockup" style="gap:11px">
+          <svg viewBox="0 0 100 100">
+    <path fill="currentColor" fill-rule="evenodd"
+          d="M17 22h15.2L50 46.6 67.8 22H83L55.6 59.4V80H44.4V59.4z
+             M46.6 61.5h6.8a1.7 1.7 0 0 1 0 3.4h-6.8a1.7 1.7 0 0 1 0-3.4z
+             M46.6 68.5h6.8a1.7 1.7 0 0 1 0 3.4h-6.8a1.7 1.7 0 0 1 0-3.4z
+             M46.6 75.5h6.8a1.7 1.7 0 0 1 0 3.4h-6.8a1.7 1.7 0 0 1 0-3.4z"/>
+  </svg>
+          <span class="mot" style="font-size:1.25rem">YEM'S</span>
+        </div>
+      </div>
+      <p class="note" style="text-align:center;margin-top:12px">Étiquette, tampon,<br>sac en tissu</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <span class="sur">Les règles</span>
+  <h2>Ce qui protège la marque</h2>
+  <div class="grid g2">
+    <div style="display:grid;gap:12px">
+      <div class="regle oui"><b>Laisser respirer le monogramme</b>Au moins sa propre hauteur de vide autour.</div>
+      <div class="regle oui"><b>Une seule couleur d'accent à la fois</b>Le laiton clair sur sombre, le laiton sombre sur clair.</div>
+      <div class="regle oui"><b>Photographier à la lumière du jour, à l'ombre</b>Le soleil direct écrase le grain du cuir.</div>
+      <div class="regle oui"><b>Écrire « Yem's » avec l'apostrophe</b>Toujours, y compris en capitales.</div>
+    </div>
+    <div style="display:grid;gap:12px">
+      <div class="regle non"><b>Ne pas déformer ni pencher le monogramme</b>Il se redimensionne, il ne s'étire pas.</div>
+      <div class="regle non"><b>Ne pas ajouter d'ombre portée ni de contour</b>Le trait se suffit.</div>
+      <div class="regle non"><b>Ne pas poser le laiton clair sur le beige</b>3,1:1, illisible pour beaucoup de gens.</div>
+      <div class="regle non"><b>Ne pas remplacer Fraunces par une autre serif</b>Georgia en secours, rien d'autre.</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <span class="sur">La voix</span>
+  <h2>Comment Yem's parle</h2>
+  <p class="lede">
+    Comme un artisan qui vous montre son travail : précis sur les faits, sans
+    superlatif, et qui préfère un chiffre vérifiable à une promesse.
+  </p>
+  <div class="grid g2" style="margin-top:24px">
+    <div class="regle oui"><b>On dit</b>« Semelle cousue sur trépointe, jamais collée. Quand elle s'use, on la découd et on en remonte une neuve. »</div>
+    <div class="regle non"><b>On ne dit pas</b>« Une qualité premium exceptionnelle pour une expérience unique. »</div>
+  </div>
+  <p class="note" style="margin-top:18px">Le détail complet est dans <code>charte-de-marque.md</code>.</p>
+</section>
+
+<footer style="margin-top:72px;padding-top:32px;border-top:1px solid rgba(28,22,19,.14)">
+  <div class="couture" style="margin-bottom:24px"></div>
+  <p class="note">Atelier Yem's · Cotonou, Bénin · Abidjan, Côte d'Ivoire</p>
+</footer>
+
+</div>
+</body>
+</html>
