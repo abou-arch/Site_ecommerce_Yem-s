@@ -262,3 +262,21 @@
 
 .toast svg { width: 17px; height: 17px; color: var(--brass-300); flex: none; }
 .toast a { color: var(--brass-300); text-decoration: underline; pointer-events: auto; }
+
+/* --------------------------------------------------------------------------
+   RAYONS — la boutique complète, une section par catégorie
+   -------------------------------------------------------------------------- */
+.rayon + .rayon { margin-top: var(--sp-8); }
+
+.rayon__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--sp-5);
+  flex-wrap: wrap;
+  padding-bottom: var(--sp-4);
+  margin-bottom: var(--sp-5);
+  border-bottom: 1px solid var(--border);
+}
+
+.rayon__head h2 { font-size: var(--fs-xl); }

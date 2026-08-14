@@ -1063,6 +1063,64 @@ class Builder:
         )
 
 
+    def build_shop(self):
+        """
+        La boutique entière, sur une page.
+
+        Elle manquait : le hero promet « la boutique » et n'avait que des pages
+        catégorie à offrir. Un visiteur qui ne cherche pas encore une forme
+        précise doit pouvoir tout voir d'un coup — huit pièces tiennent
+        largement sur un écran.
+        """
+        blocs = []
+        for cat in self.categories:
+            produits = self.by_category(cat["slug"])
+            if not produits:
+                continue
+            blocs.append(f"""    <div class="rayon" id="{cat['slug']}">
+      <div class="rayon__head" data-reveal>
+        <h2>{cat['name']}</h2>
+        <a class="link-underline" href="{cat['slug']}.html">
+          Tout voir
+          <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
+        </a>
+      </div>
+{grid(produits, "", klass="shop-grid", level=3)}
+    </div>""")
+
+        content = f"""<section class="section section--top" id="boutique">
+  <div class="container container--wide">
+    <div class="section-head" data-reveal>
+      <span class="eyebrow">La boutique</span>
+      <h1 class="page-title" style="margin-top:var(--sp-3)">Tout ce qui sort de l'atelier</h1>
+      <p class="lede">
+        Huit pièces, une seule construction : cuir pleine fleur, point sellier,
+        semelle remplaçable. Ce qui change, c'est la forme et l'usage.
+      </p>
+    </div>
+
+{chr(10).join(blocs)}
+
+    <div class="text-center" style="margin-top:var(--sp-8)">
+      <p class="lede mx-auto text-center" style="margin-bottom:var(--sp-5)">
+        Aucune pointure ne vous va&nbsp;? C'est fréquent, et ça se règle.
+      </p>
+      <a class="btn" href="configurateur.html">
+        Composer ma paire sur mesure
+        <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
+      </a>
+    </div>
+  </div>
+</section>"""
+
+        self.page(
+            "boutique.html", content=content, current="boutique",
+            title="La boutique | Yem's",
+            description="Toutes les pièces Yem's : souliers, ceintures, portefeuilles "
+                        "et entretien. Cousus main à Cotonou, livrés au Bénin et en "
+                        "Côte d'Ivoire.",
+        )
+
     def build_admin(self):
         """
         Écran de suivi des commandes, pour l'atelier.
@@ -1175,6 +1233,7 @@ class Builder:
         for product in self.products:
             self.build_product(product)
 
+        self.build_shop()
         self.build_configurator()
         self.build_cart()
         self.build_checkout()
