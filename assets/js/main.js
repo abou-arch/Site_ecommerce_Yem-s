@@ -241,8 +241,9 @@
 /* --------------------------------------------------------------------------
    Rideau d'ouverture
 
-   Le rideau se lève tout seul au bout de 780 ms, par animation CSS. Ce qui
-   suit ne fait que raccourcir l'attente quand la page est prête plus tôt.
+   Le rideau se lève tout seul au bout de 1550 ms, par animation CSS. Ce qui
+   suit ne fait que raccourcir l'attente à 1260 ms quand la page est prête plus
+   tôt — jamais moins, sinon le monogramme se ferait couper en plein tracé.
    Si ce fichier ne se charge jamais, le rideau se lève quand même.
    -------------------------------------------------------------------------- */
 (function () {

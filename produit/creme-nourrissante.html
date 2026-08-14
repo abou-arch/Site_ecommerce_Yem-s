@@ -56,18 +56,21 @@
      Il est enfin désactivé pour qui a demandé moins d'animations. -->
 <style>
 .curtain { position: fixed; inset: 0; z-index: 9999; display: grid; place-items: center;
-  background: #14100D; animation: curtain-lift 620ms cubic-bezier(.16,1,.3,1) 780ms forwards; }
-.curtain svg { width: 74px; height: 74px; color: #D9B87A; }
+  background: #14100D; animation: curtain-lift 700ms cubic-bezier(.16,1,.3,1) 1550ms forwards; }
+.curtain svg { width: 82px; height: 82px; color: #D9B87A; }
 /* Le V se dessine, puis la couture apparaît. La hampe garde son propre
    pointillé : lui appliquer un stroke-dasharray de tracé l'aurait effacé. */
 .curtain path:first-child { stroke-dasharray: 60; stroke-dashoffset: 60;
-  animation: curtain-stitch 760ms cubic-bezier(.16,1,.3,1) forwards; }
+  animation: curtain-stitch 1050ms cubic-bezier(.16,1,.3,1) forwards; }
 .curtain path:last-child { opacity: 0;
-  animation: curtain-thread 320ms ease-out 520ms forwards; }
+  animation: curtain-thread 380ms ease-out 880ms forwards; }
 @keyframes curtain-stitch { to { stroke-dashoffset: 0 } }
 @keyframes curtain-thread { to { opacity: 1 } }
 @keyframes curtain-lift { to { opacity: 0; visibility: hidden; pointer-events: none } }
-.is-ready .curtain { animation-delay: 0ms; animation-duration: 420ms; }
+/* Page prête plus tôt : on raccourcit, mais jamais en dessous du temps qu'il
+   faut au monogramme pour finir de se coudre. Un rideau qui se lève sur un
+   dessin inachevé ressemble à un bug, pas à une intention. */
+.is-ready .curtain { animation-delay: 1260ms; animation-duration: 620ms; }
 .curtain-off .curtain, .no-js-never .curtain { display: none; }
 @media (prefers-reduced-motion: reduce) { .curtain { display: none } }
 </style>
@@ -368,7 +371,7 @@
 </footer>
 
 
-<script src="../assets/js/main.js?v=3b13b2b5" defer></script>
+<script src="../assets/js/main.js?v=3fdda5f8" defer></script>
 <script src="../assets/js/motion.js?v=8f03829d" defer></script>
 
 </body>
