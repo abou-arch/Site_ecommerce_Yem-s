@@ -122,6 +122,28 @@ def picture(product, base, index=0, lazy=True, sizes=None):
     )
 
 
+ORIGINES = {}   # rempli au démarrage depuis data/products.json
+
+
+def origine_marque(product, long=False):
+    """
+    Dit d'où vient la pièce, sur chaque vignette et chaque fiche.
+
+    Ce n'est pas une mention légale reléguée en bas de page : c'est la
+    promesse même de la maison. Un client doit savoir avant d'acheter si
+    l'atelier a fabriqué la pièce ou l'a choisie, parce que la garantie
+    n'est pas la même — ressemelage à vie d'un côté, échange un an de l'autre.
+    """
+    o = ORIGINES.get(product.get("origine", "selection"))
+    if not o:
+        return ""
+    cls = "origine origine--%s" % product.get("origine", "selection")
+    if long:
+        return ('<p class="%s origine--long"><strong>%s</strong>%s</p>'
+                % (cls, escape(o["nom"]), escape(o["phrase"])))
+    return '<span class="%s">%s</span>' % (cls, escape(o["court"]))
+
+
 def product_card(product, base, delay=0, level=3):
     """Carte produit, telle qu'elle apparaît dans une grille."""
     href = "%sproduit/%s.html" % (base, product["slug"])
@@ -140,6 +162,7 @@ def product_card(product, base, delay=0, level=3):
             <span class="pcard__price" data-prix="{product['slug']}">{price(product['price'])}</span>
           </div>
           <p class="pcard__desc" data-court="{product['slug']}">{product['short']}</p>
+          {origine_marque(product)}
         </div>
       </article>"""
 
@@ -228,8 +251,15 @@ class Builder:
     def __init__(self):
         self.data = json.loads(read(DATA))
         self.site = self.data["site"]
+        # Les deux lignes de la maison, lues une fois et partagées par tous
+        # les composants qui doivent afficher l'origine d'une pièce.
+        ORIGINES.update(self.site.get("origines", {}))
+        # Une pièce en attente n'existe nulle part sur le site public : ni
+        # vignette, ni fiche, ni panier. Elle reste dans le catalogue pour
+        # qu'il suffise de basculer a_venir à false le jour des photos.
+        self.a_venir = [p for p in self.data["products"] if p.get("a_venir")]
+        self.products = [p for p in self.data["products"] if not p.get("a_venir")]
         self.categories = self.data["categories"]
-        self.products = self.data["products"]
         self.base_tpl = read(os.path.join(TPL, "base.html"))
         self.svg_defs = read(os.path.join(TPL, "partials", "svg-defs.html")).strip()
         self.header_tpl = read(os.path.join(TPL, "partials", "header.html"))
@@ -248,10 +278,15 @@ class Builder:
             nav=nav_links(nav, base, home, current),
             nav_mobile=nav_links(nav, base, home, current, mobile=True),
         )
+        # Le footer ne liste que ce qui existe. Une catégorie sans pièce
+        # visible n'a plus de page : y renvoyer créerait un lien mort.
         footer_cats = "\n".join(
             '          <li><a href="%s%s.html">%s</a></li>' % (base, c["slug"], c["name"])
-            for c in self.categories
+            for c in self.categories if self.by_category(c["slug"])
         )
+        if self.a_venir:
+            footer_cats += ('\n          <li><a href="%sa-venir.html">'
+                            'Ce qui se prépare</a></li>' % base)
         footer = fill(
             self.footer_tpl,
             base=base, home=home,
@@ -314,7 +349,10 @@ class Builder:
                          "Cotonou. Point sellier, cuir pleine fleur, semelle ressemelable. "
                          "Sur-mesure en 14 à 20 jours, livré au Bénin et en Côte d'Ivoire."),
             og_title="Yem's. Personne ne verra la couture. Tout le monde verra la différence.",
-            og_image="loafer-ouidah",
+            # L'aperçu de partage montrait une photo qui n'appartenait pas à
+            # l'atelier. Il n'y en a plus tant qu'une vraie n'aura pas été prise :
+            # mieux vaut aucune vignette qu'une vignette empruntée.
+            og_image=None,
             structured={
                 "@context": "https://schema.org",
                 "@type": "Organization",
@@ -531,6 +569,7 @@ class Builder:
       <p class="product__price"><span data-prix="{product['slug']}">{price(product['price'])}</span>
         <small>FCFA · livraison 48 h Cotonou &amp; Abidjan</small></p>
       <p class="lede" data-court="{product['slug']}">{product['short']}</p>
+      {origine_marque(product, long=True)}
       <p class="lede" style="margin-top:var(--sp-3)">{product['pitch']}</p>
 
       <div class="product__pickers">
@@ -590,7 +629,7 @@ class Builder:
     <h1 style="margin-top:var(--sp-4);font-size:var(--fs-3xl)" data-lines>{heading}</h1>
     <p class="lede mx-auto text-center" style="margin-top:var(--sp-5)" data-reveal>{text}</p>
     <div class="cta__actions" data-reveal>
-      <a class="btn" href="chaussures.html">
+      <a class="btn" href="selection.html">
         Voir les souliers
         <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
       </a>
@@ -613,9 +652,19 @@ class Builder:
             return ('    <div class="cfg-options" data-group="%s">\n%s\n    </div>'
                     % (group, "\n".join(render(o) for o in items)))
 
+        # Les visuels de forme sont vides tant que l'atelier n'a pas
+        # photographié sa propre production : le placeholder beige prend le
+        # relais plutôt qu'une image qui appartient à quelqu'un d'autre.
+        def vignette_forme(o):
+            if not o.get("image"):
+                return ('<span class="cfg-opt__shot pshot--empty">'
+                        '<span class="pshot__note">Photo à venir</span></span>')
+            return ('<span class="cfg-opt__shot"><img src="assets/img/%s.jpg" '
+                    'width="400" height="275" loading="lazy" decoding="async" alt="%s"></span>'
+                    % (o["image"], escape(o["name"], quote=True)))
+
         shapes = opts("shape", cfg["shapes"], lambda o: f"""      <button class="cfg-opt" type="button" aria-pressed="false" data-id="{o['id']}">
-        <span class="cfg-opt__shot"><img src="assets/img/{o['image']}.jpg" width="400" height="275"
-              loading="lazy" decoding="async" alt="{escape(o['name'], quote=True)}"></span>
+        {vignette_forme(o)}
         <span class="cfg-opt__top">
           <span class="cfg-opt__name">{escape(o['name'])}</span>
           <span class="cfg-opt__price">dès {price(o['price'])}</span>
@@ -1022,7 +1071,7 @@ class Builder:
       </p>
 
       <div class="cta__actions" data-reveal>
-        <a class="btn" href="chaussures.html">Continuer mes achats</a>
+        <a class="btn" href="selection.html">Continuer mes achats</a>
         <a class="btn btn--ghost" href="https://wa.me/{self.site['whatsapp']}" target="_blank" rel="noopener">
           <svg aria-hidden="true"><use href="#i-whatsapp"></use></svg>
           Écrire à l'atelier
@@ -1073,6 +1122,85 @@ class Builder:
         )
 
 
+    def build_a_venir(self):
+        """
+        Une page pour tout ce qui n'est pas encore montrable.
+
+        Abou l'a demandé ainsi, et il a raison : huit fiches avec un fond beige
+        et un nom de produit donnent l'impression d'une boutique vide. Une page
+        qui annonce donne l'impression d'une maison qui prépare quelque chose.
+
+        Aucun nom de pièce n'y figure. Annoncer « Loafer Ouidah, 88 000 F »
+        sans pouvoir le montrer, c'est prendre un engagement sur un prix et un
+        modèle qui peuvent encore bouger.
+        """
+        atelier = sum(1 for p in self.a_venir if p.get("origine") == "atelier")
+
+        content = f"""<section class="section section--top" id="a-venir">
+  <div class="container container--narrow">
+    <div class="section-head" data-reveal>
+      <span class="eyebrow">L'atelier</span>
+      <h1 class="page-title" style="margin-top:var(--sp-3)">Ce qui se prépare</h1>
+      <p class="lede">
+        La ligne cousue main n'est pas encore en ligne. Pas parce qu'elle
+        n'existe pas, mais parce qu'on refuse de la montrer avec des images
+        qui ne sont pas les nôtres.
+      </p>
+    </div>
+
+    <div class="story__turn" data-reveal style="margin-top:var(--sp-6)">
+      <p>
+        {atelier} pièces sortent de l'atelier de Cotonou : des souliers cousus
+        à la main, une ceinture et un portefeuille taillés dans les mêmes peaux.
+        <strong>Elles seront en ligne dès qu'elles auront été photographiées
+        chez nous, telles qu'elles sont.</strong>
+      </p>
+    </div>
+
+    <div class="grid grid--3" style="margin-top:var(--sp-7)">
+      <article class="card" data-reveal>
+        <span class="card__num">01</span>
+        <h2>Vous voulez voir avant</h2>
+        <p>
+          Passez à l'atelier. Les pièces existent, elles se prennent en main,
+          et c'est de loin la meilleure façon de juger une couture.
+        </p>
+      </article>
+      <article class="card" data-reveal style="--reveal-delay:90ms">
+        <h2>Vous savez déjà ce que vous voulez</h2>
+        <p>
+          Écrivez-nous. On vous envoie des photos de ce qui est disponible
+          aujourd'hui, avec le prix, sans passer par le site.
+        </p>
+      </article>
+      <article class="card" data-reveal style="--reveal-delay:180ms">
+        <h2>Vous préférez attendre</h2>
+        <p>
+          Laissez-nous votre numéro sur WhatsApp. Vous serez prévenu le jour
+          de la mise en ligne, et pas un jour de plus.
+        </p>
+      </article>
+    </div>
+
+    <div class="cta__actions" data-reveal style="margin-top:var(--sp-7)">
+      <a class="btn" href="https://wa.me/{self.site['whatsapp']}?text={
+        'Bonjour%2C%20je%20voudrais%20voir%20les%20pi%C3%A8ces%20de%20l%27atelier.'}"
+         target="_blank" rel="noopener">
+        <svg aria-hidden="true"><use href="#i-whatsapp"></use></svg>
+        Écrire à l'atelier
+      </a>
+      <a class="btn btn--ghost" href="selection.html">Voir ce qui est disponible</a>
+    </div>
+  </div>
+</section>"""
+
+        self.page(
+            "a-venir.html", content=content, current="a-venir",
+            title="Ce qui se prépare | Yem's",
+            description="La ligne cousue main de l'atelier Yem's arrive. En attendant, "
+                        "écrivez-nous pour voir les pièces disponibles à Cotonou.",
+        )
+
     def build_shop(self):
         """
         La boutique entière, sur une page.
@@ -1086,7 +1214,7 @@ class Builder:
         for cat in self.categories:
             produits = self.by_category(cat["slug"])
             if not produits:
-                continue
+                continue   # rayon vide : il est annoncé sur a-venir.html
             blocs.append(f"""    <div class="rayon" id="{cat['slug']}">
       <div class="rayon__head" data-reveal>
         <h2>{cat['name']}</h2>
@@ -1118,6 +1246,9 @@ class Builder:
       <a class="btn" href="configurateur.html">
         Composer ma paire sur mesure
         <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
+      </a>
+      <a class="btn btn--ghost" href="a-venir.html" style="margin-left:var(--sp-3)">
+        Voir ce qui se prépare
       </a>
     </div>
   </div>
@@ -1251,7 +1382,7 @@ class Builder:
         L'atelier répond sur WhatsApp si vous cherchiez quelque chose de précis.
       </p>
       <div class="cta__actions" data-reveal>
-        <a class="btn" href="/chaussures.html">
+        <a class="btn" href="/selection.html">
           Voir les souliers
           <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
         </a>
@@ -1286,10 +1417,14 @@ class Builder:
 
         self.build_home()
         for cat in self.categories:
-            self.build_category(cat)
+            # Générer une page catégorie vide reviendrait à créer une impasse :
+            # le visiteur clique, ne trouve rien, et repart.
+            if self.by_category(cat["slug"]):
+                self.build_category(cat)
         for product in self.products:
             self.build_product(product)
 
+        self.build_a_venir()
         self.build_shop()
         self.build_configurator()
         self.build_cart()

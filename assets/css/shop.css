@@ -280,3 +280,55 @@
 }
 
 .rayon__head h2 { font-size: var(--fs-xl); }
+
+/* --------------------------------------------------------------------------
+   ORIGINE — fabriqué ou choisi
+
+   La mention n'est pas discrète par hasard sur la vignette et appuyée sur la
+   fiche : au moment de parcourir, elle informe ; au moment de décider, elle
+   engage. C'est la promesse de la maison, pas une note de bas de page.
+   -------------------------------------------------------------------------- */
+.origine {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-size: var(--fs-xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--text-subtle);
+}
+
+.origine::before {
+  content: "";
+  width: 14px;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.7;
+}
+
+.origine--atelier { color: var(--brass-300); }
+.section--light .origine--atelier { color: var(--brass-600); }
+
+.origine--long {
+  display: block;
+  margin: var(--sp-4) 0 var(--sp-5);
+  padding: var(--sp-4) var(--sp-5);
+  font-size: var(--fs-sm);
+  letter-spacing: 0;
+  text-transform: none;
+  line-height: var(--lh-base);
+  color: var(--text-muted);
+  border-left: 2px solid currentColor;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  background: rgba(201, 164, 106, 0.06);
+}
+
+.origine--long::before { display: none; }
+
+.origine--long strong {
+  display: block;
+  font-family: var(--font-display);
+  font-size: var(--fs-md);
+  color: var(--text);
+  margin-bottom: var(--sp-2);
+}

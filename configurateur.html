@@ -37,7 +37,7 @@
 <link rel="stylesheet" href="assets/css/base.css?v=702e3b97">
 <link rel="stylesheet" href="assets/css/components.css?v=84d0cec0">
 <link rel="stylesheet" href="assets/css/home.css?v=45d64b6b">
-<link rel="stylesheet" href="assets/css/shop.css?v=5071bb37">
+<link rel="stylesheet" href="assets/css/shop.css?v=49e59505">
 <link rel="stylesheet" href="assets/css/motion.css?v=b43e4720">
 <link rel="stylesheet" href="assets/css/configurator.css?v=60d5b6d8">
 
@@ -174,11 +174,9 @@
     </a>
 
     <nav class="nav" aria-label="Navigation principale">
-      <a class="nav__link" href="chaussures.html">Chaussures</a>
-      <a class="nav__link" href="ceintures.html">Ceintures</a>
-      <a class="nav__link" href="portefeuilles.html">Portefeuilles</a>
-      <a class="nav__link" href="entretien.html">Entretien</a>
-      <a class="nav__link" href="index.html#manifeste">L'atelier</a>
+      <a class="nav__link" href="selection.html">La sélection</a>
+      <a class="nav__link" href="a-venir.html">L'atelier</a>
+      <a class="nav__link" href="configurateur.html">Le sur-mesure</a>
     </nav>
 
     <div class="header__actions">
@@ -195,11 +193,9 @@
 </header>
 
 <div class="mobile-menu" id="mobile-menu">
-  <a href="chaussures.html">Chaussures</a>
-  <a href="ceintures.html">Ceintures</a>
-  <a href="portefeuilles.html">Portefeuilles</a>
-  <a href="entretien.html">Entretien</a>
-  <a href="index.html#manifeste">L'atelier</a>
+  <a href="selection.html">La sélection</a>
+  <a href="a-venir.html">L'atelier</a>
+  <a href="configurateur.html">Le sur-mesure</a>
   <a class="btn" href="configurateur.html" style="margin-top:auto">Configurer ma paire</a>
 </div>
 
@@ -229,8 +225,7 @@
           </div>
     <div class="cfg-options" data-group="shape">
       <button class="cfg-opt" type="button" aria-pressed="false" data-id="loafer">
-        <span class="cfg-opt__shot"><img src="assets/img/loafer-ouidah.jpg" width="400" height="275"
-              loading="lazy" decoding="async" alt="Loafer Ouidah"></span>
+        <span class="cfg-opt__shot pshot--empty"><span class="pshot__note">Photo à venir</span></span>
         <span class="cfg-opt__top">
           <span class="cfg-opt__name">Loafer Ouidah</span>
           <span class="cfg-opt__price">dès 158 000 F</span>
@@ -238,8 +233,7 @@
         <span class="cfg-opt__note">Sans lacet, non doublé</span>
       </button>
       <button class="cfg-opt" type="button" aria-pressed="false" data-id="derby">
-        <span class="cfg-opt__shot"><img src="assets/img/derby-cotonou.jpg" width="400" height="275"
-              loading="lazy" decoding="async" alt="Derby Cotonou"></span>
+        <span class="cfg-opt__shot pshot--empty"><span class="pshot__note">Photo à venir</span></span>
         <span class="cfg-opt__top">
           <span class="cfg-opt__name">Derby Cotonou</span>
           <span class="cfg-opt__price">dès 166 000 F</span>
@@ -247,8 +241,7 @@
         <span class="cfg-opt__note">Laçage ouvert, chaussant large</span>
       </button>
       <button class="cfg-opt" type="button" aria-pressed="false" data-id="boot">
-        <span class="cfg-opt__shot"><img src="assets/img/boot-atakora.jpg" width="400" height="275"
-              loading="lazy" decoding="async" alt="Boot Atakora"></span>
+        <span class="cfg-opt__shot pshot--empty"><span class="pshot__note">Photo à venir</span></span>
         <span class="cfg-opt__top">
           <span class="cfg-opt__name">Boot Atakora</span>
           <span class="cfg-opt__price">dès 182 000 F</span>
@@ -256,8 +249,7 @@
         <span class="cfg-opt__note">Tige montante, semelle gomme</span>
       </button>
       <button class="cfg-opt" type="button" aria-pressed="false" data-id="richelieu">
-        <span class="cfg-opt__shot"><img src="assets/img/richelieu-abidjan.jpg" width="400" height="275"
-              loading="lazy" decoding="async" alt="Richelieu Abidjan"></span>
+        <span class="cfg-opt__shot pshot--empty"><span class="pshot__note">Photo à venir</span></span>
         <span class="cfg-opt__top">
           <span class="cfg-opt__name">Richelieu Abidjan</span>
           <span class="cfg-opt__price">dès 196 000 F</span>
@@ -449,7 +441,7 @@
   </div>
 </section>
 
-<script type="application/json" id="cfg-data">{"base": "", "shapes": [{"id": "loafer", "name": "Loafer Ouidah", "price": 158000, "image": "loafer-ouidah", "note": "Sans lacet, non doublé"}, {"id": "derby", "name": "Derby Cotonou", "price": 166000, "image": "derby-cotonou", "note": "Laçage ouvert, chaussant large"}, {"id": "boot", "name": "Boot Atakora", "price": 182000, "image": "boot-atakora", "note": "Tige montante, semelle gomme"}, {"id": "richelieu", "name": "Richelieu Abidjan", "price": 196000, "image": "richelieu-abidjan", "note": "Laçage fermé, empiècement fleuri"}], "leathers": [{"id": "cognac", "name": "Cognac", "hex": "#8C5A3C", "price": 0, "note": "Patine chaude, se creuse avec les années"}, {"id": "espresso", "name": "Espresso", "hex": "#3B2F29", "price": 0, "note": "Le plus sobre, passe partout"}, {"id": "noir", "name": "Noir", "hex": "#1A1614", "price": 0, "note": "Cérémonie et bureau"}, {"id": "marine", "name": "Marine", "hex": "#232B3D", "price": 8000, "note": "Teinture longue, +2 jours d'atelier"}], "soles": [{"id": "cuir", "name": "Cuir cousue sur trépointe", "price": 0, "note": "Ressemelable à vie, la signature Yem's"}, {"id": "gomme", "name": "Gomme ville", "price": 8000, "note": "Silencieuse, tient le bitume mouillé de juin"}], "initials": {"price": 6000, "note": "Marquées à chaud sur la doublure, jamais à l'extérieur."}}</script>
+<script type="application/json" id="cfg-data">{"base": "", "shapes": [{"id": "loafer", "name": "Loafer Ouidah", "price": 158000, "image": "", "note": "Sans lacet, non doublé"}, {"id": "derby", "name": "Derby Cotonou", "price": 166000, "image": "", "note": "Laçage ouvert, chaussant large"}, {"id": "boot", "name": "Boot Atakora", "price": 182000, "image": "", "note": "Tige montante, semelle gomme"}, {"id": "richelieu", "name": "Richelieu Abidjan", "price": 196000, "image": "", "note": "Laçage fermé, empiècement fleuri"}], "leathers": [{"id": "cognac", "name": "Cognac", "hex": "#8C5A3C", "price": 0, "note": "Patine chaude, se creuse avec les années"}, {"id": "espresso", "name": "Espresso", "hex": "#3B2F29", "price": 0, "note": "Le plus sobre, passe partout"}, {"id": "noir", "name": "Noir", "hex": "#1A1614", "price": 0, "note": "Cérémonie et bureau"}, {"id": "marine", "name": "Marine", "hex": "#232B3D", "price": 8000, "note": "Teinture longue, +2 jours d'atelier"}], "soles": [{"id": "cuir", "name": "Cuir cousue sur trépointe", "price": 0, "note": "Ressemelable à vie, la signature Yem's"}, {"id": "gomme", "name": "Gomme ville", "price": 8000, "note": "Silencieuse, tient le bitume mouillé de juin"}], "initials": {"price": 6000, "note": "Marquées à chaud sur la doublure, jamais à l'extérieur."}}</script>
 
 </main>
 
@@ -483,10 +475,8 @@
         <h2 class="footer__title">Boutique</h2>
         <ul class="footer__list">
           <li><a href="boutique.html">Tout le catalogue</a></li>
-          <li><a href="chaussures.html">Chaussures</a></li>
-          <li><a href="ceintures.html">Ceintures</a></li>
-          <li><a href="portefeuilles.html">Portefeuilles</a></li>
-          <li><a href="entretien.html">Entretien</a></li>
+          <li><a href="selection.html">Sélection</a></li>
+          <li><a href="a-venir.html">Ce qui se prépare</a></li>
           <li><a href="configurateur.html">Sur-mesure</a></li>
         </ul>
       </div>
@@ -528,6 +518,6 @@
 
 <script src="assets/js/main.js?v=3fdda5f8" defer></script>
 <script src="assets/js/motion.js?v=8f03829d" defer></script>
-<script src="assets/js/configurator.js?v=fdd53165" defer></script>
+<script src="assets/js/configurator.js?v=5a8be9d1" defer></script>
 </body>
 </html>

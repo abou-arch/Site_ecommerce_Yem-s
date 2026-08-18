@@ -18,28 +18,28 @@
           "id": "loafer",
           "name": "Loafer Ouidah",
           "price": 158000,
-          "image": "loafer-ouidah",
+          "image": "",
           "note": "Sans lacet, non doublé"
         },
         {
           "id": "derby",
           "name": "Derby Cotonou",
           "price": 166000,
-          "image": "derby-cotonou",
+          "image": "",
           "note": "Laçage ouvert, chaussant large"
         },
         {
           "id": "boot",
           "name": "Boot Atakora",
           "price": 182000,
-          "image": "boot-atakora",
+          "image": "",
           "note": "Tige montante, semelle gomme"
         },
         {
           "id": "richelieu",
           "name": "Richelieu Abidjan",
           "price": 196000,
-          "image": "richelieu-abidjan",
+          "image": "",
           "note": "Laçage fermé, empiècement fleuri"
         }
       ],
@@ -116,26 +116,34 @@
     "_nav": "Navigation principale. href commençant par # = ancre de la homepage. Les quatre catégories y figurent : sans ça, Ceintures, Portefeuilles et Entretien n'étaient joignables que depuis le footer.",
     "nav": [
       {
-        "label": "Chaussures",
-        "href": "chaussures.html"
-      },
-      {
-        "label": "Ceintures",
-        "href": "ceintures.html"
-      },
-      {
-        "label": "Portefeuilles",
-        "href": "portefeuilles.html"
-      },
-      {
-        "label": "Entretien",
-        "href": "entretien.html"
+        "label": "La sélection",
+        "href": "selection.html"
       },
       {
         "label": "L'atelier",
-        "href": "#manifeste"
+        "href": "a-venir.html"
+      },
+      {
+        "label": "Le sur-mesure",
+        "href": "configurateur.html"
       }
-    ]
+    ],
+    "_origines": "Deux lignes. 'atelier' = fabriqué à Cotonou, cousu main, ressemelable. 'selection' = choisi, contrôlé, garanti. Chaque fiche l'affiche : c'est la promesse de la maison.",
+    "origines": {
+      "atelier": {
+        "nom": "Atelier",
+        "court": "Fabriqué à Cotonou",
+        "phrase": "Cousu main dans notre atelier de Cotonou. Semelle remplaçable, ressemelage à vie, une retouche offerte après essayage.",
+        "garantie": "Ressemelage à vie et une retouche offerte"
+      },
+      "selection": {
+        "nom": "Sélection",
+        "court": "Choisi par l'atelier",
+        "phrase": "Nous ne l'avons pas fabriquée, nous l'avons choisie. Chaque paire est contrôlée à la réception, numérotée, et échangeable un an.",
+        "garantie": "Échange un an, pointure ou défaut"
+      }
+    },
+    "_a_venir": "a_venir = pièce annoncée mais pas encore montrable. Elle disparaît des grilles, n'a pas de fiche, et n'est pas commandable. Passer a_venir à false dès que les photos existent."
   },
   "categories": [
     {
@@ -177,6 +185,16 @@
       "eyebrow": "Le soin",
       "heading": "Une paire dure<br>si on s'en occupe.",
       "lede": "On ne vend rien qu'on n'utilise pas soi-même. Ce sont les produits qui sortent tous les jours à l'atelier, rien de plus."
+    },
+    {
+      "slug": "selection",
+      "nav": "Sélection",
+      "name": "Sélection",
+      "title": "Sélection Yem's : mocassins et sneakers choisis",
+      "description": "Des pièces que nous n'avons pas fabriquées mais que nous avons choisies, contrôlées et garanties. Échange un an.",
+      "eyebrow": "Choisi, pas fabriqué",
+      "heading": "Ce qu'on n'a pas fait,<br>on en répond quand même.",
+      "lede": "L'atelier ne sait pas tout faire. Ce qu'il ne fabrique pas, il le choisit lui-même, le contrôle à la réception et l'échange pendant un an."
     }
   ],
   "products": [
@@ -190,20 +208,7 @@
       "bespoke": true,
       "short": "Sans lacet, non doublé : il se met en quatre secondes et ne serre pas à 14 h. Celui qu'on porte cinq jours sur sept.",
       "pitch": "Le loafer est le soulier qu'on enfile sans y penser. Le nôtre est monté sans doublure : le cuir travaille seul, prend la forme du pied en une dizaine de jours, et ne serre plus jamais aux heures chaudes.",
-      "images": [
-        {
-          "file": "loafer-ouidah",
-          "w": 807,
-          "h": 1008,
-          "alt": "Loafer Ouidah en cuir noir avec bride, semelle crantée, vu de trois quarts"
-        },
-        {
-          "file": "loafer-ouidah-alt",
-          "w": 744,
-          "h": 930,
-          "alt": "Loafer Ouidah en cuir marine, vue de dessus, première de propreté cuir naturel"
-        }
-      ],
+      "images": [],
       "specs": [
         {
           "label": "Cuir",
@@ -259,7 +264,9 @@
           "name": "Cognac",
           "hex": "#8C5A3C"
         }
-      ]
+      ],
+      "origine": "atelier",
+      "a_venir": true
     },
     {
       "slug": "derby-cotonou",
@@ -271,20 +278,7 @@
       "bespoke": true,
       "short": "Laçage ouvert : le coup de pied fort passe, le pied fin se rattrape au laçage. La forme qui pardonne le plus.",
       "pitch": "Si vous hésitez entre deux pointures dans toutes les boutiques, c'est cette forme qu'il vous faut. Le laçage ouvert laisse le quartier s'écarter : un coup de pied fort entre, un pied fin se serre. C'est la seule construction qui s'adapte vraiment.",
-      "images": [
-        {
-          "file": "derby-cotonou",
-          "w": 992,
-          "h": 1240,
-          "alt": "Derby Cotonou en cuir cognac, laçage ouvert, couture apparente sur l'avant"
-        },
-        {
-          "file": "derby-cotonou-alt",
-          "w": 1057,
-          "h": 1321,
-          "alt": "Derby Cotonou en cuir noir, semelle épaisse crantée, vu de profil"
-        }
-      ],
+      "images": [],
       "specs": [
         {
           "label": "Cuir",
@@ -340,7 +334,9 @@
           "name": "Espresso",
           "hex": "#3B2F29"
         }
-      ]
+      ],
+      "origine": "atelier",
+      "a_venir": true
     },
     {
       "slug": "boot-atakora",
@@ -352,14 +348,7 @@
       "bespoke": true,
       "short": "Tige montante, élastiques latéraux, semelle gomme. Elle tient sur le bitume mouillé de juin comme sur la latérite de janvier.",
       "pitch": "La saison des pluies abîme les souliers bas : l'eau entre par le col, le cuir gonfle, la semelle se décolle. La tige montante règle le problème, les élastiques latéraux évitent les lacets détrempés.",
-      "images": [
-        {
-          "file": "boot-atakora",
-          "w": 797,
-          "h": 997,
-          "alt": "Boot Atakora en cuir noir à élastiques latéraux, vue de dessus"
-        }
-      ],
+      "images": [],
       "specs": [
         {
           "label": "Cuir",
@@ -411,7 +400,9 @@
           "name": "Espresso",
           "hex": "#3B2F29"
         }
-      ]
+      ],
+      "origine": "atelier",
+      "a_venir": true
     },
     {
       "slug": "richelieu-abidjan",
@@ -424,14 +415,7 @@
       "bespoke_only": true,
       "short": "Laçage fermé, empiècement fleuri. La pièce de cérémonie, en sur-mesure uniquement, sur vos mesures et vos initiales.",
       "pitch": "Le richelieu ne pardonne rien : laçage fermé, ligne tendue, aucune marge d'ajustement. C'est précisément pour ça qu'on ne le vend qu'en sur-mesure. Une pièce de cérémonie qui ne tombe pas juste ne sert à rien.",
-      "images": [
-        {
-          "file": "richelieu-abidjan",
-          "w": 1013,
-          "h": 1266,
-          "alt": "Richelieu Abidjan en cuir noir, laçage fermé et empiècement façon croco perforé"
-        }
-      ],
+      "images": [],
       "specs": [
         {
           "label": "Cuir",
@@ -478,7 +462,9 @@
           "name": "Cognac",
           "hex": "#8C5A3C"
         }
-      ]
+      ],
+      "origine": "atelier",
+      "a_venir": true
     },
     {
       "slug": "ceinture-sellier",
@@ -528,7 +514,9 @@
           "name": "Espresso",
           "hex": "#3B2F29"
         }
-      ]
+      ],
+      "origine": "atelier",
+      "a_venir": true
     },
     {
       "slug": "portefeuille-quatre-cartes",
@@ -578,7 +566,9 @@
           "name": "Noir",
           "hex": "#1A1614"
         }
-      ]
+      ],
+      "origine": "atelier",
+      "a_venir": true
     },
     {
       "slug": "creme-nourrissante",
@@ -610,7 +600,9 @@
       ],
       "details": [],
       "sizes": [],
-      "colors": []
+      "colors": [],
+      "origine": "selection",
+      "a_venir": true
     },
     {
       "slug": "embauchoirs-cedre",
@@ -642,7 +634,231 @@
       ],
       "details": [],
       "sizes": [],
-      "colors": []
+      "colors": [],
+      "origine": "selection",
+      "a_venir": true
+    },
+    {
+      "slug": "mocassin-tokpa",
+      "category": "selection",
+      "name": "Mocassin Tokpa",
+      "price": 45000,
+      "status": "green",
+      "featured": true,
+      "bespoke": false,
+      "origine": "selection",
+      "short": "Daim marine, semelle blanche. Celui qu'on enfile sans y penser, du bureau au samedi soir.",
+      "pitch": "Un mocassin souple en daim, sur semelle de gomme blanche. Rien à lacer, rien à ajuster : on l'enfile et on part. C'est la pièce que l'atelier recommande à ceux qui trouvent le soulier cousu trop habillé pour tous les jours.",
+      "images": [
+        {
+          "file": "mocassin-marine",
+          "w": 1000,
+          "h": 1250,
+          "alt": "Mocassin Tokpa en daim bleu marine, semelle blanche, vu de trois quarts"
+        },
+        {
+          "file": "mocassin-marine-alt",
+          "w": 1000,
+          "h": 1250,
+          "alt": "Mocassin Tokpa vu de dessus, première de propreté cuir naturel"
+        }
+      ],
+      "specs": [
+        {
+          "label": "Dessus",
+          "value": "Daim de veau"
+        },
+        {
+          "label": "Doublure",
+          "value": "Cuir naturel"
+        },
+        {
+          "label": "Semelle",
+          "value": "Gomme injectée, blanche"
+        },
+        {
+          "label": "Montage",
+          "value": "Collé"
+        },
+        {
+          "label": "Pointures",
+          "value": "39 à 45"
+        }
+      ],
+      "details": [
+        {
+          "title": "Pourquoi celle-ci",
+          "text": "L'atelier en a essayé plusieurs avant de retenir ce modèle. Le daim tient la forme, la semelle amortit sans faire de bruit, et le chaussant est régulier d'une paire à l'autre."
+        },
+        {
+          "title": "Ce qu'elle n'est pas",
+          "text": "Ce n'est pas une pièce d'atelier. La semelle est collée, elle ne se ressemelle pas. C'est le compromis d'une chaussure souple qu'on met tous les jours, et c'est pour ça qu'elle coûte la moitié d'un soulier cousu."
+        }
+      ],
+      "sizes": [
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45
+      ],
+      "colors": [
+        {
+          "name": "Marine",
+          "hex": "#232B3D"
+        }
+      ],
+      "a_venir": false
+    },
+    {
+      "slug": "mocassin-tokpa-noir",
+      "category": "selection",
+      "name": "Mocassin Tokpa noir",
+      "price": 45000,
+      "status": "green",
+      "featured": true,
+      "bespoke": false,
+      "origine": "selection",
+      "short": "Le même en daim noir. Passe avec un jean comme avec un pantalon de ville.",
+      "pitch": "Même modèle, même semelle, en daim noir. Plus sobre que la version marine, et plus facile à porter en fin de journée quand on enchaîne le bureau et la sortie.",
+      "images": [
+        {
+          "file": "mocassin-noir",
+          "w": 1000,
+          "h": 1250,
+          "alt": "Mocassin Tokpa en daim noir, semelle blanche, vu de profil"
+        },
+        {
+          "file": "mocassin-noir-alt",
+          "w": 1000,
+          "h": 1250,
+          "alt": "Semelle de gomme du mocassin Tokpa, vue de dessous"
+        }
+      ],
+      "specs": [
+        {
+          "label": "Dessus",
+          "value": "Daim de veau"
+        },
+        {
+          "label": "Doublure",
+          "value": "Cuir naturel"
+        },
+        {
+          "label": "Semelle",
+          "value": "Gomme injectée, blanche"
+        },
+        {
+          "label": "Montage",
+          "value": "Collé"
+        },
+        {
+          "label": "Pointures",
+          "value": "39 à 45"
+        }
+      ],
+      "details": [
+        {
+          "title": "Pourquoi celle-ci",
+          "text": "L'atelier en a essayé plusieurs avant de retenir ce modèle. Le daim tient la forme, la semelle amortit sans faire de bruit, et le chaussant est régulier d'une paire à l'autre."
+        },
+        {
+          "title": "Ce qu'elle n'est pas",
+          "text": "Ce n'est pas une pièce d'atelier. La semelle est collée, elle ne se ressemelle pas. C'est le compromis d'une chaussure souple qu'on met tous les jours, et c'est pour ça qu'elle coûte la moitié d'un soulier cousu."
+        }
+      ],
+      "sizes": [
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45
+      ],
+      "colors": [
+        {
+          "name": "Noir",
+          "hex": "#1A1614"
+        }
+      ],
+      "a_venir": false
+    },
+    {
+      "slug": "sneaker-ganvie",
+      "category": "selection",
+      "name": "Sneaker Ganvié",
+      "price": 48000,
+      "status": "green",
+      "featured": true,
+      "bespoke": false,
+      "origine": "selection",
+      "short": "Cuir perforé, semelle légère. Pour marcher longtemps sans avoir l'air d'être en sport.",
+      "pitch": "Une sneaker en cuir perforé, doublée cuir, sur une semelle légère à crampons plats. Le perforé laisse passer l'air : c'est ce qui la rend supportable à 15 h au mois d'avril.",
+      "images": [
+        {
+          "file": "sneaker-marine",
+          "w": 1000,
+          "h": 1250,
+          "alt": "Sneaker Ganvié en cuir marine perforé, laçage plat, vue de trois quarts"
+        },
+        {
+          "file": "sneaker-marine-alt",
+          "w": 1000,
+          "h": 1250,
+          "alt": "Semelle à crampons plats de la sneaker Ganvié"
+        }
+      ],
+      "specs": [
+        {
+          "label": "Dessus",
+          "value": "Cuir de veau perforé"
+        },
+        {
+          "label": "Doublure",
+          "value": "Cuir naturel"
+        },
+        {
+          "label": "Semelle",
+          "value": "Caoutchouc à crampons plats"
+        },
+        {
+          "label": "Montage",
+          "value": "Collé"
+        },
+        {
+          "label": "Pointures",
+          "value": "39 à 45"
+        }
+      ],
+      "details": [
+        {
+          "title": "Pourquoi celle-ci",
+          "text": "L'atelier en a essayé plusieurs avant de retenir ce modèle. Le daim tient la forme, la semelle amortit sans faire de bruit, et le chaussant est régulier d'une paire à l'autre."
+        },
+        {
+          "title": "Ce qu'elle n'est pas",
+          "text": "Ce n'est pas une pièce d'atelier. La semelle est collée, elle ne se ressemelle pas. C'est le compromis d'une chaussure souple qu'on met tous les jours, et c'est pour ça qu'elle coûte la moitié d'un soulier cousu."
+        }
+      ],
+      "sizes": [
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45
+      ],
+      "colors": [
+        {
+          "name": "Marine",
+          "hex": "#232B3D"
+        }
+      ],
+      "a_venir": false
     }
   ]
 }

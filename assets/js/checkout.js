@@ -39,7 +39,7 @@
           <p class="display">Rien dans le panier pour l'instant.</p>
           <p class="text-muted">Quatre formes sont montées et prêtes à partir. Si aucune ne vous va, on en fait une à vos mesures.</p>
           <div class="cta__actions" style="margin-top:var(--sp-5)">
-            <a class="btn" href="chaussures.html">Voir les souliers</a>
+            <a class="btn" href="selection.html">Voir la sélection</a>
             <a class="btn btn--ghost" href="configurateur.html">Composer ma paire</a>
           </div>
         </div>`;

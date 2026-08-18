@@ -85,8 +85,11 @@
     const shot = $('[data-cfg-shot]');
     if (shot) {
       if (shape && shape.image) {
-        shot.innerHTML = '<img src="' + CFG.base + 'assets/img/' + shape.image +
-          '.jpg" alt="' + shape.name + '" width="800" height="600" loading="lazy">';
+        // Pas de photo tant que l'atelier n'a pas photographié sa production.
+        shot.innerHTML = shape.image
+          ? '<img src="' + CFG.base + 'assets/img/' + shape.image + '.jpg" alt="' + shape.name + '">'
+          : '<span class="pshot__note">Photo à venir</span>';
+        shot.classList.toggle('pshot--empty', !shape.image);
       } else {
         shot.innerHTML = '';
       }
