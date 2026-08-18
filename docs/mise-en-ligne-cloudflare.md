@@ -266,6 +266,38 @@ npx wrangler tail
 
 ---
 
+## La migration 002, à passer dans Neon
+
+Sans elle, l'onglet **Catalogue** de l'écran d'administration ne peut rien
+enregistrer : changer un prix ou masquer une pièce échoue en silence et le
+site continue d'afficher le catalogue du fichier. C'est la dernière chose qui
+sépare l'atelier d'un site qu'il pilote seul.
+
+Je ne peux pas l'exécuter à ta place : la chaîne de connexion est un secret et
+elle n'est pas dans le dépôt, ce qui est exactement ce qu'il faut.
+
+1. **console.neon.tech** → ton projet → **SQL Editor**
+2. Coller tout le contenu de `db/migration-002-catalogue-editable.sql`, puis
+   **Run**. Le fichier est rejouable : chaque instruction porte
+   `IF NOT EXISTS`, et les seuls `DROP` portent sur des contraintes qu'elle
+   recrée juste après, jamais sur des données. Le relancer deux fois ne casse
+   rien.
+3. Coller ensuite `db/verifier-002.sql`, puis **Run**. Cinq lignes doivent
+   s'afficher, toutes en `OK`. Si l'une dit `MANQUE`, relance simplement le
+   fichier de migration en entier.
+
+**Pendant que tu y es :** le mot de passe de la base a été collé en clair dans
+une conversation. Neon → **Settings** → **Reset password**, puis recréer la
+liaison Hyperdrive avec la nouvelle chaîne :
+
+```powershell
+npx wrangler hyperdrive create yems-db --connection-string="postgres://…"
+```
+
+et reporter le nouvel identifiant dans `wrangler.toml`.
+
+---
+
 ## Le nom de domaine : maisonyems.com
 
 Le domaine est acheté. Voici comment le brancher sur le Worker.

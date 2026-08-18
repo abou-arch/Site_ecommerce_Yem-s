@@ -1486,7 +1486,13 @@ class Builder:
     # Les trois documents que le code du numérique béninois exige au minimum
     # d'une plateforme de commerce électronique : mentions légales, conditions
     # générales de vente, politique de confidentialité.
+    # Pages écrites à la main dans templates/pages/, rendues telles quelles.
+    # Les trois dernières sont les documents que le code du numérique béninois
+    # exige au minimum d'une plateforme de commerce électronique.
     LEGALES = [
+        ("service-client", "Service client | Yem's",
+         "Livraison, échange, garanties, entretien et règlement. "
+         "L'atelier répond sous 48 heures, du lundi au samedi."),
         ("mentions-legales", "Mentions légales | Yem's",
          "Éditeur, hébergeur et informations légales du site Yem's, "
          "atelier de souliers et de maroquinerie à Cotonou."),
@@ -1498,7 +1504,7 @@ class Builder:
          "Aucun traceur publicitaire."),
     ]
 
-    def build_legales(self):
+    def build_pages_ecrites(self):
         """
         Génère les trois pages légales depuis templates/pages/.
 
@@ -1576,7 +1582,7 @@ class Builder:
         self.build_checkout()
         self.build_confirmation()
         self.build_admin()
-        self.build_legales()
+        self.build_pages_ecrites()
         self.build_404()
         self.build_sitemap()
 

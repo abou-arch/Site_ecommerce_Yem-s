@@ -115,7 +115,7 @@
         "body": "Cotonou et Abidjan sous 48 h, autres villes du Bénin et de Côte d'Ivoire sous 5 jours. Échange de pointure sous 7 jours, sans frais. Sur le sur-mesure : une retouche offerte après essayage, puis remboursement intégral si le chaussant ne convient toujours pas."
       }
     ],
-    "_nav": "Navigation principale. href commençant par # = ancre de la homepage. Les quatre catégories y figurent : sans ça, Ceintures, Portefeuilles et Entretien n'étaient joignables que depuis le footer.",
+    "_nav": "Navigation principale. Trois entrées disent CE QU'ON PEUT ACHETER, la quatrième dit CE QUI SE PASSE SI ÇA TOURNE MAL. Pas d'entrée « Accueil » : le logo y mène déjà, c'est universel, et chaque entrée en plus affaiblit les autres.",
     "nav": [
       {
         "label": "La sélection",
@@ -128,6 +128,10 @@
       {
         "label": "Le sur-mesure",
         "href": "configurateur.html"
+      },
+      {
+        "label": "Service client",
+        "href": "service-client.html"
       }
     ],
     "_origines": "Deux lignes. 'atelier' = fabriqué à Cotonou, cousu main, ressemelable. 'selection' = choisi, contrôlé, garanti. Chaque fiche l'affiche : c'est la promesse de la maison.",
