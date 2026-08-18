@@ -2,6 +2,8 @@
   "site": {
     "brand": "Yem's",
     "slogan": "Différents par les détails",
+    "_url": "Adresse canonique du site, sans barre finale. Elle sert aux balises canonical, aux aperçus WhatsApp et au sitemap. La changer ici la change partout.",
+    "url": "https://maisonyems.com",
     "whatsapp": "2290191380234",
     "email": "",
     "currency": "F",
@@ -435,7 +437,7 @@
         },
         {
           "label": "Délai",
-          "value": "14 à 20 jours"
+          "value": "15 jours"
         }
       ],
       "details": [
@@ -729,12 +731,6 @@
           "w": 1000,
           "h": 1250,
           "alt": "Mocassin Tokpa en daim noir, semelle blanche, vu de profil"
-        },
-        {
-          "file": "mocassin-noir-alt",
-          "w": 1000,
-          "h": 1250,
-          "alt": "Semelle de gomme du mocassin Tokpa, vue de dessous"
         }
       ],
       "specs": [

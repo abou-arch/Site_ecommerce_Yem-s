@@ -76,7 +76,10 @@ affichés honnêtement.
 - **L'adresse exacte** à Cotonou. Le site invite les visiteurs à passer voir
   les pièces avant de commander : c'est aujourd'hui son argument principal,
   puisque vous n'avez pas encore d'avis clients.
-- Une **adresse e-mail** professionnelle, si vous en voulez une affichée.
+- Une **adresse e-mail** professionnelle. Le domaine `maisonyems.com` étant
+  acheté, `contact@maisonyems.com` devient possible et ne coûte rien de plus
+  chez la plupart des registrars. Une adresse au nom de la maison inspire plus
+  confiance qu'un gmail, surtout pour un premier achat à distance.
 - Y a-t-il un **point de retrait ou un dépôt à Abidjan**, ou la Côte d'Ivoire
   est-elle servie uniquement par livraison ?
 
@@ -84,7 +87,7 @@ affichés honnêtement.
 
 Le site annonce aujourd'hui :
 
-- 14 à 20 jours pour une pièce sur-mesure
+- 15 jours pour une pièce sur-mesure
 - 48 h pour Cotonou et Abidjan
 - 5 jours pour les autres villes
 - expédition sous 72 h pour une pièce déjà montée
@@ -104,9 +107,44 @@ sans donner de chiffre. Un nombre précis rassure et justifie le délai.
 
 ### Le nom de domaine
 
-Aujourd'hui, le site vit à une adresse technique. Un nom à vous
-(`yems.bj`, `yems-cotonou.com`, autre) coûte environ 10 000 à 15 000 F par an.
-Dites-moi le nom que vous voulez, je m'occupe du reste.
+**Fait :** `maisonyems.com` est acheté.
+
+Il reste une manipulation, à faire chez le registrar où vous l'avez pris :
+remplacer ses serveurs de noms par ceux que Cloudflare indiquera. Sans cette
+étape, le domaine reste inerte. La marche à suivre est dans
+`docs/mise-en-ligne-cloudflare.md`.
+
+Le site est déjà généré pour cette adresse : liens canoniques, sitemap et
+vignettes de partage WhatsApp pointent tous vers `maisonyems.com` et
+s'activeront d'eux-mêmes le jour du branchement.
+
+### Les informations légales, à fournir avant l'ouverture
+
+Trois pages viennent d'être écrites : mentions légales, conditions de vente,
+données personnelles. Le code du numérique béninois (loi 2017-20) les exige
+toutes les trois d'une boutique en ligne. Elles sont complètes, sauf quatre
+champs que vous seul pouvez remplir. Ils apparaissent soulignés en pointillé
+sur les pages, impossible de les manquer.
+
+- **Vos nom et prénoms complets**, tels qu'ils figureront comme vendeur.
+- **L'adresse exacte de l'atelier** à Cotonou.
+- **L'adresse e-mail de contact** de la maison.
+- **Le nom du responsable de la publication** (vous, sauf indication contraire).
+
+Deux démarches administratives sont également signalées sur les pages :
+
+1. **L'immatriculation au RCCM et l'obtention de l'IFU.** Tant qu'elles ne
+   sont pas faites, la vente engage vos biens personnels. Les pages le disent
+   franchement plutôt que de laisser un vide.
+2. **La déclaration à l'APDP** (Autorité de protection des données à caractère
+   personnel). Elle est obligatoire dès qu'un site collecte un nom et un
+   téléphone, ce qui est le cas dès la première commande.
+
+Je ne suis pas juriste et ces documents ne remplacent pas l'avis d'un
+professionnel. Ils sont écrits à partir du texte de loi et de ce que le site
+promet déjà, et ils sont cohérents avec lui, ce qui est vérifié
+automatiquement à chaque génération. Faites-les relire avant d'ouvrir si le
+budget le permet.
 
 ### Les premiers avis clients
 

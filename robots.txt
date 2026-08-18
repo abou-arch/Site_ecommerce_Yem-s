@@ -1,7 +1,11 @@
-# Yem's
+# Yem's — maisonyems.com
 
 User-agent: *
 Allow: /
+
+# Le sitemap doit être annoncé en adresse absolue : c'est la seule ligne de
+# ce fichier qui n'accepte pas de chemin relatif.
+Sitemap: https://maisonyems.com/sitemap.xml
 
 # Espace de l'atelier et routes serveur : rien à indexer, et rien qui doive
 # apparaître dans un résultat de recherche. La page admin.html est déjà en

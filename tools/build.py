@@ -16,6 +16,7 @@ Sortie, à la racine du dépôt :
 Usage :  python3 tools/build.py
 """
 
+import datetime
 import hashlib
 import json
 import os
@@ -218,6 +219,27 @@ def json_ld(payload):
             % json.dumps(payload, ensure_ascii=False, separators=(",", ":")))
 
 
+# Adresse canonique du site, renseignée au démarrage depuis data/products.json.
+# Tant qu'elle est vide, le générateur se tait plutôt que d'écrire une adresse
+# inventée : une balise canonical fausse est pire que pas de balise du tout,
+# elle désigne à Google une page qui n'existe pas.
+SITE_URL = ""
+
+# Pages du tunnel de commande : elles répondent 200, elles ne sont pas en
+# noindex (un client doit pouvoir y revenir), mais elles n'ont rien à faire
+# dans un sitemap. Une page de confirmation indexée enverrait des visiteurs
+# sur une commande vide, et une page de panier indexée capterait des
+# recherches qu'elle ne sait pas satisfaire.
+TUNNEL = {"panier.html", "checkout.html", "commande-confirmee.html", "404.html"}
+
+
+def url_absolue(chemin):
+    """« produit/derby.html » → « https://maisonyems.com/produit/derby.html »."""
+    if not SITE_URL:
+        return ""
+    return "%s/%s" % (SITE_URL, chemin.replace("index.html", "").lstrip("/"))
+
+
 def version_assets(html, root):
     """
     Ajoute une empreinte du contenu à chaque CSS et JS : assets/css/base.css
@@ -254,6 +276,8 @@ class Builder:
         # Les deux lignes de la maison, lues une fois et partagées par tous
         # les composants qui doivent afficher l'origine d'une pièce.
         ORIGINES.update(self.site.get("origines", {}))
+        global SITE_URL
+        SITE_URL = (self.site.get("url") or "").rstrip("/")
         # Une pièce en attente n'existe nulle part sur le site public : ni
         # vignette, ni fiche, ni panier. Elle reste dans le catalogue pour
         # qu'il suffise de basculer a_venir à false le jour des photos.
@@ -265,6 +289,7 @@ class Builder:
         self.header_tpl = read(os.path.join(TPL, "partials", "header.html"))
         self.footer_tpl = read(os.path.join(TPL, "partials", "footer.html"))
         self.written = []
+        self.indexables = []
 
     def by_category(self, slug):
         return [p for p in self.products if p["category"] == slug]
@@ -312,10 +337,23 @@ class Builder:
             description=escape(description, quote=True),
             robots=('<meta name="robots" content="noindex, nofollow">\n'
                     if noindex else ""),
+            # Une page qu'on demande aux robots d'ignorer n'a pas de version
+            # canonique à déclarer : lui en donner une reviendrait à la
+            # signaler tout en disant de ne pas la regarder.
+            canonical=('<link rel="canonical" href="%s">\n' % url_absolue(path)
+                       if (SITE_URL and not noindex) else ""),
+            og_url=('<meta property="og:url" content="%s">\n' % url_absolue(path)
+                    if (SITE_URL and not noindex) else ""),
             og_title=escape(og_title or title, quote=True),
             og_type=og_type,
-            og_image=('<meta property="og:image" content="%sassets/img/%s.jpg">\n'
-                      % (base, og_image)) if og_image else "",
+            # og:image DOIT être une adresse absolue. WhatsApp, Facebook et
+            # LinkedIn ignorent purement et simplement un chemin relatif : le
+            # lien partagé apparaît alors sans vignette. Comme presque tout le
+            # trafic de cette boutique passera par un lien WhatsApp, c'est la
+            # balise la plus rentable de tout le fichier.
+            og_image=('<meta property="og:image" content="%s">\n'
+                      % url_absolue("assets/img/%s.jpg" % og_image)
+                      if (og_image and SITE_URL) else ""),
             structured_data=json_ld(structured) if structured else "",
             base=base,
             extra_css="\n".join(
@@ -333,6 +371,11 @@ class Builder:
         html = version_assets(html, ROOT)
         write(os.path.join(ROOT, path), html)
         self.written.append((path, len(html.encode())))
+        # Le sitemap se déduit de ce qui a réellement été écrit, jamais d'une
+        # liste tenue à la main : une liste manuelle finit toujours par
+        # annoncer une page supprimée ou par oublier une page ajoutée.
+        if not noindex and path not in TUNNEL:
+            self.indexables.append(path)
 
     # ── les trois types de page ──────────────────────────────────────
 
@@ -347,7 +390,7 @@ class Builder:
             title="Yem's : souliers et maroquinerie cousus main | Différents par les détails",
             description=("Yem's : souliers, ceintures et portefeuilles cousus à la main à "
                          "Cotonou. Point sellier, cuir pleine fleur, semelle ressemelable. "
-                         "Sur-mesure en 14 à 20 jours, livré au Bénin et en Côte d'Ivoire."),
+                         "Sélection disponible à Cotonou, sur-mesure en 15 jours, livré au Bénin et en Côte d'Ivoire."),
             og_title="Yem's. Personne ne verra la couture. Tout le monde verra la différence.",
             # L'aperçu de partage montrait une photo qui n'appartenait pas à
             # l'atelier. Il n'y en a plus tant qu'une vraie n'aura pas été prise :
@@ -359,6 +402,16 @@ class Builder:
                 "name": "Yem's",
                 "slogan": self.site["slogan"],
                 "areaServed": self.site["cities"],
+                # « url » est ce qui permet à Google de rattacher la marque à
+                # un site, et donc d'afficher le nom « Yem's » plutôt que
+                # « maisonyems.com » dans les résultats.
+                **({"url": SITE_URL + "/"} if SITE_URL else {}),
+                "contactPoint": {
+                    "@type": "ContactPoint",
+                    "contactType": "customer service",
+                    "telephone": "+" + self.site["whatsapp"],
+                    "availableLanguage": "fr",
+                },
             },
         )
 
@@ -515,7 +568,7 @@ class Builder:
           <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
         </a>
         <p class="text-muted" style="font-size:var(--fs-sm);margin-top:var(--sp-3)">
-          Ce modèle n'existe qu'en sur-mesure. Délai de production : 14 à 20 jours.
+          Ce modèle n'existe qu'en sur-mesure. Délai de production : 15 jours.
         </p>"""
         else:
             actions = f"""        <button class="btn btn--full" type="button"
@@ -971,7 +1024,15 @@ class Builder:
           <label class="field">
             <span>E-mail <small style="text-transform:none;letter-spacing:0">(facultatif)</small></span>
             <input name="email" type="email" maxlength="160"
-                   autocomplete="email" placeholder="vous@exemple.com">
+                   autocomplete="email" placeholder="vous@exemple.com"
+                   aria-describedby="email-usage">
+            <!-- Demander une donnée sans dire à quoi elle sert est ce qui fait
+                 abandonner un formulaire, et ce qu'une note de confidentialité
+                 interdit. Une ligne suffit à lever les deux objections. -->
+            <small id="email-usage" class="field__aide">
+              Uniquement si nous n'arrivons pas à vous joindre au téléphone.
+              Jamais de publicité.
+            </small>
           </label>
         </div>
 
@@ -1018,7 +1079,11 @@ class Builder:
 
         <p class="summary__note">
           En validant, vous acceptez d'être recontacté sur WhatsApp pour la confirmation
-          et le suivi de la livraison. Aucune donnée bancaire ne transite par nos serveurs.
+          et le suivi de la livraison, ainsi que nos
+          <a href="cgv.html">conditions de vente</a>. Vos informations sont
+          traitées comme décrit dans la page
+          <a href="donnees-personnelles.html">données personnelles</a>.
+          Aucune donnée bancaire ne transite par nos serveurs.
         </p>
       </form>
     </div>
@@ -1045,7 +1110,14 @@ class Builder:
   </div>
 </section>
 
-<script src="https://cdn.kkiapay.me/k.js"></script>"""
+"""
+        # Le script du prestataire de paiement se chargeait sur toutes les
+        # commandes, alors que PAYMENT_MODE vaut "offline" et que rien ne
+        # l'appelle. C'est une requête vers un tiers, donc l'adresse IP du
+        # client transmise à une société qui n'a aucune raison de la connaître,
+        # pour une fonction inactive. On le rebranchera le jour de l'activation.
+        if os.environ.get("PAYMENT_MODE") == "online":
+            content += '\n<script src="https://cdn.kkiapay.me/k.js"></script>'
 
         self.page(
             "checkout.html", content=content,
@@ -1411,6 +1483,79 @@ class Builder:
         html = re.sub(r'(href|src|srcset)="(?!/|https?:|data:|#|mailto:)', r'\1="/', html)
         write(path, html)
 
+    # Les trois documents que le code du numérique béninois exige au minimum
+    # d'une plateforme de commerce électronique : mentions légales, conditions
+    # générales de vente, politique de confidentialité.
+    LEGALES = [
+        ("mentions-legales", "Mentions légales | Yem's",
+         "Éditeur, hébergeur et informations légales du site Yem's, "
+         "atelier de souliers et de maroquinerie à Cotonou."),
+        ("cgv", "Conditions générales de vente | Yem's",
+         "Prix, commande, règlement, livraison, garanties, échange et "
+         "remboursement. Les engagements de Yem's, écrits en entier."),
+        ("donnees-personnelles", "Données personnelles | Yem's",
+         "Ce que Yem's collecte, pourquoi, combien de temps, et qui y a accès. "
+         "Aucun traceur publicitaire."),
+    ]
+
+    def build_legales(self):
+        """
+        Génère les trois pages légales depuis templates/pages/.
+
+        Elles ne passent pas par strip_notes : les encarts « à compléter » y
+        sont VOLONTAIREMENT visibles. Une mention légale incomplète qu'on ne
+        voit pas est une mention légale qui ne sera jamais complétée.
+        """
+        mois = ("janvier février mars avril mai juin juillet août septembre "
+                "octobre novembre décembre").split()
+        aujourdhui = datetime.date.today()
+        maj = "%d %s %d" % (aujourdhui.day, mois[aujourdhui.month - 1], aujourdhui.year)
+
+        for slug, title, description in self.LEGALES:
+            gabarit = read(os.path.join(TPL, "pages", "%s.html" % slug))
+            content = (gabarit
+                       .replace("{{maj}}", maj)
+                       .replace("{{whatsapp}}", self.site["whatsapp"])
+                       .replace("{{domaine}}", SITE_URL.replace("https://", "") or "ce site")
+                       .replace("{{base}}", ""))
+            self.page("%s.html" % slug, content=content,
+                      title=title, description=description,
+                      extra_css=("legal",))
+
+    def build_sitemap(self):
+        """
+        sitemap.xml, déduit des pages effectivement écrites.
+
+        Les priorités ne sont pas décoratives : elles disent à un robot dans
+        quel ordre revisiter le site. L'accueil et les deux lignes bougent
+        souvent, une fiche produit rarement, le sur-mesure jamais.
+        """
+        if not SITE_URL:
+            print("\n  note : site.url est vide, sitemap.xml non généré")
+            return
+
+        def priorite(chemin):
+            if chemin == "index.html":
+                return "1.0", "weekly"
+            if chemin in ("selection.html", "boutique.html", "a-venir.html"):
+                return "0.9", "weekly"
+            if chemin.startswith("produit/"):
+                return "0.7", "monthly"
+            return "0.6", "monthly"
+
+        lignes = ['<?xml version="1.0" encoding="UTF-8"?>',
+                  '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
+        for chemin in self.indexables:
+            prio, freq = priorite(chemin)
+            lignes += ["  <url>",
+                       "    <loc>%s</loc>" % escape(url_absolue(chemin), quote=False),
+                       "    <changefreq>%s</changefreq>" % freq,
+                       "    <priority>%s</priority>" % prio,
+                       "  </url>"]
+        lignes.append("</urlset>")
+        write(os.path.join(ROOT, "sitemap.xml"), "\n".join(lignes) + "\n")
+        print("\n  sitemap.xml : %d adresses" % len(self.indexables))
+
     def run(self):
         if os.path.isdir(OUT_PRODUCTS):
             shutil.rmtree(OUT_PRODUCTS)
@@ -1431,7 +1576,9 @@ class Builder:
         self.build_checkout()
         self.build_confirmation()
         self.build_admin()
+        self.build_legales()
         self.build_404()
+        self.build_sitemap()
 
         print("%d pages générées :\n" % len(self.written))
         for path, size in self.written:

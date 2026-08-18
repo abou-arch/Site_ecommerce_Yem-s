@@ -266,25 +266,116 @@ npx wrangler tail
 
 ---
 
-## Le nom de domaine
+## Le nom de domaine : maisonyems.com
 
-Quand tu voudras remplacer l'adresse `workers.dev` :
+Le domaine est acheté. Voici comment le brancher sur le Worker.
 
-1. Achète le domaine.
-2. Dans Cloudflare, **Add a site**, puis suis les instructions pour faire
-   pointer les serveurs de noms du registrar vers Cloudflare.
-3. Ajoute dans `wrangler.toml` :
+### 1. Rattacher le domaine à Cloudflare
+
+Dans le tableau de bord Cloudflare : **Add a site**, saisir `maisonyems.com`,
+choisir le plan **Free**. Cloudflare affiche alors deux serveurs de noms, du
+type `ana.ns.cloudflare.com` et `bob.ns.cloudflare.com`.
+
+Il faut aller **chez le registrar où tu as acheté le domaine** et remplacer ses
+serveurs de noms par ces deux-là. C'est l'étape que tout le monde rate : tant
+qu'elle n'est pas faite, tu peux ajouter tous les enregistrements DNS que tu
+veux dans Cloudflare, personne ne les lira. Cloudflare n'est pas encore
+l'autorité sur ton domaine.
+
+La propagation prend de quelques minutes à 24 h. Cloudflare envoie un e-mail
+quand le domaine passe en **Active**. Ne fais rien tant que ce n'est pas le cas.
+
+### 2. Déclarer les routes
+
+Une fois le domaine actif, dans `wrangler.toml` :
 
 ```toml
 routes = [
-  { pattern = "yems.bj", custom_domain = true },
-  { pattern = "www.yems.bj", custom_domain = true }
+  { pattern = "maisonyems.com", custom_domain = true },
+  { pattern = "www.maisonyems.com", custom_domain = true }
 ]
 ```
 
+Puis `npm run deploy`. Wrangler crée lui-même les enregistrements DNS et
+demande le certificat HTTPS. Compter une quinzaine de minutes avant que le
+cadenas apparaisse : entre-temps le navigateur affiche un avertissement, c'est
+normal et ça se règle tout seul.
+
+### 3. Choisir une seule adresse, et s'y tenir
+
+Le site est généré avec `maisonyems.com` **sans `www`** comme adresse
+canonique (`data/products.json` → `site.url`). Il faut donc que
+`www.maisonyems.com` redirige vers la version sans `www`, sinon Google voit
+deux sites identiques et n'en référence correctement aucun.
+
+Dans Cloudflare : **Rules → Redirect Rules → Create rule**
+
+| Champ | Valeur |
+|---|---|
+| Nom | `www vers apex` |
+| Si | `Hostname` `equals` `www.maisonyems.com` |
+| Alors | `Dynamic` → `concat("https://maisonyems.com", http.request.uri.path)` |
+| Code | `301` (permanent) |
+
+### 4. Vérifier
+
+```powershell
+curl.exe -I https://maisonyems.com/
+curl.exe -I https://www.maisonyems.com/      # doit répondre 301
+curl.exe    https://maisonyems.com/api/health
+curl.exe    https://maisonyems.com/sitemap.xml
+```
+
+### L'alerte de commande par e-mail
+
+Aujourd'hui, l'atelier n'est prévenu d'une commande que par WhatsApp. Or l'API
+WhatsApp Cloud réclame `WHATSAPP_TOKEN` et `WHATSAPP_PHONE_ID`, qui ne sont pas
+posés : le site se rabat sur un lien `wa.me` que personne ne voit tant que la
+page d'administration n'est pas ouverte. **Une commande peut donc arriver sans
+que tu le saches.**
+
+Cloudflare Email Sending bouche ce trou gratuitement. La documentation est
+explicite : l'envoi vers une **adresse de destination vérifiée du compte** est
+gratuit sur tous les plans, Email Routing seul suffit. C'est exactement notre
+cas, puisque le destinataire, c'est toi.
+
+Écrire au **client** (confirmation de commande) viserait une adresse non
+vérifiée et exigerait le plan **Workers Paid à 5 $/mois**. Ce n'est pas branché.
+
+**Marche à suivre, dans cet ordre :**
+
+1. Le domaine doit être `Active` dans Cloudflare.
+2. **Email → Email Routing → Destination addresses** : ajouter ton adresse,
+   puis cliquer le lien de confirmation reçu. Sans cette vérification, l'envoi
+   est refusé.
+3. Dans `wrangler.toml`, renseigner `OWNER_EMAIL` et décommenter le bloc
+   `[[send_email]]`.
 4. `npm run deploy`
 
-Le certificat HTTPS est émis automatiquement.
+Tant que ces étapes ne sont pas faites, rien ne casse : `courriel.js` détecte
+l'absence du binding et sort proprement, la commande s'enregistre normalement.
+Vérifié en test, avec les deux canaux muets, aucune exception ne remonte.
+
+### Ce qui change ailleurs quand l'adresse change
+
+L'adresse n'est écrite qu'à **un seul endroit** : `data/products.json`, clé
+`site.url`. Le générateur en déduit les balises `canonical`, les `og:url`, les
+`og:image` et le `sitemap.xml`. Une seule ligne reste à modifier à la main si
+le domaine changeait un jour : la ligne `Sitemap:` de `robots.txt`, que le
+format oblige à écrire en adresse absolue.
+
+### Pourquoi ça compte plus qu'il n'y paraît
+
+Les `og:image` sont désormais des adresses absolues. C'est ce qui fait qu'un
+lien collé dans une conversation WhatsApp affiche une vignette et un titre au
+lieu d'une ligne bleue nue. Avec un chemin relatif, WhatsApp, Facebook et
+LinkedIn n'affichent rien du tout. Pour une boutique dont la quasi-totalité du
+trafic arrivera par un lien partagé, c'est la différence entre un lien qu'on
+clique et un lien qu'on ignore.
+
+Ces balises ne peuvent pas fonctionner tant que le site répond sur
+`workers.dev` : elles pointent vers `maisonyems.com`. Elles s'activeront
+d'elles-mêmes dès que le domaine sera branché.
 
 ---
 

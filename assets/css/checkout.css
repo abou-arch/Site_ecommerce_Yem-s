@@ -283,3 +283,15 @@
   font-size: var(--fs-sm);
   color: var(--text-muted);
 }
+
+/* Explication d'usage sous un champ. Discrète mais lisible : elle répond à
+   « pourquoi vous me demandez ça » au moment exact où la question se pose. */
+.field__aide {
+  display: block;
+  margin-top: var(--sp-2);
+  font-size: var(--fs-xs);
+  line-height: 1.55;
+  color: var(--ink-soft);
+  text-transform: none;
+  letter-spacing: 0;
+}

@@ -8,6 +8,23 @@
 name = "yems"
 main = "worker.js"
 
+# ─── Domaine ───────────────────────────────────────────────────────────────
+#
+# maisonyems.com est acheté. Ces deux lignes restent commentées jusqu'à ce que
+# le domaine apparaisse en « Active » dans Cloudflare, c'est-à-dire jusqu'à ce
+# que les serveurs de noms aient été changés chez le registrar.
+#
+# Les décommenter trop tôt fait échouer le déploiement ENTIER, exactement comme
+# la liaison R2 plus bas : le site en ligne ne serait pas mis à jour non plus.
+#
+# Marche à suivre complète : docs/mise-en-ligne-cloudflare.md, « Le nom de
+# domaine : maisonyems.com ».
+#
+# routes = [
+#   { pattern = "maisonyems.com", custom_domain = true },
+#   { pattern = "www.maisonyems.com", custom_domain = true }
+# ]
+
 # 2025-09-01 ou plus récent : c'est à partir de cette date que node:fs est
 # disponible sous nodejs_compat. Nous ne nous en servons pas — le catalogue
 # est importé — mais le driver postgres réclame des primitives Node.
@@ -67,6 +84,41 @@ id = "3579ef8baef64ecdb4c59c6a97379e71"
 PAYMENT_MODE = "offline"
 KKIAPAY_SANDBOX = "true"
 OWNER_WHATSAPP = "2290191380234"
+
+# Adresse qui reçoit l'alerte de commande. Elle DOIT être vérifiée dans
+# Cloudflare (Email > Email Routing > Destination addresses) : c'est cette
+# vérification qui rend l'envoi gratuit sur le plan Free.
+# À remplir avec ton adresse, puis redéployer.
+# OWNER_EMAIL = "…@gmail.com"
+ORDER_EMAIL_FROM = "commandes@maisonyems.com"
+
+# ─── Envoi d'e-mail ────────────────────────────────────────────────────────
+#
+# Cloudflare Email Sending, beta publique depuis avril 2026. Le binding donne
+# à worker.js la méthode env.EMAIL.send().
+#
+# DÉSACTIVÉ jusqu'à ce que maisonyems.com soit actif dans Cloudflare : comme
+# pour les routes et pour R2, un binding qui référence un domaine inconnu fait
+# échouer le déploiement entier.
+#
+# Ordre des opérations :
+#   1. le domaine passe « Active » (serveurs de noms changés chez le registrar)
+#   2. Cloudflare > Email > Email Routing > Destination addresses :
+#      ajouter ton adresse et cliquer le lien de confirmation reçu
+#   3. renseigner OWNER_EMAIL ci-dessus
+#   4. décommenter les trois lignes ci-dessous
+#   5. npm run deploy
+#
+# allowed_sender_addresses verrouille l'expéditeur : même si le code était un
+# jour modifié pour écrire depuis une autre adresse, Cloudflare refuserait.
+# C'est une ceinture peu coûteuse contre l'usurpation du domaine.
+#
+# [[send_email]]
+# name = "EMAIL"
+# allowed_sender_addresses = ["commandes@maisonyems.com"]
+#
+# Sans ce binding, tout fonctionne : la commande s'enregistre, WhatsApp part si
+# configuré, et courriel.js sort proprement en indiquant « binding EMAIL absent ».
 
 # ─── Secrets — NE JAMAIS les écrire ici ────────────────────────────────────
 # Ils se posent en ligne de commande, ils sont alors chiffrés côté Cloudflare :

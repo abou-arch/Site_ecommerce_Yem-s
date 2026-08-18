@@ -8,12 +8,12 @@
 <title>{{title}}</title>
 <meta name="description" content="{{description}}">
 <meta name="theme-color" content="#14100D">
-{{robots}}
-<meta property="og:title" content="{{og_title}}">
+{{robots}}{{canonical}}<meta property="og:title" content="{{og_title}}">
 <meta property="og:description" content="{{description}}">
 <meta property="og:type" content="{{og_type}}">
 <meta property="og:locale" content="fr_FR">
-{{og_image}}
+<meta property="og:site_name" content="Yem's">
+{{og_url}}{{og_image}}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <!-- Les polices ne bloquent plus l'affichage. « media=print » fait charger la
@@ -41,16 +41,11 @@
 <link rel="stylesheet" href="{{base}}assets/css/motion.css">
 {{extra_css}}
 
-<!-- Favicone : mêmes proportions que le monogramme de svg-defs.html, mais la
-     hampe reste pleine. À 16 px dans un onglet, un pointillé de 3 px disparaît
-     ou se transforme en bouillie de pixels. Le fond espresso est conservé :
-     sans lui, un trait laiton sur l'onglet clair d'un navigateur serait
-     illisible. -->
-<!-- Favicone : la lettre pleine, sans les trous de couture. À 16 px dans un
-     onglet, trois perforations de 3 unités se bouchent et salissent la forme.
-     Le fond espresso est conservé, sinon le laiton serait illisible sur
-     l'onglet clair d'un navigateur. -->
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%2314100D'/%3E%3Cpath fill='%23D9B87A' d='M25 30h12.2L50 47.7 62.8 30H75L54.5 56.9V72H45.5V56.9z'/%3E%3C/svg%3E">
+<!-- Favicone : exactement le monogramme du site, sans adaptation. Le nouveau
+     dessin n'a plus de perforations à boucher, il tient donc tel quel à 16 px.
+     Le fond espresso est conservé : sans lui, un trait laiton serait illisible
+     sur l'onglet clair d'un navigateur. -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%2314100D'/%3E%3Cpath fill='%23D9B87A' d='M18 24h14.6L50 47.2 67.4 24H82L57 57.4V71L43 80V57.4z'/%3E%3C/svg%3E">
 
 <!-- Rideau d'ouverture. Trois règles ont guidé sa construction :
 
@@ -67,9 +62,8 @@
 .curtain { position: fixed; inset: 0; z-index: 9999; display: grid; place-items: center;
   background: #14100D; animation: curtain-lift 700ms cubic-bezier(.16,1,.3,1) 1550ms forwards; }
 .curtain svg { width: 84px; height: 84px; color: #D9B87A; }
-/* La lettre se révèle du haut vers le bas. Comme les trous de couture sont
-   au pied de la hampe, ils apparaissent en dernier : le monogramme se dessine
-   d'abord, puis se coud. L'ordre du geste réel, sans animation séparée. */
+/* La lettre se révèle du haut vers le bas, et le biais du pied apparaît en
+   dernier : le détail arrive après la forme, comme il se doit. */
 .curtain path { clip-path: inset(0 0 100% 0);
   animation: curtain-fill 1050ms cubic-bezier(.16,1,.3,1) forwards; }
 @keyframes curtain-fill { to { clip-path: inset(0 0 0 0) } }
@@ -98,13 +92,7 @@
 <body>
 
 <div class="curtain" aria-hidden="true">
-  <svg viewBox="0 0 100 100">
-    <path fill="currentColor" fill-rule="evenodd"
-          d="M17 22h15.2L50 46.6 67.8 22H83L55.6 59.4V80H44.4V59.4z
-             M46.6 61.5h6.8a1.7 1.7 0 0 1 0 3.4h-6.8a1.7 1.7 0 0 1 0-3.4z
-             M46.6 68.5h6.8a1.7 1.7 0 0 1 0 3.4h-6.8a1.7 1.7 0 0 1 0-3.4z
-             M46.6 75.5h6.8a1.7 1.7 0 0 1 0 3.4h-6.8a1.7 1.7 0 0 1 0-3.4z"/>
-  </svg>
+  <svg viewBox="0 0 100 100"><path fill="currentColor" d="M18 24h14.6L50 47.2 67.4 24H82L57 57.4V71L43 80V57.4z"/></svg>
 </div>
 
 <a class="skip-link" href="#main">Aller au contenu</a>

@@ -9,16 +9,46 @@ navigateur, elle affiche les couleurs, le logo et la typographie en vrai.
 
 ---
 
+## La maison a deux lignes
+
+C'est la chose à comprendre avant tout le reste. Yem's ne fabrique pas tout ce
+qu'elle vend, et elle le dit.
+
+| | **L'atelier** | **La sélection** |
+|---|---|---|
+| Ce que c'est | Ce que nous fabriquons à Cotonou | Ce que nous choisissons ailleurs |
+| Le geste | Coudre | Choisir, contrôler, numéroter |
+| La garantie | Ressemelage à vie, une retouche offerte | Échange un an, pointure ou défaut |
+| Le délai | 15 jours d'atelier | Disponible, expédié sous 72 h |
+| Ce qu'on dit | « On l'a faite. » | « On ne l'a pas faite, on en répond. » |
+
+**La phrase qui tient les deux ensemble :** ce qu'on sait faire, on le
+fabrique ; ce qu'on ne sait pas faire, on le choisit ; dans les deux cas, on en
+répond.
+
+Cette architecture n'est pas un compromis, c'est ce qui permet à la maison de
+grandir. Une marque qui ne vend que ce qu'elle coud reste enfermée dans un
+atelier. Une maison qui assume deux lignes peut ajouter des ceintures, des
+montres, et des vêtements dans quelques années, sans se renier une seule fois.
+
+**La règle absolue :** l'origine est écrite sur chaque pièce, chaque vignette,
+chaque fiche, avant le prix. Jamais en petit, jamais en bas de page. Le jour où
+un client découvre par lui-même qu'une pièce n'est pas de l'atelier, la maison
+perd tout, y compris le crédit de ce qu'elle a vraiment fabriqué.
+
+---
+
 ## Qui parle
 
-Si Yem's était une personne, ce serait **un artisan qui vous montre son
-travail plutôt que de vous le vendre.** Il connaît son métier depuis
-longtemps, il ne s'en vante pas, et quand vous lui posez une question il vous
-répond par un fait vérifiable au lieu d'un argument.
+Si Yem's était une personne, ce serait **quelqu'un qui vous montre son travail
+plutôt que de vous le vendre, et qui vous dit quand ce n'est pas le sien.** Il
+connaît son métier depuis longtemps, il ne s'en vante pas, et quand vous lui
+posez une question il vous répond par un fait vérifiable au lieu d'un argument.
 
 Il n'est ni un vendeur de luxe, ni un commerçant qui brade. Il est quelqu'un
-qui a fait un choix — coudre à la main, à Cotonou — et qui l'assume sans avoir
-besoin de dénigrer ceux qui font autrement.
+qui a fait un choix, coudre à la main à Cotonou, et qui l'assume sans avoir
+besoin de dénigrer ceux qui font autrement. C'est d'ailleurs pour ça qu'il peut
+en revendre certains : il sait reconnaître du bon travail.
 
 ---
 
@@ -44,8 +74,8 @@ temps, sur ce qui coûte cher et pourquoi.
 **On n'est pas** : brutal ni fataliste. On dit le problème et ce qu'on fait pour
 le régler.
 
-> Ça sonne comme : « Personne ne nous a encore recommandés. Voilà trois moyens
-> de vérifier par vous-même. »
+> Ça sonne comme : « Cette paire n'est pas de nous. Nous l'avons choisie, nous
+> l'avons contrôlée, et nous l'échangeons pendant un an. »
 
 > Ça ne sonne pas comme : « Rejoignez les milliers de clients satisfaits. »
 
@@ -76,22 +106,27 @@ pas par des références décoratives.
 ## À qui l'on parle
 
 **Un homme de 28 à 50 ans, à Cotonou ou Abidjan**, qui a un travail où l'on
-regarde ses chaussures. Il a déjà acheté trois paires bon marché dans l'année
-et commence à trouver que ça revient cher.
+regarde comment il est habillé. Il a déjà acheté trois paires bon marché dans
+l'année et commence à trouver que ça revient cher.
 
 Ce qui compte pour lui, dans l'ordre :
 
 1. **Que ça dure.** Il a été déçu, plusieurs fois.
 2. **Que ça lui aille.** Il a souvent le pied large et aucune pointure ne
    tombe juste.
-3. **Que ce soit fiable.** Il commande à un atelier qu'il ne connaît pas, avec
+3. **Que ce soit fiable.** Il commande à une maison qu'il ne connaît pas, avec
    son argent.
 4. **Que ça se voie discrètement.** Il ne veut pas d'un logo visible, il veut
    qu'on remarque la qualité.
 
-**Il ne faut pas lui parler comme à un connaisseur de souliers.** Il ne sait
-pas ce qu'est une trépointe, et c'est normal. On explique, sans jamais laisser
-entendre qu'il aurait dû savoir.
+**Il ne faut pas lui parler comme à un connaisseur.** Il ne sait pas ce qu'est
+une trépointe, et c'est normal. On explique, sans jamais laisser entendre qu'il
+aurait dû savoir.
+
+**Ce client n'achète pas qu'une paire.** C'est le même homme qui cherchera une
+ceinture qui tienne, puis une montre qu'il ne remplacera pas dans deux ans.
+C'est pour lui que la maison s'élargit, et c'est pourquoi l'élargissement doit
+se faire sans changer de voix.
 
 ---
 
@@ -100,28 +135,33 @@ entendre qu'il aurait dû savoir.
 Dans cet ordre d'importance. Toute communication devrait en porter au moins
 une.
 
-### 1. Ça se répare, donc ça dure
+### 1. Le risque est de notre côté
 
-La semelle est cousue, pas collée. Quand elle s'use, on la remplace. Une paire
-Yem's ressemelée deux fois coûte moins cher sur cinq ans qu'une paire à
-45 000 F remplacée chaque année.
+Rien à payer d'avance sur le sur-mesure. Une retouche offerte. Échange un an
+sur la sélection, ressemelage à vie sur l'atelier. Tant que la maison est
+jeune, c'est l'argument le plus fort qu'elle possède, et c'est le seul qui vaut
+pour les deux lignes.
 
-### 2. C'est fait ici
+### 2. On dit d'où ça vient
 
-À Cotonou, à la main. Ce n'est pas un argument sentimental : c'est ce qui rend
-possible le sur-mesure, la retouche et le ressemelage. Un atelier lointain ne
-peut rien reprendre.
+Fabriqué ou choisi, c'est écrit sur la pièce avant le prix. Beaucoup de
+boutiques vendent les mêmes choses sans le dire. Dire d'où ça vient ne coûte
+rien à celui qui n'a rien à cacher, et coûte cher à tous les autres. C'est
+notre avantage le moins imitable.
 
-### 3. Le risque est de notre côté
+### 3. Ça se répare, donc ça dure
 
-Rien à payer d'avance. Une retouche offerte. Remboursement intégral si le
-chaussant ne convient toujours pas. Tant que la marque est jeune, c'est
-l'argument le plus fort qu'elle possède.
+Sur l'atelier : la semelle est cousue, pas collée ; quand elle s'use, on la
+remplace. Une paire ressemelée deux fois coûte moins cher sur cinq ans qu'une
+paire à 45 000 F remplacée chaque année. Sur la sélection, on ne promet pas la
+même chose, on promet ce qui est vrai : contrôlée, échangeable un an.
 
 ### 4. Chaque pièce a un numéro
 
-Numéro, modèle, cuir, date. Ce papier permet de refaire exactement la même
-dans trois ans. C'est ce qui transforme un achat en relation.
+Numéro, modèle, cuir, date, et l'origine. Ce papier permet de refaire
+exactement la même dans trois ans si elle vient de l'atelier, et de la
+retrouver si elle vient de la sélection. C'est ce qui transforme un achat en
+relation.
 
 ---
 
@@ -131,12 +171,14 @@ La voix ne change pas. C'est le curseur qui bouge.
 
 | Situation | Ce qu'on accentue |
 |---|---|
-| Présentation d'une pièce | Le concret. Matières, construction, usage réel. |
+| Présentation d'une pièce de l'atelier | Le geste. Matières, construction, usage réel. |
+| Présentation d'une pièce de la sélection | Le choix. Pourquoi celle-là, ce qu'on a écarté, ce qu'on garantit. |
 | Réponse à un client sur WhatsApp | La franchise. Délai vrai, prix vrai, même si ça déçoit. |
 | Retard ou problème | La responsabilité. Ce qui s'est passé, ce qu'on fait, quand. |
 | Livraison réussie | La sobriété. Un merci suffit, pas d'effusion. |
-| Publication Instagram | Le geste. Un gros plan sur la couture vaut mieux qu'une phrase. |
+| Publication Instagram | Le détail. Un gros plan sur la couture vaut mieux qu'une phrase. |
 | Prix qui augmente | L'explication. Ce qui a augmenté et pourquoi. Jamais d'excuse. |
+| Lancement d'une nouvelle catégorie | La continuité. Même exigence, même garantie, même façon de le dire. |
 
 ---
 
@@ -146,9 +188,16 @@ La voix ne change pas. C'est le curseur qui bouge.
 
 - « Yem's » avec l'apostrophe, y compris en capitales : YEM'S.
 - Les prix en francs CFA, avec un espace : 85 000 F.
-- Les délais en fourchette honnête : « 14 à 20 jours », jamais « environ
-  deux semaines ».
+- Le délai de l'atelier : « 15 jours ». Un seul chiffre, partout, tenu.
+- L'origine avant le prix : « Fabriqué à Cotonou » ou « Choisi par l'atelier ».
 - Les phrases courtes. Si une phrase dépasse deux lignes, la couper.
+
+**Comment nommer les deux lignes**
+
+On écrit **l'atelier** et **la sélection**, en minuscules, comme on nommerait
+deux pièces d'une maison. Ce ne sont pas des marques, ce sont deux façons de
+travailler. On n'écrit jamais « Yem's Atelier » ni « Yem's Selection » : une
+maison qui décline son nom en sous-marques dilue le seul nom qu'elle possède.
 
 **Ce qu'on n'écrit jamais**
 
@@ -159,6 +208,8 @@ La voix ne change pas. C'est le curseur qui bouge.
 | « nos experts », « notre équipe » | l'atelier est petit, c'est sa force | « on », « l'atelier » |
 | « n'hésitez pas à » | formule de remplissage | dire directement quoi faire |
 | « exceptionnel », « unique » | superlatif creux | montrer, ne pas qualifier |
+| « nous fabriquons » sur une pièce choisie | c'est faux, et ça se vérifie | « nous l'avons choisie » |
+| le caractère « — » | il n'existe pas dans l'écriture courante d'ici | une virgule, deux points, un point |
 | les points d'exclamation | l'enthousiasme se lit dans le propos | un point |
 | les émojis dans les textes du site | ils cassent le registre | rien |
 
@@ -170,19 +221,46 @@ pas une vitrine. Mais jamais plus d'un par message.
 ## Ce qu'il ne faut pas faire à la marque
 
 **Ne pas inventer d'avis clients.** Tant qu'il n'y en a pas de vrais, le site
-le dit franchement — et c'est ce qui le rend crédible. Un faux témoignage
+le dit franchement, et c'est ce qui le rend crédible. Un faux témoignage
 découvert détruit tout le reste.
 
 **Ne pas promettre un délai pour faire plaisir.** La première commande d'un
 client est un test. Un délai tenu vaut plus que dix arguments.
 
-**Ne pas montrer une pièce qui n'est pas de l'atelier.** Y compris en
-« inspiration ». Une marque qui dit « ça se vérifie sur la pièce » ne peut pas
-illustrer avec le travail d'un autre.
+**Ne pas laisser croire qu'une pièce choisie sort de l'atelier.** On a le droit
+de la vendre, on a le droit d'en être fier. On n'a pas le droit de laisser le
+doute s'installer, ni par une photo, ni par une légende, ni par un silence.
+
+**Ne pas publier la photo d'un autre.** Ni celle d'un fabricant, ni celle
+trouvée en ligne, même sans logo visible. Une maison qui dit « ça se vérifie
+sur la pièce » ne peut pas illustrer avec le travail d'un autre. On photographie
+ce qu'on a en main, même modestement.
 
 **Ne pas baisser les prix pour lancer.** Une remise d'ouverture installe le
 prix bas comme référence. Si le prix doit bouger, c'est le contenu de l'offre
 qui change, pas le chiffre.
+
+**Ne pas élargir plus vite que la garantie.** Une nouvelle catégorie n'entre au
+catalogue que le jour où l'on sait répondre à la question « et si ça casse ? ».
+Sans réponse, on attend.
+
+---
+
+## Grandir sans se renier
+
+L'ordre d'arrivée des catégories n'est pas neutre. Chacune doit s'appuyer sur
+ce que la précédente a prouvé.
+
+| | Ce qui rend la catégorie légitime | Ce qui la ferait rater |
+|---|---|---|
+| **Chaussures** | l'atelier coud, c'est le socle | rien à prouver, tout à photographier |
+| **Ceintures, maroquinerie** | même peau, même couture, même atelier | acheter du cuir qu'on ne connaît pas |
+| **Montres** | la maison ne les fabrique pas et le dit ; le geste est le choix | laisser croire à une horlogerie maison |
+| **Vêtements** | la coupe est un métier ; il faudra une main, pas un fournisseur | poser un logo sur du prêt-à-porter acheté |
+
+La règle qui vaut pour les quatre : **le monogramme ne rend rien meilleur.** Il
+ne se pose que sur une pièce dont on peut dire, sans détour, comment elle a été
+faite et par qui.
 
 ---
 

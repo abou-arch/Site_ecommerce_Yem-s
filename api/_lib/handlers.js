@@ -16,6 +16,7 @@ import {
 } from './overrides.js';
 import { verifyTransaction, webhookIsAuthentic } from './kkiapay.js';
 import { notifyOwner, waLink, composeMessage } from './whatsapp.js';
+import { previenirParCourriel } from './courriel.js';
 import { cleanText, cleanPhone, isEmail, COUNTRIES } from './http.js';
 
 const ok = (body, status = 200) => ({ status, body: { ok: true, ...body } });
@@ -210,10 +211,25 @@ async function announce(sql, order, env) {
       SELECT name, qty, line_total, size, color, bespoke
       FROM order_items WHERE order_id = ${order.id} ORDER BY id
     `;
-    const notice = await notifyOwner(order, items, env);
-    if (notice.sent) await sql`UPDATE orders SET notified_at = now() WHERE id = ${order.id}`;
+    // Les deux canaux partent ensemble, pas l'un après l'autre : un WhatsApp
+    // lent ne doit pas retarder l'e-mail, et allSettled garantit qu'un canal
+    // en panne n'empêche pas l'autre d'aboutir.
+    const [wa, mail] = await Promise.allSettled([
+      notifyOwner(order, items, env),
+      previenirParCourriel(order, items, env),
+    ]);
+    const notice = wa.status === 'fulfilled'
+      ? wa.value : { sent: false, mode: 'link', error: String(wa.reason?.message || wa.reason) };
+    const courriel = mail.status === 'fulfilled'
+      ? mail.value : { sent: false, error: String(mail.reason?.message || mail.reason) };
+
+    // notified_at signifie « l'atelier a été touché », quel que soit le canal.
+    if (notice.sent || courriel.sent) {
+      await sql`UPDATE orders SET notified_at = now() WHERE id = ${order.id}`;
+    }
     await logEvent(sql, order.id,
-      notice.sent ? 'atelier notifié' : 'notification à envoyer', notice, 'system');
+      (notice.sent || courriel.sent) ? 'atelier notifié' : 'notification à envoyer',
+      { ...notice, courriel }, 'system');
   } catch (err) {
     console.error('[notification]', err?.message);
   }

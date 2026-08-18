@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<!-- ⚠ Fichier généré par tools/build.py, toute modification directe sera écrasée.
+     Éditer les gabarits dans templates/ ou les données dans data/products.json. -->
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Données personnelles | Yem's</title>
+<meta name="description" content="Ce que Yem&#x27;s collecte, pourquoi, combien de temps, et qui y a accès. Aucun traceur publicitaire.">
+<meta name="theme-color" content="#14100D">
+<link rel="canonical" href="https://maisonyems.com/donnees-personnelles.html">
+<meta property="og:title" content="Données personnelles | Yem&#x27;s">
+<meta property="og:description" content="Ce que Yem&#x27;s collecte, pourquoi, combien de temps, et qui y a accès. Aucun traceur publicitaire.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:site_name" content="Yem's">
+<meta property="og:url" content="https://maisonyems.com/donnees-personnelles.html">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Les polices ne bloquent plus l'affichage. « media=print » fait charger la
+     feuille sans qu'elle retarde le rendu ; onload la réactive dès qu'elle est
+     là. Le texte s'affiche donc immédiatement en Georgia et en police système,
+     puis bascule sur Fraunces et Inter. Sur une 3G, ça évite plusieurs
+     centaines de millisecondes de page blanche.
+
+     Le <noscript> garde le comportement classique pour qui n'exécute pas de
+     script : mieux vaut attendre les polices que ne jamais les recevoir.
+
+     Poids demandé aussi allégé : la graisse 300 d'Inter n'était utilisée
+     nulle part dans les feuilles de style. -->
+<link rel="stylesheet" media="print" onload="this.media='all'"
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Inter:wght@400;500;600;700&display=swap">
+<noscript>
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Inter:wght@400;500;600;700&display=swap">
+</noscript>
+
+<link rel="stylesheet" href="assets/css/base.css?v=702e3b97">
+<link rel="stylesheet" href="assets/css/components.css?v=7cc7a1cc">
+<link rel="stylesheet" href="assets/css/home.css?v=45d64b6b">
+<link rel="stylesheet" href="assets/css/shop.css?v=49e59505">
+<link rel="stylesheet" href="assets/css/motion.css?v=b43e4720">
+<link rel="stylesheet" href="assets/css/legal.css?v=d06d0fa8">
+
+<!-- Favicone : exactement le monogramme du site, sans adaptation. Le nouveau
+     dessin n'a plus de perforations à boucher, il tient donc tel quel à 16 px.
+     Le fond espresso est conservé : sans lui, un trait laiton serait illisible
+     sur l'onglet clair d'un navigateur. -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%2314100D'/%3E%3Cpath fill='%23D9B87A' d='M18 24h14.6L50 47.2 67.4 24H82L57 57.4V71L43 80V57.4z'/%3E%3C/svg%3E">
+
+<!-- Rideau d'ouverture. Trois règles ont guidé sa construction :
+
+     1. Il ne peut pas rester bloqué. La disparition est une animation CSS
+        avec « forwards » : elle se produit même si le JavaScript ne se
+        charge jamais. Le script ne fait que l'accélérer.
+     2. Il n'ajoute aucune requête. Style et logique sont écrits ici, dans le
+        document, et pèsent moins d'un kilo-octet.
+     3. Il ne se montre qu'une fois. Sans ça, chaque clic dans le menu
+        rejouerait le rideau, ce qui est vite insupportable.
+
+     Il est enfin désactivé pour qui a demandé moins d'animations. -->
+<style>
+.curtain { position: fixed; inset: 0; z-index: 9999; display: grid; place-items: center;
+  background: #14100D; animation: curtain-lift 700ms cubic-bezier(.16,1,.3,1) 1550ms forwards; }
+.curtain svg { width: 84px; height: 84px; color: #D9B87A; }
+/* La lettre se révèle du haut vers le bas, et le biais du pied apparaît en
+   dernier : le détail arrive après la forme, comme il se doit. */
+.curtain path { clip-path: inset(0 0 100% 0);
+  animation: curtain-fill 1050ms cubic-bezier(.16,1,.3,1) forwards; }
+@keyframes curtain-fill { to { clip-path: inset(0 0 0 0) } }
+@keyframes curtain-lift { to { opacity: 0; visibility: hidden; pointer-events: none } }
+/* Page prête plus tôt : on raccourcit, mais jamais en dessous du temps qu'il
+   faut au monogramme pour finir de se coudre. Un rideau qui se lève sur un
+   dessin inachevé ressemble à un bug, pas à une intention. */
+.is-ready .curtain { animation-delay: 1260ms; animation-duration: 620ms; }
+.curtain-off .curtain, .no-js-never .curtain { display: none; }
+@media (prefers-reduced-motion: reduce) { .curtain { display: none } }
+</style>
+<script>
+(function () {
+  // Le rideau n'a de sens qu'à la toute première page ouverte. Ensuite, la
+  // navigation interne doit être immédiate.
+  try {
+    if (sessionStorage.getItem('yems.entered')) {
+      document.documentElement.className += ' curtain-off';
+    } else {
+      sessionStorage.setItem('yems.entered', '1');
+    }
+  } catch (e) { /* navigation privée : le rideau se montrera, sans conséquence */ }
+})();
+</script>
+</head>
+<body>
+
+<div class="curtain" aria-hidden="true">
+  <svg viewBox="0 0 100 100"><path fill="currentColor" d="M18 24h14.6L50 47.2 67.4 24H82L57 57.4V71L43 80V57.4z"/></svg>
+</div>
+
+<a class="skip-link" href="#main">Aller au contenu</a>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <!-- Logo Yem's : monogramme Y au pied coupé en biais.
+
+         Le dessin précédent était percé de trous d'alêne : un symbole de
+         sellier, qui n'aurait rien voulu dire sur un cadran de montre ou une
+         étiquette de chemise. La maison s'élargit, le monogramme aussi.
+
+         Il ne reste qu'un détail, et c'est le bon : le pied tranché à 9°.
+         Assez discret pour ne pas se voir au premier regard, assez net pour
+         qu'on le remarque au second. « Différents par les détails. » -->
+    <symbol id="i-logo" viewBox="0 0 100 100">
+      <path fill="currentColor" d="M18 24h14.6L50 47.2 67.4 24H82L57 57.4V71L43 80V57.4z"/>
+    </symbol>
+
+
+    <!-- Icônes UI -->
+    <symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M5 12h14M13 6l6 6-6 6"/>
+    </symbol>
+    <symbol id="i-arrow-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M19 12H5M11 6l-6 6 6 6"/>
+    </symbol>
+    <symbol id="i-bag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M6 8h12l1 12H5L6 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/>
+    </symbol>
+    <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4 12.5l5.5 5.5L20 7"/>
+    </symbol>
+    <symbol id="i-star" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 2l3 6.6 7 .9-5.2 4.8 1.4 7L12 18l-6.2 3.3 1.4-7L2 9.5l7-.9L12 2z"/>
+    </symbol>
+    <symbol id="i-whatsapp" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2zm5.6 14.1c-.2.7-1.4 1.3-2 1.4-.5.1-1.1.1-1.8-.1-.4-.1-1-.3-1.7-.6-3-1.3-4.9-4.3-5-4.5-.2-.2-1.2-1.6-1.2-3s.7-2.1 1-2.4c.3-.3.6-.4.8-.4h.6c.2 0 .5-.1.7.5l1 2.3c.1.2.1.4 0 .6l-.4.5-.3.4c-.1.1-.3.3-.1.6.1.3.7 1.2 1.5 1.9 1 .9 1.9 1.2 2.2 1.3.3.1.4.1.6-.1l.8-1c.2-.2.4-.2.6-.1l2.2 1c.2.1.4.2.5.3.1.2.1.6-.1 1.3z"/>
+    </symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 3l8 3v6c0 5-3.5 8.2-8 9-4.5-.8-8-4-8-9V6l8-3z"/><path d="M9 12l2 2 4-4"/>
+    </symbol>
+    <symbol id="i-needle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 21l7-7"/><path d="M10 14L20 4"/><circle cx="20.5" cy="3.5" r="1.5"/><path d="M12 12c2 1 4 1 6-1" stroke-dasharray="2 2"/>
+    </symbol>
+    <symbol id="i-card" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="M2.5 10h19"/><path d="M6 15h4"/>
+    </symbol>
+    <symbol id="i-truck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M2 6h11v10H2z"/><path d="M13 9h4l4 4v3h-8z"/><circle cx="6.5" cy="18.5" r="1.8"/><circle cx="17.5" cy="18.5" r="1.8"/>
+    </symbol>
+  </defs>
+</svg>
+<!-- Généré par tools/build.py, ne pas modifier les fichiers HTML de sortie -->
+<header class="header" id="header">
+  <div class="container container--wide header__inner">
+    <a class="logo" href="index.html" aria-label="Yem's, accueil">
+      <svg class="logo__mark" aria-hidden="true"><use href="#i-logo"></use></svg>
+      <span>
+        <span class="logo__word">YEM'S</span>
+        <span class="logo__tag">Différents par les détails</span>
+      </span>
+    </a>
+
+    <nav class="nav" aria-label="Navigation principale">
+      <a class="nav__link" href="selection.html">La sélection</a>
+      <a class="nav__link" href="a-venir.html">L'atelier</a>
+      <a class="nav__link" href="configurateur.html">Le sur-mesure</a>
+    </nav>
+
+    <div class="header__actions">
+      <a class="btn btn--sm btn--quiet" href="configurateur.html">Composer ma paire</a>
+      <a class="icon-btn" href="panier.html" aria-label="Panier (0 article)">
+        <svg aria-hidden="true"><use href="#i-bag"></use></svg>
+        <span class="cart-count" data-cart-count>0</span>
+      </a>
+      <button class="burger" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Ouvrir le menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobile-menu">
+  <a href="selection.html">La sélection</a>
+  <a href="a-venir.html">L'atelier</a>
+  <a href="configurateur.html">Le sur-mesure</a>
+  <a class="btn" href="configurateur.html" style="margin-top:auto">Configurer ma paire</a>
+</div>
+
+<main id="main">
+
+<section class="section section--top" id="donnees">
+  <div class="container container--narrow">
+    <div class="section-head" data-reveal>
+      <span class="eyebrow">Informations légales</span>
+      <h1 class="page-title" style="margin-top:var(--sp-3)">Données personnelles</h1>
+      <p class="lede">
+        Ce que nous vous demandons, pourquoi, combien de temps nous le gardons,
+        et qui d'autre le voit. Sans détour et sans paragraphe illisible.
+      </p>
+    </div>
+
+    <div class="legal" data-reveal>
+
+      <p class="legal__stamp">Dernière mise à jour : 18 août 2026</p>
+
+      <h2>Ce que nous vous demandons</h2>
+      <p>
+        Uniquement ce qu'il faut pour vous livrer et vous rappeler. Rien de plus.
+      </p>
+      <ul class="legal__liste">
+        <li><strong>Votre nom</strong>, pour savoir à qui remettre la pièce.</li>
+        <li><strong>Votre téléphone</strong>, parce que c'est par là que
+          l'atelier vous rappelle pour confirmer. C'est la seule donnée dont
+          nous ne pouvons pas nous passer.</li>
+        <li><strong>Votre adresse, votre ville et votre pays</strong>, pour la
+          livraison.</li>
+        <li><strong>Une note libre</strong>, si vous voulez préciser un repère
+          ou une contrainte d'horaire.</li>
+        <li><strong>Votre courriel, facultatif.</strong> Il nous sert
+          uniquement à vous écrire au sujet de votre commande si nous
+          n'arrivons pas à vous joindre au téléphone. Vous pouvez laisser le
+          champ vide, la commande passe quand même.</li>
+      </ul>
+      <p>
+        Nous ne demandons ni date de naissance, ni pièce d'identité, ni
+        coordonnées bancaires. Le paiement en ligne n'étant pas activé, aucune
+        donnée de carte ne transite par ce site.
+      </p>
+
+      <h2>Ce que nous en faisons</h2>
+      <p>
+        Exécuter votre commande, vous livrer, et vous contacter à son sujet.
+        C'est tout. Nous ne vous enverrons pas de publicité, nous ne
+        constituons pas de liste de diffusion, et nous ne vendons ni ne
+        louons ces informations à personne.
+      </p>
+      <p>
+        Un appel de prospection commerciale exige votre accord préalable :
+        nous ne vous appellerons donc que pour une commande en cours.
+      </p>
+
+      <h2>Combien de temps nous les gardons</h2>
+      <p>
+        Le temps de la commande, puis de la garantie qui s'y rattache, parce
+        qu'un échange ou un ressemelage suppose de retrouver la pièce.
+      </p>
+      <p>
+        Passé ce délai, la commande est <strong>anonymisée</strong> : le nom,
+        le téléphone et l'adresse sont effacés, seuls restent la référence, la
+        date et les montants, dont nous avons besoin pour la comptabilité. Une
+        commande anonymisée ne permet plus de remonter jusqu'à vous.
+      </p>
+      <p>
+        Vous pouvez demander cette anonymisation à tout moment, une fois votre
+        commande livrée.
+      </p>
+
+      <h2>Qui d'autre y a accès</h2>
+      <p>
+        L'atelier, et deux prestataires techniques sans lesquels le site ne
+        fonctionnerait pas. Nous préférons le dire clairement plutôt que de le
+        cacher derrière le mot « partenaires ».
+      </p>
+      <ul class="legal__liste">
+        <li><strong>Cloudflare, Inc.</strong> (États-Unis) sert les pages et
+          achemine les données du formulaire.</li>
+        <li><strong>Neon Inc.</strong> héberge la base de données où les
+          commandes sont enregistrées.</li>
+        <li><strong>Google LLC</strong> fournit les deux polices de caractères
+          du site. Leur chargement transmet votre adresse IP à Google, comme sur
+          la plupart des sites. C'est le seul appel à un tiers qui ne soit pas
+          nécessaire à votre commande.</li>
+      </ul>
+      <p>
+        Ces sociétés sont établies hors du Bénin, vos informations sont donc
+        traitées à l'étranger. Nous ne travaillons avec aucun réseau
+        publicitaire et n'avons installé aucun outil de mesure d'audience.
+      </p>
+
+      <h2>Ce que votre navigateur retient</h2>
+      <p>
+        Le site ne dépose <strong>aucun cookie publicitaire ni aucun traceur</strong>.
+        Il utilise deux emplacements de stockage dans votre navigateur, qui ne
+        sortent jamais de votre appareil :
+      </p>
+      <ul class="legal__liste">
+        <li><strong>Votre panier</strong>, pour que son contenu survive à un
+          rafraîchissement de page.</li>
+        <li><strong>Un marqueur de visite</strong>, pour ne pas rejouer
+          l'animation d'ouverture à chaque page. Il disparaît à la fermeture de
+          l'onglet.</li>
+      </ul>
+      <p>
+        Vider les données de navigation les efface tous les deux.
+      </p>
+
+      <h2>Vos droits</h2>
+      <p>
+        Vous pouvez demander à consulter ce que nous détenons sur vous, le faire
+        corriger, ou vous opposer à son traitement. Écrivez sur
+        <a href="https://wa.me/2290191380234" target="_blank" rel="noopener">WhatsApp</a>
+        ou à l'adresse indiquée dans les
+        <a href="mentions-legales.html">mentions légales</a>. Nous
+        répondons sous 48 heures.
+      </p>
+      <p>
+        Si notre réponse ne vous satisfait pas, vous pouvez saisir
+        l'<strong>Autorité de protection des données à caractère personnel
+        (APDP)</strong> du Bénin.
+      </p>
+
+      <div class="legal__note">
+        <strong>Déclaration à l'APDP à effectuer.</strong>
+        Le code du numérique impose à tout responsable de traitement de
+        déclarer auprès de l'APDP la collecte de données personnelles. Cette
+        démarche n'a pas encore été faite pour Yem's. Elle est à accomplir sur
+        le portail de l'APDP, et cette mention sera remplacée par le numéro de
+        récépissé une fois la déclaration enregistrée.
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+</main>
+
+<footer class="footer">
+  <div class="container container--wide">
+    <div class="footer__grid">
+      <div>
+        <a class="logo" href="index.html">
+          <svg class="logo__mark" aria-hidden="true"><use href="#i-logo"></use></svg>
+          <span>
+            <span class="logo__word">YEM'S</span>
+            <span class="logo__tag">Différents par les détails</span>
+          </span>
+        </a>
+        <p class="text-muted" style="font-size:var(--fs-sm);margin-top:var(--sp-4);max-width:34ch">
+          Souliers et maroquinerie cousus à la main à Cotonou, pour le Bénin
+          et la Côte d'Ivoire.
+        </p>
+
+        <!-- Le formulaire d'inscription a été retiré : il n'était relié à rien et
+             faisait disparaître les adresses saisies. À remettre le jour où une
+             liste de diffusion existe vraiment. -->
+        <a class="btn btn--ghost btn--sm" style="margin-top:var(--sp-5)"
+           href="https://wa.me/2290191380234" target="_blank" rel="noopener">
+          <svg aria-hidden="true"><use href="#i-whatsapp"></use></svg>
+          Écrire à l'atelier
+        </a>
+      </div>
+
+      <div>
+        <h2 class="footer__title">Boutique</h2>
+        <ul class="footer__list">
+          <li><a href="boutique.html">Tout le catalogue</a></li>
+          <li><a href="selection.html">Sélection</a></li>
+          <li><a href="a-venir.html">Ce qui se prépare</a></li>
+          <li><a href="configurateur.html">Sur-mesure</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h2 class="footer__title">La maison</h2>
+        <ul class="footer__list">
+          <li><a href="index.html#manifeste">Notre savoir-faire</a></li>
+          <li><a href="index.html#garantie">Garantie satisfaction</a></li>
+          <li><a href="index.html#garantie">Carte d'authenticité</a></li>
+          <li><a href="index.html#offres">Nos offres</a></li>
+          <li><a href="index.html#questions">Questions fréquentes</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h2 class="footer__title">Contact</h2>
+        <ul class="footer__list">
+          <li>Cotonou, Bénin</li>
+          <li>Abidjan, Côte d'Ivoire</li>
+          <li><a href="https://wa.me/2290191380234" target="_blank" rel="noopener">WhatsApp atelier</a></li>
+          <li>Du lundi au samedi, 8 h – 19 h</li>
+        </ul>
+        <div class="pay-logos" style="margin-top:var(--sp-5)">
+          <span>MTN MoMo</span><span>Moov</span><span>Wave</span><span>Espèces</span>
+        </div>
+      </div>
+    </div>
+
+    <hr class="stitch">
+
+    <div class="footer__bottom">
+      <span>© <span data-year>2026</span> Yem's. Tous droits réservés.</span>
+      <!-- Les trois documents que le code du numérique exige d'une plateforme
+           de commerce électronique. Ils sont en pied de page sur toutes les
+           pages, y compris le tunnel de commande : c'est là qu'un client se
+           demande à qui il a affaire. -->
+      <nav class="footer__legal" aria-label="Informations légales">
+        <a href="mentions-legales.html">Mentions légales</a>
+        <a href="cgv.html">Conditions de vente</a>
+        <a href="donnees-personnelles.html">Données personnelles</a>
+      </nav>
+      <span>Réglé à la livraison ou par Mobile Money, convenu avec l'atelier</span>
+    </div>
+  </div>
+</footer>
+
+
+<script src="assets/js/main.js?v=3fdda5f8" defer></script>
+<script src="assets/js/motion.js?v=8f03829d" defer></script>
+
+</body>
+</html>
