@@ -2,34 +2,46 @@
    Yem's — Pages légales
 
    Un document juridique se lit mal par nature. Le seul levier honnête est la
-   typographie : une mesure courte, de l'air entre les blocs, et une hiérarchie
+   typographie : une mesure courte, de l'air entre les blocs, une hiérarchie
    qu'on saisit sans lire. Rien de décoratif ici.
+
+   Note d'écriture : la première version de cette feuille inventait des noms
+   de variables (--ink, --brass, --font-serif) et supposait un fond clair.
+   Le site est en fond espresso et ses jetons s'appellent --text, --brass-400,
+   --font-display. Les couleurs ne s'appliquaient donc pas et les contrastes
+   avaient été calculés contre le mauvais fond. Tout est repris ici sur les
+   jetons réels de base.css.
    =========================================================================== */
 
 .legal {
   margin-top: var(--sp-7);
-  /* Environ 68 caractères par ligne. Au-delà, l'œil perd la ligne suivante et
-     c'est exactement ce qui fait qu'on ne lit pas les CGV. */
+  /* Environ 68 caractères par ligne. Au-delà, l'œil rate la ligne suivante,
+     et c'est une des raisons pour lesquelles personne ne lit les CGV. */
   max-width: 68ch;
-  font-size: var(--fs-base);
+  font-size: var(--fs-md);
   line-height: 1.75;
+  color: var(--text-muted);
 }
 
+.legal strong { color: var(--text); font-weight: 600; }
+
 .legal h2 {
-  font-family: var(--font-serif);
+  font-family: var(--font-display);
   font-size: var(--fs-xl);
   font-weight: 400;
   line-height: 1.25;
+  color: var(--text);
   margin: var(--sp-8) 0 var(--sp-3);
-  /* Le filet reprend le point de sellier de la marque, en très discret : il
-     sépare les articles sans ajouter une ligne de plus à lire. */
+  /* Un filet sépare les articles sans ajouter une ligne à lire. */
   padding-top: var(--sp-5);
-  border-top: 1px solid color-mix(in srgb, var(--ink) 14%, transparent);
+  border-top: 1px solid var(--border);
 }
 
 .legal h2:first-of-type { border-top: 0; padding-top: 0; margin-top: var(--sp-6); }
 
 .legal p { margin: 0 0 var(--sp-4); }
+
+.legal a { color: var(--accent); }
 
 .legal__liste {
   list-style: none;
@@ -39,13 +51,10 @@
   gap: var(--sp-3);
 }
 
-.legal__liste li {
-  position: relative;
-  padding-left: var(--sp-5);
-}
+.legal__liste li { position: relative; padding-left: var(--sp-5); }
 
-/* Une puce en trait plutôt qu'un rond : c'est le même vocabulaire graphique
-   que la couture du reste du site. */
+/* Une puce en trait plutôt qu'un rond : même vocabulaire graphique que la
+   couture du reste du site. */
 .legal__liste li::before {
   content: "";
   position: absolute;
@@ -53,13 +62,12 @@
   top: .82em;
   width: 12px;
   height: 1.5px;
-  background: var(--brass);
-  opacity: .75;
+  background: var(--brass-400);
 }
 
 .legal__stamp {
   font-size: var(--fs-sm);
-  color: var(--ink-soft);
+  color: var(--text-subtle);
   letter-spacing: .04em;
 }
 
@@ -70,19 +78,26 @@
 .legal__note {
   margin: var(--sp-6) 0;
   padding: var(--sp-5);
-  border-left: 3px solid var(--brass);
+  border-left: 3px solid var(--brass-400);
   border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-  background: color-mix(in srgb, var(--brass) 9%, transparent);
-  font-size: var(--fs-sm);
+  background: var(--bg-elevated);
+  color: var(--text);
+  font-size: var(--fs-base);
   line-height: 1.7;
 }
 
-/* Champ que le client doit remplir. Souligné en pointillé pour qu'on ne le
-   confonde pas avec du texte définitif. */
+/* Champ que le client doit remplir. Pointillé pour qu'on ne le confonde pas
+   avec du texte définitif.
+
+   Sur fond espresso, c'est le laiton CLAIR qui porte : --brass-300 donne
+   9,4:1, largement au-dessus des 3:1 exigés d'un élément d'interface. Le
+   laiton sombre, lui, disparaîtrait complètement ici. La règle de la planche
+   d'identité s'applique à l'envers sur fond sombre, et c'est exactement le
+   genre de détail qu'on rate en copiant une feuille de style. */
 .legal__champ {
-  border-bottom: 1.5px dotted var(--brass);
+  border-bottom: 1.5px dotted var(--brass-300);
   padding-bottom: 1px;
-  color: var(--ink);
+  color: var(--text);
 }
 
 @media (max-width: 640px) {

@@ -69,6 +69,19 @@ function priceStandard(item, corrections) {
     return { error: `${product.name} n'est plus disponible` };
   }
 
+  /* Une pièce en attente de photos n'a ni fiche, ni vignette, ni prix engagé.
+     Le générateur l'écarte du site, mais le serveur, lui, la trouvait encore
+     par son slug : une requête forgée à la main suffisait à commander un
+     Loafer Ouidah à 88 000 F, un modèle que la page « Ce qui se prépare »
+     annonce justement comme non encore arrêté, prix compris.
+
+     Le filtrage à la construction du site ne vaut donc rien sans ce garde-fou
+     côté serveur. C'est la même règle que partout ailleurs ici : le HTML
+     propose, le serveur décide. */
+  if (product.a_venir) {
+    return { error: `${product.name} n'est pas encore en vente` };
+  }
+
   // Un modèle vendu uniquement sur-mesure ne peut pas entrer au panier
   // par la voie standard, même si le client force la requête.
   if (product.bespoke_only) {
@@ -187,10 +200,15 @@ export function priceCart(rawCart, corrections = {}) {
  * masquées retirées. Sert à l'écran d'administration et à la réécriture des
  * pages en bordure, pour que les deux lisent exactement la même chose.
  */
+/** Ce que le public a le droit de voir.
+ *  Deux motifs d'exclusion, et ils ne se confondent pas :
+ *  hidden  = l'atelier l'a retirée depuis son écran ;
+ *  a_venir = elle n'a pas encore été photographiée, donc elle n'existe pas
+ *            encore pour un client. */
 export function catalogueVisible(corrections = {}) {
   return catalog().products
     .map((p) => findProduct(p.slug, corrections))
-    .filter((p) => p && !p.hidden);
+    .filter((p) => p && !p.hidden && !p.a_venir);
 }
 
 /** Toutes les pièces, y compris masquées, avec l'état de leur correction.
