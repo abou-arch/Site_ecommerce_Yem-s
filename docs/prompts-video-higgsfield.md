@@ -32,7 +32,81 @@ n'existe nulle part dans l'offre.
 
 ---
 
-## Quel modèle choisir
+## Option gratuite n° 1 : filmer la vraie matière
+
+Coût zéro, aucun compte à créer, aucune question de licence, et le résultat
+est plus fort que n'importe quelle génération. C'est l'option que je
+recommanderais même si Higgsfield était gratuit.
+
+**Le tournage, dix minutes.**
+
+1. Poser les quatre cuirs alignés sur une planche sombre, ou à défaut sur un
+   tissu sombre repassé.
+2. Se mettre **près d'une fenêtre, jamais au soleil direct** : la lumière du
+   jour à l'ombre est douce et rasante, exactement ce qu'il faut pour révéler
+   un grain. Le soleil direct écrase tout et fait des reflets blancs.
+3. Le téléphone en mode vidéo, **1080p, 30 images par seconde**, verrouiller la
+   mise au point et l'exposition en appuyant longuement sur l'écran. Sans ce
+   verrouillage, l'appareil corrige tout seul en cours de plan et ça se voit.
+4. Filmer **15 secondes** en glissant très lentement le long de la rangée. Plus
+   lentement que ce qui paraît naturel : au montage on peut ralentir, jamais
+   accélérer sans saccade.
+5. Refaire trois prises. La bonne est presque toujours la troisième.
+
+**Le montage, une commande.**
+
+```powershell
+ffmpeg -i prise3.mp4 -vf "crop=ih*9/16:ih,scale=574:960,eq=saturation=0.92" -ss 2 -t 8 -c:v libx264 -crf 30 -preset slow -an -movflags +faststart assets/video/cuirs.mp4
+```
+
+`crop=ih*9/16:ih` recadre en vertical depuis le centre, `-ss 2` saute les deux
+premières secondes où la main tremble encore, `eq=saturation=0.92` désature
+légèrement pour coller au reste du site.
+
+Si le plan tremble, ajouter une stabilisation en deux passes :
+
+```powershell
+ffmpeg -i prise3.mp4 -vf vidstabdetect=shakiness=6 -f null -
+ffmpeg -i prise3.mp4 -vf "vidstabtransform=smoothing=30,crop=ih*9/16:ih,scale=574:960" -c:v libx264 -crf 30 -an assets/video/cuirs.mp4
+```
+
+**Pourquoi c'est mieux, et pas seulement moins cher :** la vidéo montre le cuir
+que le client recevra. Elle cesse d'être une illustration pour devenir une
+preuve. C'est toute la ligne de conduite du projet depuis qu'on a retiré sept
+photos qui ne venaient pas de la maison.
+
+---
+
+## Option gratuite n° 2 : les paliers gratuits des générateurs
+
+Si l'atelier ne peut pas filmer tout de suite, plusieurs modèles offrent des
+crédits gratuits qui se rechargent chaque jour. Pour deux clips de huit
+secondes, c'est largement suffisant, quitte à étaler sur deux ou trois jours.
+
+| Service | Palier gratuit | Remarque |
+|---|---|---|
+| **Dreamina / Jimeng** (Seedance) | crédits quotidiens, 1080p, sans filigrane | le meilleur palier gratuit ; c'est le modèle que je recommandais en payant |
+| **Kling AI** | crédits quotidiens, 720p sans filigrane | 720p suffit : on redescend à 574×960 |
+| **Hailuo / MiniMax** | palier quotidien généreux | rendu plus stylisé, moins adapté ici |
+| **Google Flow** (Veo) | crédits quotidiens pour certains comptes | disponibilité variable selon le pays |
+| **Wan** (Alibaba) | modèle ouvert, auto-hébergeable | gratuit mais demande une carte graphique |
+
+**Deux précautions avant de publier quoi que ce soit d'un palier gratuit :**
+
+1. **Vérifier les conditions d'utilisation sur l'usage commercial.** Certains
+   paliers gratuits limitent l'exploitation commerciale du rendu, ou se
+   réservent des droits dessus. Le site de Yem's est une boutique : la vidéo y
+   est un usage commercial. Ça se lit en cinq minutes et ça évite un problème
+   qu'on ne verrait que trop tard.
+2. **Vérifier l'absence de filigrane sur le fichier téléchargé**, pas sur
+   l'aperçu. Certains services affichent un aperçu propre et marquent l'export.
+
+Ces informations changent vite. Contrôle directement sur le site du service au
+moment où tu t'en sers plutôt que de te fier à ce tableau.
+
+---
+
+## Quel modèle choisir (si tu passes par un service payant)
 
 Higgsfield n'est pas un modèle, c'est un abonnement qui donne accès à une
 quinzaine de modèles. Le choix compte moins qu'on ne le croit ici, parce que
