@@ -344,3 +344,71 @@
   color: var(--text);
   margin-bottom: var(--sp-2);
 }
+
+/* --------------------------------------------------------------------------
+   LA MÉTHODE — ce qui remplace la photographie qu'on n'a pas
+   --------------------------------------------------------------------------
+   Une page boutique avec trois pièces et rien d'autre ne retient personne.
+   Ce bloc occupe la place avec la seule chose qu'on possède en abondance :
+   ce qu'on sait du travail. Il disparaîtra naturellement au second plan le
+   jour où il y aura vingt photos à regarder. */
+.methode {
+  background: var(--bg-elevated);
+  border-block: 1px solid var(--border);
+}
+
+/* Le bandeau de réassurance, juste sous les trois étapes.
+   Il est ici et pas en pied de page parce que c'est ici qu'on hésite. */
+.assurances {
+  list-style: none;
+  padding: 0;
+  margin: var(--sp-7) 0 0;
+  display: grid;
+  gap: var(--sp-4) var(--sp-6);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  padding-top: var(--sp-6);
+  border-top: 1px solid var(--border);
+}
+
+.assurances li {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.assurances svg {
+  width: 18px;
+  height: 18px;
+  flex: none;
+  color: var(--brass-400);
+}
+
+@media (max-width: 560px) {
+  .assurances { margin-top: var(--sp-6); gap: var(--sp-3); }
+}
+
+/* Vignette d'une pièce pas encore photographiée.
+   Le monogramme en filigrane et la couture pointillée transforment un manque
+   en attente : on comprend que la pièce existe et qu'elle arrive, au lieu de
+   croire que le site est cassé. */
+.pshot__empty { gap: var(--sp-4); }
+
+.pshot__mark {
+  width: 34%;
+  max-width: 76px;
+  aspect-ratio: 1;
+  color: var(--brass-600);
+  opacity: .22;
+}
+
+.pshot__empty::after {
+  content: "";
+  position: absolute;
+  inset: 14px;
+  border: 1.5px dashed rgba(122, 94, 51, 0.32);
+  border-radius: var(--radius-sm);
+  pointer-events: none;
+}

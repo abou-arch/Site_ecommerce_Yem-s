@@ -600,3 +600,25 @@
   color: var(--brass-600);
   border-color: rgba(122, 94, 51, 0.55);
 }
+
+/* Catalogue court : des vignettes plus grandes plutôt qu'une page trouée.
+   Sous cinq pièces, la grille passe à deux colonnes larges. Une image de
+   chaussure détourée sur fond blanc supporte très bien l'agrandissement, et
+   la page cesse de ressembler à un rayon vidé.
+   Au-delà de quatre pièces, la classe n'est plus posée et la grille reprend
+   son comportement normal. */
+.shop-grid.grid--rare,
+.collections__grid.grid--rare {
+  --shot-ratio: 4 / 5;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr));
+  max-width: 980px;
+  margin-inline: auto;
+}
+
+@media (min-width: 1000px) {
+  /* Trois pièces sur deux colonnes laissent une place vide en bas à droite.
+     On l'occupe en donnant à la première toute la largeur : la pièce mise en
+     avant devient une vraie ouverture, et la rangée du dessous est pleine. */
+  .shop-grid.grid--rare > .pcard:first-child { grid-column: 1 / -1; }
+  .shop-grid.grid--rare > .pcard:first-child .pshot { --shot-ratio: 16 / 9; }
+}

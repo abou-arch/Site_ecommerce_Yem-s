@@ -110,8 +110,16 @@ def picture(product, base, index=0, lazy=True, sizes=None):
     """<picture> WebP + JPEG, ou placeholder beige si la photo manque."""
     images = product.get("images") or []
     if not images:
+        # Un cadre assumé plutôt qu'un trou.
+        #
+        # « Photo à venir » sur fond beige se lit comme une page inachevée.
+        # Le monogramme en filigrane et le mot « atelier » disent au contraire
+        # que la pièce existe et qu'on ne veut pas la montrer n'importe
+        # comment. C'est le même propos que la page « Ce qui se prépare »,
+        # tenu à l'échelle d'une vignette.
         return ('<div class="pshot__empty">'
-                '<span class="pshot__note">Photo à venir</span></div>')
+                '<svg class="pshot__mark" aria-hidden="true"><use href="#i-logo"></use></svg>'
+                '<span class="pshot__note">Photographiée bientôt</span></div>')
 
     img = images[index]
     loading = ' loading="lazy" decoding="async"' if lazy else ' fetchpriority="high"'
@@ -201,7 +209,17 @@ def grid(products, base, klass="collections__grid", level=3):
         <p class="text-muted">Écrivez-nous sur WhatsApp pour être prévenu du lancement.</p>
       </div>"""
     cards = [product_card(p, base, delay=i * 90, level=level) for i, p in enumerate(products)]
-    return '    <div class="%s">\n%s\n    </div>' % (klass, "\n\n".join(cards))
+
+    # La grille s'adapte au nombre de pièces réellement en vente.
+    #
+    # Une grille calibrée pour douze vignettes, remplie avec trois, donne des
+    # images minuscules perdues dans le vide : la page a l'air d'un catalogue
+    # dont on aurait retiré la marchandise. Tant que la maison n'a que trois
+    # pièces photographiées, mieux vaut trois grandes vignettes qui remplissent
+    # la rangée. La classe disparaîtra d'elle-même quand le catalogue
+    # s'étoffera, sans qu'il y ait rien à modifier.
+    rare = " grid--rare" if len(products) <= 4 else ""
+    return '    <div class="%s%s">\n%s\n    </div>' % (klass, rare, "\n\n".join(cards))
 
 
 def nav_links(entries, base, home, current=None, mobile=False):
@@ -445,6 +463,73 @@ class Builder:
             },
         )
 
+    def methode(self, origine="selection"):
+        """
+        Le bloc qui remplace la photographie qu'on n'a pas.
+
+        Une page boutique avec trois pièces et rien d'autre ne donne au
+        visiteur aucune raison de rester. Tant que le catalogue est court,
+        c'est le récit du travail qui doit occuper la place : comment la pièce
+        arrive jusqu'à lui, et ce qui se passe si elle ne convient pas.
+
+        Ce n'est pas du remplissage. C'est exactement la question qu'on se pose
+        devant une boutique inconnue, et elle est ici posée à l'endroit où l'on
+        décide, pas reléguée sur la page d'accueil.
+        """
+        if origine == "atelier":
+            etapes = [
+                ("01", "On coupe", "La peau est choisie à Cotonou, puis coupée à "
+                 "la forme. C'est là que se décide la tenue d'une paire, bien "
+                 "avant la couture."),
+                ("02", "On coud", "Point sellier, deux aiguilles, un fil de lin "
+                 "poissé. Plus lent qu'une machine, et c'est le but : un point "
+                 "qui lâche ne défait pas la ligne."),
+                ("03", "On répond", "Ressemelage à vie, une retouche offerte "
+                 "après essayage. La semelle se remplace, la paire reste."),
+            ]
+        else:
+            etapes = [
+                ("01", "On choisit", "L'atelier ne sait pas tout faire. Ce qu'il "
+                 "ne fabrique pas, il va le chercher lui-même, et n'en retient "
+                 "qu'une pièce sur plusieurs."),
+                ("02", "On contrôle", "Chaque paire est ouverte à la réception. "
+                 "Couture, doublure, collage, symétrie. Ce qui ne passe pas ne "
+                 "part pas."),
+                ("03", "On en répond", "Numérotée, échangeable un an, pointure "
+                 "ou défaut. Nous ne l'avons pas fabriquée, nous en répondons "
+                 "quand même."),
+            ]
+
+        cartes = "\n".join(
+            """      <article class="card" data-reveal style="--reveal-delay:%dms">
+        <span class="card__num">%s</span>
+        <h2>%s</h2>
+        <p>%s</p>
+      </article>""" % (i * 90, num, titre, texte)
+            for i, (num, titre, texte) in enumerate(etapes))
+
+        o = self.site["origines"][origine]
+        return f"""
+<section class="section methode">
+  <div class="container">
+    <div class="section-head" data-reveal>
+      <span class="eyebrow">{escape(o['nom'])}</span>
+      <h2 style="margin-top:var(--sp-4)">Ce qui se passe<br>avant que vous la receviez</h2>
+    </div>
+    <div class="grid grid--3" style="margin-top:var(--sp-7)">
+{cartes}
+    </div>
+
+    <ul class="assurances" data-reveal>
+      <li><svg aria-hidden="true"><use href="#i-check"></use></svg>{escape(o['garantie'])}</li>
+      <li><svg aria-hidden="true"><use href="#i-shield"></use></svg>Rien à payer d'avance</li>
+      <li><svg aria-hidden="true"><use href="#i-truck"></use></svg>Cotonou &amp; Abidjan en 48 h</li>
+      <li><svg aria-hidden="true"><use href="#i-needle"></use></svg>Chaque pièce porte un numéro</li>
+    </ul>
+  </div>
+</section>
+"""
+
     def build_category(self, cat):
         products = self.by_category(cat["slug"])
         content = f"""<section class="section section--top" id="{cat['slug']}">
@@ -460,7 +545,7 @@ class Builder:
 {grid(products, "", klass="shop-grid", level=2)}
   </div>
 </section>
-
+{self.methode(cat.get('origine', 'selection'))}
 <div class="seam" data-seam aria-hidden="true">
   <svg viewBox="0 0 1440 160" preserveAspectRatio="none">
     <defs>
@@ -1328,20 +1413,28 @@ class Builder:
 {grid(produits, "", klass="shop-grid", level=3)}
     </div>""")
 
+        n = len(self.products)
+        s = "s" if n > 1 else ""
         content = f"""<section class="section section--top" id="boutique">
   <div class="container container--wide">
     <div class="section-head" data-reveal>
       <span class="eyebrow">La boutique</span>
-      <h1 class="page-title" style="margin-top:var(--sp-3)">Tout ce qui sort de l'atelier</h1>
+      <h1 class="page-title" style="margin-top:var(--sp-3)">Ce qui est disponible<br>aujourd'hui</h1>
       <p class="lede">
-        Huit pièces, une seule construction : cuir pleine fleur, point sellier,
-        semelle remplaçable. Ce qui change, c'est la forme et l'usage.
+        {n} pièce{s} en stock à Cotonou, expédiée{s} sous 72 h. Chacune indique
+        si nous l'avons fabriquée ou choisie, avant son prix. La ligne cousue
+        main arrive dès qu'elle aura été photographiée chez nous.
       </p>
     </div>
 
 {chr(10).join(blocs)}
 
-    <div class="text-center" style="margin-top:var(--sp-8)">
+  </div>
+</section>
+{self.methode('selection')}
+<section class="section">
+  <div class="container container--wide">
+    <div class="text-center">
       <p class="lede mx-auto text-center" style="margin-bottom:var(--sp-5)">
         Aucune pointure ne vous va&nbsp;? C'est fréquent, et ça se règle.
       </p>
@@ -1359,9 +1452,9 @@ class Builder:
         self.page(
             "boutique.html", content=content, current="boutique",
             title="La boutique | Yem's",
-            description="Toutes les pièces Yem's : souliers, ceintures, portefeuilles "
-                        "et entretien. Cousus main à Cotonou, livrés au Bénin et en "
-                        "Côte d'Ivoire.",
+            description="Les pièces Yem's disponibles aujourd'hui à Cotonou. "
+                        "Origine indiquée sur chacune, échange un an, livraison "
+                        "au Bénin et en Côte d'Ivoire.",
         )
 
     def build_admin(self):
