@@ -37,8 +37,25 @@ const PAY_MODES = ['online', 'delivery', 'transfer'];
  * la boutique fonctionne quand même : la commande part, l'atelier rappelle.
  */
 function onlineAvailable(env) {
+  /* Les TROIS clés, pas seulement la publique.
+
+     Le contrôle ne portait que sur KKIAPAY_PUBLIC_KEY, celle qui descend dans
+     le navigateur. Or vérifier une transaction exige aussi la privée et la
+     secrète (voir credentials() dans kkiapay.js, qui lève si l'une manque).
+
+     Avec la seule clé publique posée, l'enchaînement était le suivant : le
+     widget s'affichait, le client payait pour de bon, puis verifyTransaction
+     échouait faute de clés. Argent débité, commande jamais confirmée, et un
+     client qui a payé sans rien recevoir. C'est exactement l'état où l'on se
+     trouve pendant une configuration à moitié faite, c'est-à-dire le jour où
+     l'on pose les clés une par une.
+
+     Si une seule manque, on reste en règlement hors ligne : la commande part,
+     l'atelier rappelle, personne n'est débité pour rien. */
   return env0(env, 'PAYMENT_MODE') === 'online'
-      && Boolean(env0(env, 'KKIAPAY_PUBLIC_KEY'));
+      && Boolean(env0(env, 'KKIAPAY_PUBLIC_KEY'))
+      && Boolean(env0(env, 'KKIAPAY_PRIVATE_KEY'))
+      && Boolean(env0(env, 'KKIAPAY_SECRET_KEY'));
 }
 
 /* ═══════════════════════════════════════════════════ création de commande */

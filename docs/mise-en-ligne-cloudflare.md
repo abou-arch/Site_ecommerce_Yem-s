@@ -298,6 +298,35 @@ et reporter le nouvel identifiant dans `wrangler.toml`.
 
 ---
 
+### Tant que le compte KkiaPay n'existe pas
+
+**Rien à faire, et rien ne casse.** C'est l'état actuel, et c'est le mode
+prévu pour ouvrir : `PAYMENT_MODE = "offline"`. Le client commande sans rien
+payer, l'atelier rappelle dans la journée, le règlement se convient de vive
+voix. C'est même l'argument affiché sur la page d'accueil, et c'est un
+argument fort pour une maison que personne ne connaît encore.
+
+Le serveur ne se fie pas au réglage seul. Il n'ouvre le paiement en ligne que
+si `PAYMENT_MODE` vaut `online` **et** que les trois clés KkiaPay sont
+posées. Si une seule manque, la commande bascule automatiquement en règlement
+à la livraison. Vérifié sur les six combinaisons possibles.
+
+> **Le piège de la configuration à moitié faite.** Le contrôle ne portait
+> d'abord que sur la clé publique, celle qui descend dans le navigateur. Avec
+> elle seule, le widget s'affichait, le client payait pour de bon, puis la
+> vérification échouait faute des deux autres clés : argent débité, commande
+> jamais confirmée. C'est exactement l'état où l'on se trouve le jour où l'on
+> pose les clés une par une. Corrigé : les trois sont désormais exigées.
+
+**Pour ouvrir le compte**, KkiaPay demande la pièce d'identité, un RIB et le
+RCCM, envoyés depuis leur tableau de bord. L'équipe annonce une vérification
+en 24 heures. Le RCCM revient donc ici aussi : c'est la même démarche que
+celle qui débloque les mentions légales.
+
+Rien n'oblige à attendre pour ouvrir la boutique.
+
+---
+
 ### La carte bancaire
 
 Elle ne demande **aucune intégration supplémentaire**. KkiaPay, déjà branché
