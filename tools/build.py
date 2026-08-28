@@ -510,7 +510,7 @@ class Builder:
 
         o = self.site["origines"][origine]
         return f"""
-<section class="section methode">
+<section class="section methode voile--laiton">
   <div class="container">
     <div class="section-head" data-reveal>
       <span class="eyebrow">{escape(o['nom'])}</span>

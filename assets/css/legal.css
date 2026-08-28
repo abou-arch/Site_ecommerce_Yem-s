@@ -5,12 +5,9 @@
    typographie : une mesure courte, de l'air entre les blocs, une hiérarchie
    qu'on saisit sans lire. Rien de décoratif ici.
 
-   Note d'écriture : la première version de cette feuille inventait des noms
-   de variables (--ink, --brass, --font-serif) et supposait un fond clair.
-   Le site est en fond espresso et ses jetons s'appellent --text, --brass-400,
-   --font-display. Les couleurs ne s'appliquaient donc pas et les contrastes
-   avaient été calculés contre le mauvais fond. Tout est repris ici sur les
-   jetons réels de base.css.
+   Cette feuille n'utilise que des jetons sémantiques : elle a suivi seule le
+   passage du site au fond blanc, sans une ligne à modifier. C'est tout
+   l'intérêt de ne jamais écrire une couleur en dur.
    =========================================================================== */
 
 .legal {
@@ -62,7 +59,7 @@
   top: .82em;
   width: 12px;
   height: 1.5px;
-  background: var(--brass-400);
+  background: var(--accent);
 }
 
 .legal__stamp {
@@ -78,7 +75,7 @@
 .legal__note {
   margin: var(--sp-6) 0;
   padding: var(--sp-5);
-  border-left: 3px solid var(--brass-400);
+  border-left: 3px solid var(--accent);
   border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
   background: var(--bg-elevated);
   color: var(--text);
@@ -89,13 +86,11 @@
 /* Champ que le client doit remplir. Pointillé pour qu'on ne le confonde pas
    avec du texte définitif.
 
-   Sur fond espresso, c'est le laiton CLAIR qui porte : --brass-300 donne
-   9,4:1, largement au-dessus des 3:1 exigés d'un élément d'interface. Le
-   laiton sombre, lui, disparaîtrait complètement ici. La règle de la planche
-   d'identité s'applique à l'envers sur fond sombre, et c'est exactement le
-   genre de détail qu'on rate en copiant une feuille de style. */
+   Sur le fond blanc, c'est le laiton SOMBRE qui porte, conformément à la
+   planche d'identité. --accent le résout automatiquement selon le contexte :
+   laiton sombre dans le corps clair, laiton clair dans les ancrages. */
 .legal__champ {
-  border-bottom: 1.5px dotted var(--brass-300);
+  border-bottom: 1.5px dotted var(--accent);
   padding-bottom: 1px;
   color: var(--text);
 }

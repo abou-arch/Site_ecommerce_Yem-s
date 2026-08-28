@@ -668,3 +668,111 @@
 .footer__legal a:focus-visible {
   border-bottom-color: currentColor;
 }
+
+/* ==========================================================================
+   LES ANCRAGES SOMBRES
+   ==========================================================================
+   En-tête, hero et pied de page gardent le fond espresso : ils donnent à la
+   page un haut et un bas, et conservent la signature de la marque. Entre les
+   deux, le blanc domine.
+
+   Ces trois blocs redéfinissent localement les jetons sémantiques. Tout ce
+   qu'ils contiennent (liens, textes, bordures, boutons) suit automatiquement,
+   sans qu'il faille reprendre chaque règle une par une. C'est la seule façon
+   d'inverser un thème sans oublier la moitié des composants.
+   ========================================================================== */
+.header,
+.hero,
+.footer,
+.mobile-menu,
+.cta {
+  --bg: var(--sombre-bg);
+  --bg-elevated: var(--sombre-surface);
+  --surface: var(--sombre-surface);
+  --text: var(--sombre-text);
+  --text-muted: var(--sombre-muted);
+  --text-subtle: var(--sombre-subtle);
+  --border: var(--sombre-border);
+  --border-strong: rgba(233, 222, 203, 0.24);
+  /* Sur fond sombre, c'est le laiton CLAIR qui porte. La règle s'inverse
+     avec le fond, et c'est l'erreur que j'avais déjà faite sur les pages
+     légales : appliquer la consigne « fond clair » à un fond sombre. */
+  --accent: var(--sombre-accent);
+  --accent-strong: var(--brass-400);
+
+  background-color: var(--sombre-bg);
+  color: var(--sombre-text);
+}
+
+/* Le corps de page, lui, est blanc et le reste. */
+.section { background-color: transparent; }
+
+/* ==========================================================================
+   LES VOILES
+   ==========================================================================
+   Le blanc pur sur toute la hauteur d'une page devient plat. Ces dégradés
+   très pâles, tirés des couleurs de l'identité, redonnent du relief entre
+   les sections sans jamais concurrencer une photo produit.
+
+   Aucun ne dépasse 10 % d'opacité de teinte : à l'œil on ne voit pas un
+   aplat de couleur, on voit du blanc qui respire. C'est volontaire. Le site
+   n'a que trois photos, tout ce qui attire l'œil ailleurs leur est pris. */
+.voile { position: relative; background: var(--voile-beige); }
+.voile--haut { background: var(--voile-haut); }
+
+/* Halo laiton, posé par-dessus le fond sans le remplacer.
+   En pseudo-élément pour rester purement décoratif et ne jamais intercepter
+   un clic. */
+.voile--laiton::before,
+.voile--terre::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.voile--laiton::before { background: var(--voile-laiton); }
+.voile--terre::before  { background: var(--voile-terre); }
+.voile > * { position: relative; }
+
+/* La méthode, bloc éditorial des pages boutique : beige très pâle plutôt que
+   le gris élevé de l'ancien thème sombre. */
+.methode {
+  background: var(--voile-beige);
+  border-block: 1px solid var(--border);
+}
+
+/* Les panneaux sombres du corps clair.
+   ----------------------------------------------------------------------
+   Ces blocs posent un fond espresso au milieu d'une page devenue blanche :
+   le récapitulatif de commande, le panneau sur-mesure, la carte du
+   configurateur, le bandeau défilant, l'offre mise en avant, les messages
+   éphémères.
+
+   Sans cette règle, ils héritaient du --text du corps clair, désormais
+   espresso : du texte sombre sur un fond sombre, donc invisible. C'est le
+   piège numéro un d'une inversion de thème, et il ne se voit pas sur la
+   page d'accueil, seulement au fond du tunnel de commande.
+
+   Ils reçoivent donc la même série de jetons que les ancrages. */
+.summary,
+.marquee,
+.bespoke,
+.bespoke__panel,
+.auth-card,
+.offer--featured,
+.cfg-card,
+.toast,
+.pay-opt:has(input:checked),
+.cfg-opt[aria-pressed="true"] {
+  --bg: var(--sombre-bg);
+  --bg-elevated: var(--sombre-surface);
+  --surface: var(--sombre-surface);
+  --text: var(--sombre-text);
+  --text-muted: var(--sombre-muted);
+  --text-subtle: var(--sombre-subtle);
+  --border: var(--sombre-border);
+  --border-strong: rgba(233, 222, 203, 0.24);
+  --accent: var(--sombre-accent);
+  --accent-strong: var(--brass-400);
+  color: var(--sombre-text);
+}

@@ -36,8 +36,8 @@
         href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Inter:wght@400;500;600;700&display=swap">
 </noscript>
 
-<link rel="stylesheet" href="assets/css/base.css?v=702e3b97">
-<link rel="stylesheet" href="assets/css/components.css?v=ab7b8e4c">
+<link rel="stylesheet" href="assets/css/base.css?v=d8e2ebbe">
+<link rel="stylesheet" href="assets/css/components.css?v=08ef01e1">
 <link rel="stylesheet" href="assets/css/home.css?v=78fbbe80">
 <link rel="stylesheet" href="assets/css/shop.css?v=4820c9ef">
 <link rel="stylesheet" href="assets/css/motion.css?v=b43e4720">
@@ -212,9 +212,14 @@
     <div class="shop-grid grid--rare">
       <article class="pcard" data-reveal data-piece="mocassin-tokpa">
         <a href="produit/mocassin-tokpa.html" aria-label="Découvrir Mocassin Tokpa">
-          <div class="pshot pshot--empty" data-shot>
+          <div class="pshot" data-shot>
             <span class="badge badge--green pshot__badge" data-badge="mocassin-tokpa" data-badge-long="0"><span class="badge__dot"></span>Au Bénin</span>
-            <div class="pshot__empty"><svg class="pshot__mark" aria-hidden="true"><use href="#i-logo"></use></svg><span class="pshot__note">Photographiée bientôt</span></div>
+            <picture>
+            <source srcset="assets/img/mocassin-marine-500.webp 500w, assets/img/mocassin-marine.webp 1000w" sizes="(max-width: 560px) 92vw, (max-width: 900px) 46vw, 30vw" type="image/webp">
+            <img src="assets/img/mocassin-marine.jpg" srcset="assets/img/mocassin-marine-500.jpg 500w, assets/img/mocassin-marine.jpg 1000w" sizes="(max-width: 560px) 92vw, (max-width: 900px) 46vw, 30vw"
+                 width="1000" height="1250" loading="lazy" decoding="async"
+                 alt="Mocassin Tokpa en daim bleu marine, semelle blanche, vu de trois quarts">
+          </picture>
           </div>
         </a>
         <div class="pcard__body">
@@ -276,7 +281,7 @@
   </div>
 </section>
 
-<section class="section methode">
+<section class="section methode voile--laiton">
   <div class="container">
     <div class="section-head" data-reveal>
       <span class="eyebrow">Sélection</span>

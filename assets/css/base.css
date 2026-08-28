@@ -28,22 +28,58 @@
 
   --clay-500:  #8C5A3C;   /* accent secondaire, cuir patiné */
 
-  /* — Sémantique — */
-  --bg:            var(--espresso-900);
-  --bg-elevated:   var(--espresso-800);
-  --bg-inverse:    var(--beige-100);
-  --surface:       var(--espresso-700);
-  --border:        rgba(233, 222, 203, 0.12);
-  --border-strong: rgba(233, 222, 203, 0.24);
+  /* — Blanc pur : la couleur dominante du site — */
+  --blanc: #FFFFFF;
 
-  --text:          var(--beige-100);
-  --text-muted:    rgba(244, 237, 226, 0.62);
-  --text-subtle:   rgba(244, 237, 226, 0.52); /* 4.72:1 sur espresso-900 — WCAG AA */
-  --text-inverse:  var(--espresso-800);
-  --text-inverse-muted: rgba(28, 22, 19, 0.66);
+  /* — Sémantique —
+     Le site est CLAIR. Le blanc porte, le beige réchauffe, l'espresso ancre.
+     Les trois familles de la charte n'ont pas bougé d'un point : seul leur
+     emploi s'inverse.
 
-  --accent:        var(--brass-400);
-  --accent-strong: var(--brass-500);
+     Une pièce de cuir se regarde sur un fond neutre, comme sur un établi ou
+     dans une vitrine, pas dans le noir. Et nos photos sont désormais détourées
+     sur blanc : elles se fondent dans la page au lieu d'y flotter en rectangle
+     lumineux.
+
+     Les blocs qui restent sombres (en-tête, hero, pied de page) ne lisent plus
+     ces jetons : ils utilisent la série --sombre-* définie juste après. */
+  --bg:            var(--blanc);
+  --bg-elevated:   var(--beige-50);
+  --bg-inverse:    var(--espresso-900);
+  --surface:       var(--beige-100);
+  --border:        rgba(28, 22, 19, 0.12);
+  --border-strong: rgba(28, 22, 19, 0.22);
+
+  --text:          var(--espresso-800);              /* 15.4:1 sur blanc */
+  --text-muted:    rgba(28, 22, 19, 0.72);           /* 8.9:1  sur blanc */
+  --text-subtle:   rgba(28, 22, 19, 0.60);           /* 6.1:1  sur blanc */
+  --text-inverse:  var(--beige-100);
+  --text-inverse-muted: rgba(244, 237, 226, 0.66);
+
+  /* Sur fond clair, c'est le laiton SOMBRE qui porte. Le laiton clair y
+     tombe à 2,7:1, c'est-à-dire illisible. La règle est déjà écrite dans la
+     planche d'identité, elle s'applique enfin à tout le site. */
+  --accent:        var(--brass-600);
+  --accent-strong: var(--brass-600);
+
+  /* — Les ancrages sombres : en-tête, hero, pied de page —
+     Ils gardent la signature de la marque et donnent à la page un haut et un
+     bas. Entre les deux, le blanc domine. */
+  --sombre-bg:      var(--espresso-900);
+  --sombre-surface: var(--espresso-800);
+  --sombre-text:    var(--beige-100);
+  --sombre-muted:   rgba(244, 237, 226, 0.66);
+  --sombre-subtle:  rgba(244, 237, 226, 0.52);
+  --sombre-border:  rgba(233, 222, 203, 0.14);
+  --sombre-accent:  var(--brass-300);
+
+  /* — Voiles dégradés : la couleur de l'identité, en très pâle —
+     Ils séparent les sections sans jamais concurrencer une photo produit.
+     Aucun ne dépasse 8 % d'opacité de teinte. */
+  --voile-beige: linear-gradient(180deg, var(--blanc) 0%, var(--beige-50) 55%, var(--beige-100) 100%);
+  --voile-haut:  linear-gradient(180deg, var(--beige-100) 0%, var(--beige-50) 45%, var(--blanc) 100%);
+  --voile-laiton: radial-gradient(120% 80% at 50% 0%, rgba(201, 164, 106, .10) 0%, rgba(255, 255, 255, 0) 62%);
+  --voile-terre:  radial-gradient(100% 70% at 80% 10%, rgba(140, 90, 60, .07) 0%, rgba(255, 255, 255, 0) 60%);
 
   /* — Statuts disponibilité (brief client) — */
   --status-green:  #4C7A50;   /* Au Bénin  */
