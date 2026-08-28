@@ -115,15 +115,36 @@ def picture(product, base, index=0, lazy=True, sizes=None):
 
     img = images[index]
     loading = ' loading="lazy" decoding="async"' if lazy else ' fetchpriority="high"'
-    attr_sizes = ' sizes="%s"' % sizes if sizes else ""
+
+    # Deux largeurs, et le navigateur choisit.
+    #
+    # Le site ne servait que le fichier de 1000 px. Sur un téléphone de 375 px
+    # affichant une vignette sur la moitié de l'écran, c'était jusqu'à quatre
+    # fois plus de pixels que nécessaire, payés par le visiteur.
+    #
+    # « sizes » n'est pas décoratif : sans lui le navigateur suppose que
+    # l'image occupe toute la largeur de la fenêtre et reprend la grande.
+    # La valeur par défaut décrit la grille réelle : pleine largeur sur
+    # téléphone, une demie sur tablette, un tiers sur grand écran.
+    mesure = sizes or "(max-width: 560px) 92vw, (max-width: 900px) 46vw, 30vw"
+    petit = os.path.exists(os.path.join(ROOT, "assets", "img", img["file"] + "-500.webp"))
+
+    def jeu(ext):
+        if not petit:
+            return "%sassets/img/%s.%s" % (base, img["file"], ext)
+        return ("%sassets/img/%s-500.%s 500w, %sassets/img/%s.%s %dw"
+                % (base, img["file"], ext, base, img["file"], ext, img["w"]))
+
     return (
         '<picture>\n'
-        '            <source srcset="%sassets/img/%s.webp" type="image/webp"%s>\n'
-        '            <img src="%sassets/img/%s.jpg" width="%d" height="%d"%s\n'
+        '            <source srcset="%s" sizes="%s" type="image/webp">\n'
+        '            <img src="%sassets/img/%s.jpg" srcset="%s" sizes="%s"\n'
+        '                 width="%d" height="%d"%s\n'
         '                 alt="%s">\n'
         '          </picture>'
-        % (base, img["file"], attr_sizes,
-           base, img["file"], img["w"], img["h"], loading,
+        % (jeu("webp"), mesure,
+           base, img["file"], jeu("jpg"), mesure,
+           img["w"], img["h"], loading,
            escape(img["alt"], quote=True))
     )
 

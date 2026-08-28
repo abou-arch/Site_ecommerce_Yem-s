@@ -295,3 +295,29 @@
   text-transform: none;
   letter-spacing: 0;
 }
+
+/* --------------------------------------------------------------------------
+   SAISIE SUR TÉLÉPHONE
+   --------------------------------------------------------------------------
+   Safari sur iOS agrandit automatiquement la page quand on met le doigt dans
+   un champ dont la police fait moins de 16 px. La page reste zoomée ensuite,
+   il faut pincer pour revenir, et ça arrive au pire endroit : au milieu du
+   formulaire de livraison.
+
+   Les champs héritaient des 15 px du corps de texte. On les passe à 16 px
+   sur téléphone uniquement : au-dessus, rien ne change.
+
+   16px et non 1rem : si le visiteur a modifié la taille par défaut de son
+   navigateur, 1rem pourrait retomber sous le seuil. */
+@media (max-width: 560px) {
+  .field input,
+  .field select,
+  .field textarea,
+  input[type="text"],
+  input[type="tel"],
+  input[type="email"],
+  textarea,
+  select {
+    font-size: 16px;
+  }
+}

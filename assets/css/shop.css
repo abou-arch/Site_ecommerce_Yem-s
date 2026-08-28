@@ -179,12 +179,24 @@
   font-weight: 600;
 }
 
+/* Le nuancier de teinte reste visuellement à 30 px : plus gros, la rangée de
+   quatre pastilles perd son allure de gamme. On élargit donc la zone
+   TOUCHABLE sans toucher au dessin, avec un pseudo-élément transparent qui
+   déborde de 7 px sur chaque côté. Cible réelle : 44 px. */
 .swatch--btn {
+  position: relative;
   width: 30px;
   height: 30px;
   padding: 0;
   cursor: pointer;
   transition: box-shadow 260ms var(--ease), transform 260ms var(--ease);
+}
+
+.swatch--btn::before {
+  content: "";
+  position: absolute;
+  inset: -7px;
+  border-radius: 50%;
 }
 
 .swatch--btn:hover { transform: scale(1.08); }

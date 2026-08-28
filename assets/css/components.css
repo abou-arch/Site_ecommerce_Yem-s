@@ -262,8 +262,11 @@
   position: relative;
   display: grid;
   place-items: center;
-  width: 42px;
-  height: 42px;
+  /* 44 px : le seuil recommandé pour une cible tactile (WCAG 2.5.5).
+     À 42 px on rate le bouton une fois sur dix avec le pouce, et sur ce site
+     ces boutons sont le panier et le menu. */
+  width: 44px;
+  height: 44px;
   border-radius: var(--radius-pill);
   border: 1px solid var(--border);
   color: var(--text);
@@ -295,7 +298,7 @@
 }
 
 /* Burger */
-.burger { display: none; width: 42px; height: 42px; }
+.burger { display: none; width: 44px; height: 44px; }
 
 .burger span {
   display: block;
