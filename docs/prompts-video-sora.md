@@ -61,7 +61,7 @@ Trois règles qui changent le résultat :
 
 ---
 
-## 1. `cuirs.mp4` — les quatre cuirs
+## 1. `cuirs.mp4`, les quatre cuirs
 
 Format 9:16 vertical, 10 secondes.
 
@@ -97,7 +97,7 @@ vidéo actuelle.
 
 ---
 
-## 2. `fils.mp4` — les fils de couture
+## 2. `fils.mp4`, les fils de couture
 
 Format 9:16 vertical, 10 secondes.
 
