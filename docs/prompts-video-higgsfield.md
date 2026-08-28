@@ -30,6 +30,11 @@ premier retour.
 que l'atelier coud au fil de lin poissé dans les tons du cuir. La bobine orange
 n'existe nulle part dans l'offre.
 
+> **Si tu génères avec Sora dans ChatGPT**, les prompts adaptés sont dans
+> `prompts-video-sora.md` : Sora n'a pas de champ « négatif » séparé et
+> répond à une écriture différente. Tout le reste de ce document, contrôle
+> et réencodage compris, s'applique quel que soit le générateur.
+
 ---
 
 ## Option gratuite n° 1 : filmer la vraie matière
