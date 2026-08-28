@@ -73,7 +73,7 @@
 .line__total {
   font-family: var(--font-display);
   font-size: var(--fs-lg);
-  color: var(--brass-300);
+  color: var(--accent);
   white-space: nowrap;
 }
 
@@ -85,7 +85,10 @@
   transition: color 240ms var(--ease);
 }
 
-.line__remove:hover { color: #D89087; }
+/* Retirer une ligne du panier : le rouge d'alerte de la charte, celui des
+   pastilles « Indisponible ». Le rose clair précédent était calculé pour un
+   fond sombre et tombait à 2,5:1 sur blanc. */
+.line__remove:hover { color: var(--status-red); }
 
 @media (max-width: 560px) {
   .line {
@@ -127,7 +130,7 @@
 .summary__total span:last-child {
   font-family: var(--font-display);
   font-size: var(--fs-2xl);
-  color: var(--brass-300);
+  color: var(--accent);
   line-height: 1.1;
   font-variant-numeric: tabular-nums;
 }
@@ -217,7 +220,7 @@
   border-radius: var(--radius);
   font-family: var(--font-display);
   font-size: var(--fs-xl);
-  color: var(--brass-300);
+  color: var(--accent);
   letter-spacing: 0.06em;
 }
 

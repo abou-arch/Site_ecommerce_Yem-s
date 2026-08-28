@@ -94,7 +94,7 @@
 }
 
 .cmd__when { font-size: var(--fs-sm); color: var(--text-subtle); margin-top: 2px; }
-.cmd__when strong { color: var(--brass-300); font-weight: 500; }
+.cmd__when strong { color: var(--accent); font-weight: 500; }
 
 /* Le statut porte une couleur, mais le mot suffit : personne ne doit avoir
    à distinguer deux teintes pour comprendre où en est une commande. */
@@ -111,7 +111,7 @@
 
 .cmd__status[data-ton="urgent"]  { color: #F0A96B; }
 .cmd__status[data-ton="ok"]      { color: #8FBF93; }
-.cmd__status[data-ton="cours"]   { color: var(--brass-300); }
+.cmd__status[data-ton="cours"]   { color: var(--accent); }
 .cmd__status[data-ton="fini"]    { color: var(--text-subtle); }
 .cmd__status[data-ton="attente"] { color: var(--text-muted); }
 .cmd__status[data-ton="mort"]    { color: #E0917F; }
@@ -128,13 +128,13 @@
   font-weight: 600;
   letter-spacing: var(--tracking-wider);
   text-transform: uppercase;
-  color: var(--brass-300);
+  color: var(--accent);
   margin-bottom: var(--sp-3);
 }
 
 .cmd__who   { font-weight: 600; }
 .cmd__addr  { font-size: var(--fs-sm); color: var(--text-muted); }
-.cmd__addr a { color: var(--brass-300); }
+.cmd__addr a { color: var(--accent); }
 .cmd__note  { font-size: var(--fs-sm); color: var(--text-muted); font-style: italic; margin-top: var(--sp-3); }
 
 .cmd__items { display: grid; gap: var(--sp-2); margin-bottom: var(--sp-4); }
@@ -152,7 +152,7 @@
 .cmd__money > div { display: flex; justify-content: space-between; gap: var(--sp-4); font-size: var(--fs-sm); }
 .cmd__money dt { color: var(--text-subtle); }
 .cmd__money dd { font-weight: 600; }
-.cmd__due dd { color: var(--brass-300); }
+.cmd__due dd { color: var(--accent); }
 
 .cmd__actions {
   display: flex;
@@ -207,7 +207,7 @@
 .onglet:hover { color: var(--text); }
 
 .onglet[aria-selected="true"] {
-  color: var(--brass-300);
+  color: var(--accent);
   border-bottom-color: var(--brass-300);
 }
 
@@ -282,7 +282,7 @@
   font-size: 0.625rem;
   letter-spacing: var(--tracking-wide);
   text-transform: uppercase;
-  color: var(--brass-300);
+  color: var(--accent);
   border: 1px solid currentColor;
   border-radius: var(--radius-pill);
   padding: 1px 7px;
@@ -322,7 +322,7 @@
   display: inline-block;
   padding: 0.6rem 1.1rem;
   font-size: var(--fs-sm);
-  color: var(--brass-300);
+  color: var(--accent);
   border: 1px dashed rgba(201, 164, 106, 0.55);
   border-radius: var(--radius-pill);
   cursor: pointer;
@@ -363,5 +363,5 @@
   padding-bottom: var(--sp-2); border-bottom: 1px solid var(--border);
 }
 
-.journal__liste strong { color: var(--brass-300); font-weight: 500; }
+.journal__liste strong { color: var(--accent); font-weight: 500; }
 .journal__liste span { color: var(--text-subtle); }

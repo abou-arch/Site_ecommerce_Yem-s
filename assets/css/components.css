@@ -71,7 +71,7 @@
 .btn--ghost:hover {
   background: rgba(233, 222, 203, 0.07);
   border-color: var(--brass-400);
-  color: var(--brass-300);
+  color: var(--accent);
 }
 
 .btn--outline-dark {
@@ -95,7 +95,7 @@
 .btn--dark:hover {
   background: var(--espresso-600);
   border-color: var(--espresso-600);
-  color: var(--brass-300);
+  color: var(--accent);
 }
 
 .btn--sm { padding: 0.7rem 1.25rem; font-size: var(--fs-xs); }
@@ -111,7 +111,7 @@
   font-weight: 500;
   letter-spacing: var(--tracking-wide);
   text-transform: uppercase;
-  color: var(--brass-300);
+  color: var(--accent);
   padding-bottom: 4px;
 }
 
@@ -160,7 +160,7 @@
   width: 26px;
   height: 26px;
   flex: none;
-  color: var(--brass-300);   /* le monogramme prend l'accent, le mot reste clair */
+  color: var(--accent);   /* le monogramme prend l'accent, le mot reste clair */
 }
 
 .logo__word {
@@ -387,7 +387,7 @@
 .badge--red .badge__dot { background: var(--status-red); box-shadow: 0 0 0 3px rgba(161, 74, 62, 0.22); }
 
 .badge--brass {
-  color: var(--brass-300);
+  color: var(--accent);
   border-color: rgba(201, 164, 106, 0.4);
 }
 
@@ -461,7 +461,7 @@
   font-size: var(--fs-sm);
   font-weight: 600;
   letter-spacing: 0.03em;
-  color: var(--brass-300);
+  color: var(--accent);
   white-space: nowrap;
 }
 
@@ -495,7 +495,7 @@
 .card__num {
   font-family: var(--font-display);
   font-size: var(--fs-2xl);
-  color: var(--brass-500);
+  color: var(--accent);
   opacity: 0.55;
   line-height: 1;
 }
@@ -530,7 +530,7 @@
   font-weight: 600;
   letter-spacing: var(--tracking-wider);
   text-transform: uppercase;
-  color: var(--brass-300);
+  color: var(--accent);
   margin-bottom: var(--sp-4);
 }
 
@@ -543,7 +543,7 @@
   transition: color 300ms var(--ease);
 }
 
-.footer__list a:hover { color: var(--brass-300); }
+.footer__list a:hover { color: var(--accent); }
 
 .newsletter {
   display: flex;

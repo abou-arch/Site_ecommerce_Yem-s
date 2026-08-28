@@ -44,7 +44,7 @@
 .cfg-step__num {
   font-family: var(--font-display);
   font-size: var(--fs-sm);
-  color: var(--brass-500);
+  color: var(--accent);
   letter-spacing: 0.08em;
 }
 
@@ -101,7 +101,7 @@
   font-size: var(--fs-xs);
   font-weight: 600;
   letter-spacing: 0.04em;
-  color: var(--brass-300);
+  color: var(--accent);
   white-space: nowrap;
 }
 
@@ -188,7 +188,7 @@
 .cfg-lines .spec-row dd em {
   font-style: normal;
   font-size: var(--fs-xs);
-  color: var(--brass-300);
+  color: var(--accent);
   white-space: nowrap;
 }
 
@@ -209,7 +209,7 @@
 .cfg-total__value {
   font-family: var(--font-display);
   font-size: var(--fs-2xl);
-  color: var(--brass-300);
+  color: var(--accent);
   line-height: 1.1;
   font-variant-numeric: tabular-nums;
 }
@@ -242,7 +242,7 @@
   color: var(--text-muted);
 }
 
-.cfg-trust svg { width: 17px; height: 17px; color: var(--brass-400); flex: none; }
+.cfg-trust svg { width: 17px; height: 17px; color: var(--accent); flex: none; }
 
 /* --------------------------------------------------------------------------
    BARRE MOBILE — le total doit rester atteignable sans remonter
@@ -262,7 +262,7 @@
   border-top: 1px solid var(--border);
 }
 
-.cfg-bar__total { font-family: var(--font-display); font-size: var(--fs-lg); color: var(--brass-300); }
+.cfg-bar__total { font-family: var(--font-display); font-size: var(--fs-lg); color: var(--accent); }
 .cfg-bar__label { display: block; font-family: var(--font-body); font-size: var(--fs-xs); color: var(--text-subtle); }
 
 @media (max-width: 999px) {

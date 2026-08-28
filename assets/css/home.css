@@ -112,7 +112,7 @@
 .stat__value {
   font-family: var(--font-display);
   font-size: var(--fs-xl);
-  color: var(--brass-300);
+  color: var(--accent);
   line-height: 1.1;
 }
 
@@ -339,7 +339,7 @@
   border-radius: 50%;
   font-family: var(--font-display);
   font-size: var(--fs-sm);
-  color: var(--brass-300);
+  color: var(--accent);
   flex: none;
 }
 
@@ -428,7 +428,7 @@
 .offer__price {
   font-family: var(--font-display);
   font-size: var(--fs-2xl);
-  color: var(--brass-300);
+  color: var(--accent);
   line-height: 1.1;
 }
 
@@ -462,7 +462,7 @@
 .offer__list svg {
   width: 15px;
   height: 15px;
-  color: var(--brass-400);
+  color: var(--accent);
   margin-top: 5px;
   flex: none;
 }
@@ -523,7 +523,7 @@
   position: relative;
   font-family: var(--font-display);
   font-size: clamp(1.6rem, 3.4vw, 2.4rem);
-  color: var(--brass-300);
+  color: var(--accent);
   letter-spacing: 0.04em;
 }
 
@@ -546,7 +546,7 @@
   align-items: start;
 }
 
-.guarantee-list svg { width: 20px; height: 20px; color: var(--brass-400); margin-top: 3px; flex: none; }
+.guarantee-list svg { width: 20px; height: 20px; color: var(--accent); margin-top: 3px; flex: none; }
 .guarantee-list strong { display: block; font-weight: 600; margin-bottom: 2px; }
 .guarantee-list p { font-size: var(--fs-sm); color: var(--text-muted); }
 
@@ -592,7 +592,7 @@
   font-size: 0.625rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--brass-300);
+  color: var(--accent);
   background: rgba(176, 141, 87, 0.08);
 }
 

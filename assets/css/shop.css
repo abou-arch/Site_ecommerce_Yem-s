@@ -22,9 +22,9 @@
 .crumb + .section--top { padding-top: var(--sp-5); }
 
 .crumb a { color: var(--text-muted); transition: color 300ms var(--ease); }
-.crumb a:hover { color: var(--brass-300); }
+.crumb a:hover { color: var(--accent); }
 .crumb__sep { margin-inline: var(--sp-3); opacity: 0.5; }
-.crumb [aria-current] { color: var(--brass-300); }
+.crumb [aria-current] { color: var(--accent); }
 
 /* --------------------------------------------------------------------------
    PLACEHOLDER — produit sans photo
@@ -105,7 +105,7 @@
 .product__price {
   font-family: var(--font-display);
   font-size: var(--fs-2xl);
-  color: var(--brass-300);
+  color: var(--accent);
   line-height: 1.1;
   margin-bottom: var(--sp-5);
 }
@@ -240,7 +240,7 @@
   color: var(--text-muted);
 }
 
-.product__reassure svg { width: 18px; height: 18px; color: var(--brass-400); flex: none; }
+.product__reassure svg { width: 18px; height: 18px; color: var(--accent); flex: none; }
 
 @media (max-width: 900px) {
   .product__gallery { position: static; }
@@ -272,8 +272,8 @@
 
 .toast.is-visible { opacity: 1; transform: translate(-50%, 0); }
 
-.toast svg { width: 17px; height: 17px; color: var(--brass-300); flex: none; }
-.toast a { color: var(--brass-300); text-decoration: underline; pointer-events: auto; }
+.toast svg { width: 17px; height: 17px; color: var(--accent); flex: none; }
+.toast a { color: var(--accent); text-decoration: underline; pointer-events: auto; }
 
 /* --------------------------------------------------------------------------
    RAYONS — la boutique complète, une section par catégorie
@@ -318,7 +318,7 @@
   opacity: 0.7;
 }
 
-.origine--atelier { color: var(--brass-300); }
+.origine--atelier { color: var(--accent); }
 .section--light .origine--atelier { color: var(--brass-600); }
 
 .origine--long {
@@ -383,7 +383,7 @@
   width: 18px;
   height: 18px;
   flex: none;
-  color: var(--brass-400);
+  color: var(--accent);
 }
 
 @media (max-width: 560px) {

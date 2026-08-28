@@ -239,7 +239,7 @@ p { text-wrap: pretty; }
 .italic-accent {
   font-style: italic;
   font-variation-settings: "SOFT" 100, "WONK" 1;
-  color: var(--brass-300);
+  color: var(--accent);
 }
 
 .eyebrow {
@@ -250,7 +250,7 @@ p { text-wrap: pretty; }
   font-weight: 500;
   letter-spacing: var(--tracking-wider);
   text-transform: uppercase;
-  color: var(--brass-300);
+  color: var(--accent);
 }
 
 .eyebrow::before {
