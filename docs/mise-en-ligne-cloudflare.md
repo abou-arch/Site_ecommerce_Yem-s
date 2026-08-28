@@ -298,6 +298,34 @@ et reporter le nouvel identifiant dans `wrangler.toml`.
 
 ---
 
+### La carte bancaire
+
+Elle ne demande **aucune intégration supplémentaire**. KkiaPay, déjà branché
+dans `api/_lib/kkiapay.js`, encaisse le mobile money *et* la carte : le code
+lit déjà le moyen employé (`MOBILE_MONEY`, `CARD`) et l'enregistre avec le
+paiement. Ce qui manque n'est pas du code, c'est l'activation de la carte sur
+le compte marchand, que KkiaPay accorde séparément du mobile money et qui
+demande en général les pièces de l'entreprise.
+
+Le jour où c'est activé, la bascule tient en deux gestes :
+
+1. `PAYMENT_MODE = "online"` dans `wrangler.toml`, et les trois clés KkiaPay
+   posées en secrets.
+2. Régénérer le site **avec la même variable**, sinon les pages continueront
+   d'annoncer l'ancienne liste :
+
+```powershell
+$env:PAYMENT_MODE="online"; python tools/build.py; npm run deploy
+```
+
+**Un garde-fou empêche désormais l'incohérence.** Si une page mentionne la
+carte alors que `PAYMENT_MODE` vaut `offline`, la génération s'arrête et
+indique le fichier fautif. Annoncer un moyen de règlement qu'on n'accepte pas
+n'est pas seulement décevant pour le visiteur, c'est une pratique commerciale
+trompeuse. L'erreur avait déjà été commise une fois sur ce site.
+
+---
+
 ## Le nom de domaine : maisonyems.com
 
 Le domaine est acheté. Voici comment le brancher sur le Worker.

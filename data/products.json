@@ -149,7 +149,23 @@
         "garantie": "Échange un an, pointure ou défaut"
       }
     },
-    "_a_venir": "a_venir = pièce annoncée mais pas encore montrable. Elle disparaît des grilles, n'a pas de fiche, et n'est pas commandable. Passer a_venir à false dès que les photos existent."
+    "_a_venir": "a_venir = pièce annoncée mais pas encore montrable. Elle disparaît des grilles, n'a pas de fiche, et n'est pas commandable. Passer a_venir à false dès que les photos existent.",
+    "_paiement": "Moyens de règlement affichés dans le pied de page. La liste dépend de PAYMENT_MODE : hors ligne, le règlement se convient de vive voix ; en ligne, la passerelle ajoute la carte bancaire. Annoncer un moyen qu'on ne sait pas encaisser est une pratique commerciale trompeuse, et le générateur refuse désormais de le faire.",
+    "paiement": {
+      "offline": [
+        "MTN MoMo",
+        "Moov",
+        "Wave",
+        "Espèces"
+      ],
+      "online": [
+        "MTN MoMo",
+        "Moov",
+        "Wave",
+        "Carte bancaire",
+        "Espèces"
+      ]
+    }
   },
   "categories": [
     {

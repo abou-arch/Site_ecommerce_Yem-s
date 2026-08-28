@@ -47,6 +47,11 @@ STATUS = {
 #     BROUILLON=1 python3 tools/build.py
 BROUILLON = os.environ.get("BROUILLON") == "1"
 
+# Mode de règlement effectif. Il doit correspondre à PAYMENT_MODE de
+# wrangler.toml : c'est lui qui décide de ce que le site a le droit d'annoncer.
+#   PAYMENT_MODE=online python3 tools/build.py
+PAYMENT_MODE = os.environ.get("PAYMENT_MODE", "offline")
+
 
 def strip_notes(html):
     """Retire les blocs <p>…<span class="todo-note">…</span>…</p> du rendu public."""
@@ -312,8 +317,12 @@ class Builder:
         if self.a_venir:
             footer_cats += ('\n          <li><a href="%sa-venir.html">'
                             'Ce qui se prépare</a></li>' % base)
+        moyens = (self.site.get("paiement", {}) or {}).get(
+            PAYMENT_MODE, ["Espèces"])
         footer = fill(
             self.footer_tpl,
+            pay_logos="\n".join("          <span>%s</span>" % escape(m)
+                                 for m in moyens),
             base=base, home=home,
             footer_categories=footer_cats,
             whatsapp=self.site["whatsapp"],
@@ -1116,7 +1125,7 @@ class Builder:
         # l'appelle. C'est une requête vers un tiers, donc l'adresse IP du
         # client transmise à une société qui n'a aucune raison de la connaître,
         # pour une fonction inactive. On le rebranchera le jour de l'activation.
-        if os.environ.get("PAYMENT_MODE") == "online":
+        if PAYMENT_MODE == "online":
             content += '\n<script src="https://cdn.kkiapay.me/k.js"></script>'
 
         self.page(
@@ -1528,6 +1537,50 @@ class Builder:
                       title=title, description=description,
                       extra_css=("legal",))
 
+    # Termes qui, s'ils apparaissent sur une page, promettent au visiteur un
+    # règlement par carte. Le site n'a le droit de les employer que si la
+    # passerelle est réellement branchée.
+    TERMES_CARTE = ("carte bancaire", "visa", "mastercard", "gim-uemoa",
+                    "paiement par carte", "payer par carte")
+
+    def controler_paiement(self):
+        """
+        Refuse de livrer un site qui annonce un moyen de règlement inactif.
+
+        Ce contrôle existe parce que l'erreur a déjà été commise : le site a
+        annoncé le paiement en ligne pendant que PAYMENT_MODE valait
+        « offline ». Un visiteur arrivait au bout du tunnel pour découvrir
+        qu'il fallait finalement rappeler l'atelier. Au-delà de la déception,
+        annoncer un moyen de paiement qu'on n'accepte pas est une pratique
+        commerciale trompeuse.
+
+        Une relecture humaine ne rattrape pas ça : la mention se glisse dans
+        une phrase de réassurance écrite six mois plus tôt. Une vérification
+        automatique, si.
+        """
+        if PAYMENT_MODE == "online":
+            print("\n  paiement : mode « online », la carte peut être annoncée")
+            return
+
+        fautes = []
+        for chemin, _ in self.written:
+            texte = read(os.path.join(ROOT, chemin))
+            texte = re.sub(r"<!--.*?-->", "", texte, flags=re.S).lower()
+            for terme in self.TERMES_CARTE:
+                if terme in texte:
+                    fautes.append((chemin, terme))
+
+        if fautes:
+            lignes = "\n".join("      %s : « %s »" % f for f in fautes)
+            raise SystemExit(
+                "\n!! Le site annonce un règlement par carte alors que "
+                "PAYMENT_MODE vaut « %s ».\n%s\n\n"
+                "   Soit la passerelle est active et il faut générer avec "
+                "PAYMENT_MODE=online,\n"
+                "   soit la mention doit disparaître." % (PAYMENT_MODE, lignes))
+        print("\n  paiement : mode « %s », aucune promesse de carte sur le site"
+              % PAYMENT_MODE)
+
     def build_sitemap(self):
         """
         sitemap.xml, déduit des pages effectivement écrites.
@@ -1589,6 +1642,8 @@ class Builder:
         print("%d pages générées :\n" % len(self.written))
         for path, size in self.written:
             print("  %-42s %5d Ko" % (path, size // 1024 or 1))
+
+        self.controler_paiement()
 
         orphans = [c["slug"] for c in self.categories if not self.by_category(c["slug"])]
         if orphans:
