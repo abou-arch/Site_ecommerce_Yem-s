@@ -32,6 +32,59 @@ n'existe nulle part dans l'offre.
 
 ---
 
+## Quel modèle choisir
+
+Higgsfield n'est pas un modèle, c'est un abonnement qui donne accès à une
+quinzaine de modèles. Le choix compte moins qu'on ne le croit ici, parce que
+nos deux plans sont les plus faciles qui existent : pas de visage, pas de
+main, pas de physique, pas de dialogue. Une surface, une lumière, un
+mouvement lent.
+
+Ce qui compte, en revanche, c'est **le respect du prompt sur la matière et la
+couleur**. C'est le seul axe sur lequel la vidéo actuelle a échoué.
+
+| Modèle | Pour nous | Verdict |
+|---|---|---|
+| **Kling 3.0** | le moins cher de loin, largement suffisant pour un plan macro fixe | **à utiliser pour itérer** |
+| **Seedance 2.0** | le meilleur sur le respect du prompt, c'est exactement notre point faible | **à utiliser pour la prise finale** |
+| Veo 3.1 | 4K, 60 fps, physique de mouvement | inutile : on redescend à 574×960, on paie pour ce qu'on jette |
+| Hailuo / MiniMax | rapide, format court stylisé | trop stylisé, on cherche du photoréaliste sobre |
+| WAN 2.6 | restyler une vidéo existante | sans objet |
+
+**La méthode :** enchaîner cinq ou six essais sur Kling jusqu'à ce que le
+cadrage et le mouvement soient bons, puis rejouer le prompt gagnant une fois
+sur Seedance pour la version qu'on garde. On paie le modèle cher une seule
+fois, sur le tir qui compte.
+
+**Sur l'abonnement :** les crédits ne se reportent pas d'un mois sur l'autre.
+Pour deux clips de huit secondes et leurs essais, la formule d'entrée suffit
+très largement. Ne prends pas un gros forfait pour ça.
+
+---
+
+## Une meilleure idée que n'importe quel modèle
+
+Pour `cuirs.mp4`, l'atelier **a** les quatre cuirs sous la main. Une photo au
+téléphone des quatre échantillons alignés, prise à la lumière du jour à
+l'ombre, sert de point de départ en **image-to-video** : le modèle anime la
+photo au lieu d'inventer la matière.
+
+Trois avantages, et ils sont décisifs :
+
+1. Les couleurs sont les **vraies** couleurs, pas une interprétation. Plus de
+   risque de saffiano à la place du noir lisse.
+2. C'est le cuir que le client recevra, donc la vidéo cesse d'être une
+   illustration pour devenir une preuve.
+3. Ça coûte moins cher en essais, parce qu'il y a beaucoup moins à deviner.
+
+Même chose pour `fils.mp4` avec les vraies bobines de l'atelier.
+
+C'est cohérent avec tout le reste du projet : on a retiré sept photos parce
+qu'elles ne venaient pas de la maison. Une vidéo générée à partir de la vraie
+matière n'a pas ce problème.
+
+---
+
 ## Réglages communs
 
 | | |
