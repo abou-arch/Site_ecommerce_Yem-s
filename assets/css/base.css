@@ -28,8 +28,16 @@
 
   --clay-500:  #8C5A3C;   /* accent secondaire, cuir patiné */
 
-  /* — Blanc pur : la couleur dominante du site — */
-  --blanc: #FFFFFF;
+  /* — Les deux clairs, et leur rapport —
+     Le blanc pur sur toute la page fatigue et aplatit : rien ne se détache
+     de rien. Le fond dominant est donc un neutre très clair, et c'est le
+     BLANC qui devient la couleur des cartes, posées dessus.
+
+     C'est le rapport qu'emploie Apple (fond #F5F5F7, cartes blanches). Le
+     nôtre est réchauffé vers la famille beige de la charte : à côté du cuir
+     et du laiton, un gris bleuté sonnerait faux. */
+  --blanc: #FFFFFF;      /* les cartes, les panneaux, ce qui avance */
+  --nuage: #F5F3EF;      /* le fond de page, ce qui recule */
 
   /* — Sémantique —
      Le site est CLAIR. Le blanc porte, le beige réchauffe, l'espresso ancre.
@@ -43,12 +51,15 @@
 
      Les blocs qui restent sombres (en-tête, hero, pied de page) ne lisent plus
      ces jetons : ils utilisent la série --sombre-* définie juste après. */
-  --bg:            var(--blanc);
-  --bg-elevated:   var(--beige-50);
+  --bg:            var(--nuage);     /* le fond de page */
+  --bg-elevated:   var(--blanc);     /* une carte posée dessus */
   --bg-inverse:    var(--espresso-900);
-  --surface:       var(--beige-100);
-  --border:        rgba(28, 22, 19, 0.12);
-  --border-strong: rgba(28, 22, 19, 0.22);
+  --surface:       var(--blanc);
+  /* Bordures très discrètes : sur une interface claire, la séparation se
+     fait par le changement de fond et par l'ombre, pas par un filet gris.
+     Elles ne servent plus qu'aux champs de saisie et aux tableaux. */
+  --border:        rgba(28, 22, 19, 0.08);
+  --border-strong: rgba(28, 22, 19, 0.16);
 
   --text:          var(--espresso-800);              /* 15.4:1 sur blanc */
   --text-muted:    rgba(28, 22, 19, 0.72);           /* 8.9:1  sur blanc */
@@ -76,10 +87,10 @@
   /* — Voiles dégradés : la couleur de l'identité, en très pâle —
      Ils séparent les sections sans jamais concurrencer une photo produit.
      Aucun ne dépasse 8 % d'opacité de teinte. */
-  --voile-beige: linear-gradient(180deg, var(--blanc) 0%, var(--beige-50) 55%, var(--beige-100) 100%);
-  --voile-haut:  linear-gradient(180deg, var(--beige-100) 0%, var(--beige-50) 45%, var(--blanc) 100%);
-  --voile-laiton: radial-gradient(120% 80% at 50% 0%, rgba(201, 164, 106, .10) 0%, rgba(255, 255, 255, 0) 62%);
-  --voile-terre:  radial-gradient(100% 70% at 80% 10%, rgba(140, 90, 60, .07) 0%, rgba(255, 255, 255, 0) 60%);
+  --voile-beige: linear-gradient(180deg, var(--nuage) 0%, var(--beige-50) 60%, var(--beige-100) 100%);
+  --voile-haut:  linear-gradient(180deg, var(--beige-100) 0%, var(--beige-50) 45%, var(--nuage) 100%);
+  --voile-laiton: radial-gradient(120% 80% at 50% 0%, rgba(201, 164, 106, .09) 0%, rgba(245, 243, 239, 0) 64%);
+  --voile-terre:  radial-gradient(100% 70% at 80% 10%, rgba(140, 90, 60, .06) 0%, rgba(245, 243, 239, 0) 62%);
 
   /* — Statuts disponibilité (brief client) — */
   --status-green:  #4C7A50;   /* Au Bénin  */
@@ -138,14 +149,25 @@
   --gutter: clamp(1.25rem, 4vw, 3rem);
 
   /* — Divers — */
-  --radius-sm: 3px;
-  --radius:    6px;
-  --radius-lg: 14px;
+  /* Rayons élargis. Les valeurs précédentes (3, 6, 14) venaient d'une
+     interface sombre où l'angle vif se lit comme de la rigueur. Sur un fond
+     clair où les cartes flottent, un rayon serré les fait paraître collées
+     à la page. */
+  --radius-sm: 6px;
+  --radius:    12px;
+  --radius-lg: 18px;
   --radius-pill: 999px;
 
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.28);
-  --shadow:    0 12px 32px -12px rgba(0, 0, 0, 0.55);
-  --shadow-lg: 0 30px 70px -28px rgba(0, 0, 0, 0.75);
+  /* Ombres d'interface claire.
+     Les précédentes montaient à 55 % et 75 % de noir : calibrées pour un fond
+     espresso où seule une ombre franche se voit. Posées sur un fond clair,
+     elles font des taches sales sous chaque carte.
+     Ici, deux couches très douces : une ombre de contact courte qui pose
+     l'objet, et une ombre longue et large qui le décolle. C'est ce qui donne
+     l'impression de profondeur sans qu'on voie l'ombre elle-même. */
+  --shadow-sm: 0 1px 2px rgba(28, 22, 19, 0.05);
+  --shadow:    0 1px 2px rgba(28, 22, 19, 0.05), 0 8px 24px -8px rgba(28, 22, 19, 0.10);
+  --shadow-lg: 0 2px 4px rgba(28, 22, 19, 0.05), 0 24px 56px -20px rgba(28, 22, 19, 0.16);
 
   --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);

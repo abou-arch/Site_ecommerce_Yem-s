@@ -776,3 +776,59 @@
   --accent-strong: var(--brass-400);
   color: var(--sombre-text);
 }
+
+/* ==========================================================================
+   LE RAPPORT NUAGE / BLANC
+   ==========================================================================
+   Fond de page en nuage, cartes en blanc. Une carte se détache parce qu'elle
+   est PLUS CLAIRE que la page, pas parce qu'un filet gris l'entoure. C'est ce
+   renversement qui donne à une interface claire sa profondeur.
+
+   Conséquence directe : les bordures des cartes disparaissent. Un filet plus
+   une ombre plus un changement de fond, ça fait trois signaux pour dire une
+   seule chose, et l'ensemble paraît chargé. */
+.card,
+.pcard,
+.offer,
+.faq,
+.spec-card,
+.cfg-step,
+.rayon,
+.legal__note {
+  background: var(--blanc);
+  border: 0;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+}
+
+/* Les cartes produit ne portent pas d'ombre au repos : alignées par six, ça
+   ferait une trame d'ombres. Elles se soulèvent au survol, ce qui rend le
+   geste lisible. */
+.pcard {
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 320ms var(--ease), transform 320ms var(--ease);
+}
+.pcard:hover,
+.pcard:focus-within {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-3px);
+}
+
+/* La photo produit est blanche sur une carte blanche : sans un fond
+   légèrement plus soutenu, la chaussure flotterait dans le vide. Le nuage
+   sert ici de plateau. */
+.pshot { background: var(--nuage); border-radius: var(--radius); }
+
+/* Une section qui doit trancher passe en blanc plein.
+   L'alternance nuage / blanc remplace les filets de séparation : c'est le
+   rythme vertical de la page. */
+.section--blanc { background: var(--blanc); }
+.section--nuage { background: var(--nuage); }
+
+/* Le bloc éditorial des pages boutique repasse en blanc plein : il tranche
+   sur le nuage sans qu'on ait à l'encadrer. */
+.methode {
+  background: var(--blanc);
+  border-block: 0;
+  box-shadow: 0 1px 0 rgba(28, 22, 19, .05), 0 -1px 0 rgba(28, 22, 19, .05);
+}
