@@ -471,7 +471,7 @@
 }
 
 .section--light .pcard__price { color: var(--brass-600); }
-.section--light .pcard__desc  { color: var(--text-inverse-muted); }
+.section--light .pcard__desc  { color: var(--text-muted); }
 
 /* --------------------------------------------------------------------------
    CARTE GÉNÉRIQUE
@@ -503,11 +503,11 @@
 .card p { font-size: var(--fs-sm); color: var(--text-muted); }
 
 .section--light .card {
-  background: var(--beige-50);
+  background: var(--blanc);
   border-color: rgba(28, 22, 19, 0.1);
 }
 
-.section--light .card p { color: var(--text-inverse-muted); }
+.section--light .card p { color: var(--text-muted); }
 
 /* --------------------------------------------------------------------------
    FOOTER

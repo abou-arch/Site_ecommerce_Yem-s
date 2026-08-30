@@ -319,12 +319,12 @@ p { text-wrap: pretty; }
 .section { padding-block: var(--section-y); position: relative; }
 
 .section--light {
-  background: var(--beige-100);
-  color: var(--text-inverse);
+  background: var(--blanc);
+  color: var(--text);
 }
 
 .section--light .lede,
-.section--light .text-muted { color: var(--text-inverse-muted); }
+.section--light .text-muted { color: var(--text-muted); }
 
 .section--light .eyebrow { color: var(--brass-600); }
 

@@ -73,6 +73,44 @@ def rapport(texte, fond, d):
     return (l[0] + 0.05) / (l[1] + 0.05)
 
 
+def declarations(css, propriete):
+    """
+    Toutes les règles qui posent une propriété, DANS L'ORDRE du fichier.
+
+    L'ordre est le cœur du problème : à spécificité égale, c'est la dernière
+    règle qui gagne. Un contrôle qui se contente de collecter les sélecteurs
+    sans retenir leur position ne peut pas voir qu'une règle tardive annule
+    une règle antérieure. C'était le défaut de la première version de ce
+    script, et c'est précisément le bug qu'il devait détecter.
+    """
+    out = []
+    for m in re.finditer(r"([^{}]+)\{([^}]*)\}", css):
+        sels = [x.strip().split("*/")[-1].strip() for x in m.group(1).split(",")]
+        sels = [x for x in sels if x.startswith(".")]
+        if not sels:
+            continue
+        d = re.search(r"(?<![-\w])%s\s*:\s*([^;]+)" % propriete, m.group(2))
+        if d:
+            out.append((m.start(), sels, d.group(1).strip()))
+    return out
+
+
+def fond_effectif(classes, regles_fond, defaut):
+    """
+    Le fond que ces classes reçoivent réellement, une fois la cascade jouée.
+
+    On garde la DERNIÈRE règle qui s'applique, ce qui reproduit le
+    comportement du navigateur pour des sélecteurs de même spécificité.
+    """
+    valeur = defaut
+    for _, sels, v in regles_fond:
+        for sel in sels:
+            base = sel.lstrip(".").split(":")[0].split("[")[0].split()[0]
+            if base in classes:
+                valeur = v
+    return valeur
+
+
 def classes_sombres(css):
     """Les sélecteurs qui redéfinissent --text sur la série sombre."""
     out = set()
@@ -89,6 +127,13 @@ def main():
     css = "".join(open(f, encoding="utf-8").read()
                   for f in glob.glob(os.path.join(RACINE, "assets", "css", "*.css")))
     sombres = classes_sombres(css)
+    regles_fond = declarations(css, "background-color") + declarations(css, "background")
+    regles_fond.sort()
+    # Une section peut poser sa couleur de texte directement, sans passer par
+    # --text. C'est ce que faisait .section--light, et c'est ce que la première
+    # version de ce contrôle ne regardait pas.
+    regles_texte = declarations(css, "color")
+    regles_texte.sort()
 
     nuage = resoudre(d.get("--nuage", d["--bg"]), d)
     blanc = resoudre(d.get("--blanc", "#FFFFFF"), d)
@@ -103,8 +148,31 @@ def main():
             total += 1
             cls = set(m.group(1).split())
             est_sombre = bool(cls & sombres)
-            fond = sombre if est_sombre else (blanc if "section--blanc" in cls else nuage)
-            texte = d["--sombre-text"] if est_sombre else d["--text"]
+            defaut = blanc if "section--blanc" in cls else nuage
+            # Le fond n'est plus déduit de la classe : il est lu dans la
+            # cascade. Un bloc « sombre » à qui une règle postérieure retire
+            # son fond retombe donc sur le fond clair, et le contraste chute.
+            brut = fond_effectif(cls, regles_fond, sombre if est_sombre else defaut)
+            fond = resoudre(brut, d)
+            if not fond.startswith("#"):
+                # « background: dégradé, var(--espresso-900) » : la dernière
+                # couche est la couleur de fond réelle.
+                # On coupe sur les virgules de PREMIER niveau seulement :
+                # un dégradé contient ses propres virgules, et un rstrip(")")
+                # naïf mangeait la parenthèse de « var(--espresso-900) ».
+                niveau, debut, couches = 0, 0, []
+                for i, c in enumerate(brut):
+                    if c == "(":
+                        niveau += 1
+                    elif c == ")":
+                        niveau -= 1
+                    elif c == "," and niveau == 0:
+                        couches.append(brut[debut:i]); debut = i + 1
+                couches.append(brut[debut:])
+                dernier = resoudre(couches[-1].strip(), d)
+                fond = dernier if dernier.startswith("#") else defaut
+            texte = fond_effectif(cls, regles_texte,
+                                  d["--sombre-text"] if est_sombre else d["--text"])
             r = rapport(texte, fond, d)
             if r < SEUIL:
                 fautes.append((os.path.basename(page), m.group(1)[:40], fond,
