@@ -704,8 +704,14 @@
   color: var(--sombre-text);
 }
 
-/* Le corps de page, lui, est blanc et le reste. */
-.section { background-color: transparent; }
+/* PAS de règle « .section { background: transparent } » ici.
+   Elle y était, et c'est elle qui a tout cassé : posée APRÈS le bloc
+   ci-dessus, à spécificité égale, elle gagnait. Les sections
+   « class="section cta" » recevaient donc les jetons sombres SANS le fond
+   sombre : du texte beige sur du crème, illisible sur toute une section.
+
+   Les sections n'ont de toute façon aucun fond propre : elles héritent de
+   celui du corps. La règle ne servait à rien et faisait des dégâts. */
 
 /* ==========================================================================
    LES VOILES
