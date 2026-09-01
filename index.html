@@ -36,8 +36,8 @@
         href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Inter:wght@400;500;600;700&display=swap">
 </noscript>
 
-<link rel="stylesheet" href="assets/css/base.css?v=d6db08a0">
-<link rel="stylesheet" href="assets/css/components.css?v=24272ec2">
+<link rel="stylesheet" href="assets/css/base.css?v=f89efc2b">
+<link rel="stylesheet" href="assets/css/components.css?v=adb04a5f">
 <link rel="stylesheet" href="assets/css/home.css?v=342ade77">
 <link rel="stylesheet" href="assets/css/shop.css?v=2ef32195">
 <link rel="stylesheet" href="assets/css/motion.css?v=b43e4720">
@@ -204,13 +204,11 @@
 <section class="hero grain">
   <!-- Le dégradé de .hero__media reste en fond : si la vidéo ne charge pas, ou si
        le navigateur refuse l'autoplay, la section reste présentable telle quelle. -->
-  <div class="hero__media" aria-hidden="true">
-    <video autoplay muted loop playsinline preload="metadata"
-           poster="assets/img/hero-poster.jpg">
-      <source src="assets/video/hero.webm" type="video/webm">
-      <source src="assets/video/hero.mp4" type="video/mp4">
-    </video>
-  </div>
+  <!-- La vidéo d'accueil a été retirée : elle montrait un mocassin portant le
+       logo « VT » d'un autre fabricant, visible à l'écran. Le détail est dans
+       .retirees/hero-video/POURQUOI.md, avec l'image de preuve.
+       Le dégradé de .hero__media reste, il était déjà le repli prévu. -->
+  <div class="hero__media" aria-hidden="true"></div>
 
   <svg class="hero__stitching" aria-hidden="true" preserveAspectRatio="none" viewBox="0 0 1440 900">
     <path d="M-40 640 C 320 520, 560 700, 900 560 S 1340 420, 1520 470"
@@ -681,7 +679,7 @@
 <!-- ═══════════════════════════════════════════════════════════════
      GARANTIE + CARTE D'AUTHENTICITÉ
      ═══════════════════════════════════════════════════════════════ -->
-<section class="section" id="garantie" style="background:var(--espresso-800)">
+<section class="section section--sombre" id="garantie">
   <div class="container assurance__grid">
     <div class="auth-card grain" data-reveal aria-label="Exemple de carte d'authenticité">
       <div class="auth-card__top">

@@ -923,3 +923,28 @@
 @media (prefers-reduced-motion: reduce) {
   .fil-progression span { transition: none; }
 }
+
+/* Une section entièrement sombre au milieu du corps clair.
+   ----------------------------------------------------------------------
+   Cette section posait son fond avec un style EN LIGNE dans le HTML :
+   « style="background:var(--espresso-800)" ». Elle avait donc un fond
+   sombre et le texte du corps clair, espresso sur espresso, invisible.
+
+   Et aucun contrôle CSS ne pouvait le voir, puisque la déclaration n'était
+   pas dans le CSS. D'où la classe : un fond sombre s'accompagne toujours
+   des jetons qui vont avec, et ça se vérifie. */
+.section--sombre {
+  --bg: var(--sombre-bg);
+  --bg-elevated: var(--sombre-surface);
+  --surface: var(--sombre-surface);
+  --text: var(--sombre-text);
+  --text-muted: var(--sombre-muted);
+  --text-subtle: var(--sombre-subtle);
+  --border: var(--sombre-border);
+  --border-strong: rgba(233, 222, 203, 0.24);
+  --accent: var(--sombre-accent);
+  --accent-strong: var(--brass-400);
+
+  background: var(--sombre-surface);
+  color: var(--sombre-text);
+}

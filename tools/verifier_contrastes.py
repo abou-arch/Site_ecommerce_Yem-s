@@ -153,15 +153,20 @@ def main():
     for page in sorted(glob.glob(os.path.join(RACINE, "*.html"))):
         with open(page, encoding="utf-8") as fh:
             html = fh.read()
-        for m in re.finditer(r'<section class="([^"]+)"', html):
+        for m in re.finditer(r'<section class="([^"]+)"([^>]*)>', html):
             total += 1
             cls = set(m.group(1).split())
+            # Un fond posé en STYLE EN LIGNE échappe totalement au CSS. C'est
+            # exactement ce qui rendait la section « garantie » illisible :
+            # fond espresso dans le HTML, texte clair hérité du corps.
+            en_ligne = re.search(r'style="[^"]*background(?:-color)?:\s*([^;"]+)', m.group(2))
             est_sombre = bool(cls & sombres)
             defaut = blanc if "section--blanc" in cls else nuage
             # Le fond n'est plus déduit de la classe : il est lu dans la
             # cascade. Un bloc « sombre » à qui une règle postérieure retire
             # son fond retombe donc sur le fond clair, et le contraste chute.
-            brut = fond_effectif(cls, regles_fond, sombre if est_sombre else defaut)
+            brut = (en_ligne.group(1).strip() if en_ligne
+                    else fond_effectif(cls, regles_fond, sombre if est_sombre else defaut))
             fond = resoudre(brut, d)
             if not fond.startswith("#"):
                 # « background: dégradé, var(--espresso-900) » : la dernière

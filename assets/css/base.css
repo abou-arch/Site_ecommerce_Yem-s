@@ -33,11 +33,17 @@
      de rien. Le fond dominant est donc un neutre très clair, et c'est le
      BLANC qui devient la couleur des cartes, posées dessus.
 
-     C'est le rapport qu'emploie Apple (fond #F5F5F7, cartes blanches). Le
-     nôtre est réchauffé vers la famille beige de la charte : à côté du cuir
-     et du laiton, un gris bleuté sonnerait faux. */
-  --blanc: #FFFFFF;      /* les cartes, les panneaux, ce qui avance */
-  --nuage: #F5F3EF;      /* le fond de page, ce qui recule */
+     C'est le rapport qu'emploie Apple (fond #F5F5F7, cartes blanches), mais
+     décalé vers la famille beige de la charte. Le blanc pur et le gris froid
+     d'Apple conviennent à de l'aluminium et à du verre ; à côté du cuir et du
+     laiton, ils virent au clinique.
+
+     Les deux valeurs ont donc été réchauffées et assombries d'un cran : le
+     « blanc » des cartes n'est plus #FFFFFF mais un ivoire, et le fond de page
+     descend franchement dans le beige. L'écart entre les deux reste le même,
+     c'est lui qui fait la profondeur. */
+  --blanc: #FBF9F5;      /* les cartes, les panneaux, ce qui avance */
+  --nuage: #EFEAE1;      /* le fond de page, ce qui recule */
 
   /* — Sémantique —
      Le site est CLAIR. Le blanc porte, le beige réchauffe, l'espresso ancre.
