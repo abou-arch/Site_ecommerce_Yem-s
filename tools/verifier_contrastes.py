@@ -86,7 +86,10 @@ def declarations(css, propriete):
     out = []
     for m in re.finditer(r"([^{}]+)\{([^}]*)\}", css):
         sels = [x.strip().split("*/")[-1].strip() for x in m.group(1).split(",")]
-        sels = [x for x in sels if x.startswith(".")]
+        # Un pseudo-élément (::before, ::after) peint une couche PAR-DESSUS
+        # son parent ; il ne remplace pas le fond de l'élément. Les compter
+        # revenait à croire qu'un voile décoratif était le fond de la section.
+        sels = [x for x in sels if x.startswith(".") and "::" not in x]
         if not sels:
             continue
         d = re.search(r"(?<![-\w])%s\s*:\s*([^;]+)" % propriete, m.group(2))
