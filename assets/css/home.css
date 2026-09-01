@@ -18,10 +18,16 @@
 
      Le plafond passe de 820 à 640 px pour la même raison : sur un moniteur
      de bureau, 820 px de hero, c'est un poster, pas une page d'accueil. */
-  min-height: min(72svh, 640px);
+  /* Le hero tient dans un écran, jamais plus.
+     min-height donne la hauteur voulue, max-height garantit qu'elle ne
+     dépasse jamais l'écran moins l'en-tête, quoi qu'il arrive au contenu.
+     Sans ce plafond, un titre qui passe sur trois lignes suffit à repousser
+     la suite hors du champ, et on retombe sur le défaut d'origine. */
+  min-height: min(64svh, 560px);
+  max-height: calc(100svh - var(--header-h));
   display: flex;
   align-items: flex-end;
-  padding-top: calc(var(--header-h) + var(--sp-5));
+  padding-top: calc(var(--header-h) + var(--sp-4));
   padding-bottom: var(--sp-6);
   overflow: hidden;
   isolation: isolate;

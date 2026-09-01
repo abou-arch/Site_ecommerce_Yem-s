@@ -173,7 +173,10 @@
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --dur: 420ms;
 
-  --header-h: 76px;
+  /* 76 px prenait une place réelle sur un écran de téléphone, et le hero
+     doit désormais tenir dans ce qui reste. 60 px suffisent largement à un
+     logo et quatre liens. */
+  --header-h: 60px;
 }
 
 /* --------------------------------------------------------------------------

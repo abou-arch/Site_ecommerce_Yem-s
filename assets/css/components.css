@@ -204,10 +204,29 @@
   border-bottom: 1px solid transparent;
 }
 
+/* En-tête translucide, dès le haut de page et pas seulement au défilement.
+   Le fondu laisse deviner la photo ou la vidéo qui passe dessous, ce qui
+   rattache la barre à la page au lieu de la poser comme un bandeau.
+   0,55 d'opacité plutôt que 0,88 : assez pour que le texte reste net,
+   assez peu pour qu'on voie à travers. */
+.header {
+  background: rgba(20, 16, 13, 0.42);
+  backdrop-filter: blur(18px) saturate(130%);
+  -webkit-backdrop-filter: blur(18px) saturate(130%);
+}
+
 .header.is-stuck {
-  background: rgba(20, 16, 13, 0.88);
-  backdrop-filter: blur(14px) saturate(140%);
-  border-bottom-color: var(--border);
+  background: rgba(20, 16, 13, 0.62);
+  backdrop-filter: blur(22px) saturate(140%);
+  -webkit-backdrop-filter: blur(22px) saturate(140%);
+  border-bottom-color: var(--sombre-border);
+}
+
+/* Repli pour les navigateurs sans flou : sans lui, l'en-tête serait un voile
+   à 42 % sur une photo claire, et le logo deviendrait illisible. */
+@supports not (backdrop-filter: blur(1px)) {
+  .header { background: rgba(20, 16, 13, 0.86); }
+  .header.is-stuck { background: rgba(20, 16, 13, 0.94); }
 }
 
 .header__inner {
@@ -838,3 +857,29 @@
   border-block: 0;
   box-shadow: 0 1px 0 rgba(28, 22, 19, .05), 0 -1px 0 rgba(28, 22, 19, .05);
 }
+
+/* Voile de protection sous l'en-tête.
+   ----------------------------------------------------------------------
+   Une barre translucide à 42 % est lisible sur une image sombre, et ne
+   l'est plus du tout sur une image claire : 2,69:1, mesuré. Or l'image du
+   hero va changer, et personne ne relira ce calcul le jour où elle change.
+
+   Ce dégradé, posé DANS le hero et non dans l'en-tête, assombrit les
+   150 premiers pixels quelle que soit l'image dessous. Le fondu de la barre
+   reste visible, la lisibilité ne dépend plus de la photo. */
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 150px;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgba(20, 16, 13, 0.72) 0%,
+    rgba(20, 16, 13, 0.38) 55%,
+    rgba(20, 16, 13, 0) 100%);
+}
+
+/* Le contenu du hero repasse au-dessus du voile. */
+.hero__inner { position: relative; z-index: 2; }
