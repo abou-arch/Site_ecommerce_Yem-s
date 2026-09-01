@@ -1,7 +1,7 @@
 # Images à générer avec ChatGPT
 
-On abandonne les vidéos. Trois images fixes les remplacent : une pour le hero,
-deux pour le configurateur sur-mesure.
+**La vidéo d'accueil est conservée.** Seules les deux vidéos du configurateur
+sur-mesure sont remplacées par des images fixes.
 
 **C'est un bon échange.** Une image bien cadrée tient mieux qu'une vidéo de
 huit secondes qui tourne en boucle, elle pèse dix fois moins, elle s'affiche
@@ -10,11 +10,10 @@ mouvement que pour le mouvement.
 
 ---
 
-## Les trois images
+## Les deux images
 
 | Fichier | Où | Format | Ce qu'elle montre |
 |---|---|---|---|
-| `hero.jpg` | premier écran de l'accueil | **16:9 paysage**, 2400 × 1350 | l'atelier, ambiance, pas un produit |
 | `cuirs.jpg` | configurateur, choix du cuir | **9:16 vertical**, 1080 × 1920 | les quatre teintes réelles |
 | `fils.jpg` | configurateur, choix du fil | **9:16 vertical**, 1080 × 1920 | les fils de lin poissé |
 
@@ -34,43 +33,13 @@ Muted and desaturated, never bright or saturated.
 ```
 
 **Pourquoi cette liste de refus est longue :** les générateurs adorent poser
-une étiquette de marque inventée sur un objet de cuir. Une marque fictive sur
-la photo d'accueil d'une vraie boutique, c'est exactement le problème pour
-lequel on a retiré sept photos du site.
+une étiquette de marque inventée sur un objet de cuir. Une marque fictive dans
+le configurateur d'une vraie boutique, c'est exactement le problème pour lequel
+on a retiré sept photos du site.
 
 ---
 
-## 1. `hero.jpg` — le premier écran
-
-Format **16:9 paysage**, le plus large possible.
-
-```
-A wide horizontal photograph of a leather workshop bench, seen at a low
-three-quarter angle. On the worn dark wood surface: a half-finished
-leather upper held in a wooden clamp, a curved awl, a spool of waxed
-linen thread, and a folded piece of vegetable-tanned cognac leather.
-The tools are arranged as if work has just been interrupted, not
-styled for display.
-
-Late afternoon light enters from a window on the left, raking low
-across the bench and catching the grain of the leather and the twist
-of the thread. The background falls away into deep warm shadow.
-
-The left third of the frame is quiet and dark, with no objects, so
-that text can sit there.
-```
-
-Puis le bloc de style.
-
-**Les deux phrases à ne pas retirer.** Celle sur le travail interrompu :
-sans elle, on obtient un étalage de catalogue, froid, qui ne raconte rien.
-Et celle sur le tiers gauche vide : le titre du site s'affiche à cet endroit,
-et sur une image chargée il devient illisible quel que soit le voile qu'on
-pose par-dessus.
-
----
-
-## 2. `cuirs.jpg` — les quatre cuirs
+## 1. `cuirs.jpg` — les quatre cuirs
 
 Format **9:16 vertical**.
 
@@ -99,7 +68,7 @@ choisit « noir » sur cette image doit recevoir un cuir lisse.
 
 ---
 
-## 3. `fils.jpg` — les fils de couture
+## 2. `fils.jpg` — les fils de couture
 
 Format **9:16 vertical**.
 
@@ -133,8 +102,6 @@ sans tout réécrire. Trois reprises efficaces :
 
 > Même image, mais le cuir noir doit être parfaitement lisse, sans aucun motif.
 
-> Même image, mais laisse le tiers gauche complètement vide et sombre.
-
 > Même image, mais retire toute étiquette ou marque sur les objets.
 
 Ne réécris pas le prompt entier à chaque essai : tu perds le cadrage que tu
@@ -148,7 +115,6 @@ venais d'obtenir.
 - [ ] Aucune main, aucun visage
 - [ ] Le noir du cuir est lisse
 - [ ] Aucune couleur hors palette, en particulier pas d'orange ni de rouge
-- [ ] Sur le hero : le tiers gauche est bien vide et sombre
 
 Regarde en grand, pas en vignette. Une marque inventée de trois millimètres se
 voit très bien une fois l'image affichée en pleine largeur.
@@ -157,18 +123,14 @@ voit très bien une fois l'image affichée en pleine largeur.
 
 ## Ce que je fais ensuite
 
-Dépose les trois fichiers dans `assets/img/` et dis-le moi. Je m'occupe de :
+Dépose les deux fichiers dans `assets/img/` et dis-le moi. Je m'occupe de :
 
-1. **Redimensionner et compresser.** Le hero descend à 1920 px de large en JPEG
-   et WebP, les deux verticales à 720 px. Objectif : moins de 150 Ko chacune,
-   contre 495 Ko pour la seule vidéo hero aujourd'hui.
+1. **Redimensionner et compresser.** Les deux verticales descendent à 720 px de
+   large, en JPEG et WebP. Objectif : moins de 120 Ko chacune, contre 487 et
+   788 Ko pour les vidéos qu'elles remplacent.
 2. **Générer les variantes** pour téléphone, avec `srcset`, comme pour les
    photos produit.
-3. **Remplacer le `<video>` par un `<picture>`** dans le hero et le
-   configurateur, retirer les fichiers `.mp4` et `.webm`, et alléger le
-   JavaScript qui gérait la lecture.
-4. **Vérifier la lisibilité du titre** sur la nouvelle image, en mesurant le
-   contraste réel du texte sur les pixels qui se trouvent derrière lui.
-
-Le voile sombre en haut du hero est déjà en place : il garantit que l'en-tête
-reste lisible quelle que soit la clarté de l'image que tu génères.
+3. **Remplacer le `<video>` par un `<picture>`** dans le configurateur, et
+   retirer `cuirs.mp4`, `cuirs.webm`, `fils.mp4` et `fils.webm`. La vidéo
+   d'accueil ne bouge pas.
+Gain attendu : environ **1,1 Mo de moins** sur la page du configurateur.

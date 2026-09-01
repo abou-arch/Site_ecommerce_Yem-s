@@ -883,3 +883,43 @@
 
 /* Le contenu du hero repasse au-dessus du voile. */
 .hero__inner { position: relative; z-index: 2; }
+
+/* ==========================================================================
+   LE FIL DE PROGRESSION
+   ==========================================================================
+   Une couture qui se tire à mesure qu'on descend la page. Deux raisons de
+   l'avoir plutôt qu'une barre pleine classique :
+
+   1. Le motif est celui de la marque, le point sellier, déjà présent sous
+      les titres et autour de la carte d'authenticité. Un trait plein aurait
+      été du mobilier de site, pas un signe de Yem's.
+   2. Sur une page longue, elle dit où l'on en est. C'est de l'information,
+      pas de la décoration, et c'est pour ça qu'elle reste affichée même sous
+      prefers-reduced-motion : on retire seulement la transition.
+   ========================================================================== */
+.fil-progression {
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: 2px;
+  z-index: 200;          /* au-dessus de l'en-tête, qui est à 100 */
+  pointer-events: none;
+  background: rgba(233, 222, 203, 0.10);
+}
+
+.fil-progression span {
+  display: block;
+  height: 100%;
+  /* La largeur est pilotée par --avance, écrit par motion.js. Valeur de
+     repli à 0 : sans JavaScript, le fil reste simplement invisible plutôt
+     que de rester bloqué en travers de l'écran. */
+  width: calc(var(--avance, 0) * 100%);
+  background: repeating-linear-gradient(
+    to right,
+    var(--brass-300) 0, var(--brass-300) 11px,
+    transparent 11px, transparent 20px);
+  transition: width 120ms linear;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fil-progression span { transition: none; }
+}

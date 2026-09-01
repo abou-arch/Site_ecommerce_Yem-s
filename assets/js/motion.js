@@ -152,4 +152,42 @@
       btn.addEventListener('blur', reset);
     });
   }
+
+  /* ----------------------------------------------------------------------
+     6. Le fil de progression
+     Écrit --avance (0 à 1) sur la barre fixe du haut de page.
+
+     Deux précautions qui comptent :
+     - le calcul est fait dans un requestAnimationFrame, jamais directement
+       dans l'écouteur de défilement. Sans ça, on relit la hauteur du
+       document à chaque pixel parcouru et le défilement saccade sur un
+       téléphone d'entrée de gamme.
+     - la hauteur utile est relue à chaque redimensionnement ET quand une
+       image finit de charger, sinon la progression se croit terminée avant
+       le bas de page.
+     ---------------------------------------------------------------------- */
+  const fil = document.querySelector('.fil-progression span');
+
+  if (fil) {
+    let tic = false;
+
+    const avancer = () => {
+      const utile = document.documentElement.scrollHeight - window.innerHeight;
+      const p = utile > 0 ? clamp(window.scrollY / utile) : 0;
+      fil.style.setProperty('--avance', p.toFixed(4));
+      tic = false;
+    };
+
+    const planifier = () => {
+      if (tic) return;
+      tic = true;
+      requestAnimationFrame(avancer);
+    };
+
+    window.addEventListener('scroll', planifier, { passive: true });
+    window.addEventListener('resize', planifier, { passive: true });
+    window.addEventListener('load', planifier);
+    avancer();
+  }
+
 })();
