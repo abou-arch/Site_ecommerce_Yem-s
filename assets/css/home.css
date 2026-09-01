@@ -10,11 +10,19 @@
    sans repousser le reste de la page hors de vue. */
 .hero {
   position: relative;
-  min-height: min(92svh, 820px);
+  /* 72 % de la hauteur d'écran, plafonné à 640 px.
+     À 92svh, le hero occupait la quasi-totalité de l'écran : rien d'autre
+     n'était visible à l'ouverture, et rien n'indiquait qu'il y avait une
+     suite. En s'arrêtant à 72 %, le haut de la section suivante dépasse et
+     l'œil comprend tout seul qu'il faut faire défiler.
+
+     Le plafond passe de 820 à 640 px pour la même raison : sur un moniteur
+     de bureau, 820 px de hero, c'est un poster, pas une page d'accueil. */
+  min-height: min(72svh, 640px);
   display: flex;
   align-items: flex-end;
-  padding-top: calc(var(--header-h) + var(--sp-6));
-  padding-bottom: var(--sp-7);
+  padding-top: calc(var(--header-h) + var(--sp-5));
+  padding-bottom: var(--sp-6);
   overflow: hidden;
   isolation: isolate;
 }
