@@ -108,7 +108,13 @@ def fond_effectif(classes, regles_fond, defaut):
     valeur = defaut
     for _, sels, v in regles_fond:
         for sel in sels:
-            base = sel.lstrip(".").split(":")[0].split("[")[0].split()[0]
+            # Un sélecteur descendant (« .section--light .eyebrow ») vise un
+            # ENFANT, pas la section. Les compter revenait à attribuer à la
+            # section la couleur de sa dernière petite étiquette, et c'est ce
+            # qui rendait ce contrôle aveugle au vrai défaut.
+            if " " in sel or ">" in sel:
+                continue
+            base = sel.lstrip(".").split(":")[0].split("[")[0]
             if base in classes:
                 valeur = v
     return valeur
