@@ -595,23 +595,46 @@ class Builder:
         images = product.get("images") or []
 
         # galerie
+        #
+        # Une même pièce se décline en plusieurs teintes. Chaque photo porte
+        # la sienne (« teinte » dans products.json) ; la fiche prépare un jeu
+        # de photos par teinte et le bouton de couleur affiche le bon. Une
+        # photo sans teinte vaut pour toutes. Tant que le client n'a rien
+        # choisi, c'est la première teinte qui s'affiche.
         if images:
-            main_shot = ('<div class="pshot" data-shot>%s\n          %s\n        </div>'
-                         % (badge(product["status"], "pshot__badge"),
-                            picture(product, base, 0, lazy=False)))
-            thumbs = ""
-            if len(images) > 1:
+            teintes = [c["name"] for c in product.get("colors") or []]
+            teintes = [t for t in teintes
+                       if any(im.get("teinte") == t for im in images)] or [None]
+
+            def vignette(i):
                 # Les visuels générés viennent après les vraies photos et le
                 # disent : la pièce livrée doit ressembler à ce que montre la
                 # fiche, et une image générée est idéalisée par construction.
-                def vignette(i):
-                    note = ('<span class="pshot__note">Visuel d\'ambiance · IA</span>'
-                            if images[i].get("ia") else "")
-                    return '        <div class="pshot">%s%s</div>' % (
-                        picture(product, base, i), note)
-                thumbs = '\n      <div class="gallery__thumbs">\n' + "\n".join(
-                    vignette(i) for i in range(1, len(images))
-                ) + "\n      </div>"
+                note = ('<span class="pshot__note">Visuel d\'ambiance · IA</span>'
+                        if images[i].get("ia") else "")
+                return '          <div class="pshot">%s%s</div>' % (
+                    picture(product, base, i), note)
+
+            jeux = []
+            for n, teinte in enumerate(teintes):
+                idx = [i for i, im in enumerate(images)
+                       if teinte is None or im.get("teinte") in (teinte, None)]
+                main = ('<div class="pshot" data-shot>%s\n          %s\n        </div>'
+                        % (badge(product["status"], "pshot__badge"),
+                           picture(product, base, idx[0], lazy=n > 0)))
+                thumbs = ""
+                if len(idx) > 1:
+                    thumbs = ('\n        <div class="gallery__thumbs">\n'
+                              + "\n".join(vignette(i) for i in idx[1:])
+                              + "\n        </div>")
+                if teinte is None:
+                    jeux.append(main + thumbs)
+                else:
+                    jeux.append('<div class="gallery__set" data-teinte="%s"%s>\n        %s%s\n      </div>'
+                                % (escape(teinte, quote=True), " hidden" if n else "",
+                                   main, thumbs))
+            main_shot = "\n      ".join(jeux)
+            thumbs = ""
         else:
             main_shot = ('<div class="pshot pshot--empty" data-shot>%s'
                          '<span class="pshot__note">Photo à venir</span></div>'
@@ -635,17 +658,21 @@ class Builder:
         # couleurs
         colors = ""
         if product.get("colors"):
+            # Un vrai bouton par couleur, avec son nom : une pastille muette
+            # oblige à deviner, et « Marine » se confond avec « Noir » à 30 px.
             swatches = "\n".join(
-                '          <button class="swatch swatch--btn" type="button" '
-                'style="background:%s" data-color="%s" aria-label="%s"></button>'
-                % (c["hex"], escape(c["name"], quote=True), escape(c["name"], quote=True))
+                '          <button class="teinte swatch--btn" type="button" data-color="%s">'
+                '<span class="teinte__dot" style="background:%s" aria-hidden="true"></span>%s</button>'
+                % (escape(c["name"], quote=True), c["hex"], escape(c["name"]))
                 for c in product["colors"])
+            aide = ("Choisissez une couleur" if len(product["colors"]) > 1
+                    else "Une seule couleur pour l'instant")
             colors = f"""        <div class="picker">
-          <span class="picker__label">Cuir</span>
+          <span class="picker__label">Couleur</span>
           <div class="picker__row">
 {swatches}
           </div>
-          <p class="picker__help" data-color-label>Choisissez une teinte</p>
+          <p class="picker__help" data-color-label>{aide}</p>
         </div>"""
 
         specs = "\n".join(

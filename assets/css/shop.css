@@ -179,31 +179,48 @@
   font-weight: 600;
 }
 
-/* Le nuancier de teinte reste visuellement à 30 px : plus gros, la rangée de
-   quatre pastilles perd son allure de gamme. On élargit donc la zone
-   TOUCHABLE sans toucher au dessin, avec un pseudo-élément transparent qui
-   déborde de 7 px sur chaque côté. Cible réelle : 44 px. */
-.swatch--btn {
-  position: relative;
-  width: 30px;
-  height: 30px;
-  padding: 0;
+/* Couleur : un bouton nommé par teinte, du même gabarit que les pointures,
+   avec une pastille de la couleur. Hauteur 44 px, cible tactile complète. */
+.teinte {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  min-height: 44px;
+  padding: 0.55rem 0.95rem 0.55rem 0.7rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
   cursor: pointer;
-  transition: box-shadow 260ms var(--ease), transform 260ms var(--ease);
+  transition:
+    border-color 260ms var(--ease),
+    color 260ms var(--ease),
+    background-color 260ms var(--ease);
 }
 
-.swatch--btn::before {
-  content: "";
-  position: absolute;
-  inset: -7px;
+.teinte__dot {
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18), 0 0 0 1px var(--border);
 }
 
-.swatch--btn:hover { transform: scale(1.08); }
+.teinte:hover { border-color: var(--brass-400); color: var(--text); }
 
-.swatch--btn.is-active {
-  box-shadow: 0 0 0 2px var(--bg), 0 0 0 3.5px var(--brass-400);
+.teinte.is-active {
+  border-color: var(--brass-400);
+  box-shadow: inset 0 0 0 1px var(--brass-400);
+  color: var(--text);
+  font-weight: 600;
 }
+
+.gallery__set {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.gallery__set[hidden] { display: none; }
 
 /* Actions */
 .product__actions { margin-bottom: var(--sp-6); }

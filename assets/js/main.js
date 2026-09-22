@@ -95,7 +95,12 @@
     try {
       const raw = localStorage.getItem(CART_KEY);
       const parsed = raw ? JSON.parse(raw) : [];
-      return Array.isArray(parsed) ? parsed : [];
+      if (!Array.isArray(parsed)) return [];
+      // Le Mocassin Tokpa noir était une pièce à part ; c'est désormais une
+      // couleur du Mocassin Tokpa. Un panier ancien est converti au passage.
+      return parsed.map((item) => (item && item.id === 'mocassin-tokpa-noir'
+        ? { ...item, id: 'mocassin-tokpa', name: 'Mocassin Tokpa', color: 'Noir' }
+        : item));
     } catch (err) {
       return [];
     }
@@ -172,13 +177,27 @@
   const getSize = initPicker('.size', 'size');
   const getColor = initPicker('.swatch--btn', 'color');
 
-  // l'intitulé « Choisissez une teinte » devient le nom du cuir retenu
+  // Choisir une couleur : l'intitulé prend son nom, et la galerie montre les
+  // photos de cette couleur (un .gallery__set par teinte, voir build.py).
   const colorLabel = $('[data-color-label]');
-  if (colorLabel) {
-    $$('.swatch--btn').forEach((btn) => {
-      btn.addEventListener('click', () => { colorLabel.textContent = btn.dataset.color; });
+  const colorButtons = $$('.swatch--btn');
+  const gallerySets = $$('.gallery__set[data-teinte]');
+  colorButtons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      if (colorLabel) colorLabel.textContent = btn.dataset.color;
+      const set = gallerySets.find((s) => s.dataset.teinte === btn.dataset.color);
+      if (!set) return;
+      gallerySets.forEach((s) => { s.hidden = s !== set; });
+      set.querySelectorAll('[data-shot]').forEach((el) => el.classList.add('is-shown'));
     });
-  }
+  });
+
+  // Rien n'est présélectionné, sauf s'il n'y a pas de choix à faire, ou si le
+  // lien demande une couleur précise (…/mocassin-tokpa.html?couleur=noir).
+  const voulue = (new URLSearchParams(location.search).get('couleur') || '').toLowerCase();
+  const preselect = colorButtons.length === 1 ? colorButtons[0]
+    : colorButtons.find((b) => b.dataset.color.toLowerCase() === voulue);
+  if (preselect) preselect.click();
 
   let toastEl = null;
   let toastTimer = null;
@@ -207,7 +226,7 @@
       const color = getColor && getColor();
 
       if (getSize && !size) { toast('Choisissez d\'abord une pointure.'); return; }
-      if (getColor && !color) { toast('Choisissez d\'abord un cuir.'); return; }
+      if (getColor && !color) { toast('Choisissez d\'abord une couleur.'); return; }
 
       addToCart({
         id: btn.dataset.id,
