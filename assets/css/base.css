@@ -80,7 +80,7 @@
 
   --text:          var(--espresso-800);              /* 15.4:1 sur blanc */
   --text-muted:    rgba(28, 22, 19, 0.72);           /* 8.9:1  sur blanc */
-  --text-subtle:   rgba(28, 22, 19, 0.60);           /* 6.1:1  sur blanc */
+  --text-subtle:   rgba(28, 22, 19, 0.68);           /* 6.8:1  sur blanc */
   --text-inverse:  var(--beige-100);
   --text-inverse-muted: rgba(244, 237, 226, 0.66);
 
@@ -97,7 +97,7 @@
   --sombre-surface: var(--espresso-800);
   --sombre-text:    var(--beige-100);
   --sombre-muted:   rgba(244, 237, 226, 0.66);
-  --sombre-subtle:  rgba(244, 237, 226, 0.52);
+  --sombre-subtle:  rgba(244, 237, 226, 0.64);
   --sombre-border:  rgba(233, 222, 203, 0.14);
   --sombre-accent:  var(--brass-300);
 

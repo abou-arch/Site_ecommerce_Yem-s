@@ -661,6 +661,204 @@
       "a_venir": true
     },
     {
+      "slug": "derby-noir",
+      "category": "selection",
+      "name": "Derby Noir",
+      "price": 52000,
+      "status": "amber",
+      "featured": false,
+      "bespoke": false,
+      "origine": "selection",
+      "short": "Un derby noir à semelle crantée, sobre en haut, affirmé au sol.",
+      "pitch": "Une silhouette derby noire qui donne un peu de présence à une tenue quotidienne. Les caractéristiques de matière et de montage sont à confirmer avec l'atelier.",
+      "images": [
+        {
+          "file": "derby-noir-ai",
+          "teinte": "Noir",
+          "ia": true,
+          "w": 1000,
+          "h": 1000,
+          "alt": "Derby noir à semelle crantée, photographié sur une dalle de pierre claire"
+        }
+      ],
+      "specs": [
+        { "label": "Silhouette", "value": "Derby à lacets" },
+        { "label": "Coloris", "value": "Noir" },
+        { "label": "Semelle", "value": "Crantée, à confirmer" },
+        { "label": "Pointures", "value": "39 à 45" },
+        { "label": "Matière", "value": "À confirmer" }
+      ],
+      "details": [],
+      "sizes": [39, 40, 41, 42, 43, 44, 45],
+      "colors": [{ "name": "Noir", "hex": "#1A1614" }],
+      "a_venir": false
+    },
+    {
+      "slug": "mocassin-contraste",
+      "category": "selection",
+      "name": "Mocassin Contraste",
+      "price": 48000,
+      "status": "amber",
+      "featured": false,
+      "bespoke": false,
+      "origine": "selection",
+      "short": "Un mocassin noir et blanc qui assume sa ligne graphique.",
+      "pitch": "Un modèle à enfiler au contraste net, pensé pour faire la différence sans ajouter de détail superflu. La composition exacte est à confirmer avec l'atelier.",
+      "images": [
+        {
+          "file": "mocassin-contraste-ai",
+          "teinte": "Noir et blanc",
+          "ia": true,
+          "w": 1000,
+          "h": 1000,
+          "alt": "Mocassin noir et blanc à semelle crantée, photographié sur une dalle de pierre claire"
+        }
+      ],
+      "specs": [
+        { "label": "Silhouette", "value": "Mocassin à enfiler" },
+        { "label": "Coloris", "value": "Noir et blanc" },
+        { "label": "Semelle", "value": "Crantée, à confirmer" },
+        { "label": "Pointures", "value": "39 à 45" },
+        { "label": "Matière", "value": "À confirmer" }
+      ],
+      "details": [],
+      "sizes": [39, 40, 41, 42, 43, 44, 45],
+      "colors": [{ "name": "Noir et blanc", "hex": "#F5F0E8" }],
+      "a_venir": false
+    },
+    {
+      "slug": "derby-cacao",
+      "category": "selection",
+      "name": "Derby Cacao",
+      "price": 52000,
+      "status": "amber",
+      "featured": false,
+      "bespoke": false,
+      "origine": "selection",
+      "short": "Un derby brun profond, facile à associer avec un pantalon clair ou marine.",
+      "pitch": "Une paire brune à bout mocassin, avec une présence plus chaleureuse que le noir. La matière et le montage seront confirmés avant la commande.",
+      "images": [
+        {
+          "file": "derby-cacao-ai",
+          "teinte": "Cacao",
+          "ia": true,
+          "w": 1000,
+          "h": 1000,
+          "alt": "Derby brun cacao à bout mocassin, photographié sur une dalle de pierre claire"
+        }
+      ],
+      "specs": [
+        { "label": "Silhouette", "value": "Derby à lacets" },
+        { "label": "Coloris", "value": "Cacao" },
+        { "label": "Semelle", "value": "À confirmer" },
+        { "label": "Pointures", "value": "39 à 45" },
+        { "label": "Matière", "value": "À confirmer" }
+      ],
+      "details": [],
+      "sizes": [39, 40, 41, 42, 43, 44, 45],
+      "colors": [{ "name": "Cacao", "hex": "#6B3525" }],
+      "a_venir": false
+    },
+    {
+      "slug": "loafer-marine",
+      "category": "selection",
+      "name": "Loafer Marine",
+      "price": 45000,
+      "status": "amber",
+      "featured": false,
+      "bespoke": false,
+      "origine": "selection",
+      "short": "Un loafer marine à bandeau, plus habillé qu'un mocassin souple.",
+      "pitch": "Une forme classique en bleu marine, avec bandeau sur l'empeigne et ligne nette. Les caractéristiques techniques sont à confirmer avec l'atelier.",
+      "images": [
+        {
+          "file": "loafer-marine-ai",
+          "teinte": "Marine",
+          "ia": true,
+          "w": 1000,
+          "h": 1000,
+          "alt": "Loafer en cuir bleu marine à bandeau, photographié sur une dalle de pierre claire"
+        }
+      ],
+      "specs": [
+        { "label": "Silhouette", "value": "Loafer à bandeau" },
+        { "label": "Coloris", "value": "Marine" },
+        { "label": "Semelle", "value": "À confirmer" },
+        { "label": "Pointures", "value": "39 à 45" },
+        { "label": "Matière", "value": "À confirmer" }
+      ],
+      "details": [],
+      "sizes": [39, 40, 41, 42, 43, 44, 45],
+      "colors": [{ "name": "Marine", "hex": "#232B3D" }],
+      "a_venir": false
+    },
+    {
+      "slug": "chelsea-noir",
+      "category": "selection",
+      "name": "Chelsea Noir",
+      "price": 58000,
+      "status": "amber",
+      "featured": false,
+      "bespoke": false,
+      "origine": "selection",
+      "short": "Une bottine Chelsea noire, nette et facile à enfiler.",
+      "pitch": "Une bottine basse à panneaux élastiqués, pensée pour passer du pantalon de ville au jean. La matière et le montage sont à confirmer avant commande.",
+      "images": [
+        {
+          "file": "chelsea-noir-ai",
+          "teinte": "Noir",
+          "ia": true,
+          "w": 1000,
+          "h": 1000,
+          "alt": "Bottines Chelsea noires photographiées sur une dalle de pierre claire"
+        }
+      ],
+      "specs": [
+        { "label": "Silhouette", "value": "Bottine Chelsea" },
+        { "label": "Coloris", "value": "Noir" },
+        { "label": "Fermeture", "value": "Panneaux élastiqués" },
+        { "label": "Pointures", "value": "39 à 45" },
+        { "label": "Matière", "value": "À confirmer" }
+      ],
+      "details": [],
+      "sizes": [39, 40, 41, 42, 43, 44, 45],
+      "colors": [{ "name": "Noir", "hex": "#1A1614" }],
+      "a_venir": false
+    },
+    {
+      "slug": "richelieu-noir",
+      "category": "selection",
+      "name": "Richelieu Noir",
+      "price": 60000,
+      "status": "amber",
+      "featured": false,
+      "bespoke": false,
+      "origine": "selection",
+      "short": "Un richelieu noir brogué, plus formel sans devenir austère.",
+      "pitch": "Un richelieu à lacets fermés, relevé par une ligne de perforations sur l'empeigne. Les caractéristiques exactes seront vérifiées par l'atelier.",
+      "images": [
+        {
+          "file": "richelieu-noir-ai",
+          "teinte": "Noir",
+          "ia": true,
+          "w": 1000,
+          "h": 1000,
+          "alt": "Richelieu noir brogué à lacets, photographié sur une dalle de pierre claire"
+        }
+      ],
+      "specs": [
+        { "label": "Silhouette", "value": "Richelieu brogué" },
+        { "label": "Coloris", "value": "Noir" },
+        { "label": "Fermeture", "value": "Lacets fermés" },
+        { "label": "Pointures", "value": "39 à 45" },
+        { "label": "Matière", "value": "À confirmer" }
+      ],
+      "details": [],
+      "sizes": [39, 40, 41, 42, 43, 44, 45],
+      "colors": [{ "name": "Noir", "hex": "#1A1614" }],
+      "a_venir": false
+    },
+    {
       "slug": "mocassin-tokpa",
       "category": "selection",
       "name": "Mocassin Tokpa",
