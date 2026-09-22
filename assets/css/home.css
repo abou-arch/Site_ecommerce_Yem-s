@@ -5,26 +5,12 @@
 /* --------------------------------------------------------------------------
    HERO
    -------------------------------------------------------------------------- */
-/* Plein écran plafonné : sur un grand moniteur, 100svh donnait un hero de
-   1100 px que personne ne voit en entier. Le plafond garde la vidéo ample
-   sans repousser le reste de la page hors de vue. */
+/* Hero plein écran : il installe immédiatement l'univers de la maison et
+   laisse la section suivante apparaître au scroll, plutôt que de compresser
+   l'ouverture dans une hauteur arbitraire. */
 .hero {
   position: relative;
-  /* 72 % de la hauteur d'écran, plafonné à 640 px.
-     À 92svh, le hero occupait la quasi-totalité de l'écran : rien d'autre
-     n'était visible à l'ouverture, et rien n'indiquait qu'il y avait une
-     suite. En s'arrêtant à 72 %, le haut de la section suivante dépasse et
-     l'œil comprend tout seul qu'il faut faire défiler.
-
-     Le plafond passe de 820 à 640 px pour la même raison : sur un moniteur
-     de bureau, 820 px de hero, c'est un poster, pas une page d'accueil. */
-  /* Le hero tient dans un écran, jamais plus.
-     min-height donne la hauteur voulue, max-height garantit qu'elle ne
-     dépasse jamais l'écran moins l'en-tête, quoi qu'il arrive au contenu.
-     Sans ce plafond, un titre qui passe sur trois lignes suffit à repousser
-     la suite hors du champ, et on retombe sur le défaut d'origine. */
-  min-height: min(68svh, 600px);
-  max-height: calc(100svh - var(--header-h));
+  min-height: 100svh;
   display: flex;
   align-items: flex-end;
   padding-top: calc(var(--header-h) + var(--sp-4));
@@ -196,7 +182,7 @@
 }
 
 @media (max-width: 900px) {
-  .hero { min-height: 0; }
+  .hero { min-height: 100svh; }
   .scroll-hint { display: none; }
 }
 
