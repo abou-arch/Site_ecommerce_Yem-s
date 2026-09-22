@@ -19,15 +19,12 @@
   isolation: isolate;
 }
 
-/* Placeholder vidéo : dégradé animé « cuir » — remplacer par <video> */
+/* Image hero : le visuel reste en fond pour laisser le texte respirer. */
 .hero__media {
   position: absolute;
   inset: 0;
   z-index: -2;
-  background:
-    radial-gradient(90% 70% at 78% 18%, rgba(176, 141, 87, 0.30) 0%, transparent 60%),
-    radial-gradient(70% 60% at 12% 88%, rgba(140, 90, 60, 0.26) 0%, transparent 62%),
-    linear-gradient(168deg, var(--espresso-700) 0%, var(--espresso-900) 62%);
+  background: url("../img/hero.png") center right / cover no-repeat;
 }
 
 .hero__media video,

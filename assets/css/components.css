@@ -564,6 +564,14 @@
 
 .footer__list a:hover { color: var(--accent); }
 
+.footer__ai-note {
+  max-width: 38ch;
+  margin-top: var(--sp-4);
+  font-size: var(--fs-xs);
+  line-height: 1.55;
+  color: var(--text-subtle);
+}
+
 .newsletter {
   display: flex;
   gap: var(--sp-2);

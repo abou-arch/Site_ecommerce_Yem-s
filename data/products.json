@@ -674,12 +674,14 @@
       "images": [
         {
           "file": "mocassin-marine",
+          "ai_file": "mocassin-marine-ai.png",
           "w": 1000,
           "h": 1250,
           "alt": "Mocassin Tokpa en daim bleu marine, semelle blanche, vu de trois quarts"
         },
         {
           "file": "mocassin-marine-alt",
+          "ai_file": "mocassin-marine-alt-ai.png",
           "w": 1000,
           "h": 1250,
           "alt": "Mocassin Tokpa vu de dessus, première de propreté cuir naturel"
@@ -748,6 +750,7 @@
       "images": [
         {
           "file": "mocassin-noir",
+          "ai_file": "mocassin-noir-ai.png",
           "w": 1000,
           "h": 1250,
           "alt": "Mocassin Tokpa en daim noir, semelle blanche, vu de profil"
@@ -816,12 +819,14 @@
       "images": [
         {
           "file": "sneaker-marine",
+          "ai_file": "sneaker-marine-ai.png",
           "w": 1000,
           "h": 1250,
           "alt": "Sneaker Ganvié en cuir marine perforé, laçage plat, vue de trois quarts"
         },
         {
           "file": "sneaker-marine-alt",
+          "ai_file": "sneaker-marine-alt-ai.png",
           "w": 1000,
           "h": 1250,
           "alt": "Semelle à crampons plats de la sneaker Ganvié"

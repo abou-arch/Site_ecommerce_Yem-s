@@ -135,6 +135,20 @@ def picture(product, base, index=0, lazy=True, sizes=None):
     # La valeur par défaut décrit la grille réelle : pleine largeur sur
     # téléphone, une demie sur tablette, un tiers sur grand écran.
     mesure = sizes or "(max-width: 560px) 92vw, (max-width: 900px) 46vw, 30vw"
+    ai_file = img.get("ai_file")
+    if ai_file:
+        return (
+            '<picture>\n'
+            '            <source srcset="%sassets/img/%s" sizes="%s" type="image/png">\n'
+            '            <img src="%sassets/img/%s" sizes="%s"\n'
+            '                 width="%d" height="%d"%s\n'
+            '                 alt="%s">\n'
+            '          </picture>'
+            % (base, ai_file, mesure,
+               base, ai_file, mesure,
+               img["w"], img["h"], loading,
+               escape(img["alt"], quote=True))
+        )
     petit = os.path.exists(os.path.join(ROOT, "assets", "img", img["file"] + "-500.webp"))
 
     def jeu(ext):
@@ -1761,7 +1775,7 @@ class Builder:
 
         orphans = [c["slug"] for c in self.categories if not self.by_category(c["slug"])]
         if orphans:
-            print("\n  note : catégories sans produit → %s" % ", ".join(orphans))
+            print("\n  note : catégories sans produit -> %s" % ", ".join(orphans))
         todo = [p["slug"] for p in self.products if not p.get("images")]
         if todo:
             print("  note : produits sans photo → %s" % ", ".join(todo))
