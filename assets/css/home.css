@@ -283,8 +283,8 @@
 .detail-list__item {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
-  gap: var(--sp-5);
-  padding-block: var(--sp-5);
+  gap: var(--sp-6);
+  padding-block: var(--sp-6);
   border-bottom: 1px solid rgba(28, 22, 19, 0.12);
 }
 
@@ -301,7 +301,8 @@
 
 .detail-list__item p {
   font-size: var(--fs-sm);
-  color: var(--text-inverse-muted);
+  color: var(--text-muted);
+  line-height: var(--lh-base);
 }
 
 /* --------------------------------------------------------------------------

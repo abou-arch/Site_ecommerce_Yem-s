@@ -326,7 +326,13 @@ class Builder:
         # vignette, ni fiche, ni panier. Elle reste dans le catalogue pour
         # qu'il suffise de basculer a_venir à false le jour des photos.
         self.a_venir = [p for p in self.data["products"] if p.get("a_venir")]
-        self.products = [p for p in self.data["products"] if not p.get("a_venir")]
+        # Les formes du configurateur existent dans le même catalogue éditorial
+        # que les pièces visibles, mais ne doivent jamais s'échapper dans les
+        # grilles, les catégories ou le panier si leur statut change plus tard.
+        self.products = [
+            p for p in self.data["products"]
+            if not p.get("a_venir") and not p.get("configurateur_only")
+        ]
         self.categories = self.data["categories"]
         self.base_tpl = read(os.path.join(TPL, "base.html"))
         self.svg_defs = read(os.path.join(TPL, "partials", "svg-defs.html")).strip()

@@ -153,16 +153,16 @@
   /* Proportions verticales : les sections respirent, sans prendre le pas sur
      les produits. Le haut de l'échelle est volontairement inférieur à deux
      fois la largeur de lecture. */
-  --section-y: clamp(3rem, 5vw, 5rem);
+  --section-y: clamp(3.5rem, 5.5vw, 5.75rem);
 
   /* — Layout —
      Trois largeurs, parce qu'un texte et une barre de navigation n'ont pas
      les mêmes besoins. --container borne la lecture ; --container-wide sert
      au mobilier (header, footer, grilles de produits), qui doit tenir les
      bords sinon la page paraît flotter au milieu de l'écran. */
-  --container: 1240px;
+  --container: 1200px;
   --container-narrow: 760px;
-  --container-wide: 1440px;
+  --container-wide: 1360px;
   --gutter: clamp(1.25rem, 4vw, 4rem);
 
   /* — Divers — */
@@ -352,7 +352,7 @@ p { text-wrap: pretty; }
   display: flex;
   flex-direction: column;
   gap: var(--sp-3);
-  margin-bottom: var(--sp-6);
+  margin-bottom: var(--sp-7);
 }
 
 .section-head--center {
@@ -372,7 +372,7 @@ p { text-wrap: pretty; }
    maintenir. min(100%, Xpx) évite le débordement sur très petit écran.
    Les grilles de produits ont leurs propres classes (.collections__grid,
    .shop-grid) : celle-ci ne sert plus qu'aux blocs éditoriaux. */
-.grid { display: grid; gap: var(--sp-5); }
+.grid { display: grid; gap: var(--sp-6); }
 .grid--2 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr)); }
 .grid--3 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 290px), 1fr)); }
 

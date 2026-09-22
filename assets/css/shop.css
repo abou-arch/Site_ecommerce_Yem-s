@@ -3,7 +3,7 @@
    ========================================================================== */
 
 /* Les pages intérieures n'ont pas de hero : il faut dégager le header fixe. */
-.section--top { padding-top: calc(var(--header-h) + var(--sp-6)); }
+.section--top { padding-top: calc(var(--header-h) + var(--sp-7)); }
 
 /* Titre de page : c'est un h1 pour le référencement, à l'échelle d'un h2 à l'écran. */
 .page-title { font-size: var(--fs-3xl); }
@@ -79,8 +79,8 @@
    -------------------------------------------------------------------------- */
 .product {
   display: grid;
-  grid-template-columns: minmax(0, 1.08fr) minmax(340px, 0.92fr);
-  gap: clamp(2rem, 5vw, 4.5rem);
+  grid-template-columns: minmax(0, 1.12fr) minmax(340px, 0.88fr);
+  gap: clamp(2rem, 5vw, 5rem);
   align-items: start;
 }
 

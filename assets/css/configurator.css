@@ -19,7 +19,7 @@
 }
 
 @media (min-width: 1000px) {
-  .cfg { grid-template-columns: minmax(0, 1.2fr) minmax(340px, 0.8fr); }
+  .cfg { grid-template-columns: minmax(0, 1.15fr) minmax(340px, 0.85fr); }
   .cfg__steps { order: 1; }
 }
 
@@ -27,7 +27,7 @@
    LES ÉTAPES
    -------------------------------------------------------------------------- */
 .cfg-step {
-  padding-block: var(--sp-7);
+  padding-block: var(--sp-8);
   border-top: 1px solid var(--border);
 }
 
