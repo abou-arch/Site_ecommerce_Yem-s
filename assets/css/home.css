@@ -90,16 +90,42 @@
 
 /* Une seule colonne : la vidéo porte la section, le texte se pose dessus.
    Le max-width empêche les lignes de courir sur toute la largeur en grand écran. */
+/* Hero en une seule colonne, centré.
+   ----------------------------------------------------------------------
+   La grille précédente réservait la moitié droite au média. La vidéo
+   retirée, cette moitié restait vide : le texte se tassait à gauche et
+   l'écran paraissait à moitié fini. Une colonne centrée n'a pas ce défaut,
+   elle tient debout sans aucune image, et elle reste juste le jour où
+   l'image arrivera : il suffira de la passer en fond. */
 .hero__inner {
   position: relative;
-  display: grid;
-  align-items: end;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  text-align: center;
   width: 100%;
 }
 
-.hero__inner > div { max-width: 50ch; }
+.hero__inner > div {
+  /* 62ch et non 50 : centré, un bloc trop étroit fait colonne de journal. */
+  max-width: 62ch;
+  margin-inline: auto;
+}
 
-.hero h1 { margin-block: var(--sp-4) var(--sp-4); max-width: 15ch; }
+/* Le titre reprend de l'ampleur. À 15ch il se cassait en trois lignes
+   courtes sur une colonne centrée, ce qui hachait la phrase. */
+.hero h1 {
+  margin-block: var(--sp-4) var(--sp-4);
+  max-width: 22ch;
+  margin-inline: auto;
+}
+
+/* Tout ce qui suit se centre avec lui. */
+.hero .lede,
+.hero__pay { margin-inline: auto; }
+.hero__actions { justify-content: center; }
+.hero__stats { justify-content: center; }
 
 .hero__pay {
   margin-top: var(--sp-5);
@@ -314,8 +340,8 @@
   position: relative;
   overflow: hidden;
   background:
-    radial-gradient(80% 120% at 88% 12%, rgba(176, 141, 87, 0.20) 0%, transparent 58%),
-    var(--espresso-800);
+    radial-gradient(80% 120% at 88% 12%, rgba(176, 141, 87, 0.10) 0%, transparent 58%),
+    var(--color-60);
 }
 
 .bespoke__grid {
@@ -341,7 +367,7 @@
 
 .step:hover {
   border-color: rgba(201, 164, 106, 0.45);
-  background: rgba(20, 16, 13, 0.75);
+  background: var(--beige-50);
 }
 
 .step__num {

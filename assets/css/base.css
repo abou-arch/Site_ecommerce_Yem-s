@@ -45,6 +45,17 @@
   --blanc: #FBF9F5;      /* les cartes, les panneaux, ce qui avance */
   --nuage: #EFEAE1;      /* le fond de page, ce qui recule */
 
+  /* — Règle 60 / 30 / 10 —
+     60 % : le nuage porte la page et laisse respirer les photos.
+     30 % : l'ivoire réserve les surfaces élevées aux cartes et formulaires.
+     10 % : l'espresso et le laiton signalent la marque, les actions et les
+     états actifs. Ces rôles évitent que chaque composant invente sa propre
+     combinaison de couleurs. */
+  --color-60: var(--nuage);
+  --color-30: var(--blanc);
+  --color-10: var(--espresso-900);
+  --color-accent: var(--brass-600);
+
   /* — Sémantique —
      Le site est CLAIR. Le blanc porte, le beige réchauffe, l'espresso ancre.
      Les trois familles de la charte n'ont pas bougé d'un point : seul leur
@@ -57,10 +68,10 @@
 
      Les blocs qui restent sombres (en-tête, hero, pied de page) ne lisent plus
      ces jetons : ils utilisent la série --sombre-* définie juste après. */
-  --bg:            var(--nuage);     /* le fond de page */
-  --bg-elevated:   var(--blanc);     /* une carte posée dessus */
-  --bg-inverse:    var(--espresso-900);
-  --surface:       var(--blanc);
+  --bg:            var(--color-60);  /* 60 % : fond de page */
+  --bg-elevated:   var(--color-30);  /* 30 % : carte posée dessus */
+  --bg-inverse:    var(--color-10);  /* 10 % : ancrage de marque */
+  --surface:       var(--color-30);
   /* Bordures très discrètes : sur une interface claire, la séparation se
      fait par le changement de fond et par l'ombre, pas par un filet gris.
      Elles ne servent plus qu'aux champs de saisie et aux tableaux. */
@@ -76,8 +87,8 @@
   /* Sur fond clair, c'est le laiton SOMBRE qui porte. Le laiton clair y
      tombe à 2,7:1, c'est-à-dire illisible. La règle est déjà écrite dans la
      planche d'identité, elle s'applique enfin à tout le site. */
-  --accent:        var(--brass-600);
-  --accent-strong: var(--brass-600);
+  --accent:        var(--color-accent);
+  --accent-strong: var(--color-accent);
 
   /* — Les ancrages sombres : en-tête, hero, pied de page —
      Ils gardent la signature de la marque et donnent à la page un haut et un

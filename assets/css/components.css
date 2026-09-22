@@ -802,6 +802,48 @@
   color: var(--sombre-text);
 }
 
+/* Le sur-mesure est une étape de lecture, pas un deuxième hero.
+   Il revient dans la dominante claire (60 %) ; le panneau de droite garde
+   l'espresso comme accent (10 %). Cela évite d'empiler plusieurs grands
+   aplats foncés sur la page d'accueil. */
+.bespoke {
+  --bg: var(--color-60);
+  --bg-elevated: var(--color-30);
+  --surface: var(--color-30);
+  --text: var(--espresso-800);
+  --text-muted: rgba(28, 22, 19, 0.72);
+  --text-subtle: rgba(28, 22, 19, 0.60);
+  --border: rgba(28, 22, 19, 0.10);
+  --border-strong: rgba(28, 22, 19, 0.18);
+  --accent: var(--color-accent);
+  --accent-strong: var(--color-accent);
+  background: var(--color-60);
+  color: var(--text);
+}
+
+.bespoke .step {
+  background: var(--color-30);
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+
+.bespoke .step p { color: var(--text-muted); }
+
+.bespoke .bespoke__panel {
+  --bg: var(--sombre-bg);
+  --bg-elevated: var(--sombre-surface);
+  --surface: var(--sombre-surface);
+  --text: var(--sombre-text);
+  --text-muted: var(--sombre-muted);
+  --text-subtle: var(--sombre-subtle);
+  --border: var(--sombre-border);
+  --border-strong: rgba(233, 222, 203, 0.24);
+  --accent: var(--sombre-accent);
+  --accent-strong: var(--brass-400);
+  background: linear-gradient(150deg, var(--espresso-600), var(--color-10));
+  color: var(--sombre-text);
+}
+
 /* ==========================================================================
    LE RAPPORT NUAGE / BLANC
    ==========================================================================
@@ -924,16 +966,32 @@
   .fil-progression span { transition: none; }
 }
 
-/* Une section entièrement sombre au milieu du corps clair.
+/* Section de garantie dans le corps clair.
    ----------------------------------------------------------------------
-   Cette section posait son fond avec un style EN LIGNE dans le HTML :
-   « style="background:var(--espresso-800)" ». Elle avait donc un fond
-   sombre et le texte du corps clair, espresso sur espresso, invisible.
+   La section reste dominante claire pour respecter le rapport 60 / 30 / 10.
+   Seule la carte d'authenticité porte le fond espresso.
 
-   Et aucun contrôle CSS ne pouvait le voir, puisque la déclaration n'était
-   pas dans le CSS. D'où la classe : un fond sombre s'accompagne toujours
-   des jetons qui vont avec, et ça se vérifie. */
+   Les jetons clairs sont posés ici explicitement afin que le texte et les
+   bordures restent cohérents avec le fond, même si la classe historique
+   « section--sombre » est conservée dans le HTML. */
 .section--sombre {
+  --bg: var(--color-60);
+  --bg-elevated: var(--color-30);
+  --surface: var(--color-30);
+  --text: var(--espresso-800);
+  --text-muted: rgba(28, 22, 19, 0.72);
+  --text-subtle: rgba(28, 22, 19, 0.60);
+  --border: rgba(28, 22, 19, 0.10);
+  --border-strong: rgba(28, 22, 19, 0.18);
+  --accent: var(--color-accent);
+  --accent-strong: var(--color-accent);
+
+  background: var(--color-60);
+  color: var(--text);
+}
+
+/* La carte d'authenticité reste le seul aplat espresso de la section. */
+.section--sombre .auth-card {
   --bg: var(--sombre-bg);
   --bg-elevated: var(--sombre-surface);
   --surface: var(--sombre-surface);
@@ -944,7 +1002,5 @@
   --border-strong: rgba(233, 222, 203, 0.24);
   --accent: var(--sombre-accent);
   --accent-strong: var(--brass-400);
-
-  background: var(--sombre-surface);
   color: var(--sombre-text);
 }
