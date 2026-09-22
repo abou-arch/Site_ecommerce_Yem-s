@@ -135,20 +135,6 @@ def picture(product, base, index=0, lazy=True, sizes=None):
     # La valeur par défaut décrit la grille réelle : pleine largeur sur
     # téléphone, une demie sur tablette, un tiers sur grand écran.
     mesure = sizes or "(max-width: 560px) 92vw, (max-width: 900px) 46vw, 30vw"
-    ai_file = img.get("ai_file")
-    if ai_file:
-        return (
-            '<picture>\n'
-            '            <source srcset="%sassets/img/%s" sizes="%s" type="image/png">\n'
-            '            <img src="%sassets/img/%s" sizes="%s"\n'
-            '                 width="%d" height="%d"%s\n'
-            '                 alt="%s">\n'
-            '          </picture>'
-            % (base, ai_file, mesure,
-               base, ai_file, mesure,
-               img["w"], img["h"], loading,
-               escape(img["alt"], quote=True))
-        )
     petit = os.path.exists(os.path.join(ROOT, "assets", "img", img["file"] + "-500.webp"))
 
     def jeu(ext):
@@ -615,9 +601,16 @@ class Builder:
                             picture(product, base, 0, lazy=False)))
             thumbs = ""
             if len(images) > 1:
+                # Les visuels générés viennent après les vraies photos et le
+                # disent : la pièce livrée doit ressembler à ce que montre la
+                # fiche, et une image générée est idéalisée par construction.
+                def vignette(i):
+                    note = ('<span class="pshot__note">Visuel d\'ambiance · IA</span>'
+                            if images[i].get("ia") else "")
+                    return '        <div class="pshot">%s%s</div>' % (
+                        picture(product, base, i), note)
                 thumbs = '\n      <div class="gallery__thumbs">\n' + "\n".join(
-                    '        <div class="pshot">%s</div>' % picture(product, base, i)
-                    for i in range(1, len(images))
+                    vignette(i) for i in range(1, len(images))
                 ) + "\n      </div>"
         else:
             main_shot = ('<div class="pshot pshot--empty" data-shot>%s'

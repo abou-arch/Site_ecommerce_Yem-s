@@ -34,3 +34,9 @@ hero.mp4
 course_all.txt
 *.jpeg
 .git/
+
+# Sources PNG des visuels générés : jamais référencées par les pages,
+# tools/images_ia.py en tire les WebP/JPEG servis.
+/hero.png
+assets/img/hero.png
+assets/img/*-ai.png

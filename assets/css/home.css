@@ -19,12 +19,26 @@
   isolation: isolate;
 }
 
-/* Image hero : le visuel reste en fond pour laisser le texte respirer. */
+/* Image hero : le visuel reste en fond pour laisser le texte respirer.
+   WebP d'abord, JPEG pour les navigateurs qui ne le lisent pas ; une
+   déclinaison de 900 px pour les téléphones. Le PNG source (1,8 Mo) n'est
+   jamais servi — tools/images_ia.py en tire ces fichiers. */
 .hero__media {
   position: absolute;
   inset: 0;
   z-index: -2;
-  background: url("../img/hero.png") center right / cover no-repeat;
+  background: var(--espresso-900) center right / cover no-repeat;
+  background-image: url("../img/hero.jpg");
+  background-image: image-set(url("../img/hero.webp") type("image/webp"),
+                              url("../img/hero.jpg") type("image/jpeg"));
+}
+
+@media (max-width: 900px) {
+  .hero__media {
+    background-image: url("../img/hero-900.jpg");
+    background-image: image-set(url("../img/hero-900.webp") type("image/webp"),
+                                url("../img/hero-900.jpg") type("image/jpeg"));
+  }
 }
 
 .hero__media video,
