@@ -10,7 +10,7 @@
 }
 
 @media (min-width: 1000px) {
-  .shop-grid { grid-template-columns: minmax(0, 1.2fr) minmax(340px, 0.8fr); }
+  .shop-grid { grid-template-columns: minmax(0, 1.25fr) minmax(360px, 0.75fr); }
 }
 
 .shop-aside {

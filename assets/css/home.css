@@ -23,7 +23,7 @@
      dépasse jamais l'écran moins l'en-tête, quoi qu'il arrive au contenu.
      Sans ce plafond, un titre qui passe sur trois lignes suffit à repousser
      la suite hors du champ, et on retombe sur le défaut d'origine. */
-  min-height: min(64svh, 560px);
+  min-height: min(68svh, 600px);
   max-height: calc(100svh - var(--header-h));
   display: flex;
   align-items: flex-end;
@@ -205,9 +205,13 @@
    -------------------------------------------------------------------------- */
 .story__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr));
-  gap: clamp(2.5rem, 6vw, 5.5rem);
+  grid-template-columns: minmax(0, 1.08fr) minmax(320px, 0.92fr);
+  gap: clamp(3rem, 7vw, 6.5rem);
   align-items: start;
+}
+
+@media (max-width: 900px) {
+  .story__grid { grid-template-columns: 1fr; }
 }
 
 .story__lead {
@@ -321,7 +325,15 @@
   --shot-ratio: 1 / 1;
   display: grid;
   gap: var(--sp-5) var(--sp-4);
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 720px) {
+  .collections__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (min-width: 1180px) {
+  .collections__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }
 
 /* Pages catégorie : trois par rangée, format portrait. On y vient pour
@@ -330,7 +342,15 @@
   --shot-ratio: 4 / 5;
   display: grid;
   gap: var(--sp-6) var(--sp-5);
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 720px) {
+  .shop-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (min-width: 1180px) {
+  .shop-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 
 /* --------------------------------------------------------------------------
@@ -346,9 +366,13 @@
 
 .bespoke__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
-  gap: clamp(2.5rem, 6vw, 5.5rem);
+  grid-template-columns: 1fr;
+  gap: clamp(2.5rem, 6vw, 5rem);
   align-items: center;
+}
+
+@media (min-width: 900px) {
+  .bespoke__grid { grid-template-columns: minmax(0, 1.06fr) minmax(360px, 0.94fr); }
 }
 
 .steps { display: flex; flex-direction: column; gap: var(--sp-4); }
@@ -428,7 +452,15 @@
 /* --------------------------------------------------------------------------
    OFFRES
    -------------------------------------------------------------------------- */
-.offers { display: grid; gap: var(--sp-5); grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); }
+.offers { display: grid; gap: var(--sp-5); grid-template-columns: 1fr; }
+
+@media (min-width: 700px) {
+  .offers { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (min-width: 1120px) {
+  .offers { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
 
 .offer {
   position: relative;
@@ -512,9 +544,14 @@
    -------------------------------------------------------------------------- */
 .assurance__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr));
-  gap: clamp(2.5rem, 6vw, 5.5rem);
+  grid-template-columns: 1fr;
+  gap: clamp(2.5rem, 6vw, 5rem);
   align-items: center;
+}
+
+@media (min-width: 900px) {
+  .assurance__grid { grid-template-columns: minmax(320px, 0.82fr) minmax(0, 1.18fr); }
+  .auth-card { max-width: 520px; width: 100%; justify-self: center; }
 }
 
 .auth-card {

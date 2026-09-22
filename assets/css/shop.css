@@ -79,7 +79,7 @@
    -------------------------------------------------------------------------- */
 .product {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 460px), 1fr));
+  grid-template-columns: minmax(0, 1.08fr) minmax(340px, 0.92fr);
   gap: clamp(2rem, 5vw, 4.5rem);
   align-items: start;
 }
@@ -243,6 +243,7 @@
 .product__reassure svg { width: 18px; height: 18px; color: var(--accent); flex: none; }
 
 @media (max-width: 900px) {
+  .product { grid-template-columns: 1fr; }
   .product__gallery { position: static; }
   .product__name { font-size: var(--fs-2xl); }
 }

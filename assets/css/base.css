@@ -150,20 +150,20 @@
   --sp-9: 6rem;
   --sp-10: 8rem;
 
-  /* Appliqué en haut ET en bas : 8,5rem faisait 272 px de vide entre deux
-     sections, multiplié par neuf sections. C'est là que partait la longueur
-     de la page. */
-  --section-y: clamp(3.25rem, 6vw, 5.75rem);
+  /* Proportions verticales : les sections respirent, sans prendre le pas sur
+     les produits. Le haut de l'échelle est volontairement inférieur à deux
+     fois la largeur de lecture. */
+  --section-y: clamp(3rem, 5vw, 5rem);
 
   /* — Layout —
      Trois largeurs, parce qu'un texte et une barre de navigation n'ont pas
      les mêmes besoins. --container borne la lecture ; --container-wide sert
      au mobilier (header, footer, grilles de produits), qui doit tenir les
      bords sinon la page paraît flotter au milieu de l'écran. */
-  --container: 1180px;
-  --container-narrow: 700px;
-  --container-wide: 1560px;
-  --gutter: clamp(1.25rem, 4vw, 3rem);
+  --container: 1240px;
+  --container-narrow: 760px;
+  --container-wide: 1440px;
+  --gutter: clamp(1.25rem, 4vw, 4rem);
 
   /* — Divers — */
   /* Rayons élargis. Les valeurs précédentes (3, 6, 14) venaient d'une
