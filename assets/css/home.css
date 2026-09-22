@@ -62,11 +62,11 @@
   background:
     linear-gradient(
       to right,
-      rgba(20, 16, 13, 0.93) 0%,
-      rgba(20, 16, 13, 0.87) 30%,
-      rgba(20, 16, 13, 0.80) 52%,
-      rgba(20, 16, 13, 0.44) 76%,
-      rgba(20, 16, 13, 0.26) 100%
+      rgba(20, 16, 13, 0.84) 0%,
+      rgba(20, 16, 13, 0.70) 30%,
+      rgba(20, 16, 13, 0.48) 52%,
+      rgba(20, 16, 13, 0.20) 76%,
+      rgba(20, 16, 13, 0.08) 100%
     ),
     linear-gradient(
       to top,
@@ -85,44 +85,34 @@
   opacity: 0.5;
 }
 
-/* Une seule colonne : la vidéo porte la section, le texte se pose dessus.
+/* Le texte reste à gauche pour laisser la scène produit respirer à droite.
    Le max-width empêche les lignes de courir sur toute la largeur en grand écran. */
-/* Hero en une seule colonne, centré.
-   ----------------------------------------------------------------------
-   La grille précédente réservait la moitié droite au média. La vidéo
-   retirée, cette moitié restait vide : le texte se tassait à gauche et
-   l'écran paraissait à moitié fini. Une colonne centrée n'a pas ce défaut,
-   elle tient debout sans aucune image, et elle reste juste le jour où
-   l'image arrivera : il suffira de la passer en fond. */
 .hero__inner {
   position: relative;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   justify-content: flex-end;
-  text-align: center;
+  text-align: left;
   width: 100%;
 }
 
 .hero__inner > div {
-  /* 62ch et non 50 : centré, un bloc trop étroit fait colonne de journal. */
-  max-width: 62ch;
-  margin-inline: auto;
+  max-width: 46ch;
+  margin-inline: 0;
 }
 
-/* Le titre reprend de l'ampleur. À 15ch il se cassait en trois lignes
-   courtes sur une colonne centrée, ce qui hachait la phrase. */
+/* Le titre forme un bloc compact à gauche et laisse l'image dominer la scène. */
 .hero h1 {
   margin-block: var(--sp-4) var(--sp-4);
-  max-width: 22ch;
-  margin-inline: auto;
+  max-width: 18ch;
+  margin-inline: 0;
 }
 
-/* Tout ce qui suit se centre avec lui. */
 .hero .lede,
-.hero__pay { margin-inline: auto; }
-.hero__actions { justify-content: center; }
-.hero__stats { justify-content: center; }
+.hero__pay { margin-inline: 0; }
+.hero__actions { justify-content: flex-start; }
+.hero__stats { justify-content: flex-start; }
 
 .hero__pay {
   margin-top: var(--sp-5);
@@ -194,6 +184,8 @@
 
 @media (max-width: 900px) {
   .hero { min-height: 100svh; }
+  .hero__inner > div { max-width: min(100%, 34rem); }
+  .hero__media { background-position: 62% center; }
   .scroll-hint { display: none; }
 }
 
