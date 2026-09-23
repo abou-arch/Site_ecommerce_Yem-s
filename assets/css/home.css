@@ -326,10 +326,12 @@
   .collections__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }
 
-/* Pages catégorie : trois par rangée, format portrait. On y vient pour
-   comparer les pièces, pas pour traverser la page. */
+/* Pages catégorie : trois par rangée, cadre carré. Le portrait 4/5 datait
+   des photos d'atelier, elles-mêmes en portrait ; les visuels actuels sont
+   carrés et s'y trouvaient rognés d'un cinquième — semelle et bout de
+   chaussure coupés sur les bords. Le cadre suit désormais les images. */
 .shop-grid {
-  --shot-ratio: 4 / 5;
+  --shot-ratio: 1 / 1;
   display: grid;
   gap: var(--sp-6) var(--sp-5);
   grid-template-columns: 1fr;
@@ -676,7 +678,7 @@
    son comportement normal. */
 .shop-grid.grid--rare,
 .collections__grid.grid--rare {
-  --shot-ratio: 4 / 5;
+  --shot-ratio: 1 / 1;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr));
   max-width: 980px;
   margin-inline: auto;
@@ -687,5 +689,7 @@
      On l'occupe en donnant à la première toute la largeur : la pièce mise en
      avant devient une vraie ouverture, et la rangée du dessous est pleine. */
   .shop-grid.grid--rare > .pcard:first-child { grid-column: 1 / -1; }
-  .shop-grid.grid--rare > .pcard:first-child .pshot { --shot-ratio: 16 / 9; }
+  /* 16/9 coupait près de la moitié d'un visuel carré. Le 3/2 ne retire que
+     du fond, au-dessus et au-dessous de la pièce. */
+  .shop-grid.grid--rare > .pcard:first-child .pshot { --shot-ratio: 3 / 2; }
 }

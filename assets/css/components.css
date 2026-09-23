@@ -428,6 +428,18 @@
   isolation: isolate;
 }
 
+/* Le <picture> doit porter le cadre, pas l'image.
+   .pshot est une grille centrée : son enfant se dimensionne sur son contenu,
+   et le contenu d'un <picture> est l'image, dont la largeur vient de
+   l'attribut « sizes ». Résultat sans cette règle : une photo de 307 px
+   flottant au milieu d'un cadre de 490 px, alors que « object-fit: cover »
+   n'avait rien à couvrir. */
+.pshot picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
 .pshot img,
 .pshot video {
   width: 100%;
@@ -442,15 +454,25 @@
   z-index: 2;
 }
 
+/* Mention posée sur la photo : elle doit rester lisible sur un fond clair
+   comme sur un fond sombre, et tenir sur une ligne dans une vignette de
+   104 px — sans quoi « Visuel IA » se coupait en trois. */
 .pshot__note {
   position: absolute;
-  bottom: var(--sp-3);
-  right: var(--sp-3);
+  bottom: var(--sp-2);
+  right: var(--sp-2);
   z-index: 2;
+  max-width: calc(100% - var(--sp-4));
+  padding: 0.2rem 0.45rem;
+  border-radius: var(--radius-sm);
+  background: rgba(251, 247, 241, 0.82);
   font-size: 0.625rem;
   letter-spacing: var(--tracking-wide);
   text-transform: uppercase;
-  color: rgba(46, 36, 32, 0.45);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: rgba(46, 36, 32, 0.78);
 }
 
 /* --------------------------------------------------------------------------

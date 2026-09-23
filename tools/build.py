@@ -106,6 +106,14 @@ def badge(status, extra="", long=False, slug=None):
 
 # ─────────────────────────────────────────────────────────── composants
 
+# Place réellement occupée par une image, selon l'endroit où elle s'affiche.
+# Une valeur fausse fait charger au navigateur une image trop grande, ou trop
+# petite et donc floue : ces trois chaînes décrivent les trois grilles du site.
+GRID_SIZES = "(max-width: 560px) 92vw, (max-width: 900px) 46vw, 30vw"   # vignettes de grille
+MAIN_SIZES = "(max-width: 900px) 92vw, 45vw"                            # photo d'ouverture d'une fiche
+THUMB_SIZES = "(max-width: 900px) 30vw, 15vw"                           # petites vues sous la photo
+
+
 def picture(product, base, index=0, lazy=True, sizes=None):
     """<picture> WebP + JPEG, ou placeholder beige si la photo manque."""
     images = product.get("images") or []
@@ -134,7 +142,7 @@ def picture(product, base, index=0, lazy=True, sizes=None):
     # l'image occupe toute la largeur de la fenêtre et reprend la grande.
     # La valeur par défaut décrit la grille réelle : pleine largeur sur
     # téléphone, une demie sur tablette, un tiers sur grand écran.
-    mesure = sizes or "(max-width: 560px) 92vw, (max-width: 900px) 46vw, 30vw"
+    mesure = sizes or GRID_SIZES
     petit = os.path.exists(os.path.join(ROOT, "assets", "img", img["file"] + "-500.webp"))
 
     def jeu(ext):
@@ -616,18 +624,25 @@ class Builder:
                 # Les visuels générés viennent après les vraies photos et le
                 # disent : la pièce livrée doit ressembler à ce que montre la
                 # fiche, et une image générée est idéalisée par construction.
-                note = ('<span class="pshot__note">Visuel d\'ambiance · IA</span>'
+                note = ('<span class="pshot__note" title="Visuel d\'ambiance '
+                        'généré par intelligence artificielle">Visuel IA</span>'
                         if images[i].get("ia") else "")
                 return '          <div class="pshot">%s%s</div>' % (
-                    picture(product, base, i), note)
+                    picture(product, base, i, sizes=THUMB_SIZES), note)
 
             jeux = []
             for n, teinte in enumerate(teintes):
                 idx = [i for i, im in enumerate(images)
                        if teinte is None or im.get("teinte") in (teinte, None)]
-                main = ('<div class="pshot" data-shot>%s\n          %s\n        </div>'
-                        % (badge(product["status"], "pshot__badge"),
-                           picture(product, base, idx[0], lazy=n > 0)))
+                # La photo d'ouverture garde le format de l'image : un visuel
+                # au format paysage enfermé dans un cadre portrait perdait un
+                # quart de sa largeur, coupée à gauche et à droite.
+                grand = images[idx[0]]
+                main = ('<div class="pshot" data-shot style="--shot-ratio:%d/%d">%s\n          %s\n        </div>'
+                        % (grand["w"], grand["h"],
+                           badge(product["status"], "pshot__badge"),
+                           picture(product, base, idx[0], lazy=n > 0,
+                                   sizes=MAIN_SIZES)))
                 thumbs = ""
                 if len(idx) > 1:
                     thumbs = ('\n        <div class="gallery__thumbs">\n'
@@ -1665,6 +1680,13 @@ class Builder:
         ("donnees-personnelles", "Données personnelles | Yem's",
          "Ce que Yem's collecte, pourquoi, combien de temps, et qui y a accès. "
          "Aucun traceur publicitaire."),
+        # Les CGV disent ce qui se passe quand on achète ; celle-ci dit ce qui
+        # vaut pour tout visiteur : visuels générés, erreurs de prix, propriété
+        # des contenus, responsabilité, droit applicable.
+        ("conditions-utilisation", "Conditions d'utilisation | Yem's",
+         "Usage du site Yem's : visuels générés par IA, exactitude des "
+         "informations, propriété des contenus, responsabilité et droit "
+         "applicable."),
     ]
 
     def build_pages_ecrites(self):
