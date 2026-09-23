@@ -21,8 +21,13 @@
   <div class="container container--wide hero__inner">
     <div>
       <span class="eyebrow" data-reveal>Atelier de Cotonou</span>
+      <!-- Le <br> sépare les deux phrases, pas les lignes : motion.js s'en
+           sert pour faire monter le titre en deux temps. À l'intérieur de
+           chaque phrase, les retours restent décidés par la largeur en « ch »
+           du titre (voir .hero h1 dans home.css), donc ils suivent l'écran. -->
       <h1 data-lines>
-        Personne ne verra la couture.<br>Tout le monde verra <span class="italic-accent">la différence</span>.
+        Personne ne verra la couture.<br>
+        Tout le monde verra <span class="italic-accent">la différence</span>.
       </h1>
       <p class="lede" data-reveal style="--reveal-delay:60ms">
         Une maison de Cotonou, avec un atelier au milieu. Ce qu'on sait faire,
@@ -67,7 +72,7 @@
 
   <div class="scroll-hint" aria-hidden="true">
     <span>Faire défiler</span>
-    <span class="scroll-hint__line"></span>
+    <svg class="scroll-hint__chevron"><use href="#i-chevron-bas"></use></svg>
   </div>
 </section>
 

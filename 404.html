@@ -21,24 +21,24 @@
 <!-- Les polices ne bloquent plus l'affichage. « media=print » fait charger la
      feuille sans qu'elle retarde le rendu ; onload la réactive dès qu'elle est
      là. Le texte s'affiche donc immédiatement en Georgia et en police système,
-     puis bascule sur Fraunces et Inter. Sur une 3G, ça évite plusieurs
+     puis bascule sur Playfair Display et Jost. Sur une 3G, ça évite plusieurs
      centaines de millisecondes de page blanche.
 
      Le <noscript> garde le comportement classique pour qui n'exécute pas de
      script : mieux vaut attendre les polices que ne jamais les recevoir.
 
-     Poids demandé aussi allégé : la graisse 300 d'Inter n'était utilisée
-     nulle part dans les feuilles de style. -->
+     Seules les graisses réellement employées sont demandées : Playfair en 400,
+     500, 600 et son italique pour les accents ; Jost de 300 à 600. -->
 <link rel="stylesheet" media="print" onload="this.media='all'"
-      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Inter:wght@400;500;600;700&display=swap">
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap">
 <noscript>
   <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Inter:wght@400;500;600;700&display=swap">
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap">
 </noscript>
 
-<link rel="stylesheet" href="/assets/css/base.css?v=46ea16eb">
-<link rel="stylesheet" href="/assets/css/components.css?v=9729fb9b">
-<link rel="stylesheet" href="/assets/css/home.css?v=13a61b7c">
+<link rel="stylesheet" href="/assets/css/base.css?v=fc0e20c1">
+<link rel="stylesheet" href="/assets/css/components.css?v=e18a9d85">
+<link rel="stylesheet" href="/assets/css/home.css?v=3bded89c">
 <link rel="stylesheet" href="/assets/css/shop.css?v=9853ef0e">
 <link rel="stylesheet" href="/assets/css/motion.css?v=b43e4720">
 <link rel="stylesheet" href="/assets/css/checkout.css?v=c133977e">
@@ -125,6 +125,11 @@
     <!-- Icônes UI -->
     <symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
       <path d="M5 12h14M13 6l6 6-6 6"/>
+    </symbol>
+
+    <!-- Chevron du repère de défilement, en pied de hero. -->
+    <symbol id="i-chevron-bas" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M5 9l7 7 7-7"/>
     </symbol>
     <symbol id="i-arrow-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
       <path d="M19 12H5M11 6l-6 6 6 6"/>

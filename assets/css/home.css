@@ -33,11 +33,23 @@
                               url("../img/hero.jpg") type("image/jpeg"));
 }
 
+/* Sur téléphone, l'image de bureau est un paysage dont on ne voyait qu'une
+   tranche verticale : deux tiers de la composition tombaient hors cadre.
+   Une prise de vue 9:16 remplace le recadrage. */
 @media (max-width: 900px) {
   .hero__media {
-    background-image: url("../img/hero-900.jpg");
-    background-image: image-set(url("../img/hero-900.webp") type("image/webp"),
-                                url("../img/hero-900.jpg") type("image/jpeg"));
+    background-position: center;
+    background-image: url("../img/hero-portrait.jpg");
+    background-image: image-set(url("../img/hero-portrait.webp") type("image/webp"),
+                                url("../img/hero-portrait.jpg") type("image/jpeg"));
+  }
+}
+
+@media (max-width: 640px) {
+  .hero__media {
+    background-image: url("../img/hero-portrait-640.jpg");
+    background-image: image-set(url("../img/hero-portrait-640.webp") type("image/webp"),
+                                url("../img/hero-portrait-640.jpg") type("image/jpeg"));
   }
 }
 
@@ -74,6 +86,44 @@
       rgba(20, 16, 13, 0.22) 48%,
       rgba(20, 16, 13, 0.38) 100%
     );
+}
+
+/* PROPORTIONS DU TEXTE DU HERO
+   Le titre tient sur trois lignes courtes, comme sur la maquette : c'est le
+   max-width en « ch » qui décide des retours, pas un <br> posé à la main. */
+.hero h1 {
+  /* 17 caractères par ligne sur téléphone : la phrase tombe en quatre lignes
+     pleines. Plus étroit, elle descend en escalier ; plus large, elle touche
+     le bord de l'écran. La valeur de bureau est plus bas, dans son bloc. */
+  max-width: 17ch;
+  line-height: 1.06;
+  letter-spacing: -0.01em;
+}
+
+.hero .lede {
+  max-width: 38ch;
+  font-size: var(--fs-md);
+  line-height: 1.58;
+  color: rgba(244, 237, 226, 0.88);
+}
+
+/* Le bouton d'ouverture quitte la pilule pleine pour le rectangle à contour
+   de la maquette : sur une photo, un aplat de laiton attire l'œil avant le
+   titre, alors que le contour se lit après lui. */
+.hero__actions .btn {
+  --btn-bg: transparent;
+  --btn-fg: var(--beige-100);
+  --btn-border: rgba(244, 237, 226, 0.55);
+  border-radius: 2px;
+  padding: 1.05rem 2rem;
+  letter-spacing: var(--tracking-wider);
+  font-weight: 400;
+}
+
+.hero__actions .btn:hover {
+  background: var(--beige-100);
+  border-color: var(--beige-100);
+  color: var(--espresso-900);
 }
 
 /* Fil de sellier en filigrane, façon couture d'empeigne */
@@ -157,36 +207,60 @@
 .hero .stat__label,
 .hero .scroll-hint { color: rgba(244, 237, 226, 0.72); }
 
+/* Repère de défilement centré en pied de hero, comme sur la maquette. Il
+   était calé à droite, où il entrait en concurrence avec la pièce. */
 .scroll-hint {
   position: absolute;
   bottom: var(--sp-5);
-  right: var(--gutter);
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: var(--sp-3);
+  gap: var(--sp-2);
   font-size: var(--fs-xs);
   letter-spacing: var(--tracking-wider);
   text-transform: uppercase;
   color: var(--text-subtle);
 }
 
-.scroll-hint__line {
-  width: 46px;
-  height: 1px;
-  background: linear-gradient(to right, var(--brass-400), transparent);
+.scroll-hint__chevron {
+  width: 22px;
+  height: 22px;
+  color: var(--brass-300);
   animation: hint 2.4s var(--ease) infinite;
 }
 
 @keyframes hint {
-  0%, 100% { transform: scaleX(0.35); transform-origin: left; opacity: 0.5; }
-  50%      { transform: scaleX(1);    transform-origin: left; opacity: 1; }
+  0%, 100% { transform: translateY(-3px); opacity: 0.45; }
+  50%      { transform: translateY(3px);  opacity: 1; }
 }
 
 @media (max-width: 900px) {
   .hero { min-height: 100svh; }
   .hero__inner > div { max-width: min(100%, 34rem); }
-  .hero__media { background-position: 62% center; }
-  .scroll-hint { display: none; }
+
+  /* Le voile de bureau assombrit la gauche, parce que le texte y est posé en
+     colonne. Sur téléphone le texte occupe toute la largeur, en haut : le
+     dégradé doit donc descendre du haut, sinon le titre se pose sur la partie
+     claire de la photo. */
+  .hero__media::after {
+    background:
+      linear-gradient(
+        to bottom,
+        rgba(20, 16, 13, 0.86) 0%,
+        rgba(20, 16, 13, 0.72) 34%,
+        rgba(20, 16, 13, 0.34) 58%,
+        rgba(20, 16, 13, 0.30) 78%,
+        rgba(20, 16, 13, 0.62) 100%
+      );
+  }
+
+  /* Le hero téléphone se lit du haut vers le bas : le texte en tête, la pièce
+     en dessous. C'est la composition de la maquette. */
+  .hero { align-items: flex-start; }
+  .hero__inner { justify-content: flex-start; }
+  .hero__stats { gap: var(--sp-5); }
 }
 
 /* --------------------------------------------------------------------------
@@ -692,4 +766,26 @@
   /* 16/9 coupait près de la moitié d'un visuel carré. Le 3/2 ne retire que
      du fond, au-dessus et au-dessous de la pièce. */
   .shop-grid.grid--rare > .pcard:first-child .pshot { --shot-ratio: 3 / 2; }
+}
+
+/* --------------------------------------------------------------------------
+   PROPORTIONS DU HERO SUR ORDINATEUR
+   En fin de feuille, et c'est volontaire : les règles de base du hero sont
+   écrites plus haut, une déclaration de même poids ne l'emporte que si elle
+   vient après.
+
+   La colonne du hero était mesurée en « ch ». Le « 0 » de Jost étant plus
+   étroit que celui d'Inter, elle a perdu une soixantaine de pixels au
+   changement de police et le titre tombait en six lignes. Elle est donc
+   mesurée en pixels, bornée haut et bas : quatre lignes sur un portable,
+   trois sur un grand écran — la silhouette de la maquette.
+   -------------------------------------------------------------------------- */
+@media (min-width: 900px) {
+  .hero__inner > div { max-width: clamp(620px, 58vw, 840px); }
+  .hero h1 { max-width: 100%; line-height: 1.02; }
+  .hero .lede { max-width: 42ch; }
+
+  /* Le repère de défilement est passé au centre : il faut lui réserver sa
+     bande, sinon il se pose sur la dernière ligne du bloc de texte. */
+  .hero { padding-bottom: calc(var(--sp-6) + 3.25rem); }
 }

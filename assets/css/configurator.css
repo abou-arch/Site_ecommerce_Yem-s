@@ -41,9 +41,13 @@
   margin-bottom: var(--sp-5);
 }
 
+/* Le numéro d'étape se lit comme une numérotation d'ouvrage : chiffres
+   tabulaires pour que 01 à 06 occupent exactement la même largeur, sans quoi
+   les titres des six étapes ne démarrent pas au même endroit. */
 .cfg-step__num {
   font-family: var(--font-display);
-  font-size: var(--fs-sm);
+  font-size: var(--fs-md);
+  font-variant-numeric: tabular-nums;
   color: var(--accent);
   letter-spacing: 0.08em;
 }
@@ -88,24 +92,40 @@
   background: linear-gradient(160deg, rgba(201, 164, 106, 0.12), var(--espresso-700) 60%);
 }
 
+/* Le nom est en Playfair, le prix en Jost : deux polices, deux hauteurs d'œil.
+   Centrés l'un sur l'autre, leurs lignes de base tombaient à quatre pixels
+   d'écart et la ligne paraissait bancale. On les aligne sur la ligne de base,
+   et un nom sur deux lignes garde alors son prix à hauteur de la première. */
 .cfg-opt__top {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   justify-content: space-between;
   gap: var(--sp-3);
 }
 
-.cfg-opt__name { font-family: var(--font-display); font-size: var(--fs-md); }
+.cfg-opt__name {
+  font-family: var(--font-display);
+  font-size: var(--fs-md);
+  line-height: var(--lh-snug);
+}
 
+/* 11 px à côté d'un nom de 18 px, le prix passait pour une note de bas de
+   page alors que c'est la moitié de la décision. Les chiffres tabulaires
+   alignent les montants d'une carte à l'autre. */
 .cfg-opt__price {
-  font-size: var(--fs-xs);
-  font-weight: 600;
-  letter-spacing: 0.04em;
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
   color: var(--accent);
   white-space: nowrap;
 }
 
-.cfg-opt__note { font-size: var(--fs-xs); color: var(--text-muted); }
+.cfg-opt__note {
+  font-size: var(--fs-xs);
+  line-height: 1.5;
+  color: var(--text-muted);
+}
 
 .cfg-opt__shot {
   aspect-ratio: 16 / 11;
@@ -115,6 +135,16 @@
 }
 
 .cfg-opt__shot img { width: 100%; height: 100%; object-fit: cover; }
+
+/* Sur téléphone, les options passent en colonne unique : quatre cartes de
+   307 px par étape, six étapes, la page atteignait presque sept mille pixels.
+   Un cadre un peu moins haut et des marges resserrées lui retirent près d'un
+   quart de sa longueur, sans rien enlever de lisible. */
+@media (max-width: 560px) {
+  .cfg-opt__shot { aspect-ratio: 16 / 10; }
+  .cfg-opt { padding: var(--sp-3); }
+  .cfg-step { padding-block: var(--sp-7); }
+}
 
 /* Pastille de cuir */
 .cfg-opt__chip {
@@ -262,8 +292,29 @@
   border-top: 1px solid var(--border);
 }
 
-.cfg-bar__total { font-family: var(--font-display); font-size: var(--fs-lg); color: var(--accent); }
-.cfg-bar__label { display: block; font-family: var(--font-body); font-size: var(--fs-xs); color: var(--text-subtle); }
+/* Barre de téléphone : le montant d'abord, la précision ensuite. Le bloc de
+   texte doit pouvoir rétrécir (min-width: 0), sinon il pousse le bouton hors
+   de l'écran dès que le total s'allonge. */
+.cfg-bar__total {
+  min-width: 0;
+  font-family: var(--font-display);
+  font-size: var(--fs-xl);
+  line-height: 1.15;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.cfg-bar__label {
+  display: block;
+  margin-top: 2px;
+  font-family: var(--font-body);
+  font-size: var(--fs-xs);
+  line-height: 1.3;
+  letter-spacing: 0.02em;
+  color: var(--text-subtle);
+}
+
+.cfg-bar .btn { flex: none; }
 
 @media (max-width: 999px) {
   .cfg__summary { position: static; }

@@ -927,7 +927,11 @@ class Builder:
 
 <section class="section section--top">
   <div class="container">
-    <div class="section-head" data-reveal style="max-width:44ch">
+    <!-- La mesure est en pixels, pas en « ch ». Le « ch » se calcule dans la
+         police du bloc — Jost — alors qu'il contraint ici un titre en Playfair,
+         dont les caractères sont bien plus larges : le titre tombait en six
+         lignes de trois mots. -->
+    <div class="section-head section-head--mesure" data-reveal>
       <span class="eyebrow">L'atelier</span>
       <h1 data-lines>Une paire cousue<br>pour un seul pied au monde.<br>Le vôtre.</h1>
       <p class="lede">

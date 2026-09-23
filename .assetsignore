@@ -39,5 +39,6 @@ course_all.txt
 # tools/images_ia.py en tire les WebP/JPEG servis.
 /hero.png
 assets/img/hero.png
+/Hero_portrait.png
 assets/img/*-ai.png
 .retirees/

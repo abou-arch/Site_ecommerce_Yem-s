@@ -115,28 +115,41 @@
   --status-red:    #A14A3E;   /* Indisponible */
 
   /* — Typographie — */
-  --font-display: "Fraunces", "Georgia", "Times New Roman", serif;
-  --font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  /* Playfair Display porte les titres : serif à fort contraste, dessiné pour
+     les grandes tailles, il tient sur une photo sombre là où un serif doux
+     s'écrase. Jost porte tout le reste : géométrique, il supporte les
+     capitales très espacées des libellés sans se refermer. */
+  --font-display: "Playfair Display", "Georgia", "Times New Roman", serif;
+  --font-body: "Jost", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 
-  --fs-xs:   0.75rem;    /* 12 */
+  /* DEUX ÉCHELLES, PAS UNE ÉCHELLE ÉLASTIQUE.
+     Les tailles étaient calculées en vw : entre les deux extrêmes, personne
+     ne décidait plus rien, et le titre d'accueil arrivait sur téléphone à une
+     taille qu'aucune maquette n'avait validée. Ici, le téléphone a ses
+     valeurs, l'ordinateur a les siennes, et la bascule se fait d'un coup à
+     900 px (plus bas dans ce fichier). Chacune se règle sans toucher à
+     l'autre.
+
+     Téléphone : écart resserré entre les niveaux, interlignes plus généreux —
+     une ligne courte se relit moins bien qu'une ligne longue. */
+  --fs-xs:   0.6875rem;  /* 11 */
   --fs-sm:   0.8125rem;  /* 13 */
   --fs-base: 0.9375rem;  /* 15 */
-  --fs-md:   1.0625rem;  /* 17 */
-  --fs-lg:   1.25rem;    /* 20 */
-  --fs-xl:   1.625rem;   /* 26 */
-  --fs-2xl:  2.125rem;   /* 34 */
-  /* Les bornes hautes tenaient du poster, pas de la page : 64 px et 102 px
-     sur un écran de bureau. Ramenées à 45 px et 67 px — l'échelle reste
-     éditoriale, le titre cesse d'occuper l'écran à lui seul. */
-  --fs-3xl:  clamp(1.85rem, 3.3vw, 2.8rem);
-  --fs-4xl:  clamp(2.4rem, 5vw, 4.2rem);
+  --fs-md:   1rem;       /* 16 */
+  --fs-lg:   1.125rem;   /* 18 */
+  --fs-xl:   1.375rem;   /* 22 */
+  --fs-2xl:  1.75rem;    /* 28 */
+  --fs-3xl:  1.9375rem;  /* 31 */
+  --fs-4xl:  2.375rem;   /* 38 */
 
-  --lh-tight: 1.08;
-  --lh-snug:  1.28;
-  --lh-base:  1.68;
+  --lh-tight: 1.14;
+  --lh-snug:  1.34;
+  --lh-base:  1.7;
 
-  --tracking-wide:  0.08em;
-  --tracking-wider: 0.18em;
+  /* Jost est géométrique : ses capitales supportent une approche large sans
+     se refermer, c'est ce qui donne aux libellés leur allure de maison. */
+  --tracking-wide:  0.09em;
+  --tracking-wider: 0.2em;
 
   /* — Espacement (échelle 4px) — */
   --sp-1: 0.25rem;
@@ -153,7 +166,7 @@
   /* Proportions verticales : les sections respirent, sans prendre le pas sur
      les produits. Le haut de l'échelle est volontairement inférieur à deux
      fois la largeur de lecture. */
-  --section-y: clamp(3.5rem, 5.5vw, 5.75rem);
+  --section-y: 3.25rem;
 
   /* — Layout —
      Trois largeurs, parce qu'un texte et une barre de navigation n'ont pas
@@ -253,6 +266,33 @@ ul, ol { list-style: none; padding: 0; }
   border-radius: var(--radius-sm);
 }
 
+/* --------------------------------------------------------------------------
+   2 bis. ÉCHELLE DE BUREAU
+   À partir de 900 px, la page dispose de la largeur : les écarts entre
+   niveaux s'ouvrent, les interlignes se resserrent, et le titre d'accueil
+   retrouve la tenue d'affiche de la maquette. C'est le seul endroit à
+   modifier pour régler les proportions sur ordinateur.
+   -------------------------------------------------------------------------- */
+@media (min-width: 900px) {
+  :root {
+    --fs-xs:   0.75rem;    /* 12 */
+    --fs-sm:   0.875rem;   /* 14 */
+    --fs-base: 1rem;       /* 16 */
+    --fs-md:   1.125rem;   /* 18 */
+    --fs-lg:   1.375rem;   /* 22 */
+    --fs-xl:   1.75rem;    /* 28 */
+    --fs-2xl:  2.25rem;    /* 36 */
+    --fs-3xl:  2.75rem;    /* 44 */
+    --fs-4xl:  4rem;       /* 64 */
+
+    --lh-tight: 1.06;
+    --lh-snug:  1.28;
+    --lh-base:  1.62;
+
+    --section-y: 5.75rem;
+  }
+}
+
 ::selection {
   background: var(--brass-500);
   color: var(--espresso-900);
@@ -264,11 +304,18 @@ ul, ol { list-style: none; padding: 0; }
 h1, h2, h3, h4 {
   font-family: var(--font-display);
   font-weight: 400;
-  font-optical-sizing: auto;
   line-height: var(--lh-tight);
-  letter-spacing: -0.015em;
-  font-variation-settings: "SOFT" 0, "WONK" 1;
+  /* Playfair est déjà serré : l'approche négative héritée de Fraunces y
+     collait les lettres. On la relâche, et les capitales du titre reprennent
+     l'air qu'elles ont sur la maquette. */
+  letter-spacing: -0.005em;
 }
+
+/* Les lignes d'un titre sont réparties par le navigateur plutôt que laissées
+   au hasard du retour à la ligne : plus de dernière ligne à un seul mot sous
+   trois lignes pleines. Les navigateurs qui ne connaissent pas la propriété
+   l'ignorent, et le titre revient au comportement d'avant. */
+h1, h2, h3 { text-wrap: balance; }
 
 h1 { font-size: var(--fs-4xl); }
 h2 { font-size: var(--fs-3xl); }
@@ -280,7 +327,6 @@ p { text-wrap: pretty; }
 .display  { font-family: var(--font-display); }
 .italic-accent {
   font-style: italic;
-  font-variation-settings: "SOFT" 100, "WONK" 1;
   color: var(--accent);
 }
 
@@ -353,6 +399,16 @@ p { text-wrap: pretty; }
   flex-direction: column;
   gap: var(--sp-3);
   margin-bottom: var(--sp-7);
+}
+
+/* Chapeau de page : titre, surtitre et accroche. La largeur se donne en
+   pixels parce qu'elle borne un titre en Playfair, alors qu'un « ch » se
+   calcule dans la police du bloc. Trois lignes de titre sur un grand écran,
+   quatre sur un portable. */
+.section-head--mesure { max-width: clamp(30rem, 58vw, 44rem); }
+
+@media (max-width: 899px) {
+  .section-head--mesure { max-width: 100%; }
 }
 
 .section-head--center {

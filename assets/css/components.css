@@ -182,10 +182,9 @@
   margin-top: 4px;
 }
 
-/* Sous 720 px, la signature encombre : le mot-symbole suffit. */
-@media (max-width: 720px) {
-  .logo__tag { display: none; }
-}
+/* La signature était masquée sous 720 px, quand le logo était calé à gauche
+   à côté du monogramme. Elle revient dans l'en-tête téléphone centré, plus
+   bas dans ce fichier : c'est là qu'elle a de la place. */
 
 /* --------------------------------------------------------------------------
    HEADER
@@ -364,10 +363,64 @@
   border-bottom: 1px solid var(--border);
 }
 
+/* EN-TÊTE TÉLÉPHONE — composition de la maquette : le menu à gauche, le nom
+   de la maison au centre avec sa signature et son filet, le panier à droite.
+   La grille en trois colonnes place le nom au centre optique quelle que soit
+   la largeur du burger ou du panier ; « display: contents » sort les actions
+   de leur boîte pour qu'elles deviennent elles-mêmes des cases de la grille,
+   sans rien changer au HTML ni au rendu sur ordinateur. */
 @media (max-width: 900px) {
   .nav,
   .header__actions .btn { display: none; }
   .burger { display: block; }
+
+  .header__inner {
+    display: grid;
+    grid-template-columns: 44px 1fr 44px;
+    align-items: center;
+    gap: var(--sp-3);
+  }
+
+  .header__actions { display: contents; }
+  .burger { order: -1; justify-self: start; }
+  .icon-btn { order: 1; justify-self: end; }
+
+  .logo {
+    flex-direction: column;
+    align-items: center;
+    justify-self: center;
+    gap: 3px;
+    text-align: center;
+  }
+
+  /* Le monogramme redouble le mot juste à côté de lui ; au centre d'une barre
+     étroite, il fait du bruit. Le mot seul porte mieux. */
+  .logo__mark { display: none; }
+
+  .logo__word {
+    font-size: 1.15rem;
+    letter-spacing: 0.22em;
+    text-indent: 0.22em;   /* rattrape l'espace que l'approche ajoute à droite */
+  }
+
+  /* La signature revient sur téléphone : c'est elle qui dit ce que vend la
+     maison à quelqu'un qui arrive par un lien. */
+  .logo__tag {
+    display: block;
+    margin-top: 2px;
+    font-size: 0.5rem;
+    letter-spacing: 0.2em;
+    text-indent: 0.2em;
+  }
+
+  .logo__tag::after {
+    content: "";
+    display: block;
+    width: 34px;
+    height: 1px;
+    margin: var(--sp-2) auto 0;
+    background: rgba(201, 164, 106, 0.55);
+  }
 }
 
 /* --------------------------------------------------------------------------
