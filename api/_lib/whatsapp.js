@@ -31,7 +31,12 @@ export function composeMessage(order, items) {
   // Ce que l'atelier doit faire ensuite dépend entièrement du mode de
   // règlement : autant le dire dans le message plutôt que le laisser deviner.
   const consigne = {
-    online: [
+    online: order.sandbox ? [
+      // Bac à sable KkiaPay : le paiement a « réussi » avec un numéro de
+      // test, aucun argent n'est arrivé. L'atelier ne doit rien expédier.
+      'PAIEMENT DE TEST (bac à sable KkiaPay) : AUCUN ARGENT REÇU.',
+      '→ Ne rien expédier. Repasser KKIAPAY_SANDBOX à false avant d\'ouvrir.',
+    ] : [
       `Encaissé : ${money(order.amount_due)}`,
       reste > 0 ? `Reste à la livraison : ${money(reste)}` : null,
     ],
@@ -50,7 +55,7 @@ export function composeMessage(order, items) {
   }[mode] || [];
 
   return [
-    mode === 'online'
+    mode === 'online' && !order.sandbox
       ? `Nouvelle commande PAYÉE ${order.reference}`
       : `Nouvelle commande À CONFIRMER ${order.reference}`,
     '',

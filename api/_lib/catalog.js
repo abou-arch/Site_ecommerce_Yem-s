@@ -83,29 +83,36 @@ function priceStandard(item, corrections) {
   }
 
   // Un modèle vendu uniquement sur-mesure ne peut pas entrer au panier
-  // par la voie standard, même si le client force la requête.
-  if (product.bespoke_only) {
+  // par la voie standard, même si le client force la requête. Même règle
+  // pour les formes qui n'existent que dans le configurateur : le générateur
+  // les écarte des pages, le serveur doit les écarter du panier.
+  if (product.bespoke_only || product.configurateur_only) {
     return { error: `${product.name} est disponible en sur-mesure uniquement` };
   }
 
+  /* Pointure et teinte ne sont retenues que si elles viennent du catalogue.
+     Une valeur libre finissait telle quelle dans la base, dans l'admin et
+     dans le message WhatsApp de l'atelier, sans limite de longueur. */
+  let size = null;
   if (product.sizes?.length) {
-    const size = Number(item.size);
+    size = Number(item.size);
     if (!product.sizes.includes(size)) {
       return { error: `pointure indisponible pour ${product.name}` };
     }
   }
 
+  let color = null;
   if (product.colors?.length && item.color) {
-    const known = product.colors.some((c) => c.name === item.color);
-    if (!known) return { error: `teinte inconnue pour ${product.name}` };
+    color = product.colors.find((c) => c.name === item.color)?.name || null;
+    if (!color) return { error: `teinte inconnue pour ${product.name}` };
   }
 
   return {
     product_slug: product.slug,
     name: product.name,
     unit_price: product.price,
-    size: item.size != null ? String(item.size) : null,
-    color: item.color || null,
+    size: size != null ? String(size) : null,
+    color,
     bespoke: null,
   };
 }
@@ -167,6 +174,7 @@ export function priceCart(rawCart, corrections = {}) {
   let hasBespoke = false;
 
   for (const raw of rawCart) {
+    if (!raw || typeof raw !== 'object') return { error: 'article invalide' };
     const qty = Math.floor(Number(raw.qty));
     if (!Number.isFinite(qty) || qty < 1 || qty > 20) {
       return { error: 'quantité invalide' };

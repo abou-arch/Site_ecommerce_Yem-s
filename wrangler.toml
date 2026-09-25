@@ -32,9 +32,20 @@ compatibility_date = "2026-08-01"
 compatibility_flags = ["nodejs_compat"]
 
 # ─── Pages statiques ───────────────────────────────────────────────────────
-# run_worker_first envoie /api/* au Worker AVANT toute recherche de fichier.
-# Sans lui, not_found_handling intercepte les routes d'API et renvoie la page
-# 404 en HTML au lieu du JSON attendu.
+# run_worker_first envoie les requêtes au Worker AVANT toute recherche de
+# fichier. Sans lui, not_found_handling intercepte les routes d'API et renvoie
+# la page 404 en HTML au lieu du JSON attendu.
+#
+# Les pages HTML doivent aussi passer par le Worker : c'est lui qui y réécrit
+# les prix, disponibilités et photos modifiés depuis l'écran de l'atelier.
+# Avec la seule règle "/api/*", une page existante était servie directement
+# et ne recevait jamais ces corrections, alors que le serveur les facturait :
+# un prix passé de 45 000 à 99 000 F restait affiché 45 000 F, et la commande
+# était enregistrée à 99 000 F.
+#
+# Les feuilles de style, scripts, images et vidéos (assets/, marque/) n'ont
+# rien à corriger : ils restent servis directement, sans passer par le Worker
+# ni compter dans son quota de requêtes.
 #
 # La forme tableau demande Wrangler 4. Si une erreur signale que la valeur
 # doit être booléenne, c'est que Wrangler 3 est installé :
@@ -42,7 +53,7 @@ compatibility_flags = ["nodejs_compat"]
 [assets]
 directory = "."
 binding = "ASSETS"
-run_worker_first = ["/api/*"]
+run_worker_first = ["/*", "!/assets/*", "!/marque/*"]
 
 # not_found_handling est volontairement absent : il court-circuitait le Worker
 # et renvoyait 404.html sur les routes /api/*. La page 404 est désormais servie
@@ -81,6 +92,12 @@ id = "3579ef8baef64ecdb4c59c6a97379e71"
 [vars]
 # "offline" : commande + WhatsApp, règlement convenu de vive voix.
 # "online"  : ajoute le widget de paiement. Exige un compte marchand activé.
+#
+# ⚠ KKIAPAY_SANDBOX = "true" accepte les numéros de test publics de KkiaPay :
+# un paiement y « réussit » sans argent réel. Le serveur n'y marque donc
+# jamais une commande comme payée (elle reste « à confirmer », et l'alerte
+# le dit). Passer à "false" en même temps que PAYMENT_MODE passe à "online"
+# avec les clés de production.
 PAYMENT_MODE = "offline"
 KKIAPAY_SANDBOX = "true"
 OWNER_WHATSAPP = "2290191380234"

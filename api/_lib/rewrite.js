@@ -28,9 +28,6 @@ function formaterPrix(valeur) {
   return String(Math.round(valeur)).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' F';
 }
 
-const echapper = (s) => String(s)
-  .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-
 /**
  * Applique les corrections de l'atelier à une réponse HTML.
  * Rend la réponse d'origine si rien n'a été modifié.
@@ -51,14 +48,22 @@ export function reecrire(reponse, corrections) {
     const eslug = slug.replace(/"/g, '');
 
     if (c.price != null) {
-      rewriter = rewriter.on(`[data-prix="${eslug}"]`, {
-        element(el) { el.setInnerContent(formaterPrix(c.price)); },
-      });
+      rewriter = rewriter
+        .on(`[data-prix="${eslug}"]`, {
+          element(el) { el.setInnerContent(formaterPrix(c.price)); },
+        })
+        // Le bouton d'ajout porte son propre prix, recopié dans le panier :
+        // sans lui, le panier affichait l'ancien montant.
+        .on(`[data-add-to-cart][data-id="${eslug}"]`, {
+          element(el) { el.setAttribute('data-price', String(Math.round(c.price))); },
+        });
     }
 
     if (c.short != null) {
+      // setInnerContent échappe lui-même le texte (html: false par défaut).
+      // Échapper en plus affichait « &amp; » au lieu de « & ».
       rewriter = rewriter.on(`[data-court="${eslug}"]`, {
-        element(el) { el.setInnerContent(echapper(c.short)); },
+        element(el) { el.setInnerContent(c.short); },
       });
     }
 
@@ -108,5 +113,12 @@ export function reecrire(reponse, corrections) {
     }
   }
 
-  return rewriter.transform(reponse);
+  // La page n'est plus le fichier dont l'ETag porte l'empreinte. Garder ces
+  // validateurs ferait répondre « 304, rien n'a changé » à un navigateur qui
+  // conserve une version corrigée plus ancienne, prix d'hier compris.
+  const transformee = rewriter.transform(reponse);
+  const finale = new Response(transformee.body, transformee);
+  finale.headers.delete('etag');
+  finale.headers.delete('last-modified');
+  return finale;
 }
