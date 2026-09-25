@@ -16,6 +16,7 @@ Sortie, à la racine du dépôt :
 Usage :  python3 tools/build.py
 """
 
+import base64
 import datetime
 import hashlib
 import json
@@ -1761,6 +1762,108 @@ class Builder:
         print("\n  paiement : mode « %s », aucune promesse de carte sur le site"
               % PAYMENT_MODE)
 
+    # Dossiers qui ne partent jamais en ligne (voir .assetsignore). Tout autre
+    # fichier .html du dépôt est publié, écrit par ce script ou non.
+    NON_PUBLIES = {"api", "data", "db", "docs", "node_modules", "templates", "tools"}
+
+    def ecrire_csp(self):
+        """
+        Politique de sécurité du contenu (CSP), écrite dans _headers.
+
+        Elle n'autorise que les scripts du site : ceux de assets/js, et les
+        quelques scripts écrits dans les pages, reconnus à leur empreinte
+        SHA-256. Un script injecté par un tiers (un nom de produit piégé, un
+        champ mal échappé) n'a pas d'empreinte connue : le navigateur refuse
+        de l'exécuter. C'est le filet sous toutes les autres protections.
+
+        Les empreintes sont recalculées à chaque génération, sur les pages
+        telles qu'elles partent en ligne. Modifier un script en ligne sans
+        relancer ce script le ferait bloquer : c'est voulu, npm run deploy
+        relance toujours le build avant d'envoyer.
+
+        Un gestionnaire écrit dans un attribut (onclick="…", onload="…") ne
+        peut pas être autorisé ainsi : la génération s'arrête s'il en
+        réapparaît un, plutôt que de livrer une page dont un bouton ne
+        répondrait plus. Passer par addEventListener dans un script.
+
+        En mode « online », le domaine de KkiaPay est ajouté pour son widget.
+        S'il ne s'ouvre pas, la console du navigateur indique, ligne
+        « Refused to load… », le domaine à ajouter ici.
+        """
+        empreintes = set()
+        fautes = []
+        for dossier, sous_dossiers, fichiers in os.walk(ROOT):
+            if dossier == ROOT:
+                sous_dossiers[:] = [d for d in sous_dossiers
+                                    if not d.startswith(".") and d not in self.NON_PUBLIES]
+            for nom in fichiers:
+                if not nom.endswith(".html"):
+                    continue
+                chemin = os.path.join(dossier, nom)
+                texte = re.sub(r"<!--.*?-->", "", read(chemin), flags=re.S)
+                for attributs, corps in re.findall(
+                        r"<script\b([^>]*)>(.*?)</script\s*>", texte, flags=re.S | re.I):
+                    if re.search(r"\bsrc\s*=", attributs, re.I):
+                        continue
+                    genre = re.search(r"""\btype\s*=\s*["']?([^"'\s>]+)""", attributs, re.I)
+                    if genre and genre.group(1).lower() not in (
+                            "text/javascript", "application/javascript", "module"):
+                        continue          # JSON-LD, données : jamais exécutés
+                    empreintes.add("'sha256-%s'" % base64.b64encode(
+                        hashlib.sha256(corps.encode("utf-8")).digest()).decode())
+                balises = re.sub(r"<script\b.*?</script\s*>", "", texte, flags=re.S | re.I)
+                for m in re.finditer(r"<[a-zA-Z][^>]*?\s(on[a-z]+)\s*=", balises):
+                    fautes.append("%s : attribut %s"
+                                  % (os.path.relpath(chemin, ROOT), m.group(1)))
+                if re.search(r"""(?:href|src|action)\s*=\s*["']?\s*javascript:""", balises, re.I):
+                    fautes.append("%s : adresse javascript:" % os.path.relpath(chemin, ROOT))
+
+        if fautes:
+            raise SystemExit(
+                "\n!! Code JavaScript écrit dans un attribut : la CSP le bloquerait.\n"
+                + "\n".join("      " + f for f in sorted(set(fautes)))
+                + "\n\n   Le déplacer dans un script (addEventListener).")
+
+        en_ligne = PAYMENT_MODE == "online"
+        kkiapay = " https://*.kkiapay.me" if en_ligne else ""
+        csp = "; ".join([
+            "default-src 'self'",
+            "script-src 'self' %s%s" % (" ".join(sorted(empreintes)),
+                                        " https://cdn.kkiapay.me" if en_ligne else ""),
+            # Les attributs style="" sont nombreux et ne peuvent pas exécuter
+            # de code : les autoriser ne rouvre pas la porte aux scripts.
+            "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+            "font-src 'self' https://fonts.gstatic.com",
+            "img-src 'self' data:" + kkiapay,
+            "media-src 'self'",
+            "connect-src 'self'" + kkiapay,
+            "frame-src " + ("https://*.kkiapay.me" if en_ligne else "'none'"),
+            "object-src 'none'",
+            "base-uri 'self'",
+            "form-action 'self'",
+            "frame-ancestors 'self'",
+        ])
+
+        # Cloudflare ignore, sans faire échouer le déploiement, toute ligne de
+        # _headers de plus de 2 000 caractères : la CSP disparaîtrait en silence.
+        ligne = "  Content-Security-Policy: " + csp
+        if len(ligne) > 2000:
+            raise SystemExit("!! CSP de %d caractères : Cloudflare ignore les lignes "
+                             "de plus de 2 000. Réduire le nombre de scripts en ligne."
+                             % len(ligne))
+
+        chemin = os.path.join(ROOT, "_headers")
+        texte = read(chemin)
+        nouveau, n = re.subn(r"^  Content-Security-Policy: .*$",
+                             lambda _: ligne, texte, flags=re.M)
+        if n != 1:
+            raise SystemExit("!! _headers : une ligne « Content-Security-Policy » "
+                             "(et une seule) est attendue sous /*")
+        if nouveau != texte:
+            write(chemin, nouveau)
+        print("\n  CSP : %d script(s) en ligne autorisé(s) par empreinte, mode « %s »"
+              % (len(empreintes), PAYMENT_MODE))
+
     def build_sitemap(self):
         """
         sitemap.xml, déduit des pages effectivement écrites.
@@ -1824,6 +1927,7 @@ class Builder:
             print("  %-42s %5d Ko" % (path, size // 1024 or 1))
 
         self.controler_paiement()
+        self.ecrire_csp()
 
         orphans = [c["slug"] for c in self.categories if not self.by_category(c["slug"])]
         if orphans:

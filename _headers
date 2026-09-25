@@ -22,8 +22,20 @@
 /*.html
   Cache-Control: public, max-age=0, must-revalidate
 
+# Sécurité, sur toutes les réponses statiques. Le Worker les conserve quand il
+# sert une page (réécriture des prix, page 404).
+#
+# Strict-Transport-Security : le navigateur n'essaiera plus jamais le site en
+# HTTP clair, même si on lui tend un lien http:// (ou si un réseau Wi-Fi
+# public tente de s'interposer).
+#
+# Content-Security-Policy : ligne ÉCRITE PAR tools/build.py, qui y reporte
+# l'empreinte de chaque script en ligne des pages. Ne pas la modifier à la
+# main : la changer dans ecrire_csp(), puis relancer le build.
 /*
   X-Content-Type-Options: nosniff
   X-Frame-Options: SAMEORIGIN
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=()
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'sha256-XbDwdjXZA0ra2/696NFiMDyt7VwgN5zwfoeo1QvEfTQ=' 'sha256-o1dJ5BYLv0dx/QgOTjbYhEQLJjBZu9YqJArCOn3b9wM=' 'sha256-x9MwtxYEwbEKOJKpRsZF47jAvsu5kbmRhWBUReAYbp8='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; media-src 'self'; connect-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'
