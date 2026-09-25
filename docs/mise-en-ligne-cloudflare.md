@@ -163,7 +163,7 @@ Réponse attendue — du JSON, pas du HTML :
 HTTP/1.1 200 OK
 Content-Type: application/json; charset=utf-8
 
-{"ok":true,"worker":"yems","payment_mode":"offline","configured":{"hyperdrive":true,"admin_token":true,...}}
+{"ok":true,"worker":"yems"}
 ```
 
 Si tu reçois du HTML, lis d'abord les en-têtes :
@@ -171,10 +171,24 @@ Si tu reçois du HTML, lis d'abord les en-têtes :
 | En-têtes | Ce qui se passe |
 |---|---|
 | `content-type: text/html` + page Cloudflare générique | **l'adresse est fausse** — recopie-la depuis `npm run deploy` |
-| `content-type: text/html` + ta page 404 à toi | le Worker n'est pas atteint : vérifie `run_worker_first = ["/api/*"]` et l'absence de `not_found_handling`, puis redéploie |
+| `content-type: text/html` + ta page 404 à toi | le Worker n'est pas atteint : vérifie `run_worker_first = ["/*", "!/assets/*", "!/marque/*"]` et l'absence de `not_found_handling`, puis redéploie |
 
-Cette route ne demande aucun mot de passe et ne touche pas à la base. Elle dit
-seulement quels réglages sont posés — jamais leur valeur.
+Cette route ne demande aucun mot de passe et ne touche pas à la base. Elle ne
+dit rien de la configuration : savoir quelles clés manquent renseignerait
+d'abord un attaquant. Pour voir quels réglages sont posés (jamais leur
+valeur), ajoute ton jeton admin :
+
+```powershell
+curl.exe https://COLLE_TON_ADRESSE/api/admin/health -H "Authorization: Bearer TON-JETON"
+```
+
+```
+{"ok":true,"worker":"yems","payment_mode":"offline","configured":{"hyperdrive":true,"admin_token":true,...}}
+```
+
+> Dix mauvais jetons de suite depuis la même adresse bloquent l'accès à
+> l'administration pendant un quart d'heure, même avec le bon. Si tu reçois
+> « trop de tentatives », attends quinze minutes avant de réessayer.
 
 ### Le test qui compte
 
@@ -252,7 +266,9 @@ dans le navigateur.
 | le site affiche du code source | `.assetsignore` déplacé | il doit rester à la racine du projet |
 | `you should use a local Postgres connection string` | c'est `npm run dev`, pas le déploiement | utiliser `npm run deploy` |
 | `python3 : terme non reconnu` | Python s'appelle `python` sur Windows | déjà géré par le script npm, relancer `npm run deploy` |
-| `/api/...` renvoie du HTML au lieu du JSON | le Worker n'est pas atteint | tester `/api/health` ; vérifier `run_worker_first = ["/api/*"]` et l'absence de `not_found_handling` dans `wrangler.toml`, puis redéployer |
+| `/api/...` renvoie du HTML au lieu du JSON | le Worker n'est pas atteint | tester `/api/health` ; vérifier `run_worker_first = ["/*", "!/assets/*", "!/marque/*"]` et l'absence de `not_found_handling` dans `wrangler.toml`, puis redéployer |
+| `trop de tentatives, réessayez dans un quart d’heure` | dix mauvais jetons admin depuis cette adresse | attendre quinze minutes, puis recopier le jeton en entier |
+| un prix modifié dans l'admin n'apparaît pas sur la page | page servie sans passer par le Worker | vérifier `run_worker_first` (ci-dessus), redéployer, puis `Ctrl + Maj + R` |
 | `Expected "assets.run_worker_first" to be of type boolean` | Wrangler 3 installé | `npm install wrangler@4 --save-dev` |
 | `CONNECT_TIMEOUT …hyperdrive.local:5432` | le driver réclame du TLS à Hyperdrive, qui n'en parle pas sur ce tronçon | vérifier que `api/_lib/db.js` passe `ssl: false` quand `env.HYPERDRIVE` existe |
 | `relation "orders" does not exist` | le `db/schema.sql` n'a jamais été exécuté | refaire l'étape 2 |
