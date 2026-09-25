@@ -19,10 +19,27 @@ node_modules/
 .gitignore
 .gitattributes
 .nojekyll
-README.md
 docs/
+.claude/
+
+# Aucune page du site n'est écrite en Markdown : un .md à la racine ou dans
+# marque/ (README, AGENTS.md, charte de marque) est un document de travail.
+# AGENTS.md et .claude/ étaient en ligne, lisibles par n'importe qui.
+*.md
+
+# Secrets. Wrangler publie TOUT le dossier sauf ce qui est listé ici : un
+# .dev.vars (le fichier de secrets de « wrangler dev ») ou un .env.local posé
+# à la racine partirait en ligne avec le reste, jetons et clés compris.
+.dev.vars*
 .env
-.env.example
+.env.*
+
+# Éditeurs et système
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
 
 # Fichiers internes de Wrangler — le déploiement y dépose un source map,
 # qui se retrouvait publié et exposait le code serveur.
@@ -33,6 +50,7 @@ docs/
 hero.mp4
 course_all.txt
 *.jpeg
+WhatsApp Image*
 .git/
 
 # Sources PNG des visuels générés : jamais référencées par les pages,
