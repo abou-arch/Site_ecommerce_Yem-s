@@ -607,9 +607,12 @@
 
       <hr class="stitch" style="margin-block:var(--sp-5)">
 
+      <!-- Modèle, cuir, initiales et total viennent de bespoke.apercu et des
+           prix de data/products.json (apercu_sur_mesure() dans tools/build.py) :
+           le total ne peut plus contredire le modèle affiché. -->
       <div style="display:flex;align-items:baseline;justify-content:space-between;gap:var(--sp-4)">
         <span class="text-muted" style="font-size:var(--fs-sm)">Total estimé</span>
-        <span class="offer__price" style="font-size:var(--fs-xl)">158 000 F</span>
+        <span class="offer__price" style="font-size:var(--fs-xl)" data-apercu-total>172 000 F</span>
       </div>
 
       <a class="btn btn--ghost btn--full" href="configurateur.html" style="margin-top:var(--sp-5)">

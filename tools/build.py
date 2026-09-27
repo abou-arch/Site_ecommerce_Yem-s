@@ -459,12 +459,45 @@ class Builder:
 
     # ── les trois types de page ──────────────────────────────────────
 
+    def apercu_sur_mesure(self):
+        """
+        L'exemple de l'aperçu sur-mesure, sur l'accueil, calculé comme au panier.
+
+        Le total était écrit à la main (« 158 000 F ») et ne correspondait plus
+        au modèle affiché : un Derby Cotonou avec initiales coûte 166 000 +
+        6 000 F. Il se déduit désormais des prix du catalogue, selon la règle
+        de priceBespoke() dans api/_lib/catalog.js : forme + cuir + semelle,
+        plus les initiales s'il y en a. Un prix changé dans products.json
+        change l'aperçu au build suivant.
+        """
+        cfg = self.site["bespoke"]
+        choix = cfg["apercu"]
+
+        def option(liste, cle):
+            o = next((o for o in cfg[liste] if o["id"] == choix[cle]), None)
+            if o is None:
+                raise SystemExit("!! bespoke.apercu.%s : « %s » absent de bespoke.%s"
+                                 % (cle, choix[cle], liste))
+            return o
+
+        forme, cuir, semelle = option("shapes", "shape"), option("leathers", "leather"), option("soles", "sole")
+        initiales = (choix.get("initials") or "").strip()
+        total = (forme["price"] + cuir["price"] + semelle["price"]
+                 + (cfg["initials"]["price"] if initiales else 0))
+        return {
+            "apercu_modele": escape(forme["name"]),
+            "apercu_cuir": "Pleine fleur, %s" % escape(cuir["name"].lower()),
+            "apercu_initiales": escape(initiales or "Aucune"),
+            "apercu_total": price(total),
+        }
+
     def build_home(self):
         body = read(os.path.join(TPL, "pages", "index.html"))
         featured = [p for p in self.products if p.get("featured")]
         body = fill(body, base="", whatsapp=self.site["whatsapp"],
                     featured_grid=grid(featured, ""),
-                    visuel_ia=mention_ia())
+                    visuel_ia=mention_ia(),
+                    **self.apercu_sur_mesure())
         self.page(
             "index.html",
             content=body,

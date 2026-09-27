@@ -332,8 +332,8 @@
       </div>
 
       <dl style="margin:0">
-        <div class="spec-row"><dt>Modèle</dt><dd>Derby Cotonou</dd></div>
-        <div class="spec-row"><dt>Cuir</dt><dd>Pleine fleur, cognac</dd></div>
+        <div class="spec-row"><dt>Modèle</dt><dd>{{apercu_modele}}</dd></div>
+        <div class="spec-row"><dt>Cuir</dt><dd>{{apercu_cuir}}</dd></div>
         <div class="spec-row">
           <dt>Fil de couture</dt>
           <dd>
@@ -345,15 +345,18 @@
             </span>
           </dd>
         </div>
-        <div class="spec-row"><dt>Initiales</dt><dd>A. C.</dd></div>
+        <div class="spec-row"><dt>Initiales</dt><dd>{{apercu_initiales}}</dd></div>
         <div class="spec-row"><dt>Délai</dt><dd>15 jours</dd></div>
       </dl>
 
       <hr class="stitch" style="margin-block:var(--sp-5)">
 
+      <!-- Modèle, cuir, initiales et total viennent de bespoke.apercu et des
+           prix de data/products.json (apercu_sur_mesure() dans tools/build.py) :
+           le total ne peut plus contredire le modèle affiché. -->
       <div style="display:flex;align-items:baseline;justify-content:space-between;gap:var(--sp-4)">
         <span class="text-muted" style="font-size:var(--fs-sm)">Total estimé</span>
-        <span class="offer__price" style="font-size:var(--fs-xl)">158 000 F</span>
+        <span class="offer__price" style="font-size:var(--fs-xl)" data-apercu-total>{{apercu_total}}</span>
       </div>
 
       <a class="btn btn--ghost btn--full" href="{{base}}configurateur.html" style="margin-top:var(--sp-5)">

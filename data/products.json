@@ -102,6 +102,13 @@
       "initials": {
         "price": 6000,
         "note": "Marquées à chaud sur la doublure, jamais à l'extérieur."
+      },
+      "_apercu": "Exemple montré dans l'aperçu sur-mesure de l'accueil. Des identifiants seulement : le modèle, le cuir et le total affichés en sont déduits au build, avec les prix ci-dessus.",
+      "apercu": {
+        "shape": "derby",
+        "leather": "cognac",
+        "sole": "cuir",
+        "initials": "A. C."
       }
     },
     "_accordions": "Blocs dépliables communs à toutes les fiches produit.",
