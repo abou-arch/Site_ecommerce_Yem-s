@@ -218,12 +218,12 @@ def product_card(product, base, delay=0, level=3):
           </div>
         </a>
         <div class="pcard__body">
+          {origine_marque(product)}
           <div class="pcard__row">
             <h{level} class="pcard__name">{escape(product['name'])}</h{level}>
             <span class="pcard__price" data-prix="{product['slug']}">{price(product['price'])}</span>
           </div>
           <p class="pcard__desc" data-court="{product['slug']}">{product['short']}</p>
-          {origine_marque(product)}
         </div>
       </article>"""
 
@@ -807,10 +807,10 @@ class Builder:
       <span class="eyebrow">La ligne {escape(cat['name'])}</span>
       <h1 class="product__name">{escape(product['name'])}</h1>
       {badge(product['status'], long=True, slug=product['slug'])}
+      {origine_marque(product, long=True)}
       <p class="product__price"><span data-prix="{product['slug']}">{price(product['price'])}</span>
         <small>FCFA · livraison 48 h Cotonou &amp; Abidjan</small></p>
       <p class="lede" data-court="{product['slug']}">{product['short']}</p>
-      {origine_marque(product, long=True)}
       <p class="lede" style="margin-top:var(--sp-3)">{product['pitch']}</p>
 
       <div class="product__pickers">
