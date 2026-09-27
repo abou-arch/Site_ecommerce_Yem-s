@@ -109,6 +109,11 @@ export function reecrire(reponse, corrections) {
           // la laisser ferait afficher l'ancienne image aux navigateurs
           // modernes, et la nouvelle aux autres.
           element(el) { el.remove(); },
+        })
+        // La photo déposée par l'atelier est une vraie photo : la mention
+        // « Visuel IA » du visuel qu'elle remplace ne la concerne plus.
+        .on(`[data-piece="${eslug}"] [data-visuel-ia]`, {
+          element(el) { el.remove(); },
         });
     }
   }
