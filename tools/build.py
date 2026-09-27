@@ -1013,7 +1013,7 @@ class Builder:
 
           <figure class="cfg-film">
             <div class="cfg-film__media">
-              <video autoplay muted loop playsinline preload="none"
+              <video data-autoplay muted loop playsinline preload="none"
                      poster="assets/img/cuirs-poster.jpg">
                 <source src="assets/video/cuirs.webm" type="video/webm">
                 <source src="assets/video/cuirs.mp4" type="video/mp4">
@@ -1033,7 +1033,7 @@ class Builder:
 
           <figure class="cfg-film">
             <div class="cfg-film__media">
-              <video autoplay muted loop playsinline preload="none"
+              <video data-autoplay muted loop playsinline preload="none"
                      poster="assets/img/fils-poster.jpg">
                 <source src="assets/video/fils.webm" type="video/webm">
                 <source src="assets/video/fils.mp4" type="video/mp4">

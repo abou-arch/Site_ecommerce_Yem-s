@@ -575,10 +575,13 @@
         <span class="text-muted" style="font-size:var(--fs-xs)">Réf. YMS-2609-0142</span>
       </div>
 
-      <!-- preload="none" : la vidéo ne se charge qu'une fois à l'écran. Sur une
-           connexion mobile, elle ne coûte rien tant qu'on ne descend pas jusqu'ici. -->
+      <!-- Pas d'attribut autoplay : il faisait télécharger la vidéo dès
+           l'ouverture de la page, preload="none" ou pas. data-autoplay la
+           confie à main.js, qui ne la charge et ne la lance qu'une fois à
+           l'écran. Sur une connexion mobile, elle ne coûte rien tant qu'on
+           ne descend pas jusqu'ici. -->
       <div class="pshot" data-shot style="aspect-ratio:16/10;margin-bottom:var(--sp-5)">
-        <video autoplay muted loop playsinline preload="none"
+        <video data-autoplay muted loop playsinline preload="none"
                poster="assets/img/cuirs-poster.jpg"
                aria-label="Échantillons de cuir en gros plan, dont les teintes espresso, cognac et noir">
           <source src="assets/video/cuirs.webm" type="video/webm">
@@ -1075,7 +1078,7 @@
 </footer>
 
 
-<script src="assets/js/main.js?v=e074f4ac" defer></script>
+<script src="assets/js/main.js?v=8d4a4ecf" defer></script>
 <script src="assets/js/motion.js?v=8f56a458" defer></script>
 
 </body>
