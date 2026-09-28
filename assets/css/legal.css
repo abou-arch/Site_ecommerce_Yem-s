@@ -15,7 +15,7 @@
   /* Environ 68 caractères par ligne. Au-delà, l'œil rate la ligne suivante,
      et c'est une des raisons pour lesquelles personne ne lit les CGV. */
   max-width: 68ch;
-  font-size: var(--fs-md);
+  font-size: var(--fs-base);
   line-height: 1.75;
   color: var(--text-muted);
 }

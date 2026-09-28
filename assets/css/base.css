@@ -131,25 +131,32 @@
      l'autre.
 
      Téléphone : écart resserré entre les niveaux, interlignes plus généreux —
-     une ligne courte se relit moins bien qu'une ligne longue. */
-  --fs-xs:   0.6875rem;  /* 11 */
-  --fs-sm:   0.8125rem;  /* 13 */
-  --fs-base: 0.9375rem;  /* 15 */
-  --fs-md:   1rem;       /* 16 */
-  --fs-lg:   1.125rem;   /* 18 */
-  --fs-xl:   1.375rem;   /* 22 */
-  --fs-2xl:  1.75rem;    /* 28 */
-  --fs-3xl:  1.9375rem;  /* 31 */
-  --fs-4xl:  2.375rem;   /* 38 */
+     une ligne courte se relit moins bien qu'une ligne longue.
 
-  --lh-tight: 1.14;
+     Le texte courant ne descend pas sous 16 px : Jost a un petit œil, et à
+     13 px il se lisait comme des petits caractères. Les titres, eux, se
+     rapprochent du texte : l'écart était celui d'une affiche, pas d'une page
+     qu'on lit. */
+  --fs-xs:   0.75rem;    /* 12 */
+  --fs-sm:   0.875rem;   /* 14 */
+  --fs-base: 1rem;       /* 16 */
+  --fs-md:   1.0625rem;  /* 17 */
+  --fs-lg:   1.1875rem;  /* 19 */
+  --fs-xl:   1.375rem;   /* 22 */
+  --fs-2xl:  1.625rem;   /* 26 */
+  --fs-3xl:  1.875rem;   /* 30 */
+  --fs-4xl:  2.375rem;   /* 38, le titre d'accueil */
+
+  --lh-tight: 1.16;
   --lh-snug:  1.34;
   --lh-base:  1.7;
 
   /* Jost est géométrique : ses capitales supportent une approche large sans
-     se refermer, c'est ce qui donne aux libellés leur allure de maison. */
-  --tracking-wide:  0.09em;
-  --tracking-wider: 0.2em;
+     se refermer, c'est ce qui donne aux libellés leur allure de maison.
+     Resserrée d'un tiers : à 0,2 em, les libellés sonnaient comme une
+     étiquette d'entrepôt plutôt que comme une maison. */
+  --tracking-wide:  0.06em;
+  --tracking-wider: 0.14em;
 
   /* — Espacement (échelle 4px) — */
   --sp-1: 0.25rem;
@@ -275,19 +282,19 @@ ul, ol { list-style: none; padding: 0; }
    -------------------------------------------------------------------------- */
 @media (min-width: 900px) {
   :root {
-    --fs-xs:   0.75rem;    /* 12 */
-    --fs-sm:   0.875rem;   /* 14 */
-    --fs-base: 1rem;       /* 16 */
-    --fs-md:   1.125rem;   /* 18 */
+    --fs-xs:   0.8125rem;  /* 13 */
+    --fs-sm:   0.9375rem;  /* 15 */
+    --fs-base: 1.0625rem;  /* 17 */
+    --fs-md:   1.1875rem;  /* 19 */
     --fs-lg:   1.375rem;   /* 22 */
-    --fs-xl:   1.75rem;    /* 28 */
-    --fs-2xl:  2.25rem;    /* 36 */
-    --fs-3xl:  2.75rem;    /* 44 */
-    --fs-4xl:  4rem;       /* 64 */
+    --fs-xl:   1.625rem;   /* 26 */
+    --fs-2xl:  2rem;       /* 32 */
+    --fs-3xl:  2.5rem;     /* 40 */
+    --fs-4xl:  4rem;       /* 64, le titre d'accueil */
 
-    --lh-tight: 1.06;
-    --lh-snug:  1.28;
-    --lh-base:  1.62;
+    --lh-tight: 1.1;
+    --lh-snug:  1.3;
+    --lh-base:  1.65;
 
     --section-y: 5.75rem;
   }

@@ -322,9 +322,13 @@
   display: inline-flex;
   align-items: center;
   gap: var(--sp-2);
-  font-size: var(--fs-xs);
-  letter-spacing: var(--tracking-wide);
-  text-transform: uppercase;
+  /* Écrite comme on la dirait, pas comme une étiquette : en italique, en
+     minuscules. L'accueil promet la provenance « pas en petits caractères » ;
+     en capitales de 11 px espacées, c'en étaient. */
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: var(--fs-base);
+  line-height: var(--lh-snug);
   color: var(--text-subtle);
 }
 
@@ -343,6 +347,8 @@
   display: block;
   margin: var(--sp-4) 0 var(--sp-5);
   padding: var(--sp-4) var(--sp-5);
+  font-family: var(--font-body);
+  font-style: normal;
   font-size: var(--fs-sm);
   letter-spacing: 0;
   text-transform: none;

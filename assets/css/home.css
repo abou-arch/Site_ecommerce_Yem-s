@@ -341,7 +341,7 @@
 
 .faq__body {
   padding: 0 var(--sp-5) var(--sp-5);
-  font-size: var(--fs-sm);
+  font-size: var(--fs-base);
   color: var(--text-muted);
   max-width: 62ch;
 }
@@ -374,7 +374,7 @@
 .detail-list__item h3 { margin-bottom: var(--sp-2); }
 
 .detail-list__item p {
-  font-size: var(--fs-sm);
+  font-size: var(--fs-base);
   color: var(--text-muted);
   line-height: var(--lh-base);
 }
@@ -474,7 +474,7 @@
 }
 
 .step h4 { margin-bottom: var(--sp-1); }
-.step p  { font-size: var(--fs-sm); color: var(--text-muted); }
+.step p  { font-size: var(--fs-base); color: var(--text-muted); }
 
 .bespoke__panel {
   position: relative;
