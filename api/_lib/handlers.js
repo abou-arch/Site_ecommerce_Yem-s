@@ -100,7 +100,7 @@ export async function createOrder(payload, env) {
 
   const sql = connect(env);
   try {
-    const order = await sql.begin(async (tx) => {
+    const enregistrer = () => sql.begin(async (tx) => {
       // Le client est reconnu à son numéro : ici c'est lui l'identité, pas l'e-mail.
       const [customer] = await tx`
         INSERT INTO customers (phone, full_name, email, city, country)
@@ -148,6 +148,19 @@ export async function createOrder(payload, env) {
       return created;
     });
 
+    // Deux commandes simultanées peuvent tirer la même référence : la
+    // contrainte d'unicité refuse la seconde, qui recommence avec la suivante.
+    let order;
+    for (let essai = 1; !order; essai += 1) {
+      try {
+        order = await enregistrer();
+      } catch (err) {
+        if (essai < 3 && err?.code === '23505'
+            && err?.constraint_name === 'orders_reference_unique') continue;
+        throw err;
+      }
+    }
+
     // Règlement hors ligne : rien d'autre ne viendra déclencher la
     // notification, on prévient l'atelier dès maintenant.
     if (payMode !== 'online') {
@@ -177,9 +190,31 @@ export async function createOrder(payload, env) {
 
 /* ═══════════════════════════════════════════════ encaissement d'un paiement */
 
+/* Le bac à sable KkiaPay accepte des numéros de test publiés dans sa
+   documentation : un paiement « réussi » y est gratuit. Si le site passe en
+   paiement en ligne sans que KKIAPAY_SANDBOX soit repassé à false, n'importe
+   qui obtiendrait une commande « payée » sans débourser un franc. */
+const bacASable = (env) => env0(env, 'KKIAPAY_SANDBOX') === 'true';
+
 /** Cœur partagé entre la vérification normale et le webhook. */
 async function settle(sql, order, transactionId, env, actor) {
-  const check = await verifyTransaction(transactionId, order.amount_due, env);
+  let check = await verifyTransaction(transactionId, order.amount_due, env);
+
+  /* Le widget est ouvert avec partnerId = numéro de la commande, que KkiaPay
+     conserve avec la transaction. S'il en désigne une autre, on nous
+     présente le paiement d'un autre client : le montant peut correspondre,
+     la transaction n'est pas celle de cette commande. Faute de partnerId
+     dans la réponse, rien ne permet de trancher et l'on s'en tient au
+     montant, comme avant. */
+  if (check.ok) {
+    const partenaire = String(check.raw?.partnerId ?? check.raw?.partner_id ?? '').trim();
+    if (partenaire && partenaire !== String(order.id)) {
+      check = {
+        ok: false, raw: check.raw,
+        reason: `transaction rattachée à une autre commande (partnerId ${partenaire.slice(0, 40)})`,
+      };
+    }
+  }
 
   if (!check.ok) {
     await sql`
@@ -192,13 +227,23 @@ async function settle(sql, order, transactionId, env, actor) {
   }
 
   const p = check.payment;
-  const newStatus = order.kind === 'standard' ? 'paid' : 'deposit';
+  // En bac à sable, aucun argent n'a bougé : la commande reste à confirmer.
+  const test = bacASable(env);
+  const newStatus = test ? 'to_confirm' : order.kind === 'standard' ? 'paid' : 'deposit';
   let fresh = false;
+  let ailleurs = false;
 
   await sql.begin(async (tx) => {
     // L'unicité sur transaction_id rend l'opération idempotente : un double
     // appel — rechargement de page, webhook simultané — ne peut pas encaisser
     // deux fois la même transaction.
+    //
+    // Un échec déjà enregistré, lui, ne doit rien bloquer. Un Mobile Money
+    // encore « PENDING » au premier contrôle laissait une ligne « failed » qui,
+    // avec DO NOTHING, empêchait pour toujours d'encaisser la même
+    // transaction une fois réussie : client débité, commande jamais payée.
+    // Le même verrou pouvait être posé exprès, par quiconque présentait
+    // d'avance un identifiant de transaction sur une autre commande.
     const inserted = await tx`
       INSERT INTO payments (
         order_id, transaction_id, status, amount, method, provider, payer_phone, raw, verified_at
@@ -206,19 +251,37 @@ async function settle(sql, order, transactionId, env, actor) {
         ${order.id}, ${p.transaction_id}, 'success', ${p.amount},
         ${p.method}, ${p.provider}, ${p.payer_phone}, ${tx.json(check.raw)}, now()
       )
-      ON CONFLICT (transaction_id) DO NOTHING
+      ON CONFLICT (transaction_id) DO UPDATE SET
+        order_id = EXCLUDED.order_id, status = 'success', amount = EXCLUDED.amount,
+        method = EXCLUDED.method, provider = EXCLUDED.provider,
+        payer_phone = EXCLUDED.payer_phone, raw = EXCLUDED.raw, verified_at = now()
+      WHERE payments.status IN ('pending', 'failed')
       RETURNING id
     `;
-    if (inserted.length === 0) return;
+    if (inserted.length === 0) {
+      const [deja] = await tx`SELECT order_id FROM payments WHERE transaction_id = ${p.transaction_id}`;
+      ailleurs = Boolean(deja) && String(deja.order_id) !== String(order.id);
+      return;
+    }
 
     fresh = true;
     await tx`UPDATE orders SET status = ${newStatus} WHERE id = ${order.id} AND status = 'pending'`;
-    await logEvent(tx, order.id, 'paiement vérifié', {
-      transaction_id: p.transaction_id, amount: p.amount, provider: p.provider,
-    }, actor);
+    await logEvent(tx, order.id,
+      test ? 'paiement de test (bac à sable) : aucun argent reçu' : 'paiement vérifié', {
+        transaction_id: p.transaction_id, amount: p.amount, provider: p.provider,
+      }, actor);
   });
 
-  return { settled: true, fresh, payment: p, status: newStatus };
+  // Une transaction déjà encaissée pour une autre commande ne paie pas
+  // celle-ci. Le dire, plutôt que de répondre « payée » au client alors que
+  // la base, elle, n'a rien changé.
+  if (ailleurs) {
+    const reason = 'transaction déjà utilisée pour une autre commande';
+    await logEvent(sql, order.id, 'paiement refusé', { reason }, actor);
+    return { settled: false, reason };
+  }
+
+  return { settled: true, fresh, payment: p, status: newStatus, test };
 }
 
 /** Notification de l'atelier. N'échoue jamais : l'argent est déjà encaissé. */
@@ -258,6 +321,7 @@ export async function verifyPayment(payload, env) {
 
   if (!Number.isInteger(orderId) || orderId <= 0) return ko('commande invalide');
   if (!transactionId) return ko('transaction manquante');
+  if (transactionId.length > 64) return ko('transaction invalide');
 
   const sql = connect(env);
   try {
@@ -269,13 +333,23 @@ export async function verifyPayment(payload, env) {
     if (!order) return ko('commande introuvable', 404);
 
     if (order.status !== 'pending') {
+      /* Rien ne se dit d'une commande à qui ne prouve pas l'avoir payée.
+         Les numéros de commande se suivent : répondre « déjà réglée, voici sa
+         référence » à n'importe quel appel livrait, une par une, la référence
+         et l'état de toutes les commandes du site. Or cette référence est ce
+         qu'un client donne à l'atelier pour se faire reconnaître. */
+      const [paye] = await sql`
+        SELECT 1 FROM payments
+        WHERE order_id = ${order.id} AND transaction_id = ${transactionId} AND status = 'success'
+      `;
+      if (!paye) return ko('commande introuvable', 404);
       return ok({ already: true, reference: order.reference, status: order.status });
     }
 
     const result = await settle(sql, order, transactionId, env, 'system');
     if (!result.settled) return ko(result.reason, 402);
 
-    if (result.fresh) await announce(sql, order, env);
+    if (result.fresh) await announce(sql, { ...order, sandbox: result.test }, env);
 
     return ok({
       reference: order.reference,
@@ -298,7 +372,7 @@ export async function handleWebhook(event, secretHeader, env) {
   const transactionId = String(
     event.transactionId || event.transaction_id || event.id || ''
   ).trim();
-  if (!transactionId) return ok({ ignored: 'sans transactionId' });
+  if (!transactionId || transactionId.length > 64) return ok({ ignored: 'sans transactionId' });
 
   // L'identifiant de commande voyage dans « data », posé par le tunnel.
   let orderId = Number(event.order_id || event.partnerId);
@@ -329,7 +403,7 @@ export async function handleWebhook(event, secretHeader, env) {
     // la transaction à la source, comme par la voie normale.
     const result = await settle(sql, order, transactionId, env, 'webhook');
     if (!result.settled) return ok({ ignored: result.reason });
-    if (result.fresh) await announce(sql, order, env);
+    if (result.fresh) await announce(sql, { ...order, sandbox: result.test }, env);
 
     return ok({});
   } finally {
@@ -352,7 +426,7 @@ export function adminAuthorized(bearer, env) {
 }
 
 export async function listOrders({ status, limit }, env) {
-  const cap = Math.min(Number(limit) || 50, 200);
+  const cap = Math.min(Math.max(Math.floor(Number(limit)) || 50, 1), 200);
   const sql = connect(env);
 
   try {
@@ -513,31 +587,86 @@ const TERMINEES = ['delivered', 'cancelled', 'refunded'];
  * suppression pure ferait perdre le chiffre d'affaires du mois.
  */
 export async function anonymizeOrder({ order_id, before }, env) {
+  // Contrôles avant tout calcul : une date illisible faisait lever
+  // toISOString() et répondait « erreur serveur » au lieu de « date invalide ».
+  if (!order_id && !before) return ko('préciser une commande ou une date');
+  const id = Number(order_id);
+  if (order_id && (!Number.isInteger(id) || id <= 0)) return ko('commande invalide');
+  const limite = new Date(before || 0);
+  if (!order_id && Number.isNaN(limite.getTime())) return ko('date invalide');
+
   const sql = connect(env);
   try {
-    const cible = order_id
-      ? sql`id = ${Number(order_id)}`
-      : sql`created_at < ${new Date(before || 0).toISOString()}`;
+    /* La page « Données personnelles » promet qu'une commande anonymisée « ne
+       permet plus de remonter jusqu'à vous ». Effacer les champs de livraison
+       n'y suffisait pas : le nom, le téléphone et l'e-mail restaient dans
+       customers, le lien wa.me journalisé recopiait nom, adresse et note, et
+       la réponse de KkiaPay gardait le téléphone du payeur. Tout part ici,
+       sauf ce que la comptabilité exige : référence, date, montants. */
+    const touchees = await sql.begin(async (tx) => {
+      const cible = order_id ? tx`id = ${id}` : tx`created_at < ${limite.toISOString()}`;
+      // IN ${tx(liste)} plutôt que = ANY(${liste}) : sans fetch_types, le
+      // pilote envoie un tableau comme le texte « delivered,cancelled,… »,
+      // que Postgres refuse. L'anonymisation échouait ainsi à chaque appel.
+      const lignes = await tx`
+        WITH cibles AS (
+          SELECT id, customer_id FROM orders
+          WHERE ${cible}
+            AND status IN ${tx(TERMINEES)}
+            AND anonymized_at IS NULL
+          FOR UPDATE
+        )
+        UPDATE orders o SET
+          ship_name    = 'Client anonymisé',
+          ship_phone   = '',
+          ship_address = '',
+          ship_city    = '',
+          ship_note    = NULL,
+          customer_id  = NULL,
+          anonymized_at = now()
+        FROM cibles
+        WHERE o.id = cibles.id
+        RETURNING o.id, o.reference, cibles.customer_id
+      `;
+      if (lignes.length === 0) return lignes;
 
-    if (!order_id && !before) return ko('préciser une commande ou une date');
-    if (before && Number.isNaN(new Date(before).getTime())) return ko('date invalide');
+      const ids = lignes.map((o) => o.id);
+      await tx`
+        UPDATE order_events SET detail = detail - 'link' - 'error'
+        WHERE order_id IN ${tx(ids)} AND detail IS NOT NULL
+      `;
+      // Des initiales marquées dans la doublure désignent quelqu'un.
+      await tx`
+        UPDATE order_items SET bespoke = bespoke - 'initials'
+        WHERE order_id IN ${tx(ids)} AND bespoke IS NOT NULL
+      `;
+      await tx`
+        UPDATE payments SET
+          payer_phone = NULL,
+          raw = jsonb_strip_nulls(jsonb_build_object(
+            'transactionId', raw->'transactionId', 'status', raw->'status',
+            'amount', raw->'amount', 'source', raw->'source',
+            'performed_at', raw->'performed_at'))
+        WHERE order_id IN ${tx(ids)}
+      `;
+      // Un client qui a encore une commande en cours garde sa fiche : l'atelier
+      // en a besoin. Sinon, elle est effacée à son tour.
+      const clients = [...new Set(lignes.map((o) => o.customer_id).filter(Boolean))];
+      if (clients.length) {
+        await tx`
+          UPDATE customers c SET
+            full_name = 'Client anonymisé', email = NULL, city = NULL, notes = NULL,
+            phone = 'anonyme-' || c.id
+          WHERE c.id IN ${tx(clients)}
+            AND NOT EXISTS (SELECT 1 FROM orders o WHERE o.customer_id = c.id)
+        `;
+      }
+      for (const o of lignes) {
+        await logEvent(tx, o.id, 'coordonnées anonymisées', null, 'admin');
+      }
+      return lignes;
+    });
 
-    const touchees = await sql`
-      UPDATE orders SET
-        ship_name    = 'Client anonymisé',
-        ship_phone   = '',
-        ship_address = '',
-        ship_note    = NULL,
-        anonymized_at = now()
-      WHERE ${cible}
-        AND status = ANY(${TERMINEES})
-        AND anonymized_at IS NULL
-      RETURNING id, reference
-    `;
-
-    for (const o of touchees) {
-      await logEvent(sql, o.id, 'coordonnées anonymisées', null, 'admin');
-    }
     return ok({ count: touchees.length, references: touchees.map((o) => o.reference) });
   } finally {
     await sql.end({ timeout: 5 });
@@ -555,14 +684,24 @@ export async function deleteOrder({ order_id }, env) {
   const sql = connect(env);
   try {
     const [ligne] = await sql`
-      SELECT reference, status, total FROM orders WHERE id = ${id}
+      SELECT reference, status, total, customer_id FROM orders WHERE id = ${id}
     `;
     if (!ligne) return ko('commande introuvable', 404);
     if (!TERMINEES.includes(ligne.status)) {
       return ko('une commande en cours ne peut pas être supprimée : '
               + 'marquez-la livrée ou annulée d’abord');
     }
-    await sql`DELETE FROM orders WHERE id = ${id}`;
+    await sql.begin(async (tx) => {
+      await tx`DELETE FROM orders WHERE id = ${id}`;
+      // La fiche du client ne part pas avec la commande (ON DELETE SET NULL) :
+      // sans commande restante, elle n'a plus de raison d'être gardée.
+      if (ligne.customer_id) {
+        await tx`
+          DELETE FROM customers c WHERE c.id = ${ligne.customer_id}
+            AND NOT EXISTS (SELECT 1 FROM orders o WHERE o.customer_id = c.id)
+        `;
+      }
+    });
     return ok({ reference: ligne.reference });
   } finally {
     await sql.end({ timeout: 5 });

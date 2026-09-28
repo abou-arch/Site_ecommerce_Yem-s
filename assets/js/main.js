@@ -202,6 +202,12 @@
   let toastEl = null;
   let toastTimer = null;
 
+  // toast() reçoit du HTML (icône, lien vers le panier) : tout texte venu des
+  // données doit y entrer échappé.
+  const echappe = (s) => String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+
   function toast(message) {
     if (!toastEl) {
       toastEl = document.createElement('div');
@@ -247,7 +253,7 @@
 
       const details = [btn.dataset.name, color, size].filter(Boolean).join(' · ');
       toast('<svg aria-hidden="true"><use href="#i-check"></use></svg>' +
-            details + '. <a href="' + (btn.dataset.cart || 'panier.html') + '">voir le panier</a>');
+            echappe(details) + '. <a href="' + echappe(btn.dataset.cart || 'panier.html') + '">voir le panier</a>');
     });
   });
 

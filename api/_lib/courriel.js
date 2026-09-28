@@ -93,7 +93,8 @@ export async function previenirParCourriel(order, items, env = {}) {
       // L'objet doit se lire en entier dans la liste des messages, sans
       // ouvrir : la référence et le montant suffisent à décider si ça presse.
       // Pas de tiret cadratin : la charte l'interdit, y compris ici.
-      subject: `Commande ${order.reference}, ${new Intl.NumberFormat('fr-FR').format(order.total)} F`,
+      subject: `${order.sandbox ? 'TEST, aucun argent reçu : ' : ''}`
+             + `Commande ${order.reference}, ${new Intl.NumberFormat('fr-FR').format(order.total)} F`,
       text: texte,
       html: enHtml(texte, order.reference),
     });

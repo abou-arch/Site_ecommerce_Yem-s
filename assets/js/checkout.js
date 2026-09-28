@@ -13,6 +13,16 @@
   const cart = () => (window.YemsCart ? window.YemsCart.read() : []);
   const fmt = (n) => new Intl.NumberFormat('fr-FR').format(n) + ' F';
 
+  // Le panier vit dans localStorage : n'importe quel script ou extension peut
+  // y écrire, et ce qui s'y trouve se réaffiche ensuite à chaque visite. Un
+  // nom d'article contenant du HTML s'exécutait donc sur le panier et sur la
+  // page de commande, là où le client saisit son adresse. Tout ce qui en sort
+  // est échappé, et les nombres redeviennent des nombres.
+  const echappe = (s) => String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  const nombre = (n) => (Number.isFinite(Number(n)) ? Number(n) : 0);
+
   const key = (i) => [i.id, i.size || '', i.color || '',
                       i.bespoke ? JSON.stringify(i.bespoke) : ''].join('|');
 
@@ -26,7 +36,7 @@
       if (item.bespoke.sole) bits.push(`semelle ${item.bespoke.sole}`);
       if (item.bespoke.initials) bits.push(`initiales ${item.bespoke.initials}`);
     }
-    return bits.filter(Boolean).join(' · ');
+    return bits.filter(Boolean).map(echappe).join(' · ');
   }
 
   function renderCart() {
@@ -50,21 +60,21 @@
     list.innerHTML = items.map((item, index) => `
       <article class="line">
         <div class="line__body">
-          <h2 class="line__name">${item.name}</h2>
+          <h2 class="line__name">${echappe(item.name)}</h2>
           ${describe(item) ? `<p class="line__opts">${describe(item)}</p>` : ''}
-          <p class="line__unit">${fmt(item.price)} l'unité</p>
+          <p class="line__unit">${fmt(nombre(item.price))} l'unité</p>
         </div>
         <div class="line__qty">
           <button type="button" data-step="-1" data-index="${index}" aria-label="Retirer un exemplaire">−</button>
-          <span aria-live="polite">${item.qty}</span>
+          <span aria-live="polite">${nombre(item.qty)}</span>
           <button type="button" data-step="1" data-index="${index}" aria-label="Ajouter un exemplaire">+</button>
         </div>
-        <p class="line__total">${fmt(item.price * item.qty)}</p>
+        <p class="line__total">${fmt(nombre(item.price) * nombre(item.qty))}</p>
         <button class="line__remove" type="button" data-remove="${index}"
-                aria-label="Retirer ${item.name} du panier">Retirer</button>
+                aria-label="Retirer ${echappe(item.name)} du panier">Retirer</button>
       </article>`).join('');
 
-    const subtotal = items.reduce((sum, i) => sum + i.price * i.qty, 0);
+    const subtotal = items.reduce((sum, i) => sum + nombre(i.price) * nombre(i.qty), 0);
     $$('[data-cart-subtotal]').forEach((el) => { el.textContent = fmt(subtotal); });
     $$('[data-cart-summary]').forEach((el) => { el.hidden = false; });
 
@@ -82,7 +92,7 @@
       const items = cart();
       if (step) {
         const i = Number(step.dataset.index);
-        items[i].qty = Math.max(1, Math.min(20, items[i].qty + Number(step.dataset.step)));
+        items[i].qty = Math.max(1, Math.min(20, nombre(items[i].qty) + Number(step.dataset.step)));
       } else {
         items.splice(Number(remove.dataset.remove), 1);
       }
@@ -129,11 +139,11 @@
     if (recap) {
       recap.innerHTML = items.map((i) => `
         <div class="spec-row">
-          <dt>${i.qty} × ${i.name}${describe(i) ? `<br><small>${describe(i)}</small>` : ''}</dt>
-          <dd>${fmt(i.price * i.qty)}</dd>
+          <dt>${nombre(i.qty)} × ${echappe(i.name)}${describe(i) ? `<br><small>${describe(i)}</small>` : ''}</dt>
+          <dd>${fmt(nombre(i.price) * nombre(i.qty))}</dd>
         </div>`).join('');
     }
-    const subtotal = items.reduce((s, i) => s + i.price * i.qty, 0);
+    const subtotal = items.reduce((s, i) => s + nombre(i.price) * nombre(i.qty), 0);
     $$('[data-cart-subtotal]').forEach((el) => { el.textContent = fmt(subtotal); });
   }
   renderRecap();

@@ -43,8 +43,15 @@ export async function readRaw(req) {
 
 /* ------------------------------------------------------------ validation */
 
+/* Caractères qu'on ne voit pas mais qui agissent : contrôles (dont le nul et
+   les retours à la ligne), espaces de largeur nulle, et surtout les marques
+   d'inversion bidirectionnelle. Un U+202E glissé dans une adresse retourne
+   l'affichage de tout ce qui suit, dans l'admin comme dans le message
+   WhatsApp : le texte qui suit s'affiche à l'envers et peut se lire tout autre chose. */
+const INVISIBLES = /[\u0000-\u001F\u007F-\u009F\u200B-\u200F\u202A-\u202E\u2060-\u2064\u2066-\u2069\uFEFF]/g;
+
 export function cleanText(value, max = 200) {
-  return String(value ?? '').replace(/\s+/g, ' ').trim().slice(0, max);
+  return String(value ?? '').replace(INVISIBLES, ' ').replace(/\s+/g, ' ').trim().slice(0, max);
 }
 
 /**

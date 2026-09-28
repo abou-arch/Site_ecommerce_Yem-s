@@ -112,14 +112,14 @@
     const avance = suites.length
       ? `<label class="cmd__next">
            <span class="visually-hidden">Faire passer la commande ${echappe(o.reference)} à</span>
-           <select data-status="${o.id}">
+           <select data-status="${echappe(o.id)}">
              <option value="">Changer le statut…</option>
              ${suites.map((s) => `<option value="${s}">${STATUTS[s].texte}</option>`).join('')}
            </select>
          </label>`
       : '';
 
-    return `<article class="cmd" data-order="${o.id}">
+    return `<article class="cmd" data-order="${echappe(o.id)}">
       <div class="cmd__top">
         <div>
           <h2 class="cmd__ref">${echappe(o.reference)}</h2>
@@ -340,7 +340,7 @@
         <label class="field">
           <span class="field__label">Prix ${modifie('price')}</span>
           <input type="number" name="price" inputmode="numeric" min="500" max="5000000"
-                 step="500" value="${c.price ?? ''}" placeholder="${p.prix_catalogue}">
+                 step="500" value="${echappe(c.price ?? '')}" placeholder="${echappe(p.prix_catalogue)}">
           <span class="field__hint">Vide = ${new Intl.NumberFormat('fr-FR').format(p.prix_catalogue)} F, le prix d'origine.</span>
         </label>
 

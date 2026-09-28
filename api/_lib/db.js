@@ -47,20 +47,30 @@ export function connect(env = {}) {
 
 /**
  * Référence lisible par le client et par l'atelier : YMS-2608-0042.
- * Le compteur du jour évite les collisions sans exposer le volume total.
+ *
+ * Le numéro suit la plus haute référence déjà attribuée pour ce jour et ce
+ * mois, et non le nombre de commandes passées aujourd'hui. Compter les lignes
+ * rendait deux fois la même référence :
+ *   - après la suppression d'une commande du jour, le compte baissait d'un
+ *     cran et retombait sur une référence encore en base ;
+ *   - un an plus tard, le même jour et le même mois repartaient à 0001, déjà
+ *     pris l'année d'avant.
+ * La contrainte d'unicité refusait alors la commande, et toutes les
+ * suivantes de la journée avec elle : la boutique ne vendait plus rien.
  */
 export async function nextReference(sql) {
   const now = new Date();
   const stamp =
     String(now.getUTCDate()).padStart(2, '0') +
     String(now.getUTCMonth() + 1).padStart(2, '0');
+  const prefixe = `YMS-${stamp}-`;
 
   const [row] = await sql`
-    SELECT count(*)::int AS n
+    SELECT COALESCE(MAX(substring(reference FROM ${prefixe.length + 1}::int)::int), 0) AS n
     FROM orders
-    WHERE created_at >= date_trunc('day', now())
+    WHERE reference ~ ${'^' + prefixe + '[0-9]+$'}
   `;
-  return `YMS-${stamp}-${String((row?.n ?? 0) + 1).padStart(4, '0')}`;
+  return `${prefixe}${String((row?.n ?? 0) + 1).padStart(4, '0')}`;
 }
 
 export async function logEvent(sql, orderId, label, detail = null, actor = 'system') {

@@ -19,18 +19,31 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <!-- Les polices ne bloquent plus l'affichage. « media=print » fait charger la
-     feuille sans qu'elle retarde le rendu ; onload la réactive dès qu'elle est
-     là. Le texte s'affiche donc immédiatement en Georgia et en police système,
-     puis bascule sur Playfair Display et Jost. Sur une 3G, ça évite plusieurs
-     centaines de millisecondes de page blanche.
+     feuille sans qu'elle retarde le rendu ; le script qui suit la réactive dès
+     qu'elle est là. Le texte s'affiche donc immédiatement en Georgia et en
+     police système, puis bascule sur Playfair Display et Jost. Sur une 3G, ça
+     évite plusieurs centaines de millisecondes de page blanche.
+
+     Ce script remplace un attribut onload : la politique de sécurité (CSP)
+     n'autorise que les scripts dont elle connaît l'empreinte, et un
+     gestionnaire écrit dans un attribut exigerait en plus 'unsafe-hashes',
+     que tous les navigateurs ne comprennent pas.
 
      Le <noscript> garde le comportement classique pour qui n'exécute pas de
      script : mieux vaut attendre les polices que ne jamais les recevoir.
 
      Seules les graisses réellement employées sont demandées : Playfair en 400,
      500, 600 et son italique pour les accents ; Jost de 300 à 600. -->
-<link rel="stylesheet" media="print" onload="this.media='all'"
+<link rel="stylesheet" media="print" data-polices
       href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap">
+<script>
+(function () {
+  var feuille = document.querySelector('link[data-polices]');
+  var activer = function () { feuille.media = 'all'; };
+  // Déjà chargée (cache) : l'événement load est passé, on active tout de suite.
+  if (feuille.sheet) activer(); else feuille.addEventListener('load', activer);
+})();
+</script>
 <noscript>
   <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap">
@@ -358,7 +371,7 @@
 </footer>
 
 
-<script src="assets/js/main.js?v=edd42ed6" defer></script>
+<script src="assets/js/main.js?v=e074f4ac" defer></script>
 <script src="assets/js/motion.js?v=8f56a458" defer></script>
 
 </body>

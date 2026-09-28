@@ -27,6 +27,11 @@
 
   const find = (list, id) => CFG[list].find((o) => o.id === id) || null;
 
+  // Ce qui part en innerHTML est échappé, même quand ça vient du catalogue.
+  const echappe = (s) => String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+
   function total() {
     const shape = find('shapes', choice.shape);
     if (!shape) return 0;
@@ -87,7 +92,7 @@
       if (shape && shape.image) {
         // Pas de photo tant que l'atelier n'a pas photographié sa production.
         shot.innerHTML = shape.image
-          ? '<img src="' + CFG.base + 'assets/img/' + shape.image + '.jpg" alt="' + shape.name + '">'
+          ? '<img src="' + echappe(CFG.base + 'assets/img/' + shape.image + '.jpg') + '" alt="' + echappe(shape.name) + '">'
           : '<span class="pshot__note">Photo à venir</span>';
         shot.classList.toggle('pshot--empty', !shape.image);
       } else {
@@ -158,7 +163,7 @@
       const cart = btn.dataset.cart || 'panier.html';
       window.dispatchEvent(new CustomEvent('yems:toast', {
         detail: { html: '<svg aria-hidden="true"><use href="#i-check"></use></svg>' +
-                        detail + '. <a href="' + cart + '">voir le panier</a>' },
+                        echappe(detail) + '. <a href="' + echappe(cart) + '">voir le panier</a>' },
       }));
     });
   });

@@ -32,7 +32,11 @@ __pycache__/
 node_modules/
 .vercel/
 .env
-.env.local
-.env*.local
+.env.*
 # .env.example est volontairement suivi : c'est le modèle, sans valeurs.
 !.env.example
+
+# Wrangler : .dev.vars porte les secrets de « wrangler dev » (jeton admin,
+# clés KkiaPay) ; .wrangler/ ses fichiers de travail, source maps comprises.
+.dev.vars*
+.wrangler/
