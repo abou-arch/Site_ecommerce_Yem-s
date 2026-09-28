@@ -594,7 +594,8 @@
   line-height: 1;
 }
 
-.card p { font-size: var(--fs-sm); color: var(--text-muted); }
+/* Du texte qu'on lit, pas une légende : taille du corps, mesure bornée. */
+.card p { font-size: var(--fs-base); color: var(--text-muted); max-width: 64ch; }
 
 .section--light .card {
   background: var(--blanc);

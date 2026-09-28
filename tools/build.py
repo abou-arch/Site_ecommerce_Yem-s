@@ -63,6 +63,30 @@ def strip_notes(html):
     return re.sub(r'\n?\s*<p[^>]*>(?:(?!</p>).)*?todo-note.*?</p>', '', html, flags=re.S)
 
 
+# Typographie française : le signe ne quitte pas le mot qu'il accompagne.
+# Avec une espace ordinaire, le navigateur pouvait couper juste avant « : »
+# ou « ? », ou juste après « « », et laisser le signe seul en début ou en fin
+# de ligne. Certains textes portaient déjà &nbsp;, pas tous : la règle est
+# donc appliquée ici, une fois, au texte de toutes les pages.
+SEPARATEURS = re.compile(r'(<script\b.*?</script\s*>|<style\b.*?</style\s*>|<!--.*?-->|<[^>]+>)',
+                         flags=re.S | re.I)
+
+
+def espaces_insecables(html):
+    """Espace insécable avant : ; ? ! et à l'intérieur des guillemets.
+
+    Seul le texte visible est touché : balises, attributs, scripts, styles et
+    commentaires restent tels quels (les empreintes de la CSP ne bougent pas).
+    """
+    def texte(t):
+        t = re.sub(r'«[ \t\n]+', '« ', t)
+        t = re.sub(r'[ \t\n]+»', ' »', t)
+        return re.sub(r'(?<=\S)[ \t\n]+([:;?!])', ' \\1', t)
+
+    morceaux = SEPARATEURS.split(html)
+    return "".join(m if i % 2 else texte(m) for i, m in enumerate(morceaux))
+
+
 def read(path):
     with open(path, encoding="utf-8") as f:
         return f.read()
@@ -448,6 +472,7 @@ class Builder:
             content=content,
         )
         html = strip_notes(html)
+        html = espaces_insecables(html)
         html = version_assets(html, ROOT)
         write(os.path.join(ROOT, path), html)
         self.written.append((path, len(html.encode())))
