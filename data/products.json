@@ -102,6 +102,13 @@
       "initials": {
         "price": 6000,
         "note": "Marquées à chaud sur la doublure, jamais à l'extérieur."
+      },
+      "_apercu": "Exemple montré dans l'aperçu sur-mesure de l'accueil. Des identifiants seulement : le modèle, le cuir et le total affichés en sont déduits au build, avec les prix ci-dessus.",
+      "apercu": {
+        "shape": "derby",
+        "leather": "cognac",
+        "sole": "cuir",
+        "initials": "A. C."
       }
     },
     "_accordions": "Blocs dépliables communs à toutes les fiches produit.",
@@ -769,7 +776,7 @@
       "name": "Loafer Marine",
       "price": 45000,
       "status": "amber",
-      "featured": false,
+      "featured": true,
       "bespoke": false,
       "origine": "selection",
       "short": "Un loafer marine à bandeau, plus habillé qu'un mocassin souple.",
@@ -958,7 +965,7 @@
       "name": "Sneaker Ganvié",
       "price": 48000,
       "status": "green",
-      "featured": true,
+      "featured": false,
       "bespoke": false,
       "origine": "selection",
       "short": "Cuir perforé, semelle légère. Pour marcher longtemps sans avoir l'air d'être en sport.",

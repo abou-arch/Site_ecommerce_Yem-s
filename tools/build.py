@@ -166,6 +166,21 @@ def picture(product, base, index=0, lazy=True, sizes=None):
     )
 
 
+def mention_ia():
+    """
+    La mention « Visuel IA », posée sur l'image qu'elle concerne.
+
+    Les mentions légales promettent qu'elle figure sur chaque visuel généré.
+    Elle n'apparaissait que sur les petites vues des fiches : une fiche à photo
+    unique, une vignette de grille ou le hero n'en portaient aucune. Une seule
+    fonction, donc un seul libellé, où qu'elle s'affiche. L'attribut
+    data-visuel-ia permet au Worker de la retirer quand l'atelier remplace
+    le visuel par une vraie photo.
+    """
+    return ('<span class="pshot__note" data-visuel-ia title="Visuel d\'ambiance '
+            'généré par intelligence artificielle">Visuel IA</span>')
+
+
 ORIGINES = {}   # rempli au démarrage depuis data/products.json
 
 
@@ -192,21 +207,23 @@ def product_card(product, base, delay=0, level=3):
     """Carte produit, telle qu'elle apparaît dans une grille."""
     href = "%sproduit/%s.html" % (base, product["slug"])
     style = ' style="--reveal-delay:%dms"' % delay if delay else ""
-    empty = "" if product.get("images") else " pshot--empty"
+    images = product.get("images") or []
+    empty = "" if images else " pshot--empty"
+    note = mention_ia() if images and images[0].get("ia") else ""
     return f"""      <article class="pcard" data-reveal{style} data-piece="{product['slug']}">
         <a href="{href}" aria-label="Découvrir {escape(product['name'])}">
           <div class="pshot{empty}" data-shot>
             {badge(product['status'], 'pshot__badge', slug=product['slug'])}
-            {picture(product, base)}
+            {picture(product, base)}{note}
           </div>
         </a>
         <div class="pcard__body">
+          {origine_marque(product)}
           <div class="pcard__row">
             <h{level} class="pcard__name">{escape(product['name'])}</h{level}>
             <span class="pcard__price" data-prix="{product['slug']}">{price(product['price'])}</span>
           </div>
           <p class="pcard__desc" data-court="{product['slug']}">{product['short']}</p>
-          {origine_marque(product)}
         </div>
       </article>"""
 
@@ -442,11 +459,45 @@ class Builder:
 
     # ── les trois types de page ──────────────────────────────────────
 
+    def apercu_sur_mesure(self):
+        """
+        L'exemple de l'aperçu sur-mesure, sur l'accueil, calculé comme au panier.
+
+        Le total était écrit à la main (« 158 000 F ») et ne correspondait plus
+        au modèle affiché : un Derby Cotonou avec initiales coûte 166 000 +
+        6 000 F. Il se déduit désormais des prix du catalogue, selon la règle
+        de priceBespoke() dans api/_lib/catalog.js : forme + cuir + semelle,
+        plus les initiales s'il y en a. Un prix changé dans products.json
+        change l'aperçu au build suivant.
+        """
+        cfg = self.site["bespoke"]
+        choix = cfg["apercu"]
+
+        def option(liste, cle):
+            o = next((o for o in cfg[liste] if o["id"] == choix[cle]), None)
+            if o is None:
+                raise SystemExit("!! bespoke.apercu.%s : « %s » absent de bespoke.%s"
+                                 % (cle, choix[cle], liste))
+            return o
+
+        forme, cuir, semelle = option("shapes", "shape"), option("leathers", "leather"), option("soles", "sole")
+        initiales = (choix.get("initials") or "").strip()
+        total = (forme["price"] + cuir["price"] + semelle["price"]
+                 + (cfg["initials"]["price"] if initiales else 0))
+        return {
+            "apercu_modele": escape(forme["name"]),
+            "apercu_cuir": "Pleine fleur, %s" % escape(cuir["name"].lower()),
+            "apercu_initiales": escape(initiales or "Aucune"),
+            "apercu_total": price(total),
+        }
+
     def build_home(self):
         body = read(os.path.join(TPL, "pages", "index.html"))
         featured = [p for p in self.products if p.get("featured")]
         body = fill(body, base="", whatsapp=self.site["whatsapp"],
-                    featured_grid=grid(featured, ""))
+                    featured_grid=grid(featured, ""),
+                    visuel_ia=mention_ia(),
+                    **self.apercu_sur_mesure())
         self.page(
             "index.html",
             content=body,
@@ -625,9 +676,7 @@ class Builder:
                 # Les visuels générés viennent après les vraies photos et le
                 # disent : la pièce livrée doit ressembler à ce que montre la
                 # fiche, et une image générée est idéalisée par construction.
-                note = ('<span class="pshot__note" title="Visuel d\'ambiance '
-                        'généré par intelligence artificielle">Visuel IA</span>'
-                        if images[i].get("ia") else "")
+                note = mention_ia() if images[i].get("ia") else ""
                 return '          <div class="pshot">%s%s</div>' % (
                     picture(product, base, i, sizes=THUMB_SIZES), note)
 
@@ -639,11 +688,12 @@ class Builder:
                 # au format paysage enfermé dans un cadre portrait perdait un
                 # quart de sa largeur, coupée à gauche et à droite.
                 grand = images[idx[0]]
-                main = ('<div class="pshot" data-shot style="--shot-ratio:%d/%d">%s\n          %s\n        </div>'
+                main = ('<div class="pshot" data-shot style="--shot-ratio:%d/%d">%s\n          %s%s\n        </div>'
                         % (grand["w"], grand["h"],
                            badge(product["status"], "pshot__badge"),
                            picture(product, base, idx[0], lazy=n > 0,
-                                   sizes=MAIN_SIZES)))
+                                   sizes=MAIN_SIZES),
+                           mention_ia() if grand.get("ia") else ""))
                 thumbs = ""
                 if len(idx) > 1:
                     thumbs = ('\n        <div class="gallery__thumbs">\n'
@@ -790,10 +840,10 @@ class Builder:
       <span class="eyebrow">La ligne {escape(cat['name'])}</span>
       <h1 class="product__name">{escape(product['name'])}</h1>
       {badge(product['status'], long=True, slug=product['slug'])}
+      {origine_marque(product, long=True)}
       <p class="product__price"><span data-prix="{product['slug']}">{price(product['price'])}</span>
         <small>FCFA · livraison 48 h Cotonou &amp; Abidjan</small></p>
       <p class="lede" data-court="{product['slug']}">{product['short']}</p>
-      {origine_marque(product, long=True)}
       <p class="lede" style="margin-top:var(--sp-3)">{product['pitch']}</p>
 
       <div class="product__pickers">
@@ -962,11 +1012,14 @@ class Builder:
 {leathers}
 
           <figure class="cfg-film">
-            <video autoplay muted loop playsinline preload="none"
-                   poster="assets/img/cuirs-poster.jpg">
-              <source src="assets/video/cuirs.webm" type="video/webm">
-              <source src="assets/video/cuirs.mp4" type="video/mp4">
-            </video>
+            <div class="cfg-film__media">
+              <video data-autoplay muted loop playsinline preload="none"
+                     poster="assets/img/cuirs-poster.jpg">
+                <source src="assets/video/cuirs.webm" type="video/webm">
+                <source src="assets/video/cuirs.mp4" type="video/mp4">
+              </video>
+              {mention_ia()}
+            </div>
             <figcaption>Illustration&nbsp;: les quatre familles de grain, du plus marqué au velours. Le vrai cuir de l'atelier se voit mieux en main que sur un écran, demandez un échantillon sur WhatsApp avant de trancher.</figcaption>
           </figure>
         </section>
@@ -979,11 +1032,14 @@ class Builder:
           </div>
 
           <figure class="cfg-film">
-            <video autoplay muted loop playsinline preload="none"
-                   poster="assets/img/fils-poster.jpg">
-              <source src="assets/video/fils.webm" type="video/webm">
-              <source src="assets/video/fils.mp4" type="video/mp4">
-            </video>
+            <div class="cfg-film__media">
+              <video data-autoplay muted loop playsinline preload="none"
+                     poster="assets/img/fils-poster.jpg">
+                <source src="assets/video/fils.webm" type="video/webm">
+                <source src="assets/video/fils.mp4" type="video/mp4">
+              </video>
+              {mention_ia()}
+            </div>
             <figcaption>Illustration&nbsp;: espresso, cognac, noir, sable. Les quatre teintes proposées, sur du lin ciré.</figcaption>
           </figure>
         </section>

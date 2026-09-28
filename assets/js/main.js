@@ -87,6 +87,37 @@
   }
 
   /* ----------------------------------------------------------------------
+     4. Vidéos : chargées et lancées seulement à l'écran
+     L'attribut autoplay faisait télécharger la vidéo dès l'ouverture de la
+     page, malgré preload="none" : un demi-mégaoctet sur l'accueil avant
+     même qu'on descende jusqu'à elle. Les vidéos marquées data-autoplay ne
+     partent donc qu'une fois visibles, et s'arrêtent quand elles sortent
+     de l'écran. Pour qui a demandé moins d'animations, rien ne démarre :
+     l'affiche reste. Sans IntersectionObserver, même chose.
+     ---------------------------------------------------------------------- */
+  const videos = $$('video[data-autoplay]');
+
+  if (videos.length && !reduceMotion && 'IntersectionObserver' in window) {
+    const lecteur = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        const video = entry.target;
+        if (entry.isIntersecting) {
+          // Muette, sinon le navigateur refuse la lecture sans geste de
+          // l'utilisateur. Un refus quand même (économie de données) laisse
+          // simplement l'affiche en place.
+          video.muted = true;
+          const lecture = video.play();
+          if (lecture && lecture.catch) lecture.catch(() => {});
+        } else if (!video.paused) {
+          video.pause();
+        }
+      });
+    }, { threshold: 0.25 });
+
+    videos.forEach((video) => lecteur.observe(video));
+  }
+
+  /* ----------------------------------------------------------------------
      5. Compteur panier (localStorage — partagé avec panier/checkout)
      ---------------------------------------------------------------------- */
   const CART_KEY = 'yems.cart';

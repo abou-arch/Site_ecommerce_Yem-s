@@ -227,6 +227,8 @@
        .retirees/hero-video/POURQUOI.md, avec l'image de preuve.
        L'image de .hero__media porte désormais l'ouverture du site. -->
   <div class="hero__media" aria-hidden="true"></div>
+  <!-- L'image de fond est générée : elle porte la mention comme les autres. -->
+  <span class="pshot__note" data-visuel-ia title="Visuel d'ambiance généré par intelligence artificielle">Visuel IA</span>
 
   <svg class="hero__stitching" aria-hidden="true" preserveAspectRatio="none" viewBox="0 0 1440 900">
     <path d="M-40 760 C 300 700, 520 820, 720 800 S 1140 700, 1520 760"
@@ -449,7 +451,29 @@
     </div>
 
         <div class="collections__grid grid--rare">
-      <article class="pcard" data-reveal data-piece="mocassin-tokpa">
+      <article class="pcard" data-reveal data-piece="loafer-marine">
+        <a href="produit/loafer-marine.html" aria-label="Découvrir Loafer Marine">
+          <div class="pshot" data-shot>
+            <span class="badge badge--amber pshot__badge" data-badge="loafer-marine" data-badge-long="0"><span class="badge__dot"></span>En route</span>
+            <picture>
+            <source srcset="assets/img/loafer-marine-ai-500.webp 500w, assets/img/loafer-marine-ai.webp 1000w" sizes="(max-width: 560px) 92vw, (max-width: 900px) 46vw, 30vw" type="image/webp">
+            <img src="assets/img/loafer-marine-ai.jpg" srcset="assets/img/loafer-marine-ai-500.jpg 500w, assets/img/loafer-marine-ai.jpg 1000w" sizes="(max-width: 560px) 92vw, (max-width: 900px) 46vw, 30vw"
+                 width="1000" height="1000" loading="lazy" decoding="async"
+                 alt="Loafer en cuir bleu marine à bandeau, photographié sur une dalle de pierre claire">
+          </picture><span class="pshot__note" data-visuel-ia title="Visuel d'ambiance généré par intelligence artificielle">Visuel IA</span>
+          </div>
+        </a>
+        <div class="pcard__body">
+          <span class="origine origine--selection">Choisi par l&#x27;atelier</span>
+          <div class="pcard__row">
+            <h3 class="pcard__name">Loafer Marine</h3>
+            <span class="pcard__price" data-prix="loafer-marine">45 000 F</span>
+          </div>
+          <p class="pcard__desc" data-court="loafer-marine">Un loafer marine à bandeau, plus habillé qu'un mocassin souple.</p>
+        </div>
+      </article>
+
+      <article class="pcard" data-reveal style="--reveal-delay:90ms" data-piece="mocassin-tokpa">
         <a href="produit/mocassin-tokpa.html" aria-label="Découvrir Mocassin Tokpa">
           <div class="pshot" data-shot>
             <span class="badge badge--green pshot__badge" data-badge="mocassin-tokpa" data-badge-long="0"><span class="badge__dot"></span>Au Bénin</span>
@@ -458,38 +482,16 @@
             <img src="assets/img/mocassin-marine-ai.jpg" srcset="assets/img/mocassin-marine-ai-500.jpg 500w, assets/img/mocassin-marine-ai.jpg 1000w" sizes="(max-width: 560px) 92vw, (max-width: 900px) 46vw, 30vw"
                  width="1000" height="750" loading="lazy" decoding="async"
                  alt="Visuel d&#x27;ambiance généré par IA : une paire de mocassins en daim bleu marine sur un bloc de pierre claire, semelle marine">
-          </picture>
+          </picture><span class="pshot__note" data-visuel-ia title="Visuel d'ambiance généré par intelligence artificielle">Visuel IA</span>
           </div>
         </a>
         <div class="pcard__body">
+          <span class="origine origine--selection">Choisi par l&#x27;atelier</span>
           <div class="pcard__row">
             <h3 class="pcard__name">Mocassin Tokpa</h3>
             <span class="pcard__price" data-prix="mocassin-tokpa">45 000 F</span>
           </div>
           <p class="pcard__desc" data-court="mocassin-tokpa">Daim souple, semelle blanche. Celui qu'on enfile sans y penser, du bureau au samedi soir.</p>
-          <span class="origine origine--selection">Choisi par l&#x27;atelier</span>
-        </div>
-      </article>
-
-      <article class="pcard" data-reveal style="--reveal-delay:90ms" data-piece="sneaker-ganvie">
-        <a href="produit/sneaker-ganvie.html" aria-label="Découvrir Sneaker Ganvié">
-          <div class="pshot" data-shot>
-            <span class="badge badge--green pshot__badge" data-badge="sneaker-ganvie" data-badge-long="0"><span class="badge__dot"></span>Au Bénin</span>
-            <picture>
-            <source srcset="assets/img/sneaker-marine-ai-500.webp 500w, assets/img/sneaker-marine-ai.webp 1000w" sizes="(max-width: 560px) 92vw, (max-width: 900px) 46vw, 30vw" type="image/webp">
-            <img src="assets/img/sneaker-marine-ai.jpg" srcset="assets/img/sneaker-marine-ai-500.jpg 500w, assets/img/sneaker-marine-ai.jpg 1000w" sizes="(max-width: 560px) 92vw, (max-width: 900px) 46vw, 30vw"
-                 width="1000" height="750" loading="lazy" decoding="async"
-                 alt="Visuel d&#x27;ambiance généré par IA : une paire de sneakers en cuir marine perforé, lacets marine, sur un bloc de pierre claire">
-          </picture>
-          </div>
-        </a>
-        <div class="pcard__body">
-          <div class="pcard__row">
-            <h3 class="pcard__name">Sneaker Ganvié</h3>
-            <span class="pcard__price" data-prix="sneaker-ganvie">48 000 F</span>
-          </div>
-          <p class="pcard__desc" data-court="sneaker-ganvie">Cuir perforé, semelle légère. Pour marcher longtemps sans avoir l'air d'être en sport.</p>
-          <span class="origine origine--selection">Choisi par l&#x27;atelier</span>
         </div>
       </article>
     </div>
@@ -534,7 +536,7 @@
           <span class="step__num">1</span>
           <div>
             <h3>Vous composez en deux minutes</h3>
-            <p>Modèle, cuir, semelle, couleur du fil, pointure, initiales. Tout se choisit à l'écran, dans l'ordre que vous voulez.</p>
+            <p>Modèle, cuir, semelle, pointure, initiales. Tout se choisit à l'écran, dans l'ordre que vous voulez. La couleur du fil se choisit avec l'atelier, au moment de confirmer.</p>
           </div>
         </div>
         <div class="step">
@@ -570,18 +572,22 @@
     <div class="bespoke__panel" data-reveal style="--reveal-delay:140ms">
       <div style="display:flex;align-items:center;justify-content:space-between;gap:var(--sp-4);margin-bottom:var(--sp-5)">
         <span class="badge badge--brass"><span class="badge__dot"></span>Aperçu configurateur</span>
-        <span class="text-muted" style="font-size:var(--fs-xs)">Réf. YMS-SM-0142</span>
+        <span class="text-muted" style="font-size:var(--fs-xs)">Réf. YMS-2609-0142</span>
       </div>
 
-      <!-- preload="none" : la vidéo ne se charge qu'une fois à l'écran. Sur une
-           connexion mobile, elle ne coûte rien tant qu'on ne descend pas jusqu'ici. -->
+      <!-- Pas d'attribut autoplay : il faisait télécharger la vidéo dès
+           l'ouverture de la page, preload="none" ou pas. data-autoplay la
+           confie à main.js, qui ne la charge et ne la lance qu'une fois à
+           l'écran. Sur une connexion mobile, elle ne coûte rien tant qu'on
+           ne descend pas jusqu'ici. -->
       <div class="pshot" data-shot style="aspect-ratio:16/10;margin-bottom:var(--sp-5)">
-        <video autoplay muted loop playsinline preload="none"
+        <video data-autoplay muted loop playsinline preload="none"
                poster="assets/img/cuirs-poster.jpg"
-               aria-label="Quatre cuirs disponibles : bordeaux grainé, cognac, noir et velours sable">
+               aria-label="Échantillons de cuir en gros plan, dont les teintes espresso, cognac et noir">
           <source src="assets/video/cuirs.webm" type="video/webm">
           <source src="assets/video/cuirs.mp4" type="video/mp4">
         </video>
+        <span class="pshot__note" data-visuel-ia title="Visuel d'ambiance généré par intelligence artificielle">Visuel IA</span>
       </div>
 
       <dl style="margin:0">
@@ -604,9 +610,12 @@
 
       <hr class="stitch" style="margin-block:var(--sp-5)">
 
+      <!-- Modèle, cuir, initiales et total viennent de bespoke.apercu et des
+           prix de data/products.json (apercu_sur_mesure() dans tools/build.py) :
+           le total ne peut plus contredire le modèle affiché. -->
       <div style="display:flex;align-items:baseline;justify-content:space-between;gap:var(--sp-4)">
         <span class="text-muted" style="font-size:var(--fs-sm)">Total estimé</span>
-        <span class="offer__price" style="font-size:var(--fs-xl)">158 000 F</span>
+        <span class="offer__price" style="font-size:var(--fs-xl)" data-apercu-total>172 000 F</span>
       </div>
 
       <a class="btn btn--ghost btn--full" href="configurateur.html" style="margin-top:var(--sp-5)">
@@ -1069,7 +1078,7 @@
 </footer>
 
 
-<script src="assets/js/main.js?v=e074f4ac" defer></script>
+<script src="assets/js/main.js?v=8d4a4ecf" defer></script>
 <script src="assets/js/motion.js?v=8f56a458" defer></script>
 
 </body>

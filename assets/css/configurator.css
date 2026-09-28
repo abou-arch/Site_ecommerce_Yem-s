@@ -333,6 +333,9 @@
   gap: var(--sp-3);
 }
 
+/* Cadre de la vidéo : porte la mention « Visuel IA » dans son coin. */
+.cfg-film__media { position: relative; }
+
 .cfg-film video {
   width: 100%;
   aspect-ratio: 16 / 9;
