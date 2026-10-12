@@ -40,3 +40,5 @@ node_modules/
 # clés KkiaPay) ; .wrangler/ ses fichiers de travail, source maps comprises.
 .dev.vars*
 .wrangler/
+
+*.code-workspace

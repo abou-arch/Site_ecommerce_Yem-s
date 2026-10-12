@@ -60,3 +60,5 @@ assets/img/hero.png
 /Hero_portrait.png
 assets/img/*-ai.png
 .retirees/
+
+*.code-workspace
