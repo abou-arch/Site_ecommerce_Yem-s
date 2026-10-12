@@ -238,6 +238,8 @@
 
 @media (max-width: 900px) {
   .hero { min-height: 100svh; }
+  /* le texte du hero téléphone descend jusqu'en bas : le repère le chevauchait */
+  .scroll-hint { display: none; }
   .hero__inner > div { max-width: min(100%, 34rem); }
 
   /* Le voile de bureau assombrit la gauche, parce que le texte y est posé en
@@ -544,7 +546,11 @@
 
 .offer--featured {
   border-color: rgba(201, 164, 106, 0.5);
-  background: linear-gradient(165deg, rgba(176, 141, 87, 0.14), var(--espresso-700) 55%);
+  /* le reflet laiton se pose SUR l'espresso : sans fond plein dessous, le haut
+     de la carte laissait voir la page claire et le texte tombait à 2:1 */
+  background:
+    linear-gradient(165deg, rgba(176, 141, 87, 0.14), transparent 55%),
+    var(--espresso-700);
 }
 
 .offer__flag {

@@ -118,7 +118,13 @@
 .hero__shot img { will-change: transform; }
 
 /* une fois le volet ouvert, le survol reprend la main sur une durée courte */
-[data-shot].is-shown img { transition: transform 850ms var(--ease-out-expo); }
+/* clip-path doit rester dans la liste : c'est la transition de l'état « ouvert »
+   qui s'applique au moment où la classe arrive. Sans lui, le volet saute. */
+[data-shot].is-shown img {
+  transition:
+    clip-path 1150ms var(--ease-out-expo),
+    transform 850ms var(--ease-out-expo);
+}
 .pcard:hover .pshot.is-shown img { transform: scale(1.045); }
 
 /* --------------------------------------------------------------------------
