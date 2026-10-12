@@ -62,3 +62,6 @@ assets/img/*-ai.png
 .retirees/
 
 *.code-workspace
+
+*.code-workspace
+*.patch
