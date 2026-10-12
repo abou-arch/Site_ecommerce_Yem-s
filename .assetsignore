@@ -65,3 +65,12 @@ assets/img/*-ai.png
 
 *.code-workspace
 *.patch
+
+# Ignorés par Git, mais pas par Wrangler : ne jamais les publier
+.venv/
+venv/
+.vs/
+.vercel/
+__pycache__/
+*.pyc
+*.tmp
