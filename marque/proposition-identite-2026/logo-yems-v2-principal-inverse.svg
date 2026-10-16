@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 180" role="img" aria-labelledby="title desc">
+  <title id="title">Yem’s — signature principale inversée, piste 2</title>
+  <desc id="desc">Version claire de la signature Yem’s pour un fond espresso.</desc>
+  <g transform="translate(25 23)">
+    <path d="M51 4c-20 0-36 16-36 37v51c0 24 14 43 36 55 22-12 36-31 36-55V41C87 20 71 4 51 4Z" fill="none" stroke="#D9B87A" stroke-width="2.2"/>
+    <path d="M51 14c-15 0-27 12-27 28v49c0 18 10 33 27 43 17-10 27-25 27-43V42c0-16-12-28-27-28Z" fill="none" stroke="#D9B87A" stroke-width="1.4" stroke-dasharray="1 6" stroke-linecap="round"/>
+    <path d="M31 38h11l9 16 9-16h11L55 63v31l-9 6V63z" fill="#F4EDE2"/>
+    <path d="M50 76v17" stroke="#D9B87A" stroke-width="2" stroke-dasharray="1 5" stroke-linecap="round"/>
+  </g>
+  <text x="142" y="98" fill="#F4EDE2" font-family="Playfair Display, Georgia, serif" font-size="66" font-weight="500" letter-spacing="-1.4">Yem’s</text>
+  <path d="M146 119H309" stroke="#D9B87A" stroke-width="1.4" stroke-dasharray="2 7" stroke-linecap="round"/>
+  <text x="146" y="145" fill="#E9DECB" font-family="Jost, Arial, sans-serif" font-size="12" font-weight="500" letter-spacing="2.6">DIFFÉRENTS PAR LES DÉTAILS</text>
+</svg>

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 150" role="img" aria-labelledby="title desc">
+  <title id="title">Yem’s — piste signature</title>
+  <desc id="desc">Nom Yem’s en sérif, ponctué d’un point de laiton et d’une ligne de couture discrète.</desc>
+  <rect width="520" height="150" fill="#FBF7F1"/>
+  <text x="28" y="88" fill="#14100D" font-family="Fraunces, Georgia, serif" font-size="74" font-weight="500" letter-spacing="1">Yem</text>
+  <path d="M205 34l8 8-8 8-8-8z" fill="#B08D57"/>
+  <text x="220" y="88" fill="#14100D" font-family="Fraunces, Georgia, serif" font-size="74" font-weight="500">s</text>
+  <path d="M30 112H214" stroke="#B08D57" stroke-width="1.5" stroke-dasharray="2 7" stroke-linecap="round"/>
+  <text x="30" y="137" fill="#4E3F38" font-family="Inter, Arial, sans-serif" font-size="11" letter-spacing="2.3">DIFFÉRENTS PAR LES DÉTAILS</text>
+</svg>

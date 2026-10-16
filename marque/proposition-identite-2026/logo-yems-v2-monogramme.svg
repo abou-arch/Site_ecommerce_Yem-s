@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 130" role="img" aria-labelledby="title desc">
+  <title id="title">Yem’s — monogramme, piste 2</title>
+  <desc id="desc">Monogramme Y contenu dans une forme de semelle aux points de couture espacés.</desc>
+  <path d="M55 5C34 5 17 22 17 43v42c0 24 15 42 38 55 23-13 38-31 38-55V43C93 22 76 5 55 5Z" fill="#FBF7F1" stroke="#7A5E33" stroke-width="2"/>
+  <path d="M55 14C39 14 26 27 26 44v40c0 19 11 34 29 45 18-11 29-26 29-45V44C84 27 71 14 55 14Z" fill="none" stroke="#B08D57" stroke-width="1.6" stroke-dasharray="1 6" stroke-linecap="round"/>
+  <path d="M34 43h12l9 16 9-16h12L60 68v29l-10 7V68z" fill="#14100D"/>
+  <path d="M55 82v16" stroke="#B08D57" stroke-width="2" stroke-dasharray="1 5" stroke-linecap="round"/>
+</svg>

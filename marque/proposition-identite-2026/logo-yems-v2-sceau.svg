@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-labelledby="title desc">
+  <title id="title">Yem’s — sceau d’atelier, piste 2</title>
+  <desc id="desc">Sceau rond espresso avec monogramme cousu et signature de la maison.</desc>
+  <circle cx="120" cy="120" r="112" fill="#14100D" stroke="#B08D57" stroke-width="2"/>
+  <circle cx="120" cy="120" r="101" fill="none" stroke="#D9B87A" stroke-width="1.5" stroke-dasharray="1 7" stroke-linecap="round"/>
+  <path d="M120 39c-20 0-35 15-35 34v43c0 20 13 36 35 48 22-12 35-28 35-48V73c0-19-15-34-35-34Z" fill="none" stroke="#D9B87A" stroke-width="1.5"/>
+  <path d="M99 65h10l11 18 11-18h10l-16 28v32l-10 7V93z" fill="#F4EDE2"/>
+  <path d="M120 102v23" stroke="#D9B87A" stroke-width="2" stroke-dasharray="1 5" stroke-linecap="round"/>
+  <path d="M65 166h110" stroke="#B08D57" stroke-width="1"/>
+  <text x="120" y="190" text-anchor="middle" fill="#F4EDE2" font-family="Playfair Display, Georgia, serif" font-size="20" letter-spacing="2">YEM’S</text>
+  <text x="120" y="208" text-anchor="middle" fill="#D9B87A" font-family="Jost, Arial, sans-serif" font-size="8" letter-spacing="2">COTONOU · BÉNIN</text>
+</svg>
