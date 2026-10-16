@@ -18,9 +18,12 @@ const money = (n) => new Intl.NumberFormat('fr-FR').format(n) + ' F';
 /** Message lisible sur un téléphone, sans mise en forme exotique. */
 export function composeMessage(order, items) {
   const lines = items.map((i) => {
+    // Un panier composé avant que le fil se choisisse à l'écran n'en porte
+    // pas : l'atelier doit savoir qu'il lui reste cette question à poser.
     const opts = [i.color, i.size ? `pointure ${i.size}` : null,
                   i.bespoke?.initials ? `initiales ${i.bespoke.initials}` : null,
-                  i.bespoke?.sole ? `semelle ${i.bespoke.sole}` : null]
+                  i.bespoke?.sole ? `semelle ${i.bespoke.sole}` : null,
+                  i.bespoke ? `fil ${i.bespoke.thread || 'à demander'}` : null]
       .filter(Boolean).join(', ');
     return `• ${i.qty} × ${i.name}${opts ? ` (${opts})` : ''} — ${money(i.line_total)}`;
   });

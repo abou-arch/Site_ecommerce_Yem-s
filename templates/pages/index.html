@@ -171,13 +171,13 @@
     <span class="marquee__item">Contrôlée avant de partir</span>
     <span class="marquee__item">Cotonou &amp; Abidjan en 48 h</span>
     <span class="marquee__item">Fabriqué ou choisi, jamais caché</span>
-    <span class="marquee__item">Rien à payer d'avance</span>
+    <span class="marquee__item">Rien à payer en commandant</span>
     <span class="marquee__item">On répond de tout ce qu'on vend</span>
     <span class="marquee__item">Chaque pièce numérotée</span>
     <span class="marquee__item">Contrôlée avant de partir</span>
     <span class="marquee__item">Cotonou &amp; Abidjan en 48 h</span>
     <span class="marquee__item">Fabriqué ou choisi, jamais caché</span>
-    <span class="marquee__item">Rien à payer d'avance</span>
+    <span class="marquee__item">Rien à payer en commandant</span>
     <span class="marquee__item">On répond de tout ce qu'on vend</span>
   </div>
 </div>
@@ -295,11 +295,15 @@
             <p>Votre configuration part sur WhatsApp. On vous confirme si c'est faisable, et pour quelle date, dans la journée.</p>
           </div>
         </div>
+        <!-- Le sur-mesure ne se paie pas entièrement à la livraison : le
+             serveur impose l'acompte (createOrder, api/_lib/handlers.js),
+             parce que le cuir s'achète avant de commencer. Le texte dit la
+             même chose que la FAQ, le configurateur et le tunnel. -->
         <div class="step">
           <span class="step__num">4</span>
           <div>
-            <h3>Vous payez quand ça vous arrange</h3>
-            <p>À la commande, ou à la livraison une fois la paire dans vos mains. C'est vous qui décidez, pas nous.</p>
+            <h3>Un acompte, puis le solde à la livraison</h3>
+            <p>Rien à payer en commandant. Une fois la date confirmée, vous versez un acompte de {{acompte}}&nbsp;%&nbsp;: le cuir s'achète avant de commencer. Le reste se règle quand la paire est dans vos mains.</p>
           </div>
         </div>
       </div>
@@ -310,47 +314,51 @@
       </a>
     </div>
 
-    <!-- Aperçu du configurateur -->
+    <!-- Aperçu du configurateur. C'est une vraie configuration : chaque ligne
+         et le total sont écrits par build_home() depuis data/products.json,
+         comme le configurateur lui-même. Tapé à la main, le total annonçait
+         158 000 F pour une paire qui en coûte davantage, et la référence
+         suivait un format que le serveur n'attribue pas. -->
     <div class="bespoke__panel" data-reveal style="--reveal-delay:140ms">
       <div style="display:flex;align-items:center;justify-content:space-between;gap:var(--sp-4);margin-bottom:var(--sp-5)">
         <span class="badge badge--brass"><span class="badge__dot"></span>Aperçu configurateur</span>
-        <span class="text-muted" style="font-size:var(--fs-xs)">Réf. YMS-SM-0142</span>
+        <span class="text-muted" style="font-size:var(--fs-xs)">Réf. YMS-2502-0007</span>
       </div>
 
       <!-- preload="none" : la vidéo ne se charge qu'une fois à l'écran. Sur une
-           connexion mobile, elle ne coûte rien tant qu'on ne descend pas jusqu'ici. -->
+           connexion mobile, elle ne coûte rien tant qu'on ne descend pas jusqu'ici.
+           La vidéo illustre des grains de cuir ; elle ne montre pas les teintes
+           proposées, et sa description ne doit pas le prétendre. -->
       <div class="pshot" data-shot style="aspect-ratio:16/10;margin-bottom:var(--sp-5)">
         <video autoplay muted loop playsinline preload="none"
                poster="{{base}}assets/img/cuirs-poster.jpg"
-               aria-label="Quatre cuirs disponibles : bordeaux grainé, cognac, noir et velours sable">
+               aria-label="Illustration : quatre familles de grain de cuir, du plus marqué au velours">
           <source src="{{base}}assets/video/cuirs.webm" type="video/webm">
           <source src="{{base}}assets/video/cuirs.mp4" type="video/mp4">
         </video>
       </div>
 
       <dl style="margin:0">
-        <div class="spec-row"><dt>Modèle</dt><dd>Derby Cotonou</dd></div>
-        <div class="spec-row"><dt>Cuir</dt><dd>Pleine fleur, cognac</dd></div>
+        <div class="spec-row"><dt>Modèle</dt><dd>{{apercu_forme}}</dd></div>
+        <div class="spec-row"><dt>Cuir</dt><dd>Pleine fleur, {{apercu_cuir}}</dd></div>
         <div class="spec-row">
           <dt>Fil de couture</dt>
           <dd>
             <span class="swatches">
-              <span class="swatch swatch--espresso"></span>
-              <span class="swatch swatch--cognac is-active"></span>
-              <span class="swatch swatch--noir"></span>
-              <span class="swatch swatch--sable"></span>
+{{apercu_nuancier}}
             </span>
           </dd>
         </div>
-        <div class="spec-row"><dt>Initiales</dt><dd>A. C.</dd></div>
-        <div class="spec-row"><dt>Délai</dt><dd>15 jours</dd></div>
+        <div class="spec-row"><dt>Semelle</dt><dd>{{apercu_semelle}}</dd></div>
+        <div class="spec-row"><dt>Initiales</dt><dd>{{apercu_initiales}}</dd></div>
+        <div class="spec-row"><dt>Délai</dt><dd>{{apercu_delai}}</dd></div>
       </dl>
 
       <hr class="stitch" style="margin-block:var(--sp-5)">
 
       <div style="display:flex;align-items:baseline;justify-content:space-between;gap:var(--sp-4)">
         <span class="text-muted" style="font-size:var(--fs-sm)">Total estimé</span>
-        <span class="offer__price" style="font-size:var(--fs-xl)">158 000 F</span>
+        <span class="offer__price" style="font-size:var(--fs-xl)">{{apercu_total}}</span>
       </div>
 
       <a class="btn btn--ghost btn--full" href="{{base}}configurateur.html" style="margin-top:var(--sp-5)">
@@ -650,11 +658,12 @@
 
       <article class="card" data-reveal style="--reveal-delay:90ms">
         <span class="card__num">02</span>
-        <h3>Ne payez rien d'avance</h3>
+        <h3>Ne payez rien en commandant</h3>
         <p>
-          Vous commandez, l'atelier vous rappelle, et vous réglez quand la paire
-          est entre vos mains. Si nous ne tenons pas parole, ça ne vous aura
-          rien coûté.
+          Vous commandez, l'atelier vous rappelle, et une paire de la sélection
+          se règle quand elle est entre vos mains. Si nous ne tenons pas
+          parole, ça ne vous aura rien coûté. Seul le sur-mesure demande un
+          acompte, une fois la date confirmée.
         </p>
       </article>
 
@@ -699,8 +708,11 @@
 <section class="section cta grain" id="contact">
   <div class="container">
     <span class="eyebrow eyebrow--center" data-reveal>La suite</span>
+    <!-- « Quinze jours », pas « vingt » : la charte fixe le délai de l'atelier
+         à 15 jours, un seul chiffre, partout. Le titre dit le temps de couture,
+         pas la date de livraison. -->
     <h2 data-lines style="margin-top:var(--sp-4)">
-      Deux minutes pour composer.<br><span class="italic-accent">Vingt jours</span> pour la porter.
+      Deux minutes pour composer.<br><span class="italic-accent">Quinze jours</span> pour la coudre.
     </h2>
     <p class="lede mx-auto text-center" style="margin-top:var(--sp-5)" data-reveal>
       Configurer ne coûte rien, recevoir le chiffrage non plus, et rien n'est engagé

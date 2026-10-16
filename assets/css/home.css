@@ -508,11 +508,9 @@
   border: 1px solid rgba(233, 222, 203, 0.28);
 }
 
-.swatch--espresso { background: #3B2F29; }
-.swatch--cognac   { background: #8C5A3C; }
-.swatch--noir     { background: #1A1614; }
-.swatch--sable    { background: #C4B195; }
-
+/* La couleur de chaque pastille vient de data/products.json (threads),
+   écrite par build_home() : une teinte ajoutée au configurateur apparaît
+   ici sans retoucher la feuille de style. */
 .swatch.is-active { box-shadow: 0 0 0 2px var(--espresso-900), 0 0 0 3.5px var(--brass-400); }
 
 /* --------------------------------------------------------------------------

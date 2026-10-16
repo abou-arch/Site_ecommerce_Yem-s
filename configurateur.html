@@ -6,11 +6,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Configurateur sur-mesure | Yem's</title>
-<meta name="description" content="Composez votre paire sur-mesure : forme, cuir, semelle, pointure et initiales. Prix en direct, 15 jours d&#x27;atelier, acompte 50 % à la commande.">
+<meta name="description" content="Composez votre paire sur-mesure : forme, cuir, fil, semelle, pointure et initiales. Prix en direct, 15 jours d&#x27;atelier, acompte 50 % à la commande.">
 <meta name="theme-color" content="#14100D">
 <link rel="canonical" href="https://maisonyems.com/configurateur.html">
 <meta property="og:title" content="Configurateur sur-mesure | Yem&#x27;s">
-<meta property="og:description" content="Composez votre paire sur-mesure : forme, cuir, semelle, pointure et initiales. Prix en direct, 15 jours d&#x27;atelier, acompte 50 % à la commande.">
+<meta property="og:description" content="Composez votre paire sur-mesure : forme, cuir, fil, semelle, pointure et initiales. Prix en direct, 15 jours d&#x27;atelier, acompte 50 % à la commande.">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="fr_FR">
 <meta property="og:site_name" content="Yem's">
@@ -51,7 +51,7 @@
 
 <link rel="stylesheet" href="assets/css/base.css?v=fc0e20c1">
 <link rel="stylesheet" href="assets/css/components.css?v=e18a9d85">
-<link rel="stylesheet" href="assets/css/home.css?v=3bded89c">
+<link rel="stylesheet" href="assets/css/home.css?v=dfb33f02">
 <link rel="stylesheet" href="assets/css/shop.css?v=9853ef0e">
 <link rel="stylesheet" href="assets/css/motion.css?v=b43e4720">
 <link rel="stylesheet" href="assets/css/configurator.css?v=a4e62362">
@@ -339,8 +339,46 @@
           <div class="cfg-step__head">
             <span class="cfg-step__num">03</span>
             <h2>Le fil</h2>
-            <p class="cfg-step__hint">Lin ciré, quatre teintes. Ton sur ton, la couture se devine. Contrastée, elle se voit à trois mètres. L'atelier vous demandera votre choix au moment de confirmer.</p>
+            <p class="cfg-step__hint">Lin ciré, quatre teintes. Ton sur ton, la couture se devine. Contrastée, elle se voit à trois mètres.</p>
           </div>
+    <div class="cfg-options" data-group="thread">
+      <button class="cfg-opt" type="button" aria-pressed="false" data-id="espresso">
+        <span class="cfg-opt__top">
+          <span style="display:flex;align-items:center;gap:var(--sp-3)">
+            <span class="cfg-opt__chip" style="background:#3B2F29"></span>
+            <span class="cfg-opt__name">Espresso</span>
+          </span>
+          <span class="cfg-opt__price">inclus</span>
+        </span>
+      </button>
+      <button class="cfg-opt" type="button" aria-pressed="false" data-id="cognac">
+        <span class="cfg-opt__top">
+          <span style="display:flex;align-items:center;gap:var(--sp-3)">
+            <span class="cfg-opt__chip" style="background:#8C5A3C"></span>
+            <span class="cfg-opt__name">Cognac</span>
+          </span>
+          <span class="cfg-opt__price">inclus</span>
+        </span>
+      </button>
+      <button class="cfg-opt" type="button" aria-pressed="false" data-id="noir">
+        <span class="cfg-opt__top">
+          <span style="display:flex;align-items:center;gap:var(--sp-3)">
+            <span class="cfg-opt__chip" style="background:#1A1614"></span>
+            <span class="cfg-opt__name">Noir</span>
+          </span>
+          <span class="cfg-opt__price">inclus</span>
+        </span>
+      </button>
+      <button class="cfg-opt" type="button" aria-pressed="false" data-id="sable">
+        <span class="cfg-opt__top">
+          <span style="display:flex;align-items:center;gap:var(--sp-3)">
+            <span class="cfg-opt__chip" style="background:#C4B195"></span>
+            <span class="cfg-opt__name">Sable</span>
+          </span>
+          <span class="cfg-opt__price">inclus</span>
+        </span>
+      </button>
+    </div>
 
           <figure class="cfg-film">
             <video autoplay muted loop playsinline preload="none"
@@ -418,6 +456,7 @@
           <dl class="cfg-lines">
           <div class="spec-row" data-line="shape" data-empty><dt>Forme</dt><dd><em data-extra></em><span data-value>À choisir</span></dd></div>
           <div class="spec-row" data-line="leather" data-empty><dt>Cuir</dt><dd><em data-extra></em><span data-value>À choisir</span></dd></div>
+          <div class="spec-row" data-line="thread" data-empty><dt>Fil</dt><dd><em data-extra></em><span data-value>À choisir</span></dd></div>
           <div class="spec-row" data-line="sole" data-empty><dt>Semelle</dt><dd><em data-extra></em><span data-value>À choisir</span></dd></div>
           <div class="spec-row" data-line="size" data-empty><dt>Pointure</dt><dd><em data-extra></em><span data-value>À choisir</span></dd></div>
           <div class="spec-row" data-line="initials" data-empty><dt>Initiales</dt><dd><em data-extra></em><span data-value>À choisir</span></dd></div>
@@ -458,7 +497,7 @@
   </div>
 </section>
 
-<script type="application/json" id="cfg-data">{"base": "", "shapes": [{"id": "loafer", "name": "Loafer Ouidah", "price": 158000, "image": "", "note": "Sans lacet, non doublé"}, {"id": "derby", "name": "Derby Cotonou", "price": 166000, "image": "", "note": "Laçage ouvert, chaussant large"}, {"id": "boot", "name": "Boot Atakora", "price": 182000, "image": "", "note": "Tige montante, semelle gomme"}, {"id": "richelieu", "name": "Richelieu Abidjan", "price": 196000, "image": "", "note": "Laçage fermé, empiècement fleuri"}], "leathers": [{"id": "cognac", "name": "Cognac", "hex": "#8C5A3C", "price": 0, "note": "Patine chaude, se creuse avec les années"}, {"id": "espresso", "name": "Espresso", "hex": "#3B2F29", "price": 0, "note": "Le plus sobre, passe partout"}, {"id": "noir", "name": "Noir", "hex": "#1A1614", "price": 0, "note": "Cérémonie et bureau"}, {"id": "marine", "name": "Marine", "hex": "#232B3D", "price": 8000, "note": "Teinture longue, +2 jours d'atelier"}], "soles": [{"id": "cuir", "name": "Cuir cousue sur trépointe", "price": 0, "note": "Ressemelable à vie, la signature Yem's"}, {"id": "gomme", "name": "Gomme ville", "price": 8000, "note": "Silencieuse, tient le bitume mouillé de juin"}], "initials": {"price": 6000, "note": "Marquées à chaud sur la doublure, jamais à l'extérieur."}}</script>
+<script type="application/json" id="cfg-data">{"base": "", "shapes": [{"id": "loafer", "name": "Loafer Ouidah", "price": 158000, "image": "", "note": "Sans lacet, non doublé"}, {"id": "derby", "name": "Derby Cotonou", "price": 166000, "image": "", "note": "Laçage ouvert, chaussant large"}, {"id": "boot", "name": "Boot Atakora", "price": 182000, "image": "", "note": "Tige montante, semelle gomme"}, {"id": "richelieu", "name": "Richelieu Abidjan", "price": 196000, "image": "", "note": "Laçage fermé, empiècement fleuri"}], "leathers": [{"id": "cognac", "name": "Cognac", "hex": "#8C5A3C", "price": 0, "note": "Patine chaude, se creuse avec les années"}, {"id": "espresso", "name": "Espresso", "hex": "#3B2F29", "price": 0, "note": "Le plus sobre, passe partout"}, {"id": "noir", "name": "Noir", "hex": "#1A1614", "price": 0, "note": "Cérémonie et bureau"}, {"id": "marine", "name": "Marine", "hex": "#232B3D", "price": 8000, "note": "Teinture longue, +2 jours d'atelier"}], "threads": [{"id": "espresso", "name": "Espresso", "hex": "#3B2F29", "price": 0}, {"id": "cognac", "name": "Cognac", "hex": "#8C5A3C", "price": 0}, {"id": "noir", "name": "Noir", "hex": "#1A1614", "price": 0}, {"id": "sable", "name": "Sable", "hex": "#C4B195", "price": 0}], "soles": [{"id": "cuir", "name": "Cuir cousue sur trépointe", "price": 0, "note": "Ressemelable à vie, la signature Yem's"}, {"id": "gomme", "name": "Gomme ville", "price": 8000, "note": "Silencieuse, tient le bitume mouillé de juin"}], "initials": {"price": 6000, "note": "Marquées à chaud sur la doublure, jamais à l'extérieur."}}</script>
 
 </main>
 
@@ -561,6 +600,6 @@
 
 <script src="assets/js/main.js?v=e074f4ac" defer></script>
 <script src="assets/js/motion.js?v=8f56a458" defer></script>
-<script src="assets/js/configurator.js?v=3e4a4315" defer></script>
+<script src="assets/js/configurator.js?v=78c76b2d" defer></script>
 </body>
 </html>

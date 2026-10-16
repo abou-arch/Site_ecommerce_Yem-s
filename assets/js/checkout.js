@@ -33,6 +33,7 @@
   function describe(item) {
     const bits = [item.color, item.size ? `pointure ${item.size}` : null];
     if (item.bespoke) {
+      if (item.bespoke.thread) bits.push(`fil ${item.bespoke.thread}`);
       if (item.bespoke.sole) bits.push(`semelle ${item.bespoke.sole}`);
       if (item.bespoke.initials) bits.push(`initiales ${item.bespoke.initials}`);
     }

@@ -133,13 +133,21 @@ function priceBespoke(item) {
   if (!sole) return { error: 'semelle sur-mesure inconnue' };
   if (!cfg.sizes.includes(size)) return { error: 'pointure sur-mesure invalide' };
 
+  // Le fil se choisit à l'écran depuis octobre 2026. Un panier composé avant
+  // n'en porte pas : il reste accepté, l'atelier demandera la teinte au
+  // téléphone comme il le faisait. Une teinte inconnue, elle, est refusée.
+  const thread = spec.thread == null || spec.thread === ''
+    ? null
+    : (cfg.threads || []).find((t) => t.id === spec.thread);
+  if (thread === undefined) return { error: 'fil sur-mesure inconnu' };
+
   // 4 caractères max, lettres et points : même règle que le champ côté client,
   // revalidée ici parce qu'un champ HTML ne protège rien.
   const initials = String(spec.initials || '')
     .toUpperCase().replace(/[^A-ZÀ-Ö\s.]/g, '').slice(0, 4).trim();
 
-  const unit_price =
-    shape.price + leather.price + sole.price + (initials ? cfg.initials.price : 0);
+  const unit_price = shape.price + leather.price + (thread ? thread.price : 0)
+    + sole.price + (initials ? cfg.initials.price : 0);
 
   return {
     product_slug: `sur-mesure-${shape.id}`,
@@ -148,8 +156,8 @@ function priceBespoke(item) {
     size: String(size),
     color: leather.name,
     bespoke: {
-      shape: shape.id, leather: leather.id, sole: sole.id,
-      size, initials,
+      shape: shape.id, leather: leather.id, thread: thread ? thread.id : null,
+      sole: sole.id, size, initials,
     },
   };
 }

@@ -75,6 +75,33 @@
           "note": "Teinture longue, +2 jours d'atelier"
         }
       ],
+      "_threads": "Fil de lin ciré. Les quatre teintes sont celles de l'étape « Le fil » du configurateur ; aucune ne change le prix.",
+      "threads": [
+        {
+          "id": "espresso",
+          "name": "Espresso",
+          "hex": "#3B2F29",
+          "price": 0
+        },
+        {
+          "id": "cognac",
+          "name": "Cognac",
+          "hex": "#8C5A3C",
+          "price": 0
+        },
+        {
+          "id": "noir",
+          "name": "Noir",
+          "hex": "#1A1614",
+          "price": 0
+        },
+        {
+          "id": "sable",
+          "name": "Sable",
+          "hex": "#C4B195",
+          "price": 0
+        }
+      ],
       "soles": [
         {
           "id": "cuir",

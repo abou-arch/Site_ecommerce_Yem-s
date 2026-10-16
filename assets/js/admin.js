@@ -88,9 +88,15 @@
   /* ------------------------------------------------------------- affichage */
 
   function ligneArticle(a) {
+    // Sur une pièce sur-mesure, l'atelier a besoin de tout ce que le client a
+    // composé : c'est ce qu'il va coudre.
+    const b = a.bespoke;
     const options = [
       a.color, a.size ? `pointure ${a.size}` : null,
-      a.bespoke ? 'sur-mesure' : null,
+      b ? 'sur-mesure' : null,
+      b ? `fil ${b.thread || 'à demander'}` : null,
+      b?.sole ? `semelle ${b.sole}` : null,
+      b?.initials ? `initiales ${b.initials}` : null,
     ].filter(Boolean).join(' · ');
     return `<li><span>${a.qty} × ${echappe(a.name)}${
       options ? `<br><small>${echappe(options)}</small>` : ''

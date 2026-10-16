@@ -23,7 +23,7 @@
   const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
 
   /* ── état ───────────────────────────────────────────────────────────── */
-  const choice = { shape: null, leather: null, sole: null, size: null, initials: '' };
+  const choice = { shape: null, leather: null, thread: null, sole: null, size: null, initials: '' };
 
   const find = (list, id) => CFG[list].find((o) => o.id === id) || null;
 
@@ -37,8 +37,10 @@
     if (!shape) return 0;
     let sum = shape.price;
     const leather = find('leathers', choice.leather);
+    const thread = find('threads', choice.thread);
     const sole = find('soles', choice.sole);
     if (leather) sum += leather.price;
+    if (thread) sum += thread.price;
     if (sole) sum += sole.price;
     if (choice.initials.trim()) sum += CFG.initials.price;
     return sum;
@@ -50,11 +52,13 @@
   function render() {
     const shape = find('shapes', choice.shape);
     const leather = find('leathers', choice.leather);
+    const thread = find('threads', choice.thread);
     const sole = find('soles', choice.sole);
 
     const lines = {
       shape:    shape   ? shape.name   : 'À choisir',
       leather:  leather ? leather.name : 'À choisir',
+      thread:   thread  ? thread.name  : 'À choisir',
       sole:     sole    ? sole.name    : 'À choisir',
       size:     choice.size ? String(choice.size) : 'À choisir',
       initials: choice.initials.trim() || 'Aucune',
@@ -75,9 +79,11 @@
       if (el) el.textContent = amount ? '+ ' + fmt(amount) : '';
     };
     const rowLeather = $('[data-line="leather"]');
+    const rowThread = $('[data-line="thread"]');
     const rowSole = $('[data-line="sole"]');
     const rowInit = $('[data-line="initials"]');
     if (rowLeather) extra(rowLeather, leather ? leather.price : 0);
+    if (rowThread) extra(rowThread, thread ? thread.price : 0);
     if (rowSole) extra(rowSole, sole ? sole.price : 0);
     if (rowInit) extra(rowInit, choice.initials.trim() ? CFG.initials.price : 0);
 
@@ -101,7 +107,7 @@
     }
 
     // le bouton ne s'active que lorsque tout l'essentiel est décidé
-    const ready = Boolean(shape && leather && sole && choice.size);
+    const ready = Boolean(shape && leather && thread && sole && choice.size);
     $$('[data-cfg-add]').forEach((btn) => {
       btn.disabled = !ready;
       btn.setAttribute('aria-disabled', String(!ready));
@@ -138,6 +144,7 @@
       if (btn.disabled) return;
       const shape = find('shapes', choice.shape);
       const leather = find('leathers', choice.leather);
+      const thread = find('threads', choice.thread);
       const sole = find('soles', choice.sole);
 
       const item = {
@@ -149,6 +156,7 @@
         bespoke: {
           shape: shape.id,
           leather: leather.id,
+          thread: thread.id,
           sole: sole.id,
           size: choice.size,
           initials: choice.initials.trim(),
@@ -158,7 +166,8 @@
 
       if (window.YemsCart) window.YemsCart.add(item);
 
-      const detail = [shape.name, leather.name, sole.name, 'pointure ' + choice.size,
+      const detail = [shape.name, leather.name, 'fil ' + thread.name.toLowerCase(), sole.name,
+                      'pointure ' + choice.size,
                       choice.initials.trim()].filter(Boolean).join(' · ');
       const cart = btn.dataset.cart || 'panier.html';
       window.dispatchEvent(new CustomEvent('yems:toast', {

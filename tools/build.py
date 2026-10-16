@@ -166,6 +166,22 @@ def picture(product, base, index=0, lazy=True, sizes=None):
     )
 
 
+def mention_ia(image):
+    """
+    « Visuel IA » posé sur une image générée, où qu'elle s'affiche.
+
+    Les mentions légales promettent que chaque visuel porte cette mention.
+    Elle n'était posée que sur les petites vues sous la photo d'ouverture :
+    six fiches sur huit, qui n'ont qu'une image, n'en montraient aucune.
+    L'attribut data-ia permet au Worker de la retirer quand l'atelier
+    remplace le visuel par une vraie photo depuis son écran.
+    """
+    if not image or not image.get("ia"):
+        return ""
+    return ('<span class="pshot__note" data-ia title="Visuel d\'ambiance '
+            'généré par intelligence artificielle">Visuel IA</span>')
+
+
 ORIGINES = {}   # rempli au démarrage depuis data/products.json
 
 
@@ -189,24 +205,31 @@ def origine_marque(product, long=False):
 
 
 def product_card(product, base, delay=0, level=3):
-    """Carte produit, telle qu'elle apparaît dans une grille."""
+    """
+    Carte produit, telle qu'elle apparaît dans une grille.
+
+    L'origine passe avant le nom et le prix : c'est la règle de la charte
+    (« l'origine avant le prix »), et l'accueil promet qu'elle est écrite
+    « au-dessus du prix ». Elle venait en dernier, sous la description.
+    """
     href = "%sproduit/%s.html" % (base, product["slug"])
     style = ' style="--reveal-delay:%dms"' % delay if delay else ""
-    empty = "" if product.get("images") else " pshot--empty"
+    images = product.get("images") or []
+    empty = "" if images else " pshot--empty"
     return f"""      <article class="pcard" data-reveal{style} data-piece="{product['slug']}">
         <a href="{href}" aria-label="Découvrir {escape(product['name'])}">
           <div class="pshot{empty}" data-shot>
             {badge(product['status'], 'pshot__badge', slug=product['slug'])}
-            {picture(product, base)}
+            {picture(product, base)}{mention_ia(images[0] if images else None)}
           </div>
         </a>
         <div class="pcard__body">
+          {origine_marque(product)}
           <div class="pcard__row">
             <h{level} class="pcard__name">{escape(product['name'])}</h{level}>
             <span class="pcard__price" data-prix="{product['slug']}">{price(product['price'])}</span>
           </div>
           <p class="pcard__desc" data-court="{product['slug']}">{product['short']}</p>
-          {origine_marque(product)}
         </div>
       </article>"""
 
@@ -445,8 +468,39 @@ class Builder:
     def build_home(self):
         body = read(os.path.join(TPL, "pages", "index.html"))
         featured = [p for p in self.products if p.get("featured")]
+
+        # L'aperçu du configurateur est une configuration réelle, chiffrée
+        # avec les mêmes données que le configurateur et que le serveur.
+        # Écrit à la main, il annonçait 158 000 F pour un Derby Cotonou avec
+        # initiales : le prix de base d'une autre forme, sans les initiales.
+        cfg = self.site["bespoke"]
+
+        def option(groupe, ident):
+            return next(o for o in cfg[groupe] if o["id"] == ident)
+
+        forme, cuir = option("shapes", "derby"), option("leathers", "cognac")
+        fil, semelle = option("threads", "cognac"), option("soles", "cuir")
+        initiales = "A. C."
+        total = (forme["price"] + cuir["price"] + fil["price"] + semelle["price"]
+                 + (cfg["initials"]["price"] if initiales else 0))
+        nuancier = "\n".join(
+            '              <span class="swatch%s" style="background:%s" title="%s"></span>'
+            % (" is-active" if t["id"] == fil["id"] else "", t["hex"],
+               escape(t["name"], quote=True))
+            for t in cfg["threads"])
+        nuancier += ('\n              <span class="visually-hidden">%s</span>'
+                     % escape(fil["name"]))
+
         body = fill(body, base="", whatsapp=self.site["whatsapp"],
-                    featured_grid=grid(featured, ""))
+                    featured_grid=grid(featured, ""),
+                    acompte=cfg["deposit"],
+                    apercu_forme=escape(forme["name"]),
+                    apercu_cuir=escape(cuir["name"].lower()),
+                    apercu_nuancier=nuancier,
+                    apercu_semelle=escape(semelle["name"]),
+                    apercu_initiales=initiales,
+                    apercu_delai=escape(cfg["lead_days"]),
+                    apercu_total=price(total))
         self.page(
             "index.html",
             content=body,
@@ -622,14 +676,13 @@ class Builder:
                        if any(im.get("teinte") == t for im in images)] or [None]
 
             def vignette(i):
-                # Les visuels générés viennent après les vraies photos et le
-                # disent : la pièce livrée doit ressembler à ce que montre la
-                # fiche, et une image générée est idéalisée par construction.
-                note = ('<span class="pshot__note" title="Visuel d\'ambiance '
-                        'généré par intelligence artificielle">Visuel IA</span>'
-                        if images[i].get("ia") else "")
+                # Les visuels générés le disent, sur la photo d'ouverture comme
+                # sur les petites vues : la pièce livrée doit ressembler à ce
+                # que montre la fiche, et une image générée est idéalisée par
+                # construction.
                 return '          <div class="pshot">%s%s</div>' % (
-                    picture(product, base, i, sizes=THUMB_SIZES), note)
+                    picture(product, base, i, sizes=THUMB_SIZES),
+                    mention_ia(images[i]))
 
             jeux = []
             for n, teinte in enumerate(teintes):
@@ -639,11 +692,12 @@ class Builder:
                 # au format paysage enfermé dans un cadre portrait perdait un
                 # quart de sa largeur, coupée à gauche et à droite.
                 grand = images[idx[0]]
-                main = ('<div class="pshot" data-shot style="--shot-ratio:%d/%d">%s\n          %s\n        </div>'
+                main = ('<div class="pshot" data-shot style="--shot-ratio:%d/%d">%s\n          %s%s\n        </div>'
                         % (grand["w"], grand["h"],
                            badge(product["status"], "pshot__badge"),
                            picture(product, base, idx[0], lazy=n > 0,
-                                   sizes=MAIN_SIZES)))
+                                   sizes=MAIN_SIZES),
+                           mention_ia(grand)))
                 thumbs = ""
                 if len(idx) > 1:
                     thumbs = ('\n        <div class="gallery__thumbs">\n'
@@ -790,10 +844,12 @@ class Builder:
       <span class="eyebrow">La ligne {escape(cat['name'])}</span>
       <h1 class="product__name">{escape(product['name'])}</h1>
       {badge(product['status'], long=True, slug=product['slug'])}
+      <!-- L'origine avant le prix : la règle de la charte, et la promesse de
+           l'accueil (« au-dessus du prix »). -->
+      {origine_marque(product, long=True)}
       <p class="product__price"><span data-prix="{product['slug']}">{price(product['price'])}</span>
         <small>FCFA · livraison 48 h Cotonou &amp; Abidjan</small></p>
       <p class="lede" data-court="{product['slug']}">{product['short']}</p>
-      {origine_marque(product, long=True)}
       <p class="lede" style="margin-top:var(--sp-3)">{product['pitch']}</p>
 
       <div class="product__pickers">
@@ -907,6 +963,20 @@ class Builder:
         <span class="cfg-opt__note">{o['note']}</span>
       </button>""")
 
+        # Le fil se choisit à l'écran, comme le reste : l'accueil le promet
+        # (« couleur du fil… tout se choisit à l'écran »), et un choix laissé
+        # au coup de téléphone n'apparaissait ni dans le récapitulatif ni
+        # dans la commande reçue par l'atelier.
+        threads = opts("thread", cfg["threads"], lambda o: f"""      <button class="cfg-opt" type="button" aria-pressed="false" data-id="{o['id']}">
+        <span class="cfg-opt__top">
+          <span style="display:flex;align-items:center;gap:var(--sp-3)">
+            <span class="cfg-opt__chip" style="background:{o['hex']}"></span>
+            <span class="cfg-opt__name">{escape(o['name'])}</span>
+          </span>
+          <span class="cfg-opt__price">{"inclus" if not o["price"] else "+ " + price(o["price"])}</span>
+        </span>
+      </button>""")
+
         soles = opts("sole", cfg["soles"], lambda o: f"""      <button class="cfg-opt" type="button" aria-pressed="false" data-id="{o['id']}">
         <span class="cfg-opt__top">
           <span class="cfg-opt__name">{escape(o['name'])}</span>
@@ -975,8 +1045,9 @@ class Builder:
           <div class="cfg-step__head">
             <span class="cfg-step__num">03</span>
             <h2>Le fil</h2>
-            <p class="cfg-step__hint">Lin ciré, quatre teintes. Ton sur ton, la couture se devine. Contrastée, elle se voit à trois mètres. L'atelier vous demandera votre choix au moment de confirmer.</p>
+            <p class="cfg-step__hint">Lin ciré, quatre teintes. Ton sur ton, la couture se devine. Contrastée, elle se voit à trois mètres.</p>
           </div>
+{threads}
 
           <figure class="cfg-film">
             <video autoplay muted loop playsinline preload="none"
@@ -1032,6 +1103,7 @@ class Builder:
           <dl class="cfg-lines">
 {line("shape", "Forme")}
 {line("leather", "Cuir")}
+{line("thread", "Fil")}
 {line("sole", "Semelle")}
 {line("size", "Pointure")}
 {line("initials", "Initiales")}
@@ -1076,6 +1148,7 @@ class Builder:
     "base": "",
     "shapes": cfg["shapes"],
     "leathers": cfg["leathers"],
+    "threads": cfg["threads"],
     "soles": cfg["soles"],
     "initials": cfg["initials"],
 }, ensure_ascii=False)}</script>"""
@@ -1084,7 +1157,7 @@ class Builder:
             "configurateur.html",
             content=content,
             title="Configurateur sur-mesure | Yem's",
-            description="Composez votre paire sur-mesure : forme, cuir, semelle, pointure "
+            description="Composez votre paire sur-mesure : forme, cuir, fil, semelle, pointure "
                         "et initiales. Prix en direct, %s, acompte %d %% à la commande."
                         % (cfg["lead_days"], cfg["deposit"]),
             extra_css=("configurator",),
@@ -1473,17 +1546,23 @@ class Builder:
 {grid(produits, "", klass="shop-grid", level=3)}
     </div>""")
 
-        n = len(self.products)
-        s = "s" if n > 1 else ""
+        # Le chapeau ne compte pas les pièces en stock. Il annonçait « 8 pièces
+        # en stock à Cotonou, expédiées sous 72 h » quand six portaient la
+        # pastille « En route » ; et l'atelier change les pastilles depuis son
+        # écran, sans reconstruire le site, donc tout chiffre écrit ici
+        # finirait par mentir. Il renvoie à la pastille, qui, elle, suit.
+        au_benin, en_route = STATUS["green"][1], STATUS["amber"][1]
         content = f"""<section class="section section--top" id="boutique">
   <div class="container container--wide">
     <div class="section-head" data-reveal>
       <span class="eyebrow">La boutique</span>
       <h1 class="page-title" style="margin-top:var(--sp-3)">Ce qui est disponible<br>aujourd'hui</h1>
       <p class="lede">
-        {n} pièce{s} en stock à Cotonou, expédiée{s} sous 72 h. Chacune indique
-        si nous l'avons fabriquée ou choisie, avant son prix. La ligne cousue
-        main arrive dès qu'elle aura été photographiée chez nous.
+        Chaque pièce dit, au-dessus de son prix, si nous l'avons fabriquée ou
+        choisie. Sa pastille dit où elle se trouve&nbsp;: «&nbsp;{au_benin}&nbsp;»,
+        elle part sous 72&nbsp;h&nbsp;; «&nbsp;{en_route}&nbsp;», elle sera à Cotonou
+        sous 10&nbsp;jours. La ligne cousue main arrive dès qu'elle aura été
+        photographiée chez nous.
       </p>
     </div>
 
@@ -1512,9 +1591,9 @@ class Builder:
         self.page(
             "boutique.html", content=content, current="boutique",
             title="La boutique | Yem's",
-            description="Les pièces Yem's disponibles aujourd'hui à Cotonou. "
-                        "Origine indiquée sur chacune, échange un an, livraison "
-                        "au Bénin et en Côte d'Ivoire.",
+            description="Les pièces Yem's en vente aujourd'hui, en stock à Cotonou "
+                        "ou en route. Origine indiquée sur chacune, échange un an, "
+                        "livraison au Bénin et en Côte d'Ivoire.",
         )
 
     def build_admin(self):

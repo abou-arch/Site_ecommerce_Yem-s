@@ -51,7 +51,7 @@
 
 <link rel="stylesheet" href="assets/css/base.css?v=fc0e20c1">
 <link rel="stylesheet" href="assets/css/components.css?v=e18a9d85">
-<link rel="stylesheet" href="assets/css/home.css?v=3bded89c">
+<link rel="stylesheet" href="assets/css/home.css?v=dfb33f02">
 <link rel="stylesheet" href="assets/css/shop.css?v=9853ef0e">
 <link rel="stylesheet" href="assets/css/motion.css?v=b43e4720">
 
@@ -388,13 +388,13 @@
     <span class="marquee__item">Contrôlée avant de partir</span>
     <span class="marquee__item">Cotonou &amp; Abidjan en 48 h</span>
     <span class="marquee__item">Fabriqué ou choisi, jamais caché</span>
-    <span class="marquee__item">Rien à payer d'avance</span>
+    <span class="marquee__item">Rien à payer en commandant</span>
     <span class="marquee__item">On répond de tout ce qu'on vend</span>
     <span class="marquee__item">Chaque pièce numérotée</span>
     <span class="marquee__item">Contrôlée avant de partir</span>
     <span class="marquee__item">Cotonou &amp; Abidjan en 48 h</span>
     <span class="marquee__item">Fabriqué ou choisi, jamais caché</span>
-    <span class="marquee__item">Rien à payer d'avance</span>
+    <span class="marquee__item">Rien à payer en commandant</span>
     <span class="marquee__item">On répond de tout ce qu'on vend</span>
   </div>
 </div>
@@ -458,16 +458,16 @@
             <img src="assets/img/mocassin-marine-ai.jpg" srcset="assets/img/mocassin-marine-ai-500.jpg 500w, assets/img/mocassin-marine-ai.jpg 1000w" sizes="(max-width: 560px) 92vw, (max-width: 900px) 46vw, 30vw"
                  width="1000" height="750" loading="lazy" decoding="async"
                  alt="Visuel d&#x27;ambiance généré par IA : une paire de mocassins en daim bleu marine sur un bloc de pierre claire, semelle marine">
-          </picture>
+          </picture><span class="pshot__note" data-ia title="Visuel d'ambiance généré par intelligence artificielle">Visuel IA</span>
           </div>
         </a>
         <div class="pcard__body">
+          <span class="origine origine--selection">Choisi par l&#x27;atelier</span>
           <div class="pcard__row">
             <h3 class="pcard__name">Mocassin Tokpa</h3>
             <span class="pcard__price" data-prix="mocassin-tokpa">45 000 F</span>
           </div>
           <p class="pcard__desc" data-court="mocassin-tokpa">Daim souple, semelle blanche. Celui qu'on enfile sans y penser, du bureau au samedi soir.</p>
-          <span class="origine origine--selection">Choisi par l&#x27;atelier</span>
         </div>
       </article>
 
@@ -480,16 +480,16 @@
             <img src="assets/img/sneaker-marine-ai.jpg" srcset="assets/img/sneaker-marine-ai-500.jpg 500w, assets/img/sneaker-marine-ai.jpg 1000w" sizes="(max-width: 560px) 92vw, (max-width: 900px) 46vw, 30vw"
                  width="1000" height="750" loading="lazy" decoding="async"
                  alt="Visuel d&#x27;ambiance généré par IA : une paire de sneakers en cuir marine perforé, lacets marine, sur un bloc de pierre claire">
-          </picture>
+          </picture><span class="pshot__note" data-ia title="Visuel d'ambiance généré par intelligence artificielle">Visuel IA</span>
           </div>
         </a>
         <div class="pcard__body">
+          <span class="origine origine--selection">Choisi par l&#x27;atelier</span>
           <div class="pcard__row">
             <h3 class="pcard__name">Sneaker Ganvié</h3>
             <span class="pcard__price" data-prix="sneaker-ganvie">48 000 F</span>
           </div>
           <p class="pcard__desc" data-court="sneaker-ganvie">Cuir perforé, semelle légère. Pour marcher longtemps sans avoir l'air d'être en sport.</p>
-          <span class="origine origine--selection">Choisi par l&#x27;atelier</span>
         </div>
       </article>
     </div>
@@ -551,11 +551,15 @@
             <p>Votre configuration part sur WhatsApp. On vous confirme si c'est faisable, et pour quelle date, dans la journée.</p>
           </div>
         </div>
+        <!-- Le sur-mesure ne se paie pas entièrement à la livraison : le
+             serveur impose l'acompte (createOrder, api/_lib/handlers.js),
+             parce que le cuir s'achète avant de commencer. Le texte dit la
+             même chose que la FAQ, le configurateur et le tunnel. -->
         <div class="step">
           <span class="step__num">4</span>
           <div>
-            <h3>Vous payez quand ça vous arrange</h3>
-            <p>À la commande, ou à la livraison une fois la paire dans vos mains. C'est vous qui décidez, pas nous.</p>
+            <h3>Un acompte, puis le solde à la livraison</h3>
+            <p>Rien à payer en commandant. Une fois la date confirmée, vous versez un acompte de 50&nbsp;%&nbsp;: le cuir s'achète avant de commencer. Le reste se règle quand la paire est dans vos mains.</p>
           </div>
         </div>
       </div>
@@ -566,19 +570,25 @@
       </a>
     </div>
 
-    <!-- Aperçu du configurateur -->
+    <!-- Aperçu du configurateur. C'est une vraie configuration : chaque ligne
+         et le total sont écrits par build_home() depuis data/products.json,
+         comme le configurateur lui-même. Tapé à la main, le total annonçait
+         158 000 F pour une paire qui en coûte davantage, et la référence
+         suivait un format que le serveur n'attribue pas. -->
     <div class="bespoke__panel" data-reveal style="--reveal-delay:140ms">
       <div style="display:flex;align-items:center;justify-content:space-between;gap:var(--sp-4);margin-bottom:var(--sp-5)">
         <span class="badge badge--brass"><span class="badge__dot"></span>Aperçu configurateur</span>
-        <span class="text-muted" style="font-size:var(--fs-xs)">Réf. YMS-SM-0142</span>
+        <span class="text-muted" style="font-size:var(--fs-xs)">Réf. YMS-2502-0007</span>
       </div>
 
       <!-- preload="none" : la vidéo ne se charge qu'une fois à l'écran. Sur une
-           connexion mobile, elle ne coûte rien tant qu'on ne descend pas jusqu'ici. -->
+           connexion mobile, elle ne coûte rien tant qu'on ne descend pas jusqu'ici.
+           La vidéo illustre des grains de cuir ; elle ne montre pas les teintes
+           proposées, et sa description ne doit pas le prétendre. -->
       <div class="pshot" data-shot style="aspect-ratio:16/10;margin-bottom:var(--sp-5)">
         <video autoplay muted loop playsinline preload="none"
                poster="assets/img/cuirs-poster.jpg"
-               aria-label="Quatre cuirs disponibles : bordeaux grainé, cognac, noir et velours sable">
+               aria-label="Illustration : quatre familles de grain de cuir, du plus marqué au velours">
           <source src="assets/video/cuirs.webm" type="video/webm">
           <source src="assets/video/cuirs.mp4" type="video/mp4">
         </video>
@@ -591,22 +601,24 @@
           <dt>Fil de couture</dt>
           <dd>
             <span class="swatches">
-              <span class="swatch swatch--espresso"></span>
-              <span class="swatch swatch--cognac is-active"></span>
-              <span class="swatch swatch--noir"></span>
-              <span class="swatch swatch--sable"></span>
+              <span class="swatch" style="background:#3B2F29" title="Espresso"></span>
+              <span class="swatch is-active" style="background:#8C5A3C" title="Cognac"></span>
+              <span class="swatch" style="background:#1A1614" title="Noir"></span>
+              <span class="swatch" style="background:#C4B195" title="Sable"></span>
+              <span class="visually-hidden">Cognac</span>
             </span>
           </dd>
         </div>
+        <div class="spec-row"><dt>Semelle</dt><dd>Cuir cousue sur trépointe</dd></div>
         <div class="spec-row"><dt>Initiales</dt><dd>A. C.</dd></div>
-        <div class="spec-row"><dt>Délai</dt><dd>15 jours</dd></div>
+        <div class="spec-row"><dt>Délai</dt><dd>15 jours d&#x27;atelier</dd></div>
       </dl>
 
       <hr class="stitch" style="margin-block:var(--sp-5)">
 
       <div style="display:flex;align-items:baseline;justify-content:space-between;gap:var(--sp-4)">
         <span class="text-muted" style="font-size:var(--fs-sm)">Total estimé</span>
-        <span class="offer__price" style="font-size:var(--fs-xl)">158 000 F</span>
+        <span class="offer__price" style="font-size:var(--fs-xl)">172 000 F</span>
       </div>
 
       <a class="btn btn--ghost btn--full" href="configurateur.html" style="margin-top:var(--sp-5)">
@@ -900,11 +912,12 @@
 
       <article class="card" data-reveal style="--reveal-delay:90ms">
         <span class="card__num">02</span>
-        <h3>Ne payez rien d'avance</h3>
+        <h3>Ne payez rien en commandant</h3>
         <p>
-          Vous commandez, l'atelier vous rappelle, et vous réglez quand la paire
-          est entre vos mains. Si nous ne tenons pas parole, ça ne vous aura
-          rien coûté.
+          Vous commandez, l'atelier vous rappelle, et une paire de la sélection
+          se règle quand elle est entre vos mains. Si nous ne tenons pas
+          parole, ça ne vous aura rien coûté. Seul le sur-mesure demande un
+          acompte, une fois la date confirmée.
         </p>
       </article>
 
@@ -949,8 +962,11 @@
 <section class="section cta grain" id="contact">
   <div class="container">
     <span class="eyebrow eyebrow--center" data-reveal>La suite</span>
+    <!-- « Quinze jours », pas « vingt » : la charte fixe le délai de l'atelier
+         à 15 jours, un seul chiffre, partout. Le titre dit le temps de couture,
+         pas la date de livraison. -->
     <h2 data-lines style="margin-top:var(--sp-4)">
-      Deux minutes pour composer.<br><span class="italic-accent">Vingt jours</span> pour la porter.
+      Deux minutes pour composer.<br><span class="italic-accent">Quinze jours</span> pour la coudre.
     </h2>
     <p class="lede mx-auto text-center" style="margin-top:var(--sp-5)" data-reveal>
       Configurer ne coûte rien, recevoir le chiffrage non plus, et rien n'est engagé

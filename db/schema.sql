@@ -108,7 +108,7 @@ CREATE TABLE IF NOT EXISTS order_items (
   line_total    INTEGER NOT NULL CHECK (line_total >= 0),
   size          TEXT,
   color         TEXT,
-  bespoke       JSONB,                      -- forme, cuir, semelle, pointure, initiales
+  bespoke       JSONB,                      -- forme, cuir, fil, semelle, pointure, initiales
   CONSTRAINT order_items_line_coherent CHECK (line_total = unit_price * qty)
 );
 
