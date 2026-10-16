@@ -4,6 +4,10 @@ Factual inventory of what went into the Yem's website, compiled on 2026-09-27
 from the repository `abou-arch/Site_ecommerce_Yem-s` at commit `b84a317`
 (branch `claude/vibrant-galileo-2762ai`, which contains all of `main`).
 
+Updated on 2026-10-16 after commit `08c0a93`, which fixed the eight
+copy/behaviour mismatches listed in §6. Counts measured on 2026-09-27 (commits,
+lines of code, page weights) still describe `b84a317`.
+
 Conventions:
 
 - Every statement points to a file, a commit hash or a command result.
@@ -73,8 +77,9 @@ cart sit in the header of every page (`data/products.json` → `site.nav`,
   accordions (construction, care, delivery and returns), related products,
   and an availability badge (green « Au Bénin », amber « En route », red
   « Indisponible »). Source: `tools/build.py` (`build_product`, `badge`).
-- **Bespoke configurator:** 6 steps: shape (4), leather (4), thread
-  (informational), sole (2), size (39–46) and initials. The price updates
+- **Bespoke configurator:** 6 steps: shape (4), leather (4), thread (4
+  shades, chosen on screen since `08c0a93`), sole (2), size (39–46) and
+  initials. The price updates
   live and is recomputed on the server; a 50% deposit applies. Sources:
   `configurateur.html`, `assets/js/configurator.js`, `site.bespoke`.
 - **Cart and checkout:** the cart lives in `localStorage`. Checkout takes no
@@ -98,7 +103,9 @@ cart sit in the header of every page (`data/products.json` → `site.nav`,
   rebuild. Sources: `admin.html`, `assets/js/admin.js`,
   `api/_lib/overrides.js`, `api/_lib/rewrite.js`, `api/_lib/media.js`.
 - **Disclosure of AI visuals:** a footer note on every page, a section in the
-  legal notice, and a « Visuel IA » label (only on some pages, see §6).
+  legal notice, and a « Visuel IA » label on every product visual, on product
+  pages and in grids. Until `08c0a93` the label appeared only on gallery
+  thumbnails (§6).
   Sources: `templates/partials/footer.html`,
   `templates/pages/mentions-legales.html`.
 
@@ -143,6 +150,8 @@ cart sit in the header of every page (`data/products.json` → `site.nav`,
 ### Timeline from Git
 
 - **54 commits** from **2026-08-13** to **2026-09-25**, spread over 9 active days.
+  Two commits by Claude followed: `3d85210`, this inventory (2026-09-27), and
+  `08c0a93`, the copy/behaviour fixes (2026-10-16).
 - **Authors:**
   - `abou-arch`: 27 commits;
   - `c <a@b>`: 23 commits (unidentified identity);
@@ -167,6 +176,7 @@ cart sit in the header of every page (`data/products.json` → `site.nav`,
 | 4. Hero and content integrity | 09-01 | 7 (c) | Hero height tuning, translucent header, contrast-checker fixes, scroll-progress "thread", still-image prompts, hero video removed (third-party "VT" logo) |
 | 5. New front and new catalogue | 09-22 → 09-23 | 13 (abou-arch) | New proportions and hero, AI product visuals and web export script, 6 new « sélection » products, colour gallery, terms-of-use page, portrait hero |
 | 6. Security audit and hardening | 09-25 | 4 (Claude) | Penetration test and fixes (§5), generated CSP, deployment exclusions, `docs/securite.md` |
+| 7. Copy aligned with behaviour | 10-16 | 1 (Claude) | The eight mismatches listed in §6 fixed: bespoke deposit wording, reference format, stock claim, « Visuel IA » on every visual, origin above the price, thread chosen on screen, home preview computed from data, 15-day lead time (`08c0a93`) |
 
 ---
 
@@ -436,6 +446,9 @@ Grouped by discipline. Each line gives what was done, then the proof.
 - **Security audit and hardening, 2026-09-25**, with Claude Code. Details are
   in §5; proof: commits `03b0cae`, `0eb4b69`, `d1fc37e`, `b84a317` and
   `docs/securite.md`.
+- **Copy aligned with behaviour, 2026-10-16**, with Claude Code. The eight
+  mismatches found while compiling this inventory were fixed; each one and
+  its fix is listed in §6. Proof: commit `08c0a93`.
 
 ---
 
@@ -522,8 +535,9 @@ Grouped by discipline. Each line gives what was done, then the proof.
   - `db/migration-001-paiement-hors-ligne.sql` (`to_confirm`, `pay_mode`);
   - the checkout « Comment souhaitez-vous régler ? » fieldset (`build_checkout`);
   - `commande-confirmee.html` (message per mode);
-  - `.hero__pay`, the marquee « Rien à payer d'avance » and the last FAQ
-    entry (`templates/pages/index.html`);
+  - `.hero__pay`, the marquee « Rien à payer en commandant » (« Rien à payer
+    d'avance » until `08c0a93`) and the last FAQ entry
+    (`templates/pages/index.html`);
   - `tools/build.py` `controler_paiement()`, which refuses to announce card
     payment while offline;
   - the KkiaPay script is not loaded in offline mode (`build_checkout`
@@ -611,8 +625,8 @@ Grouped by discipline. Each line gives what was done, then the proof.
     so « un bug d'affichage ne peut donc pas devenir un bug de prix » ("a
     display bug cannot become a pricing bug");
   - `data/products.json` (`site.bespoke`: 4 shapes 158,000–196,000 F, marine
-    leather +8,000 F, rubber sole +8,000 F, initials +6,000 F, 50% deposit,
-    15 days);
+    leather +8,000 F, rubber sole +8,000 F, initials +6,000 F, 4 thread shades
+    at no extra cost since `08c0a93`, 50% deposit, 15 days);
   - `api/_lib/catalog.js` (`priceBespoke`, which re-validates everything on
     the server);
   - `templates/partials/header.html` (« Composer ma paire »);
@@ -705,31 +719,31 @@ Grouped by discipline. Each line gives what was done, then the proof.
   - `README.md` still names Fraunces/Inter fonts, a testimonial carousel, and
     cart/checkout as "to build".
 
-### Mismatches between copy and behaviour found while compiling this inventory
+### Mismatches between copy and behaviour: fixed in `08c0a93`
 
-- **Bespoke payment.** Home page step 4 says bespoke can be paid « à la
-  livraison ». The server forces a 50% deposit by transfer
-  (`api/_lib/handlers.js`), as the FAQ and the configurator state.
-- **Reference format.** `service-client.html` says references start with
-  « YEM ». They are generated as `YMS-…` (`api/_lib/db.js`).
-- **Stock claim.** `boutique.html` says « 8 pièces en stock à Cotonou,
-  expédiées sous 72 h », but 6 of the 8 carry the amber « En route » badge
-  (arriving within 10 days).
-- **« Visuel IA » label.** The legal notice says every visual carries it. It
-  is only rendered on gallery thumbnails, so 6 of the 8 product pages (those
-  with a single image) show no label (`vignette()` in `tools/build.py`).
-- **Origin label position.** The home page and the charter say the origin
-  appears « au-dessus du prix » (above the price). In the markup it comes
-  after the price, and no CSS reorders it (`product_card()`, `build_product`).
-- **Thread colour.** The home page says « couleur du fil » is chosen on
-  screen. In the configurator the thread step is informational (« L'atelier
-  vous demandera votre choix au moment de confirmer »).
-- **Sur-mesure preview panel.** The total shows « 158 000 F » for a Derby
-  Cotonou with initials, while the data gives 166,000 + 6,000 F. The video's
-  `aria-label` lists leathers (bordeaux, velours sable) that are not offered.
-- **Lead time.** The final CTA says « Vingt jours pour la porter », while the
-  charter says « 15 jours », « un seul chiffre, partout ». The 20 days may
-  include delivery (inferred).
+Found while compiling this inventory, fixed on 2026-10-16 and checked in
+Chromium against `wrangler dev` with a local Postgres database.
+
+| Mismatch found | Fix |
+|---|---|
+| **Bespoke payment.** Home page step 4 said bespoke can be paid « à la livraison ». The server forces a 50% deposit by transfer (`createOrder` in `api/_lib/handlers.js`). | Step 4 now says « Un acompte, puis le solde à la livraison », with the percentage read from `site.bespoke.deposit`. The marquee (« Rien à payer d'avance ») and proof card 02 made the same claim; they now say nothing is paid when ordering, and card 02 names the bespoke deposit. |
+| **Reference format.** `service-client.html` said references start with « YEM ». They are generated as `YMS-…` (`api/_lib/db.js`). | Now « YMS », with an example in the real `YMS-DDMM-NNNN` format. The home preview's « YMS-SM-0142 » follows that format too. |
+| **Stock claim.** `boutique.html` said « 8 pièces en stock à Cotonou, expédiées sous 72 h », but 6 of the 8 carry the amber « En route » badge. | The intro gives no count, because the atelier changes badges from the admin without a rebuild. It explains the two badges instead (`build_shop`). The page description was corrected the same way. |
+| **« Visuel IA » label.** The legal notice says every visual carries it. It was only on gallery thumbnails, so 6 of the 8 product pages showed none. | `mention_ia()` in `tools/build.py` puts it on the main product image and on grid cards too. `api/_lib/rewrite.js` removes it when the atelier uploads a real photo for that piece. |
+| **Origin label position.** The home page and the charter say the origin appears « au-dessus du prix ». It came after the price. | Moved above the price on cards (`product_card`) and product pages (`build_product`). Rendered positions were checked at 1280 px and 390 px. |
+| **Thread colour.** The home page says « couleur du fil » is chosen on screen. The configurator step was informational. | Four shades (`site.bespoke.threads`, no extra cost) are now chosen on screen. The choice appears in the summary, cart, order (`bespoke.thread`), WhatsApp message and admin. The server rejects an unknown shade. A cart from before the change is accepted and the atelier is told « fil à demander ». |
+| **Sur-mesure preview panel.** The total showed « 158 000 F » for a Derby Cotonou with initials (166,000 + 6,000 F). The video's `aria-label` listed leathers that are not offered. | Every line and the total (172,000 F) are computed from `site.bespoke` by `build_home()`. The configurator shows the same total for the same choices. The `aria-label` now describes the video as an illustration of leather grains. |
+| **Lead time.** The final CTA said « Vingt jours pour la porter », while the charter says « 15 jours », « un seul chiffre, partout ». | « Quinze jours pour la coudre ». |
+
+### Copy mismatch found while checking those fixes
+
+- **Guarantee on « sélection » product pages.** The reassurance list on every
+  product page (`build_product`) says « 1 retouche offerte, puis
+  remboursement intégral ». The CGV (§9) reserve that guarantee for bespoke
+  pieces. The home page explains why the sélection gets a one-year exchange
+  instead of a refund (comment in `#garantie`). All 8 orderable pieces are
+  « sélection », so all 8 product pages carry the wrong guarantee. Not fixed
+  yet.
 
 ### Not yet enabled
 
