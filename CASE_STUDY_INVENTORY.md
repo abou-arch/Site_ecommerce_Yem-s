@@ -735,15 +735,16 @@ Chromium against `wrangler dev` with a local Postgres database.
 | **Sur-mesure preview panel.** The total showed « 158 000 F » for a Derby Cotonou with initials (166,000 + 6,000 F). The video's `aria-label` listed leathers that are not offered. | Every line and the total (172,000 F) are computed from `site.bespoke` by `build_home()`. The configurator shows the same total for the same choices. The `aria-label` now describes the video as an illustration of leather grains. |
 | **Lead time.** The final CTA said « Vingt jours pour la porter », while the charter says « 15 jours », « un seul chiffre, partout ». | « Quinze jours pour la coudre ». |
 
-### Copy mismatch found while checking those fixes
+### Copy mismatch found while checking those fixes: fixed
 
 - **Guarantee on « sélection » product pages.** The reassurance list on every
-  product page (`build_product`) says « 1 retouche offerte, puis
+  product page (`build_product`) said « 1 retouche offerte, puis
   remboursement intégral ». The CGV (§9) reserve that guarantee for bespoke
-  pieces. The home page explains why the sélection gets a one-year exchange
-  instead of a refund (comment in `#garantie`). All 8 orderable pieces are
-  « sélection », so all 8 product pages carry the wrong guarantee. Not fixed
-  yet.
+  pieces, and the home page explains why the sélection gets a one-year
+  exchange instead (comment in `#garantie`). The line now shows the
+  guarantee of the piece's own line, from `site.origines.*.garantie`
+  (« Échange un an, pointure ou défaut » for all 8 orderable pieces). The
+  cart summary, which made the same promise, now names both guarantees.
 
 ### Not yet enabled
 

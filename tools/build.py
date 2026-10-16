@@ -865,8 +865,11 @@ class Builder:
 {specs}
       </dl>
 
+      <!-- La garantie de la ligne de la pièce : « 1 retouche, puis
+           remboursement intégral » s'affichait aussi sur la sélection, alors
+           que les CGV (§9) le réservent au sur-mesure. -->
       <ul class="product__reassure">
-        <li><svg aria-hidden="true"><use href="#i-shield"></use></svg>1 retouche offerte, puis remboursement intégral</li>
+        <li><svg aria-hidden="true"><use href="#i-shield"></use></svg>{escape(ORIGINES[product.get("origine", "selection")]["garantie"])}</li>
         <li><svg aria-hidden="true"><use href="#i-card"></use></svg>Carte d'authenticité numérotée</li>
         <li><svg aria-hidden="true"><use href="#i-truck"></use></svg>Cotonou &amp; Abidjan en 48 h</li>
       </ul>
@@ -1200,7 +1203,7 @@ class Builder:
           <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
         </a>
         <ul class="cfg-trust">
-          <li><svg aria-hidden="true"><use href="#i-shield"></use></svg>1 retouche offerte, puis remboursement intégral</li>
+          <li><svg aria-hidden="true"><use href="#i-shield"></use></svg>Échange un an sur la sélection, une retouche sur le sur-mesure</li>
           <li><svg aria-hidden="true"><use href="#i-card"></use></svg>Rien à payer maintenant, réglé à la remise</li>
           <li><svg aria-hidden="true"><use href="#i-truck"></use></svg>Cotonou &amp; Abidjan en 48&nbsp;h</li>
         </ul>
