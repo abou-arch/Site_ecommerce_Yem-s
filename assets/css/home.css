@@ -50,8 +50,36 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  /* le mannequin est dans le tiers droit : on garde ce bord quoi qu'il arrive */
-  object-position: 78% center;
+  /* Horizontalement : le mannequin est dans le tiers droit, on garde ce bord.
+     Verticalement : 18 % et non le centre. La règle « contain » ci-dessous
+     couvre les écrans larges, mais il reste une bande de fenêtres hautes et
+     étroites où « cover » rogne encore quelques dizaines de pixels. Centré,
+     il les prenait pour moitié en haut — c'est-à-dire sur la tête. À 18 %,
+     c'est le sol qui paie. */
+  object-position: 78% 18%;
+}
+
+/* L'ÉCRAN PLUS LARGE QUE L'IMAGE
+   ----------------------------------------------------------------------
+   Le visuel est en 3/2 et le mannequin y tient toute la hauteur : il n'y a
+   aucun gras à rogner en haut ou en bas. Dès que le cadre du hero devient
+   plus large que 3/2 — c'est-à-dire sur tout écran de bureau un peu large —
+   « cover » rogne en HAUTEUR, et il rogne les deux bouts qu'on est venu
+   voir : la tête d'abord, les souliers ensuite. Sur un écran de 1825 px,
+   cela faisait 326 px perdus, soit le visage entier.
+
+   L'image tient donc en hauteur et se cale à droite. L'espresso occupe la
+   gauche — là où le texte se trouve de toute façon, et où le voile
+   l'assombrissait déjà à 92 %. Rien n'est rogné, et la composition est
+   celle qu'on voulait : le texte à gauche, le mannequin à droite.
+
+   Le seuil est à 4/3 et non à 3/2 : le hero ne fait que 88 % de la hauteur
+   de la fenêtre, donc son cadre est déjà plus large que l'écran. */
+@media (min-width: 901px) and (min-aspect-ratio: 4/3) {
+  .hero-edito__media img {
+    object-fit: contain;
+    object-position: right center;
+  }
 }
 
 /* Deux voiles superposés. Le premier assombrit la gauche, où le texte est
