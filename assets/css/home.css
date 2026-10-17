@@ -29,7 +29,9 @@
   align-content: safe center;
   min-height: clamp(600px, 88svh, 880px);
   padding-top: calc(var(--header-h) + var(--sp-7));
-  padding-bottom: var(--sp-7);
+  /* Au moins la hauteur du fondu : sans cela, la derniere ligne de texte
+     se retrouverait sur une crème à 70 %, en beige clair sur beige clair. */
+  padding-bottom: clamp(88px, 12vh, 136px);
   background-color: var(--espresso-900);
   color: var(--sombre-text);
 }
@@ -107,6 +109,43 @@
       rgba(20, 16, 13, 0.00) 60%,
       rgba(20, 16, 13, 0.46) 100%
     );
+}
+
+/* LE FONDU VERS LA CRÈME
+   ----------------------------------------------------------------------
+   Le hero s'arrêtait net sur la section claire : une ligne horizontale
+   franche entre l'espresso et la crème, juste sous les souliers.
+
+   Le fondu est posé sur le BAS DU HERO, pas sur le haut de la section
+   suivante. C'est ce qui fait la différence : au bas du hero cohabitent
+   l'espresso plein à gauche et le sol éclairé de l'image à droite. Un
+   dégradé posé sur la crème partirait d'une seule couleur et laisserait
+   une marche visible sur la moitié droite ; posé ici, il dissout ce qui
+   se trouve derrière lui, quel qu'il soit.
+
+   Il s'arrête sur --beige-200, qui est exactement la couleur de départ
+   du fond de la vitrine : le raccord est invisible parce que les deux
+   valeurs sont la même.
+
+   z-index 0 : au-dessus de l'image (−2) et de la typographie ample (−1),
+   en dessous du texte (1). Le remplissage bas du hero, plus loin, garantit
+   qu'aucun texte n'entre dans la zone de fondu. */
+.hero-edito::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: clamp(72px, 10vh, 120px);
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    rgba(233, 222, 203, 0) 0%,
+    rgba(233, 222, 203, 0.28) 45%,
+    rgba(233, 222, 203, 0.72) 78%,
+    var(--beige-200) 100%
+  );
 }
 
 /* La mention « Visuel IA » du hero se pose en haut à droite : en bas, elle
@@ -287,6 +326,13 @@
   .hero-edito__actions { gap: var(--sp-4); margin-top: var(--sp-4); }
   .hero-edito__note { margin-top: var(--sp-4); }
   .hero-edito__side { display: none; }
+
+  /* Pas de fondu ici : sous 900 px, le bas du hero n'est pas l'image mais
+     la colonne de texte posée sur l'espresso. Un voile crème la rendrait
+     illisible, et il n'y a de toute façon aucune coupure à adoucir — le
+     texte et la section suivante se succèdent sur deux fonds assumés. */
+  .hero-edito::after { display: none; }
+  .hero-edito { padding-bottom: var(--sp-6); }
 }
 
 /* Tablette : le texte a de la place, on la lui donne. La bande d'image et le
