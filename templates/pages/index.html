@@ -6,16 +6,33 @@
      barre posée au-dessus d'elle.
 
      Le visuel est un <img> et non un fond CSS. Trois raisons :
-       — le navigateur choisit la largeur dans srcset (800 / 1200 / 1536) ;
-       — fetchpriority="high" le fait partir avant les scripts, c'est lui
-         le Largest Contentful Paint de la page ;
-       — width et height réservent la place, donc aucun saut de mise en page.
-     Le PNG source de 1,6 Mo n'est jamais servi : tools/images_ia.py en tire
-     ces fichiers (47 Ko en WebP pour la plus grande largeur).
+       le navigateur choisit la largeur dans srcset ; fetchpriority="high" le
+       fait partir avant les scripts, c'est lui le Largest Contentful Paint de
+       la page ; width et height réservent la place, donc aucun saut de mise
+       en page. Le PNG source de 1,6 Mo n'est jamais servi : tools/images_ia.py
+       en tire ces fichiers (47 Ko en WebP pour la plus grande largeur).
+
+     DEUX CADRAGES, PAS UN RECADRAGE. Sous 620 px — le téléphone — le
+     navigateur prend une prise de vue verticale (9/16) plutôt que de rogner
+     le paysage : sur un écran étroit, « object-fit: cover » coupait le
+     mannequin ou le repoussait hors champ. La tablette garde le paysage : un
+     9/16 y demanderait 1 364 px de haut, et plafonné il couperait les
+     souliers. C'est le <source media> qui décide, donc le fichier large n'est
+     même pas téléchargé sur un téléphone.
      ═══════════════════════════════════════════════════════════════ -->
 <section class="hero-edito" id="hero">
   <div class="hero-edito__media">
     <picture>
+      <source type="image/webp" media="(max-width: 619px)"
+              sizes="100vw"
+              srcset="{{base}}assets/img/hero-accueil-portrait-480.webp 480w,
+                      {{base}}assets/img/hero-accueil-portrait-720.webp 720w,
+                      {{base}}assets/img/hero-accueil-portrait.webp 941w">
+      <source media="(max-width: 619px)"
+              sizes="100vw"
+              srcset="{{base}}assets/img/hero-accueil-portrait-480.jpg 480w,
+                      {{base}}assets/img/hero-accueil-portrait-720.jpg 720w,
+                      {{base}}assets/img/hero-accueil-portrait.jpg 941w">
       <source type="image/webp"
               sizes="100vw"
               srcset="{{base}}assets/img/hero-accueil-800.webp 800w,
@@ -39,11 +56,16 @@
   <div class="container container--wide hero-edito__inner">
     <div class="hero-edito__copy">
       <span class="eyebrow" data-reveal>Atelier de Cotonou &middot; Bénin</span>
-      <!-- Le <br> sépare les deux phrases, pas les lignes : motion.js s'en
-           sert pour faire monter le titre en deux temps. -->
+      <!-- L'accroche longue (« Personne ne verra la couture… ») tenait quatre
+           lignes et repoussait tout le hero vers le bas, surtout sur
+           téléphone. Elle n'est pas perdue : elle ouvre maintenant about-us.
+           Ici, la formule courte de la maquette, qui dit la même chose en
+           deux lignes et reprend le slogan de la maison.
+           Le <br> sépare les lignes pour motion.js, qui les fait monter l'une
+           après l'autre. -->
       <h1 data-lines>
-        Personne ne verra la couture.<br>
-        Tout le monde verra <span class="italic-accent">la différence</span>.
+        Des détails qui font<br>
+        <span class="italic-accent">la différence</span>.
       </h1>
       <p class="lede" data-reveal style="--reveal-delay:60ms">
         Une maison de Cotonou, avec un atelier au milieu. Ce qu'on sait faire,
@@ -70,45 +92,18 @@
   </div>
 
   <span class="hero-edito__side" aria-hidden="true">Cuir &middot; couture &middot; caractère</span>
-
-  <!-- BANDEAU DE RÉASSURANCE
-       Il remplace à la fois le bandeau défilant et les trois chiffres du
-       hero précédent : même information, une seule fois, et les compteurs
-       (geste d'animation n° 4) y gardent leur emploi. Les quatre lignes
-       valent des DEUX lignes de la maison, atelier comme sélection. -->
-  <div class="container container--wide hero-edito__trustwrap">
-    <ul class="trust" data-reveal style="--reveal-delay:240ms">
-      <li class="trust__item">
-        <span class="trust__idx">01</span>
-        <span class="trust__texte">
-          <b><span data-count="48">0</span>&nbsp;h</b>
-          <small>Livré à Cotonou &amp; Abidjan</small>
-        </span>
-      </li>
-      <li class="trust__item">
-        <span class="trust__idx">02</span>
-        <span class="trust__texte">
-          <b><span data-count="1">0</span>&nbsp;an</b>
-          <small>d'échange sur la sélection</small>
-        </span>
-      </li>
-      <li class="trust__item">
-        <span class="trust__idx">03</span>
-        <span class="trust__texte">
-          <b>à vie</b>
-          <small>de ressemelage sur l'atelier</small>
-        </span>
-      </li>
-      <li class="trust__item">
-        <span class="trust__idx">04</span>
-        <span class="trust__texte">
-          <b>0&nbsp;F</b>
-          <small>à payer d'avance</small>
-        </span>
-      </li>
-    </ul>
-  </div>
 </section>
+
+<!-- Le bandeau de réassurance (48 h / 1 an / à vie / 0 F) a été retiré du
+     hero à la demande d'Abou : il barrait le bas de l'image et coupait le
+     mannequin aux genoux.
+
+     Les quatre informations qu'il portait ne sont PAS perdues : les délais,
+     l'échange d'un an et le ressemelage à vie sont développés sur
+     about-us.html (« Nos engagements »), et « rien à payer d'avance » est
+     répété dans le pied de page de chaque page. Elles ne sont simplement
+     plus sur l'accueil. -->
+
 
 <!-- ═══════════════════════════════════════════════════════════════
      LA SÉLECTION — les produits, juste après le hero
@@ -140,6 +135,18 @@
     </nav>
 
 {{featured_grid}}
+
+    <!-- Les quatre chiffres que portait le bandeau du hero. Ils reviennent
+         ici, en une ligne de texte sous les pièces : c'est à ce moment-là
+         qu'on se demande ce qui se passe après l'achat, pas en arrivant sur
+         la page. Chacun dit de quelle ligne il parle — la garantie n'est pas
+         la même sur l'atelier et sur la sélection. -->
+    <p class="reassurance" data-reveal>
+      <span>Livré en 48&nbsp;h à Cotonou &amp; Abidjan</span>
+      <span>Échange un an sur la sélection</span>
+      <span>Ressemelage à vie sur l'atelier</span>
+      <span>Rien à payer d'avance</span>
+    </p>
 
     <div class="text-center" style="margin-top:var(--sp-7)">
       <a class="btn btn--ghost" href="{{base}}boutique.html">

@@ -348,21 +348,13 @@ p { text-wrap: pretty; }
   color: var(--accent);
 }
 
-.eyebrow::before {
-  content: "";
-  width: 28px;
-  height: 1px;
-  background: currentColor;
-  opacity: 0.6;
-}
+/* Les traits de 28 px qui encadraient le surtitre ont été retirés : ils
+   revenaient devant chaque surtitre de chaque page, et finissaient par lire
+   comme un gabarit plutôt que comme une intention. Le surtitre tient seul,
+   porté par ses capitales espacées et sa couleur laiton.
 
-.eyebrow--center::after {
-  content: "";
-  width: 28px;
-  height: 1px;
-  background: currentColor;
-  opacity: 0.6;
-}
+   « gap » ci-dessus devient sans effet (plus qu'un enfant), il est conservé
+   pour que le trait se remette en une ligne si la maison le redemande. */
 
 /* 46 caractères par ligne. Au-delà de ~50, l'œil perd le début de la ligne
    suivante et la lecture ralentit — c'est ça, « le texte est trop large ». */

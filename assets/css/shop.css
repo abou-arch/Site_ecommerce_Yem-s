@@ -332,13 +332,10 @@
   color: var(--text-subtle);
 }
 
-.origine::before {
-  content: "";
-  width: 14px;
-  height: 1px;
-  background: currentColor;
-  opacity: 0.7;
-}
+/* Le trait de 14 px qui précédait l'origine a été retiré, comme celui des
+   surtitres : sur une grille de quatre vignettes il apparaissait quatre fois
+   dans le même écran. L'italique suffit à distinguer la ligne du nom qui la
+   suit. */
 
 .origine--atelier { color: var(--accent); }
 .section--light .origine--atelier { color: var(--brass-600); }

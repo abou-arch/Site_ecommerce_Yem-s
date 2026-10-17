@@ -37,6 +37,10 @@ IMG = os.path.join(ROOT, "assets", "img")
 # v7 ici, et ni le CSS ni les gabarits n'auront à bouger.
 CAMPAGNE = {
     "hero-yems-avatar-v7.png":      ("hero-accueil",   (1536, 1200, 800)),
+    # Le même mannequin, cadré en 9/16 pour le téléphone. Le visuel paysage
+    # recadré « cover » sur un écran étroit coupait le sujet ou le rejetait
+    # hors champ ; une prise de vue verticale vaut mieux qu'un rognage.
+    "hero-yems-avatar-portrait-v1.webp": ("hero-accueil-portrait", (941, 720, 480)),
     "atelier-yems-couture-v1.png":  ("atelier-couture", (1200, 800, 500)),
     "hero-yems-atelier-v1.png":     ("atelier-etabli",  (1200, 800, 500)),
 }
@@ -62,10 +66,11 @@ def main():
         export(img, name + "-500", 500)
 
     # Le hero d'accueil ne vient plus de hero.png : il est produit par la
-    # table CAMPAGNE ci-dessous, à partir du visuel validé (avatar v7). Les
-    # fichiers hero.*/hero-900.* et hero-portrait.* qu'on fabriquait ici
-    # n'étaient plus lus par aucune feuille de style ; ils ont été supprimés.
-    # hero.png reste au dépôt comme image source.
+    # table CAMPAGNE ci-dessous, à partir des visuels validés (avatar v7 en
+    # paysage, portrait v1 pour le téléphone). Les fichiers hero.*/hero-900.*
+    # et hero-portrait.* qu'on fabriquait ici n'étaient plus lus par aucune
+    # feuille de style, et hero.png lui-même ne servait plus qu'à les
+    # produire : tous ont été supprimés.
 
     print("Visuels de campagne :")
     for src, (nom, largeurs) in CAMPAGNE.items():

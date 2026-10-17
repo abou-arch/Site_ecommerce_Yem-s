@@ -152,7 +152,7 @@ def picture(product, base, index=0, lazy=True, sizes=None):
         # tenu à l'échelle d'une vignette.
         return ('<div class="pshot__empty">'
                 '<svg class="pshot__mark" aria-hidden="true"><use href="#i-logo"></use></svg>'
-                '<span class="pshot__note">Photographiée bientôt</span></div>')
+                '</div>')
 
     img = images[index]
     loading = ' loading="lazy" decoding="async"' if lazy else ' fetchpriority="high"'
@@ -192,17 +192,24 @@ def picture(product, base, index=0, lazy=True, sizes=None):
 
 def mention_ia():
     """
-    La mention « Visuel IA », posée sur l'image qu'elle concerne.
+    La pastille « Visuel IA » posée sur chaque image — retirée du rendu.
 
-    Les mentions légales promettent qu'elle figure sur chaque visuel généré.
-    Elle n'apparaissait que sur les petites vues des fiches : une fiche à photo
-    unique, une vignette de grille ou le hero n'en portaient aucune. Une seule
-    fonction, donc un seul libellé, où qu'elle s'affiche. L'attribut
-    data-visuel-ia permet au Worker de la retirer quand l'atelier remplace
-    le visuel par une vraie photo.
+    Abou l'a demandée enlevée : trente pastilles sur six pages, posées sur
+    toutes les photos de la boutique, finissaient par être le premier élément
+    qu'on voyait d'une vignette produit.
+
+    LA TRANSPARENCE, ELLE, NE DISPARAÎT PAS. Elle n'est plus répétée sur
+    chaque image : elle est dite une fois par page, en pied de page
+    (templates/partials/footer.html), et développée dans les mentions légales
+    (« Les visuels des pièces »). La phrase des mentions légales a été
+    réécrite en conséquence — elle promettait une pastille sur chaque fiche,
+    elle aurait été fausse sans cela.
+
+    La fonction reste, et reste appelée partout : c'est le seul endroit à
+    modifier pour remettre la pastille, et l'attribut data-visuel-ia que le
+    Worker supprime (api/_lib/rewrite.js) retrouverait alors sa cible.
     """
-    return ('<span class="pshot__note" data-visuel-ia title="Visuel d\'ambiance '
-            'généré par intelligence artificielle">Visuel IA</span>')
+    return ""
 
 
 ORIGINES = {}   # rempli au démarrage depuis data/products.json
@@ -559,11 +566,11 @@ class Builder:
             "index.html",
             content=body,
             body_class="page-edito",
-            title="Yem's : souliers et maroquinerie cousus main | Différents par les détails",
+            title="Souliers et maroquinerie cousus main à Cotonou | Yem's",
             description=("Yem's : souliers, ceintures et portefeuilles cousus à la main à "
                          "Cotonou. Point sellier, cuir pleine fleur, semelle ressemelable. "
                          "Sélection disponible à Cotonou, sur-mesure en 15 jours, livré au Bénin et en Côte d'Ivoire."),
-            og_title="Yem's. Personne ne verra la couture. Tout le monde verra la différence.",
+            og_title="Yem's. Des détails qui font la différence.",
             # L'aperçu de partage montrait une photo qui n'appartenait pas à
             # l'atelier. Il n'y en a plus tant qu'une vraie n'aura pas été prise :
             # mieux vaut aucune vignette qu'une vignette empruntée.
@@ -610,11 +617,11 @@ class Builder:
             content=body,
             body_class="page-edito",
             current="about-us",
-            title="About us : la maison Yem's, Cotonou | Différents par les détails",
+            title="About us : l'atelier et la sélection | Yem's",
             description=("Deux façons de travailler, une seule maison pour en répondre. "
                          "L'atelier de Cotonou, la sélection contrôlée, les garanties "
                          "ligne par ligne et le sur-mesure étape par étape."),
-            og_title="La maison Yem's : ce qu'on fabrique, ce qu'on choisit.",
+            og_title="Yem's. Personne ne verra la couture. Tout le monde verra la différence.",
             og_image=None,
             structured={
                 "@context": "https://schema.org",
@@ -741,7 +748,10 @@ class Builder:
         self.page(
             "%s.html" % cat["slug"],
             content=crumb + "\n\n" + content,
-            title="%s | Yem's" % cat["title"],
+            # « Yem's » n'est ajouté que s'il n'est pas déjà dans le titre
+            # de la catégorie : « Sélection Yem's : … | Yem's » le disait deux
+            # fois dans un onglet de navigateur.
+            title=cat["title"] if "Yem's" in cat["title"] else "%s | Yem's" % cat["title"],
             description=cat["description"],
             current=cat["slug"],
             structured={
@@ -805,8 +815,7 @@ class Builder:
             main_shot = "\n      ".join(jeux)
             thumbs = ""
         else:
-            main_shot = ('<div class="pshot pshot--empty" data-shot>%s'
-                         '<span class="pshot__note">Photo à venir</span></div>'
+            main_shot = ('<div class="pshot pshot--empty" data-shot>%s</div>'
                          % badge(product["status"], "pshot__badge"))
             thumbs = ""
 
@@ -1028,8 +1037,7 @@ class Builder:
         # relais plutôt qu'une image qui appartient à quelqu'un d'autre.
         def vignette_forme(o):
             if not o.get("image"):
-                return ('<span class="cfg-opt__shot pshot--empty">'
-                        '<span class="pshot__note">Photo à venir</span></span>')
+                return '<span class="cfg-opt__shot pshot--empty"></span>'
             return ('<span class="cfg-opt__shot"><img src="assets/img/%s.jpg" '
                     'width="400" height="275" loading="lazy" decoding="async" alt="%s"></span>'
                     % (o["image"], escape(o["name"], quote=True)))
@@ -1236,7 +1244,7 @@ class Builder:
         self.page(
             "configurateur.html",
             content=content,
-            title="Configurateur sur-mesure | Yem's",
+            title="Composer sa paire sur-mesure | Yem's",
             description="Composez votre paire sur-mesure : forme, cuir, semelle, pointure "
                         "et initiales. Prix en direct, %s, acompte %d %% à la commande."
                         % (cfg["lead_days"], cfg["deposit"]),
@@ -1596,7 +1604,7 @@ class Builder:
 
         self.page(
             "a-venir.html", content=content, current="a-venir",
-            title="Ce qui se prépare | Yem's",
+            title="Ce qui se prépare à l'atelier | Yem's",
             description="La ligne cousue main de l'atelier Yem's arrive. En attendant, "
                         "écrivez-nous pour voir les pièces disponibles à Cotonou.",
         )
@@ -1664,7 +1672,7 @@ class Builder:
 
         self.page(
             "boutique.html", content=content, current="boutique",
-            title="La boutique | Yem's",
+            title="La boutique : tout le catalogue | Yem's",
             description="Les pièces Yem's disponibles aujourd'hui à Cotonou. "
                         "Origine indiquée sur chacune, échange un an, livraison "
                         "au Bénin et en Côte d'Ivoire.",

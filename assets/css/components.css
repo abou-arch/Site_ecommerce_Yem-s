@@ -99,6 +99,12 @@
 }
 
 .btn--sm { padding: 0.7rem 1.25rem; font-size: var(--fs-xs); }
+
+/* Une seule échelle de libellés dans la barre. Les entrées sont à 14 px et
+   le bouton était à 12 px, juste à côté : l'action se lisait plus petite que
+   les liens qui l'entourent, ce qui est exactement l'inverse du rapport
+   qu'on veut. */
+.header__actions .btn--sm { font-size: 0.8125rem; }
 .btn--full { width: 100%; }
 
 /* Lien souligné animé */
@@ -260,7 +266,15 @@
   letter-spacing: 0.04em;
   color: var(--text-muted);
   transition: color 300ms var(--ease);
-  padding-block: 4px;
+  /* PROPORTIONS DE L'ENTRÉE DE MENU
+     La zone cliquable mesurait 33 px dans une barre de 60 : on vise entre
+     les lignes plus souvent qu'on ne le croit, et un lien qu'on rate deux
+     fois est un lien qu'on cesse d'essayer. Le remplissage vertical porte
+     l'entrée à ~52 px sans bouger le mot d'un pixel — le trait de
+     soulignement est repositionné juste en dessous, voir ci-après. */
+  display: inline-flex;
+  align-items: center;
+  padding-block: 1.1rem;
   /* Un libellé de navigation ne se coupe jamais en deux : il devient
      illisible avant de devenir compact. S'il ne tient plus, c'est l'écart
      ci-dessus qui doit céder, pas le mot. */
@@ -271,7 +285,9 @@
   content: "";
   position: absolute;
   left: 0;
-  bottom: 0;
+  /* Collé au mot, pas au bas de la zone cliquable : sans ça, le trait
+     descendait de 16 px et se détachait du libellé. */
+  bottom: calc(1.1rem - 5px);
   width: 100%;
   height: 1px;
   background: var(--brass-400);

@@ -682,11 +682,13 @@ Grouped by discipline. Each line gives what was done, then the proof.
 - **Configurator videos show materials the shop does not offer** (a
   saffiano-like black, an orange thread), per `docs/prompts-video-higgsfield.md`.
   `assets/video/cuirs.mp4` and `assets/video/fils.mp4` are still in use.
-- **Unused large images.** `assets/img/cuirs-nuancier-vertical.png` (6.2 MB)
-  and `assets/img/fils-lin-cire-vertical.png` (5.8 MB), added in `e3619e9`, are
-  referenced nowhere and not excluded from deployment. They are probably the
-  still images meant to replace those videos (inferred).
-  `assets/img/hero-900.*` is also unused.
+- ~~**Unused large images.**~~ **RESOLVED.** `cuirs-nuancier-vertical.png`
+  (6.2 MB), `fils-lin-cire-vertical.png` (5.8 MB) and `hero-900.*` have been
+  deleted, along with `hero.png`, `atelier-yems-ressemelage-v1.png` and the
+  five superseded hero drafts (`hero-yems-avatar-v2` … `v6`) — about 24 MB in
+  all. Every one was checked against the templates, the generated HTML, the
+  CSS, the JS, the data and the image scripts before removal; git history
+  still holds them.
 
 ### Content to validate with the client
 

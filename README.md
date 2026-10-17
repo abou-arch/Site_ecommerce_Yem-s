@@ -159,6 +159,29 @@ rappel d'`IntersectionObserver`, et le haut de page y restait vide. Le hero va
 plus loin : ses `[data-reveal]` s'animent par CSS (`@keyframes hero-in`), donc
 même un `motion.js` qui ne se charge jamais laisse un hero complet.
 
+### La mention « Visuel IA » n'est plus posée sur les images
+
+Elle revenait sur chaque visuel — trente pastilles sur six pages — et finissait
+par être la première chose qu'on voyait d'une vignette produit. Elle a été
+retirée du rendu.
+
+**La transparence, elle, n'a pas bougé** : elle est dite une fois par page, en
+pied de page, et développée dans les mentions légales. Les trois textes qui
+promettaient une pastille sur chaque fiche (`mentions-legales`, `cgv`,
+`conditions-utilisation`) ont été réécrits en conséquence — sans quoi le site
+aurait promis quelque chose qu'il ne fait plus.
+
+Pour la remettre : `mention_ia()` dans `tools/build.py` est le seul endroit à
+modifier. Elle est toujours appelée partout, et l'attribut `data-visuel-ia`
+que le Worker supprime (`api/_lib/rewrite.js`) retrouverait alors sa cible.
+
+### Pas de traits décoratifs
+
+Les filets de 28 px devant les surtitres, de 14 px devant l'origine des cartes
+produit et les tirets de liste ont été retirés : ils revenaient à chaque bloc
+de chaque page et lisaient comme un gabarit. Les coutures pointillées
+(`.stitch`, `.seam`), elles, restent — c'est le geste signature de la maison.
+
 ### ⚠ Le rideau d'ouverture a été retiré
 
 Il masquait la page 1 550 ms puis se levait en 700 ms : **plus de deux secondes
@@ -212,6 +235,7 @@ plusieurs largeurs, déclarées dans la table `CAMPAGNE` :
 | PNG source | Nom servi | Largeurs | Poids WebP |
 |---|---|---|---|
 | `hero-yems-avatar-v7.png` | `hero-accueil` | 1536 / 1200 / 800 | 47 / 33 / 19 Ko |
+| `hero-yems-avatar-portrait-v1.webp` | `hero-accueil-portrait` | 941 / 720 / 480 | 68 / 48 / 27 Ko |
 | `atelier-yems-couture-v1.png` | `atelier-couture` | 1200 / 800 / 500 | 70 / 36 / 16 Ko |
 | `hero-yems-atelier-v1.png` | `atelier-etabli` | 1200 / 800 / 500 | 57 / 29 / 14 Ko |
 
@@ -221,6 +245,12 @@ Le nom servi ne porte pas le numéro de version : une v8 remplacera la v7 dans
 ```bash
 python3 tools/images_ia.py   # puis python3 tools/build.py
 ```
+
+**Deux cadrages pour le hero, pas un recadrage.** Sous 620 px, un
+`<source media>` sert la prise de vue verticale (9/16) ; au-delà, le paysage.
+Sur un écran étroit, `object-fit: cover` coupait le mannequin ; sur une
+tablette, le 9/16 plafonné lui coupait les souliers. Le fichier qui ne
+correspond pas au palier n'est même pas téléchargé.
 
 Le visuel du hero est le seul à porter `fetchpriority="high"` : c'est lui le
 Largest Contentful Paint de la page. Tout le reste est en `loading="lazy"`,
@@ -243,6 +273,10 @@ des photos de la production Yem's, ou n'utiliser ces visuels qu'en interne.
 ## Copy
 
 **Accroche retenue** — « Personne ne verra la couture. Tout le monde verra la différence. »
+Elle ouvre désormais **about-us.html**, pas l'accueil : ses quatre lignes
+repoussaient les produits d'un demi-écran. L'accueil porte la formule courte
+de la maquette, « Des détails qui font la différence », qui dit la même chose
+en deux lignes et reprend le slogan.
 
 Elle est alignée sur le slogan (« Différents par les détails »), porte un conflit
 invisible/visible, couvre toutes les catégories (pas seulement la chaussure) et

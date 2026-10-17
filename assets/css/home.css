@@ -20,10 +20,16 @@
   isolation: isolate;
   overflow: hidden;
   display: grid;
-  grid-template-rows: 1fr auto;
+  /* « safe » est le mot qui compte. En centrage simple, un bloc de texte plus
+     haut que la place disponible déborde des DEUX côtés : sur un portable de
+     768 px de haut, le titre passait sous la barre de navigation. « safe »
+     fait retomber l'alignement en haut dès que ça ne tient plus, et le haut
+     du hero est protégé par le padding ci-dessous. */
+  align-content: center;
+  align-content: safe center;
   min-height: clamp(600px, 88svh, 880px);
-  padding-top: calc(var(--header-h) + var(--sp-6));
-  padding-bottom: var(--sp-6);
+  padding-top: calc(var(--header-h) + var(--sp-7));
+  padding-bottom: var(--sp-7);
   background-color: var(--espresso-900);
   color: var(--sombre-text);
 }
@@ -107,7 +113,6 @@
 .hero-edito__inner {
   position: relative;
   z-index: 1;
-  align-self: center;
   width: 100%;
 }
 
@@ -161,79 +166,11 @@
   pointer-events: none;
 }
 
-/* --------------------------------------------------------------------------
-   BANDEAU DE RÉASSURANCE
-   Il remplace à la fois le bandeau défilant et les trois chiffres de l'ancien
-   hero : même information, une seule fois, et les compteurs (geste n° 4) y
-   gardent leur emploi.
-   -------------------------------------------------------------------------- */
-.hero-edito__trustwrap {
-  position: relative;
-  z-index: 1;
-  align-self: end;
-  margin-top: var(--sp-7);
-}
-
-.trust {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--sp-2);
-  padding: var(--sp-4) var(--sp-5);
-  list-style: none;
-  border: 1px solid rgba(244, 237, 226, 0.28);
-  border-radius: var(--radius-sm);
-  background: rgba(36, 28, 24, 0.66);
-  backdrop-filter: blur(14px) saturate(130%);
-  -webkit-backdrop-filter: blur(14px) saturate(130%);
-}
-
-@supports not (backdrop-filter: blur(1px)) {
-  .trust { background: rgba(28, 22, 19, 0.92); }
-}
-
-@media (min-width: 900px) {
-  .trust { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--sp-4); }
-}
-
-.trust__item {
-  display: flex;
-  align-items: center;
-  gap: var(--sp-3);
-  min-width: 0;
-  padding: var(--sp-2) var(--sp-1);
-}
-
-.trust__idx {
-  display: grid;
-  place-items: center;
-  flex: none;
-  width: 30px;
-  height: 30px;
-  border: 1px solid rgba(217, 184, 122, 0.52);
-  border-radius: 50%;
-  font-family: var(--font-display);
-  font-size: var(--fs-xs);
-  color: var(--brass-300);
-}
-
-.trust__texte { min-width: 0; }
-
-.trust__texte b {
-  display: block;
-  font-family: var(--font-display);
-  font-size: var(--fs-lg);
-  font-weight: 400;
-  line-height: 1.15;
-  color: var(--beige-100);
-}
-
-.trust__texte small {
-  display: block;
-  margin-top: 2px;
-  font-size: var(--fs-xs);
-  line-height: 1.35;
-  color: rgba(244, 237, 226, 0.74);
-}
+/* Le bandeau de réassurance (48 h / 1 an / à vie / 0 F) a été retiré : il
+   barrait le bas de l'image et coupait le mannequin aux genoux. Ses quatre
+   informations vivent sur about-us.html et dans le pied de page. Avec lui
+   disparaît le dernier emploi des compteurs (data-count) sur l'accueil ; le
+   geste reste décrit dans motion.js et s'appliquera au prochain chiffre. */
 
 /* --------------------------------------------------------------------------
    HERO ÉDITORIAL — TABLETTE ET TÉLÉPHONE
@@ -251,13 +188,18 @@
   .hero-edito {
     display: block;
     min-height: 0;
-    padding-top: 0;
+    /* L'image COMMENCE SOUS LA BARRE, elle ne passe plus derrière.
+       Avec un visuel en pied, c'est la tête du mannequin qui se retrouvait
+       cachée par la navigation ; aucun voile ne rattrape ça. La bande
+       d'espresso qui apparaît derrière la barre est le fond de la section. */
+    padding-top: var(--header-h);
     padding-bottom: var(--sp-6);
   }
 
-  /* La bande d'image est pilotée par une variable : la typographie ample se
-     cale dessus, et les deux ne peuvent plus se désaccorder. */
-  .hero-edito { --bande: min(46svh, 360px); }
+  /* La bande d'image est pilotée par une variable, pour que tout ce qui se
+     cale dessus reste d'accord avec elle. Valeur de la TABLETTE ici ; le
+     téléphone a la sienne, plus bas. */
+  .hero-edito { --bande: min(64svh, 620px); }
 
   .hero-edito__media {
     position: relative;
@@ -266,20 +208,19 @@
     height: var(--bande);
   }
 
-  /* 20 % en vertical : sur une bande large, le recadrage mord en haut, et
-     c'est la tête du mannequin qui part la première. */
+  /* Cadrage du visuel PAYSAGE, celui que la tablette reçoit : le sujet est
+     dans le tiers droit, et c'est en haut que le rognage mord. */
   .hero-edito__media img { object-position: 66% 20%; }
 
-  /* Voile du haut : l'en-tête transparent se pose sur l'image, il lui faut un
-     fond. Voile du bas : la transition vers l'espresso de la colonne de texte
-     doit être invisible. */
+  /* Plus besoin d'assombrir le haut : la barre n'est plus posée sur l'image.
+     Le voile ne sert donc qu'au bas, pour que l'image rejoigne l'espresso de
+     la colonne de texte sans ligne de coupe visible. */
   .hero-edito__media::after {
     background: linear-gradient(
       to bottom,
-      rgba(20, 16, 13, 0.76) 0%,
-      rgba(20, 16, 13, 0.16) 22%,
-      rgba(20, 16, 13, 0.10) 52%,
-      rgba(20, 16, 13, 0.86) 88%,
+      rgba(20, 16, 13, 0.00) 0%,
+      rgba(20, 16, 13, 0.00) 58%,
+      rgba(20, 16, 13, 0.70) 88%,
       var(--espresso-900) 100%
     );
   }
@@ -293,46 +234,56 @@
     left: var(--sp-3);
   }
 
-  /* Mesurée depuis le HAUT, pas depuis le bas : sur téléphone, le hero
-     contient aussi tout le texte et le bandeau, donc son bas est à plus de
-     1 100 px de l'image. Ancrée en bas, la typographie ample tombait au
-     milieu du bloc de texte. */
-  .hero-edito__display {
-    z-index: 1;
-    top: calc(var(--bande) - 3.4rem);
-    right: -2%;
-    bottom: auto;
-    transform: none;
-    font-size: clamp(4.5rem, 22vw, 9rem);
-    color: rgba(244, 237, 226, 0.22);
-  }
+  /* La typographie ample ne descend pas sur téléphone.
+     Elle existe pour occuper le vide à côté du mannequin, et le cadrage
+     vertical n'en laisse aucun : où qu'on la pose, elle tombe sur le sujet.
+     Posée bas elle barrait les souliers — sur un site de souliers ; posée
+     haut elle se cognait à la barre de navigation ; posée sous l'image elle
+     recouvrait le surtitre. Le visuel en pied se suffit. */
+  .hero-edito__display { display: none; }
 
   .hero-edito__inner {
     position: relative;
     z-index: 2;
-    padding-top: var(--sp-5);
+    padding-top: var(--sp-4);
   }
 
+  /* COLONNE DE TEXTE RESSERRÉE.
+     Sous la photo, chaque respiration se paie en pixels avant le premier
+     soulier : le hero demandait une image et demie d'écran. Les écarts
+     passent d'un cran (sp-5 → sp-4), le titre perd ses marges larges. La
+     photo, elle, n'a pas bougé — c'est elle qu'on est venu voir. */
   .hero-edito__copy { max-width: none; }
-  .hero-edito h1 { max-width: 16ch; }
+  .hero-edito h1 { max-width: 16ch; margin-block: var(--sp-3) var(--sp-4); }
   .hero-edito .lede { max-width: 42ch; font-size: var(--fs-base); }
-  .hero-edito__actions { gap: var(--sp-4); margin-top: var(--sp-5); }
-  .hero-edito__note { margin-top: var(--sp-5); }
+  .hero-edito__actions { gap: var(--sp-4); margin-top: var(--sp-4); }
+  .hero-edito__note { margin-top: var(--sp-4); }
   .hero-edito__side { display: none; }
-  .hero-edito__trustwrap { margin-top: var(--sp-6); }
-  .trust { padding: var(--sp-3); }
-  .trust__item { padding: var(--sp-2) 0; gap: var(--sp-2); }
-  .trust__idx { width: 26px; height: 26px; }
-  .trust__texte b { font-size: var(--fs-base); }
 }
 
-/* Tablette : la bande d'image a de la place, on la laisse respirer, et le
-   bandeau de réassurance retrouve ses quatre colonnes dès 640 px de large. */
+/* Tablette : le texte a de la place, on la lui donne. La bande d'image et le
+   cadrage sont ceux du bloc ci-dessus, c'est-à-dire ceux du visuel paysage. */
 @media (min-width: 620px) and (max-width: 900px) {
-  .hero-edito { --bande: min(54svh, 480px); }
-  .hero-edito__display { font-size: clamp(6rem, 16vw, 11rem); }
   .hero-edito h1 { max-width: 18ch; }
   .hero-edito__copy { max-width: 42rem; }
+}
+
+/* --------------------------------------------------------------------------
+   TÉLÉPHONE — LA PRISE DE VUE VERTICALE
+   --------------------------------------------------------------------------
+   Sous 620 px seulement. Au-delà, le 9/16 demanderait 1 364 px de haut sur
+   une tablette de 768 : plafonné, il couperait le mannequin aux genoux, donc
+   les souliers — sur un site de souliers. La tablette garde le paysage.
+
+   La hauteur suit ici le ratio réel du fichier (941 × 1672) plutôt qu'un
+   nombre choisi à la main : le mannequin entier tient dans le cadre, et le
+   plafond en svh ne rogne que le sol sous les semelles.
+   -------------------------------------------------------------------------- */
+@media (max-width: 619px) {
+  .hero-edito { --bande: min(72svh, calc(100vw * 1672 / 941)); }
+
+  /* S'il faut rogner, c'est le sol qui part, jamais la tête. */
+  .hero-edito__media img { object-position: center top; }
 }
 
 /* --------------------------------------------------------------------------
@@ -875,31 +826,93 @@
   .vitrine__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }
 
+/* --------------------------------------------------------------------------
+   LA LIGNE DE RÉASSURANCE
+   --------------------------------------------------------------------------
+   Ce que portait le bandeau du hero, en une ligne de texte posée sous les
+   pièces. Pas un cadre, pas de pastilles, pas de fond : c'est une note de bas
+   de vitrine, elle doit se lire après les souliers, pas avant.
+
+   Les séparateurs sont dessinés en CSS plutôt qu'écrits dans le texte : un
+   point médian tapé à la main se retrouverait lu à voix haute par un lecteur
+   d'écran, et resterait orphelin en fin de ligne au moment du retour.
+   -------------------------------------------------------------------------- */
+.reassurance {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.35rem 1.1rem;
+  margin-top: var(--sp-7);
+  font-size: var(--fs-sm);
+  color: var(--text-subtle);
+  text-align: center;
+}
+
+.reassurance span {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.1rem;
+}
+
+.reassurance span:not(:last-child)::after {
+  content: "";
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--brass-500);
+  opacity: 0.7;
+}
+
+/* Sur téléphone, les quatre mentions s'empilent : le point de séparation n'a
+   plus de sens entre deux lignes. */
+@media (max-width: 620px) {
+  .reassurance {
+    flex-direction: column;
+    gap: var(--sp-2);
+    margin-top: var(--sp-6);
+    font-size: var(--fs-xs);
+  }
+  .reassurance span:not(:last-child)::after { display: none; }
+}
+
 /* Accès rapide au catalogue : des onglets, pas des filtres JavaScript. Chaque
    entrée est un vrai lien vers une vraie page, donc partageable et indexable. */
 .filtres {
   display: flex;
-  gap: var(--sp-2);
+  gap: var(--sp-3);
   flex-wrap: wrap;
   margin-bottom: var(--sp-6);
 }
 
+/* PROPORTIONS DE LA PASTILLE
+   Elle faisait 44 px de haut pour un texte de 12 px : treize pixels de vide
+   au-dessus et au-dessous du mot, qui flottait au milieu d'un ovale trop
+   grand pour lui. Le texte monte d'un cran, la hauteur descend d'un cran, et
+   le remplissage horizontal s'élargit — une pastille se lit à sa longueur,
+   pas à sa hauteur.
+
+   40 px reste au-dessus du confort à la souris ; la cible tactile de 44 px
+   revient juste après, pour les pointeurs grossiers. */
 .filtres a {
-  /* 44 px de haut : c'est la cible tactile minimale. Le remplissage seul
-     donnait 36 px, confortable à la souris, raté un doigt sur deux. */
   display: inline-flex;
   align-items: center;
-  min-height: 44px;
-  padding: 0.4rem 0.95rem;
+  min-height: 40px;
+  padding: 0 1.25rem;
   border: 1px solid rgba(122, 94, 51, 0.28);
   border-radius: var(--radius-pill);
-  font-size: var(--fs-xs);
+  font-size: 0.8125rem;
   letter-spacing: var(--tracking-wide);
   text-transform: uppercase;
+  white-space: nowrap;
   color: var(--text-muted);
   transition: background-color var(--dur) var(--ease),
               color var(--dur) var(--ease),
               border-color var(--dur) var(--ease);
+}
+
+/* Doigt plutôt que souris : on reprend les 44 px de cible minimale. */
+@media (pointer: coarse) {
+  .filtres a { min-height: 44px; }
 }
 
 .filtres a:hover,
@@ -931,21 +944,11 @@
   max-width: 52ch;
 }
 
+/* Pas de trait devant la ligne, même règle que les surtitres et l'origine.
+   C'est l'écart entre les lignes qui les sépare, pas une puce. */
 .points li {
-  position: relative;
-  padding-left: var(--sp-5);
   font-size: var(--fs-base);
   color: var(--text-muted);
-}
-
-.points li::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0.72em;
-  width: 12px;
-  height: 1px;
-  background: var(--brass-500);
 }
 
 .bespoke__actions {
