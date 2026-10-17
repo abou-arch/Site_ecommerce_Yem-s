@@ -252,7 +252,7 @@ def product_card(product, base, delay=0, level=3):
       </article>"""
 
 
-def grid(products, base, klass="collections__grid", level=3):
+def grid(products, base, klass="collections__grid", level=3, rare=True):
     if not products:
         return """      <div class="empty-state">
         <p class="display">Cette ligne arrive bientôt.</p>
@@ -268,8 +268,12 @@ def grid(products, base, klass="collections__grid", level=3):
     # pièces photographiées, mieux vaut trois grandes vignettes qui remplissent
     # la rangée. La classe disparaîtra d'elle-même quand le catalogue
     # s'étoffera, sans qu'il y ait rien à modifier.
-    rare = " grid--rare" if len(products) <= 4 else ""
-    return '    <div class="%s%s">\n%s\n    </div>' % (klass, rare, "\n\n".join(cards))
+    #
+    # La vitrine d'accueil s'en dispense (rare=False) : elle tient toujours
+    # exactement quatre pièces, sa grille est donc calibrée pour quatre et
+    # n'a aucun trou à combler.
+    marque = " grid--rare" if rare and len(products) <= 4 else ""
+    return '    <div class="%s%s">\n%s\n    </div>' % (klass, marque, "\n\n".join(cards))
 
 
 def nav_links(entries, base, home, current=None, mobile=False):
@@ -428,7 +432,7 @@ class Builder:
     def page(self, path, *, content, title, description,
              og_title=None, og_type="website", og_image=None,
              current=None, depth=0, structured=None,
-             extra_css=(), extra_js=(), noindex=False):
+             extra_css=(), extra_js=(), noindex=False, body_class=""):
         base = "../" * depth
         home = "%sindex.html" % base if path != "index.html" else ""
         header, footer = self.chrome(base, home, current)
@@ -459,6 +463,11 @@ class Builder:
                       % url_absolue("assets/img/%s.jpg" % og_image)
                       if (og_image and SITE_URL) else ""),
             structured_data=json_ld(structured) if structured else "",
+            # Les deux pages éditoriales (accueil, about us) ouvrent sur une
+            # image pleine derrière laquelle l'en-tête doit disparaître. Les
+            # autres gardent leur barre opaque : une barre transparente sur un
+            # fond clair rendrait la navigation illisible.
+            body_class=' class="%s"' % body_class if body_class else "",
             base=base,
             extra_css="\n".join(
                 '<link rel="stylesheet" href="%sassets/css/%s.css">' % (base, f)
@@ -516,16 +525,40 @@ class Builder:
             "apercu_total": price(total),
         }
 
+    # Nombre de vignettes de la vitrine d'accueil. Quatre, parce que c'est ce
+    # que la grille montre sur une rangée en grand écran et sur deux rangées
+    # pleines au téléphone : trois laisseraient un trou, cinq couperaient.
+    VITRINE = 4
+
+    def vitrine(self):
+        """
+        Les pièces mises en vitrine sur l'accueil.
+
+        Les pièces marquées « featured » passent devant, puis la vitrine se
+        complète dans l'ordre du catalogue. Sans ce complément, la grille
+        d'accueil tombait à deux vignettes : les quatre autres pièces mises en
+        avant dans data/products.json sont encore « à venir », donc invisibles
+        sur le site public. Une rangée à moitié vide fait une boutique vide.
+        """
+        choisies = [p for p in self.products if p.get("featured")]
+        for p in self.products:
+            if len(choisies) >= self.VITRINE:
+                break
+            if p not in choisies:
+                choisies.append(p)
+        return choisies[:self.VITRINE]
+
     def build_home(self):
         body = read(os.path.join(TPL, "pages", "index.html"))
-        featured = [p for p in self.products if p.get("featured")]
         body = fill(body, base="", whatsapp=self.site["whatsapp"],
-                    featured_grid=grid(featured, ""),
+                    featured_grid=grid(self.vitrine(), "",
+                                       klass="vitrine__grid", rare=False),
                     visuel_ia=mention_ia(),
                     **self.apercu_sur_mesure())
         self.page(
             "index.html",
             content=body,
+            body_class="page-edito",
             title="Yem's : souliers et maroquinerie cousus main | Différents par les détails",
             description=("Yem's : souliers, ceintures et portefeuilles cousus à la main à "
                          "Cotonou. Point sellier, cuir pleine fleur, semelle ressemelable. "
@@ -551,6 +584,45 @@ class Builder:
                     "telephone": "+" + self.site["whatsapp"],
                     "availableLanguage": "fr",
                 },
+            },
+        )
+
+    def build_about(self):
+        """
+        « About us » : la page qui porte tout ce que l'accueil racontait.
+
+        L'accueil ouvrait sur sept sections de récit avant la première
+        vignette produit. Le récit n'a pas disparu — il a changé d'adresse.
+        Ici vivent les deux lignes, les quatre preuves techniques, les trois
+        façons d'acheter, le sur-mesure étape par étape, les garanties et les
+        objections. L'accueil ouvre et mène aux produits ; cette page répond
+        à qui veut savoir avant d'acheter.
+
+        Les ancres (#manifeste, #lignes, #offres, #sur-mesure, #garantie,
+        #questions, #confiance) sont celles que le pied de page et les anciens
+        liens d'accueil employaient déjà : elles ont suivi le contenu.
+        """
+        body = read(os.path.join(TPL, "pages", "about-us.html"))
+        body = fill(body, base="", whatsapp=self.site["whatsapp"],
+                    visuel_ia=mention_ia())
+        self.page(
+            "about-us.html",
+            content=body,
+            body_class="page-edito",
+            current="about-us",
+            title="About us : la maison Yem's, Cotonou | Différents par les détails",
+            description=("Deux façons de travailler, une seule maison pour en répondre. "
+                         "L'atelier de Cotonou, la sélection contrôlée, les garanties "
+                         "ligne par ligne et le sur-mesure étape par étape."),
+            og_title="La maison Yem's : ce qu'on fabrique, ce qu'on choisit.",
+            og_image=None,
+            structured={
+                "@context": "https://schema.org",
+                "@type": "AboutPage",
+                "name": "About us — Yem's",
+                "description": ("La maison Yem's : un atelier à Cotonou, une sélection "
+                                "contrôlée, et l'origine écrite sur chaque pièce."),
+                **({"url": url_absolue("about-us.html")} if SITE_URL else {}),
             },
         )
 
@@ -1984,6 +2056,7 @@ class Builder:
             shutil.rmtree(OUT_PRODUCTS)
 
         self.build_home()
+        self.build_about()
         for cat in self.categories:
             # Générer une page catégorie vide reviendrait à créer une impasse :
             # le visiteur clique, ne trouve rien, et repart.

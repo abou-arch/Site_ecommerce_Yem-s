@@ -3,266 +3,336 @@
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
-   HERO
+   HERO ÉDITORIAL
+   --------------------------------------------------------------------------
+   Grande image pleine, navigation posée dedans, typographie ample derrière le
+   mannequin, bandeau de réassurance en pied. La composition vient de la
+   template de référence ; les proportions sont calées sur notre visuel, où le
+   sujet occupe le tiers droit et laisse les deux tiers gauches au texte.
+
+   Deux rangées de grille : le bloc de texte prend la hauteur disponible et se
+   centre dedans, le bandeau se pose en bas. Le tout en flux normal — le
+   bandeau n'est PAS en position absolue, sinon il chevauche le texte dès que
+   la fenêtre se raccourcit.
    -------------------------------------------------------------------------- */
-/* Hero plein écran : il installe immédiatement l'univers de la maison et
-   laisse la section suivante apparaître au scroll, plutôt que de compresser
-   l'ouverture dans une hauteur arbitraire. */
-.hero {
+.hero-edito {
   position: relative;
-  min-height: 100svh;
-  display: flex;
-  align-items: flex-end;
-  padding-top: calc(var(--header-h) + var(--sp-4));
-  padding-bottom: var(--sp-6);
-  overflow: hidden;
   isolation: isolate;
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  min-height: clamp(600px, 88svh, 880px);
+  padding-top: calc(var(--header-h) + var(--sp-6));
+  padding-bottom: var(--sp-6);
+  background-color: var(--espresso-900);
+  color: var(--sombre-text);
 }
 
-/* Image hero : le visuel reste en fond pour laisser le texte respirer.
-   WebP d'abord, JPEG pour les navigateurs qui ne le lisent pas ; une
-   déclinaison de 900 px pour les téléphones. Le PNG source (1,8 Mo) n'est
-   jamais servi — tools/images_ia.py en tire ces fichiers. */
-.hero__media {
+/* L'image : un <img> et non un fond CSS, pour que srcset choisisse la largeur
+   et que fetchpriority la fasse partir en premier. Elle est le Largest
+   Contentful Paint de la page. */
+.hero-edito__media {
   position: absolute;
   inset: 0;
   z-index: -2;
-  background: var(--espresso-900) center right / cover no-repeat;
-  background-image: url("../img/hero.jpg");
-  background-image: image-set(url("../img/hero.webp") type("image/webp"),
-                              url("../img/hero.jpg") type("image/jpeg"));
+  background-color: var(--espresso-900);
 }
 
-/* Sur téléphone, l'image de bureau est un paysage dont on ne voyait qu'une
-   tranche verticale : deux tiers de la composition tombaient hors cadre.
-   Une prise de vue 9:16 remplace le recadrage. */
-@media (max-width: 900px) {
-  .hero__media {
-    background-position: center;
-    background-image: url("../img/hero-portrait.jpg");
-    background-image: image-set(url("../img/hero-portrait.webp") type("image/webp"),
-                                url("../img/hero-portrait.jpg") type("image/jpeg"));
-  }
-}
-
-@media (max-width: 640px) {
-  .hero__media {
-    background-image: url("../img/hero-portrait-640.jpg");
-    background-image: image-set(url("../img/hero-portrait-640.webp") type("image/webp"),
-                                url("../img/hero-portrait-640.jpg") type("image/jpeg"));
-  }
-}
-
-.hero__media video,
-.hero__media img {
+.hero-edito__media picture,
+.hero-edito__media img {
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
+  /* le mannequin est dans le tiers droit : on garde ce bord quoi qu'il arrive */
+  object-position: 78% center;
 }
 
-/* Deux voiles superposés : l'un assombrit la gauche pour que le texte tienne,
-   l'autre le bas pour asseoir la section. La droite reste claire — c'est là que
-   se joue la composition de la vidéo.
-
-   Le palier à 0,80 court jusqu'à 52 %, soit la largeur maximale du bloc de
-   texte : en dessous, le texte secondaire passerait sous 4,5:1 sur les plans
-   les plus clairs de la vidéo. La chute commence là où le texte s'arrête. */
-.hero__media::after {
+/* Deux voiles superposés. Le premier assombrit la gauche, où le texte est
+   posé ; le second ancre le bas, sous le bandeau de réassurance. Le palier à
+   0,56 court jusqu'à 46 % de la largeur, soit un peu au-delà de la colonne de
+   texte : en dessous, la ligne secondaire passerait sous 4,5:1 sur les plans
+   clairs du mur. */
+.hero-edito__media::after {
   content: "";
   position: absolute;
   inset: 0;
   background:
     linear-gradient(
       to right,
-      rgba(20, 16, 13, 0.84) 0%,
-      rgba(20, 16, 13, 0.70) 30%,
-      rgba(20, 16, 13, 0.48) 52%,
-      rgba(20, 16, 13, 0.20) 76%,
-      rgba(20, 16, 13, 0.08) 100%
+      rgba(20, 16, 13, 0.92) 0%,
+      rgba(20, 16, 13, 0.82) 26%,
+      rgba(20, 16, 13, 0.56) 46%,
+      rgba(20, 16, 13, 0.18) 72%,
+      rgba(20, 16, 13, 0.02) 100%
     ),
     linear-gradient(
       to top,
       rgba(20, 16, 13, 0.80) 0%,
-      rgba(20, 16, 13, 0.22) 48%,
-      rgba(20, 16, 13, 0.38) 100%
+      rgba(20, 16, 13, 0.16) 34%,
+      rgba(20, 16, 13, 0.00) 60%,
+      rgba(20, 16, 13, 0.46) 100%
     );
 }
 
-/* PROPORTIONS DU TEXTE DU HERO
-   Le titre tient sur trois lignes courtes, comme sur la maquette : c'est le
-   max-width en « ch » qui décide des retours, pas un <br> posé à la main. */
-.hero h1 {
-  /* 17 caractères par ligne sur téléphone : la phrase tombe en quatre lignes
-     pleines. Plus étroit, elle descend en escalier ; plus large, elle touche
-     le bord de l'écran. La valeur de bureau est plus bas, dans son bloc. */
-  max-width: 17ch;
-  line-height: 1.06;
-  letter-spacing: -0.01em;
+/* La mention « Visuel IA » du hero se pose en haut à droite : en bas, elle
+   tomberait derrière le bandeau de réassurance. */
+.hero-edito__media > .pshot__note {
+  top: calc(var(--header-h) + var(--sp-3));
+  right: var(--sp-4);
+  bottom: auto;
 }
 
-.hero .lede {
-  max-width: 38ch;
+/* LA TYPOGRAPHIE AMPLE DERRIÈRE LE MANNEQUIN
+   Elle est décorative : le nom de la maison est déjà porté par le logo et par
+   le <title>. Opacité basse et pas d'ombre — c'est une texture, pas un titre
+   concurrent. */
+.hero-edito__display {
+  position: absolute;
+  z-index: -1;
+  top: 50%;
+  right: 2%;
+  transform: translateY(-50%);
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(9rem, 20vw, 20rem);
+  line-height: 0.76;
+  letter-spacing: -0.07em;
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+  color: rgba(244, 237, 226, 0.17);
+}
+
+.hero-edito__inner {
+  position: relative;
+  z-index: 1;
+  align-self: center;
+  width: 100%;
+}
+
+.hero-edito__copy { max-width: 36rem; }
+
+.hero-edito h1 {
+  margin-block: var(--sp-4) var(--sp-5);
+  max-width: 15ch;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+}
+
+.hero-edito .lede {
+  max-width: 40ch;
   font-size: var(--fs-md);
   line-height: 1.58;
   color: rgba(244, 237, 226, 0.88);
 }
 
-/* Le bouton d'ouverture quitte la pilule pleine pour le rectangle à contour
-   de la maquette : sur une photo, un aplat de laiton attire l'œil avant le
-   titre, alors que le contour se lit après lui. */
-.hero__actions .btn {
-  --btn-bg: transparent;
-  --btn-fg: var(--beige-100);
-  --btn-border: rgba(244, 237, 226, 0.55);
-  border-radius: 2px;
-  padding: 1.05rem 2rem;
-  letter-spacing: var(--tracking-wider);
-  font-weight: 400;
-}
-
-.hero__actions .btn:hover {
-  background: var(--beige-100);
-  border-color: var(--beige-100);
-  color: var(--espresso-900);
-}
-
-/* Fil de sellier en filigrane, façon couture d'empeigne */
-.hero__stitching {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  opacity: 0.5;
-}
-
-/* Le texte reste à gauche pour laisser la scène produit respirer à droite.
-   Le max-width empêche les lignes de courir sur toute la largeur en grand écran. */
-.hero__inner {
-  position: relative;
+.hero-edito__actions {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-end;
-  text-align: left;
-  width: 100%;
-}
-
-.hero__inner > div {
-  max-width: 46ch;
-  margin-inline: 0;
-}
-
-/* Le titre forme un bloc compact à gauche et laisse l'image dominer la scène. */
-.hero h1 {
-  margin-block: var(--sp-4) var(--sp-4);
-  max-width: 18ch;
-  margin-inline: 0;
-}
-
-.hero .lede,
-.hero__pay { margin-inline: 0; }
-.hero__actions { justify-content: flex-start; }
-.hero__stats { justify-content: flex-start; }
-
-.hero__pay {
-  margin-top: var(--sp-5);
-  max-width: 46ch;
-  font-size: var(--fs-sm);
-  color: var(--text-muted);
-}
-
-.hero__actions {
-  display: flex;
-  gap: var(--sp-3);
+  align-items: center;
+  gap: var(--sp-5);
   flex-wrap: wrap;
   margin-top: var(--sp-6);
 }
 
-.hero__stats {
-  display: flex;
-  gap: var(--sp-6);
-  flex-wrap: wrap;
-  padding-top: var(--sp-5);
-  border-top: 1px solid var(--border);
-}
-
-.stat__value {
-  font-family: var(--font-display);
-  font-size: var(--fs-xl);
-  color: var(--accent);
-  line-height: 1.1;
-}
-
-.stat__label {
-  font-size: var(--fs-xs);
-  letter-spacing: var(--tracking-wide);
-  text-transform: uppercase;
-  color: var(--text-subtle);
-  margin-top: var(--sp-1);
-}
-
-/* Dans le hero, le fond n'est plus l'espresso plein mais la vidéo voilée, plus
-   claire. Ce petit texte a donc besoin d'un peu plus d'opacité pour tenir AA
-   jusqu'au bord droit du bloc — 0,52 y tomberait à 3,7:1. */
-.hero .stat__label,
-.hero .scroll-hint { color: rgba(244, 237, 226, 0.72); }
-
-/* Repère de défilement centré en pied de hero, comme sur la maquette. Il
-   était calé à droite, où il entrait en concurrence avec la pièce. */
-.scroll-hint {
-  position: absolute;
-  bottom: var(--sp-5);
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--sp-2);
+.hero-edito__note {
+  margin-top: var(--sp-6);
   font-size: var(--fs-xs);
   letter-spacing: var(--tracking-wider);
   text-transform: uppercase;
-  color: var(--text-subtle);
+  color: rgba(244, 237, 226, 0.74);
 }
 
-.scroll-hint__chevron {
-  width: 22px;
-  height: 22px;
+.hero-edito__note strong { color: var(--brass-300); font-weight: 500; }
+
+/* Mention verticale dans la marge droite, comme sur la template. Elle
+   disparaît dès qu'il n'y a plus de marge pour l'accueillir. */
+.hero-edito__side {
+  position: absolute;
+  z-index: 1;
+  right: var(--sp-5);
+  bottom: 22%;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(244, 237, 226, 0.62);
+  pointer-events: none;
+}
+
+/* --------------------------------------------------------------------------
+   BANDEAU DE RÉASSURANCE
+   Il remplace à la fois le bandeau défilant et les trois chiffres de l'ancien
+   hero : même information, une seule fois, et les compteurs (geste n° 4) y
+   gardent leur emploi.
+   -------------------------------------------------------------------------- */
+.hero-edito__trustwrap {
+  position: relative;
+  z-index: 1;
+  align-self: end;
+  margin-top: var(--sp-7);
+}
+
+.trust {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--sp-2);
+  padding: var(--sp-4) var(--sp-5);
+  list-style: none;
+  border: 1px solid rgba(244, 237, 226, 0.28);
+  border-radius: var(--radius-sm);
+  background: rgba(36, 28, 24, 0.66);
+  backdrop-filter: blur(14px) saturate(130%);
+  -webkit-backdrop-filter: blur(14px) saturate(130%);
+}
+
+@supports not (backdrop-filter: blur(1px)) {
+  .trust { background: rgba(28, 22, 19, 0.92); }
+}
+
+@media (min-width: 900px) {
+  .trust { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--sp-4); }
+}
+
+.trust__item {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  min-width: 0;
+  padding: var(--sp-2) var(--sp-1);
+}
+
+.trust__idx {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 30px;
+  height: 30px;
+  border: 1px solid rgba(217, 184, 122, 0.52);
+  border-radius: 50%;
+  font-family: var(--font-display);
+  font-size: var(--fs-xs);
   color: var(--brass-300);
-  animation: hint 2.4s var(--ease) infinite;
 }
 
-@keyframes hint {
-  0%, 100% { transform: translateY(-3px); opacity: 0.45; }
-  50%      { transform: translateY(3px);  opacity: 1; }
+.trust__texte { min-width: 0; }
+
+.trust__texte b {
+  display: block;
+  font-family: var(--font-display);
+  font-size: var(--fs-lg);
+  font-weight: 400;
+  line-height: 1.15;
+  color: var(--beige-100);
 }
 
+.trust__texte small {
+  display: block;
+  margin-top: 2px;
+  font-size: var(--fs-xs);
+  line-height: 1.35;
+  color: rgba(244, 237, 226, 0.74);
+}
+
+/* --------------------------------------------------------------------------
+   HERO ÉDITORIAL — TABLETTE ET TÉLÉPHONE
+   --------------------------------------------------------------------------
+   Sous 900 px, l'image cesse d'être un fond et redevient une bande en haut de
+   page : le texte se pose EN DESSOUS, sur l'espresso plein. On gagne deux
+   choses — le contraste du texte ne dépend plus de ce qui se trouve derrière
+   lui, et le mannequin n'est plus rogné par la colonne de texte.
+
+   Le palier est à 900 px et non à 760 : sur une tablette en portrait, le
+   cadre du hero devient presque carré, le recadrage « cover » d'un visuel en
+   3/2 ramène le mannequin au centre, et le titre se posait en plein dessus.
+   -------------------------------------------------------------------------- */
 @media (max-width: 900px) {
-  .hero { min-height: 100svh; }
-  /* le texte du hero téléphone descend jusqu'en bas : le repère le chevauchait */
-  .scroll-hint { display: none; }
-  .hero__inner > div { max-width: min(100%, 34rem); }
-
-  /* Le voile de bureau assombrit la gauche, parce que le texte y est posé en
-     colonne. Sur téléphone le texte occupe toute la largeur, en haut : le
-     dégradé doit donc descendre du haut, sinon le titre se pose sur la partie
-     claire de la photo. */
-  .hero__media::after {
-    background:
-      linear-gradient(
-        to bottom,
-        rgba(20, 16, 13, 0.86) 0%,
-        rgba(20, 16, 13, 0.72) 34%,
-        rgba(20, 16, 13, 0.34) 58%,
-        rgba(20, 16, 13, 0.30) 78%,
-        rgba(20, 16, 13, 0.62) 100%
-      );
+  .hero-edito {
+    display: block;
+    min-height: 0;
+    padding-top: 0;
+    padding-bottom: var(--sp-6);
   }
 
-  /* Le hero téléphone se lit du haut vers le bas : le texte en tête, la pièce
-     en dessous. C'est la composition de la maquette. */
-  .hero { align-items: flex-start; }
-  .hero__inner { justify-content: flex-start; }
-  .hero__stats { gap: var(--sp-5); }
+  /* La bande d'image est pilotée par une variable : la typographie ample se
+     cale dessus, et les deux ne peuvent plus se désaccorder. */
+  .hero-edito { --bande: min(46svh, 360px); }
+
+  .hero-edito__media {
+    position: relative;
+    inset: auto;
+    z-index: 0;
+    height: var(--bande);
+  }
+
+  /* 20 % en vertical : sur une bande large, le recadrage mord en haut, et
+     c'est la tête du mannequin qui part la première. */
+  .hero-edito__media img { object-position: 66% 20%; }
+
+  /* Voile du haut : l'en-tête transparent se pose sur l'image, il lui faut un
+     fond. Voile du bas : la transition vers l'espresso de la colonne de texte
+     doit être invisible. */
+  .hero-edito__media::after {
+    background: linear-gradient(
+      to bottom,
+      rgba(20, 16, 13, 0.76) 0%,
+      rgba(20, 16, 13, 0.16) 22%,
+      rgba(20, 16, 13, 0.10) 52%,
+      rgba(20, 16, 13, 0.86) 88%,
+      var(--espresso-900) 100%
+    );
+  }
+
+  /* À gauche : à droite, la mention se posait exactement sur la typographie
+     ample, et les deux devenaient illisibles. */
+  .hero-edito__media > .pshot__note {
+    top: auto;
+    bottom: var(--sp-4);
+    right: auto;
+    left: var(--sp-3);
+  }
+
+  /* Mesurée depuis le HAUT, pas depuis le bas : sur téléphone, le hero
+     contient aussi tout le texte et le bandeau, donc son bas est à plus de
+     1 100 px de l'image. Ancrée en bas, la typographie ample tombait au
+     milieu du bloc de texte. */
+  .hero-edito__display {
+    z-index: 1;
+    top: calc(var(--bande) - 3.4rem);
+    right: -2%;
+    bottom: auto;
+    transform: none;
+    font-size: clamp(4.5rem, 22vw, 9rem);
+    color: rgba(244, 237, 226, 0.22);
+  }
+
+  .hero-edito__inner {
+    position: relative;
+    z-index: 2;
+    padding-top: var(--sp-5);
+  }
+
+  .hero-edito__copy { max-width: none; }
+  .hero-edito h1 { max-width: 16ch; }
+  .hero-edito .lede { max-width: 42ch; font-size: var(--fs-base); }
+  .hero-edito__actions { gap: var(--sp-4); margin-top: var(--sp-5); }
+  .hero-edito__note { margin-top: var(--sp-5); }
+  .hero-edito__side { display: none; }
+  .hero-edito__trustwrap { margin-top: var(--sp-6); }
+  .trust { padding: var(--sp-3); }
+  .trust__item { padding: var(--sp-2) 0; gap: var(--sp-2); }
+  .trust__idx { width: 26px; height: 26px; }
+  .trust__texte b { font-size: var(--fs-base); }
+}
+
+/* Tablette : la bande d'image a de la place, on la laisse respirer, et le
+   bandeau de réassurance retrouve ses quatre colonnes dès 640 px de large. */
+@media (min-width: 620px) and (max-width: 900px) {
+  .hero-edito { --bande: min(54svh, 480px); }
+  .hero-edito__display { font-size: clamp(6rem, 16vw, 11rem); }
+  .hero-edito h1 { max-width: 18ch; }
+  .hero-edito__copy { max-width: 42rem; }
 }
 
 /* --------------------------------------------------------------------------
@@ -773,25 +843,279 @@
      du fond, au-dessus et au-dessous de la pièce. */
   .shop-grid.grid--rare > .pcard:first-child .pshot { --shot-ratio: 3 / 2; }
 }
+/* --------------------------------------------------------------------------
+   LA VITRINE — les produits, juste sous le hero
+   --------------------------------------------------------------------------
+   Quatre pièces, toujours : deux colonnes dès le téléphone (une seule
+   colonne faisait descendre le quatrième modèle à deux écrans du hero),
+   quatre sur grand écran. C'est la grille de la template de référence.
+   -------------------------------------------------------------------------- */
+.vitrine {
+  background: linear-gradient(180deg,
+    var(--beige-200) 0%,
+    var(--beige-50) 160px,
+    var(--nuage) 420px);
+}
+
+.vitrine__aside {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--sp-4);
+}
+
+.vitrine__grid {
+  --shot-ratio: 1 / 1;
+  display: grid;
+  gap: var(--sp-6) var(--sp-4);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@media (min-width: 1060px) {
+  .vitrine__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+/* Accès rapide au catalogue : des onglets, pas des filtres JavaScript. Chaque
+   entrée est un vrai lien vers une vraie page, donc partageable et indexable. */
+.filtres {
+  display: flex;
+  gap: var(--sp-2);
+  flex-wrap: wrap;
+  margin-bottom: var(--sp-6);
+}
+
+.filtres a {
+  /* 44 px de haut : c'est la cible tactile minimale. Le remplissage seul
+     donnait 36 px, confortable à la souris, raté un doigt sur deux. */
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0.4rem 0.95rem;
+  border: 1px solid rgba(122, 94, 51, 0.28);
+  border-radius: var(--radius-pill);
+  font-size: var(--fs-xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--text-muted);
+  transition: background-color var(--dur) var(--ease),
+              color var(--dur) var(--ease),
+              border-color var(--dur) var(--ease);
+}
+
+.filtres a:hover,
+.filtres a:focus-visible {
+  background: var(--espresso-900);
+  border-color: var(--espresso-900);
+  color: var(--beige-100);
+}
+
+/* Sur téléphone, les onglets défilent plutôt que de s'empiler sur trois
+   rangées. La bande de défilement reste tactile et accessible au clavier. */
+@media (max-width: 560px) {
+  .filtres {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: var(--sp-2);
+    scrollbar-width: none;
+  }
+  .filtres::-webkit-scrollbar { display: none; }
+  .filtres a { white-space: nowrap; }
+}
+
+/* Liste à puces discrète, employée par le bloc sur-mesure de l'accueil. */
+.points {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  max-width: 52ch;
+}
+
+.points li {
+  position: relative;
+  padding-left: var(--sp-5);
+  font-size: var(--fs-base);
+  color: var(--text-muted);
+}
+
+.points li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.72em;
+  width: 12px;
+  height: 1px;
+  background: var(--brass-500);
+}
+
+.bespoke__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-5);
+  flex-wrap: wrap;
+}
 
 /* --------------------------------------------------------------------------
-   PROPORTIONS DU HERO SUR ORDINATEUR
-   En fin de feuille, et c'est volontaire : les règles de base du hero sont
-   écrites plus haut, une déclaration de même poids ne l'emporte que si elle
-   vient après.
-
-   La colonne du hero était mesurée en « ch ». Le « 0 » de Jost étant plus
-   étroit que celui d'Inter, elle a perdu une soixantaine de pixels au
-   changement de police et le titre tombait en six lignes. Elle est donc
-   mesurée en pixels, bornée haut et bas : quatre lignes sur un portable,
-   trois sur un grand écran — la silhouette de la maquette.
+   BLOC DE MARQUE — la porte vers « About us »
+   --------------------------------------------------------------------------
+   Un panneau espresso posé au milieu de la page claire : c'est le seul grand
+   aplat sombre du corps de page, et il sert de respiration entre la vitrine
+   et le pied de page.
    -------------------------------------------------------------------------- */
-@media (min-width: 900px) {
-  .hero__inner > div { max-width: clamp(620px, 58vw, 840px); }
-  .hero h1 { max-width: 100%; line-height: 1.02; }
-  .hero .lede { max-width: 42ch; }
+.marque { background: var(--nuage); }
 
-  /* Le repère de défilement est passé au centre : il faut lui réserver sa
-     bande, sinon il se pose sur la dernière ligne du bloc de texte. */
-  .hero { padding-bottom: calc(var(--sp-6) + 3.25rem); }
+.marque__inner {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+  align-items: center;
+  padding: clamp(1rem, 2.5vw, 1.75rem);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(118deg, var(--espresso-500), var(--espresso-900));
+  color: var(--sombre-text);
+}
+
+@media (min-width: 900px) {
+  .marque__inner { grid-template-columns: minmax(0, 1.04fr) minmax(0, 0.96fr); }
+}
+
+.marque__visuel {
+  --shot-ratio: 3 / 2;
+  border-radius: var(--radius);
+  background: var(--espresso-700);
+  margin: 0;
+}
+
+.marque__copy { max-width: 46ch; padding-block: var(--sp-4); }
+.marque__copy .eyebrow { color: var(--brass-300); }
+.marque__copy p { color: rgba(244, 237, 226, 0.82); }
+
+@media (min-width: 900px) {
+  .marque__copy { padding-inline: var(--sp-4) var(--sp-5); }
+}
+
+/* ==========================================================================
+   ABOUT US
+   ==========================================================================
+   Même grammaire que l'accueil — hero sombre, typographie ample, image à
+   droite — mais la page explique au lieu de vendre : pas de bandeau de
+   réassurance, et le visuel partage la place avec le texte au lieu de le
+   porter.
+   ========================================================================== */
+.about-hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding-top: calc(var(--header-h) + var(--sp-7));
+  padding-bottom: var(--sp-7);
+  background:
+    radial-gradient(90% 120% at 82% 18%, rgba(176, 141, 87, 0.16) 0%, transparent 62%),
+    var(--espresso-900);
+  color: var(--sombre-text);
+}
+
+.about-hero__display {
+  position: absolute;
+  z-index: 0;
+  left: -0.05em;
+  bottom: -0.22em;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(6rem, 15vw, 14rem);
+  line-height: 0.76;
+  letter-spacing: -0.07em;
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+  /* Plus pâle que sur l'accueil : ici elle passe derrière du texte courant,
+     pas derrière une photo. À 0,07 elle restait lisible sous les boutons. */
+  color: rgba(244, 237, 226, 0.055);
+}
+
+.about-hero__inner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(2rem, 5vw, 3.5rem);
+  align-items: center;
+}
+
+@media (min-width: 900px) {
+  .about-hero__inner { grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr); }
+}
+
+.about-hero__copy { max-width: 42rem; }
+
+.about-hero h1 {
+  margin-block: var(--sp-4) var(--sp-5);
+  max-width: 17ch;
+  line-height: 1.04;
+  letter-spacing: -0.015em;
+}
+
+.about-hero .lede {
+  max-width: 48ch;
+  color: rgba(244, 237, 226, 0.86);
+}
+
+.about-hero__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-5);
+  flex-wrap: wrap;
+  margin-top: var(--sp-6);
+}
+
+.about-hero__visuel {
+  --shot-ratio: 3 / 2;
+  margin: 0;
+  border-radius: var(--radius);
+  background: var(--espresso-700);
+}
+
+/* Les quatre étapes du sur-mesure vivent désormais sur une section claire
+   (about-us.html). La carte d'étape héritait d'un fond espresso prévu pour
+   l'ancien hero sombre : elle s'y serait affichée en noir sur blanc cassé. */
+.section--blanc .step,
+.section--light .step {
+  background: var(--blanc);
+  border-color: var(--border);
+  color: var(--text);
+}
+
+.section--blanc .step p,
+.section--light .step p { color: var(--text-muted); }
+
+@media (min-width: 760px) {
+  .steps { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-4); }
+}
+
+/* --------------------------------------------------------------------------
+   L'EN-TÊTE DANS L'IMAGE
+   --------------------------------------------------------------------------
+   Sur les deux pages éditoriales (accueil, about us), l'ouverture est une
+   image pleine : la barre de navigation doit y entrer, pas se poser dessus.
+   Elle redevient opaque dès que la page défile — sans quoi elle flotterait
+   au-dessus du contenu clair, illisible.
+
+   Les autres pages ne reçoivent pas cette règle : leur en-tête garde son
+   fond translucide, parce qu'elles ouvrent sur du blanc.
+   -------------------------------------------------------------------------- */
+.page-edito .header {
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border-bottom-color: transparent;
+}
+
+.page-edito .header.is-stuck {
+  background: rgba(20, 16, 13, 0.82);
+  backdrop-filter: blur(22px) saturate(140%);
+  -webkit-backdrop-filter: blur(22px) saturate(140%);
+  border-bottom-color: var(--sombre-border);
+}
+
+@supports not (backdrop-filter: blur(1px)) {
+  .page-edito .header.is-stuck { background: rgba(20, 16, 13, 0.96); }
 }

@@ -62,32 +62,53 @@ le pied de page suivent. Une catégorie sans produit affiche un état vide propr
 |---|---|
 | `data/products.json` | Le catalogue — la seule source de vérité |
 | `templates/` | Squelette de document, header, footer, contenu de la homepage |
-| `tools/build.py` | Générateur : 15 pages statiques |
-| `index.html` | Homepage complète (hero → footer) — **généré** |
+| `tools/build.py` | Générateur : 24 pages statiques |
+| `index.html` | Homepage : hero éditorial → produits → marque — **généré** |
+| `about-us.html` | La maison : récit, lignes, offres, garanties, FAQ — **généré** |
 | `<categorie>.html` | 4 pages catégorie — **générées** |
 | `produit/<slug>.html` | 8 fiches produit — **générées** |
 | `assets/css/shop.css` | Fiches produit, catégories, fil d'Ariane, notifications |
 | `assets/css/base.css` | Tokens (couleurs, typo, spacing), reset, motif saddle-stitch, animations |
 | `assets/css/components.css` | Boutons, logo, header, footer, badges, cartes produit |
-| `assets/css/home.css` | Sections de la homepage |
+| `assets/css/home.css` | Sections de la homepage ET d'About us (hero éditorial, vitrine, bloc de marque) |
 | `assets/css/motion.css` | Les 5 gestes d'animation |
 | `assets/js/main.js` | Header au scroll, menu mobile, révélations, carrousel, compteur panier |
 | `assets/js/motion.js` | Couture au scroll, titres ligne par ligne, volets, compteurs, boutons magnétiques |
-| `assets/img/` | 7 visuels produits normalisés (JPEG + WebP) |
-| `tools/process_images.py` | Script de normalisation des photos — relancer après chaque nouvel envoi |
+| `assets/img/` | Visuels produits et de campagne, normalisés (JPEG + WebP) |
+| `tools/process_images.py` | Normalisation des photos produit — relancer après chaque nouvel envoi |
+| `tools/images_ia.py` | Déclinaisons web des visuels générés (table `CAMPAGNE`) — **à relancer après tout nouveau PNG de campagne** |
 
 ### Sections de la homepage
 
-1. **Hero** — accroche + visuel produit + 3 chiffres clés
-2. **Bandeau défilant** — preuves de fabrication
-3. **Récit** — les trois couches de problème, puis les 4 preuves techniques
-4. **Collections** — 4 lignes photographiées, avec pastilles de disponibilité
-5. **Sur-mesure** — 4 étapes + aperçu du configurateur avec facture
-6. **Offres** — achat simple / pack / sur-mesure
-7. **Garantie** — carte d'authenticité numérotée + 4 engagements
-8. **Questions** — les 4 objections traitées en accordéon
-9. **Témoignages** — carrousel (contenu à remplacer)
-10. **CTA final** — configurateur + WhatsApp
+L'accueil **ouvre, puis mène aux produits**. Il tenait sept sections de récit
+avant la première vignette ; le récit n'a pas disparu, il a changé d'adresse
+(voir « About us » juste en dessous).
+
+1. **Hero éditorial** — image pleine, navigation dedans, typographie ample
+   derrière le mannequin, bandeau de réassurance en pied (4 chiffres)
+2. **La sélection** — accès rapide au catalogue + 4 vignettes produit
+3. **Sur-mesure** — version courte + aperçu du configurateur avec facture
+4. **Bloc de marque** — panneau espresso, visuel d'atelier, porte vers About us
+5. **CTA final** — configurateur + WhatsApp
+
+### Sections de « About us »
+
+`about-us.html` est généré par `build_about()` depuis
+`templates/pages/about-us.html`. C'est la page qui explique.
+
+1. **Hero** — « Deux façons de travailler, une seule maison pour en répondre »
+2. **Bandeau défilant** — preuves vraies des deux lignes
+3. **Récit** (`#manifeste`) — les trois couches de problème + 4 preuves techniques
+4. **Les deux lignes** (`#lignes`) — l'atelier / la sélection
+5. **Trois façons d'acheter** (`#offres`) — sélection / atelier / sur-mesure
+6. **Sur-mesure** (`#sur-mesure`) — les 4 étapes, en détail
+7. **Nos engagements** (`#garantie`) — carte d'authenticité + 4 garanties
+8. **Questions** (`#questions`) — les 6 objections en accordéon
+9. **Preuve** (`#confiance`) — trois moyens de vérifier par soi-même
+10. **CTA final** — produits + WhatsApp
+
+Les ancres sont celles que le pied de page employait du temps où ce contenu
+vivait sur l'accueil : elles ont suivi le contenu, les liens n'ont pas cassé.
 
 ---
 
@@ -96,7 +117,7 @@ le pied de page suivent. Une catégorie sans produit affiche un état vide propr
 **Palette** — espresso `#14100D` → `#4E3F38`, beige `#FBF7F1` → `#C4B195`, brass `#D9B87A` → `#7A5E33`.
 Accent cuir patiné `#8C5A3C`.
 
-**Typographie** — Fraunces (titres, axes `SOFT`/`WONK` exploités pour les italiques d'accent) + Inter (texte). Chargées via Google Fonts.
+**Typographie** — Playfair Display (titres, et son italique pour les accents) + Jost (texte et libellés en capitales espacées). Chargées via Google Fonts, sans bloquer le rendu (voir `templates/base.html`).
 
 **Fil de sellier** — le motif est décliné en 4 utilitaires réutilisables :
 
@@ -117,10 +138,10 @@ Cinq gestes, pas un de plus. Le principe : peu d'effets, mais des durées longue
 
 | Geste | Déclencheur | Où |
 |---|---|---|
-| **Le fil qui se coud** | position au scroll | 3 séparateurs `.seam` entre les sections |
+| **Le fil qui se coud** | position au scroll | 2 séparateurs `.seam` sur l'accueil, 2 sur About us |
 | **Titres ligne par ligne** | entrée dans l'écran | 7 titres marqués `data-lines` |
 | **Photos en volet** | entrée dans l'écran | 6 visuels marqués `data-shot` |
-| **Compteurs** | entrée dans l'écran | chiffres du hero, `data-count` |
+| **Compteurs** | entrée dans l'écran | chiffres du bandeau de réassurance, `data-count` |
 | **Boutons magnétiques** | curseur | tous les `.btn`, pointeur précis uniquement |
 
 Le geste signature est la couture : un tracé SVG révélé par un masque dont le
@@ -130,6 +151,21 @@ un bloc `.seam` et changer l'`id` du masque — il doit rester unique dans la pa
 Pour ajouter un titre animé, il suffit de mettre `data-lines` sur un élément qui
 contient des `<br>` : le JS découpe et enveloppe les lignes tout seul, le balisage
 interne (italiques, accents) est conservé.
+
+**Rien n'attend un observateur pour ce qui est déjà à l'écran.** `main.js` et
+`motion.js` révèlent immédiatement les éléments visibles au chargement et
+n'observent que le reste : un onglet ouvert en arrière-plan ne déclenche aucun
+rappel d'`IntersectionObserver`, et le haut de page y restait vide. Le hero va
+plus loin : ses `[data-reveal]` s'animent par CSS (`@keyframes hero-in`), donc
+même un `motion.js` qui ne se charge jamais laisse un hero complet.
+
+### ⚠ Le rideau d'ouverture a été retiré
+
+Il masquait la page 1 550 ms puis se levait en 700 ms : **plus de deux secondes
+d'écran noir** avant que le visiteur voie quoi que ce soit, sur une page dont
+l'image de hero arrive en moins de 400 ms. Il ne coûtait aucune requête, mais
+il retardait tout — y compris l'accès aux produits. Son balisage complet est
+dans l'historique git si la maison veut le revoir, raccourci cette fois.
 
 **Pastilles de disponibilité** (code couleur du brief) :
 
@@ -165,6 +201,30 @@ python3 tools/process_images.py
 ```
 
 Le paramètre `tol` règle la tolérance de détourage (30 = fond très propre, 72 = fond avec ombre marquée).
+
+### Visuels de campagne
+
+Les grandes images (hero d'accueil, bloc de marque, hero About us) sortent des
+outils de génération en PNG de 1,7 à 2,3 Mo. **Aucune n'est servie telle
+quelle.** `tools/images_ia.py` en tire des déclinaisons WebP + JPEG, en
+plusieurs largeurs, déclarées dans la table `CAMPAGNE` :
+
+| PNG source | Nom servi | Largeurs | Poids WebP |
+|---|---|---|---|
+| `hero-yems-avatar-v7.png` | `hero-accueil` | 1536 / 1200 / 800 | 47 / 33 / 19 Ko |
+| `atelier-yems-couture-v1.png` | `atelier-couture` | 1200 / 800 / 500 | 70 / 36 / 16 Ko |
+| `hero-yems-atelier-v1.png` | `atelier-etabli` | 1200 / 800 / 500 | 57 / 29 / 14 Ko |
+
+Le nom servi ne porte pas le numéro de version : une v8 remplacera la v7 dans
+`CAMPAGNE`, et ni le CSS ni les gabarits n'auront à bouger.
+
+```bash
+python3 tools/images_ia.py   # puis python3 tools/build.py
+```
+
+Le visuel du hero est le seul à porter `fetchpriority="high"` : c'est lui le
+Largest Contentful Paint de la page. Tout le reste est en `loading="lazy"`,
+avec `width`/`height` déclarés pour que le navigateur réserve la place.
 
 ### ⚠ Point à trancher avant mise en ligne
 

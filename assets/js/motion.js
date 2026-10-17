@@ -61,21 +61,37 @@
   const shots = $$('[data-shot]');
   const counters = $$('[data-count]');
 
+  const montrer = (el) => {
+    if (el.hasAttribute('data-lines')) el.classList.add('is-lines-in');
+    if (el.hasAttribute('data-shot')) el.classList.add('is-shown');
+    if (el.hasAttribute('data-count')) runCounter(el);
+  };
+
+  /* Ce qui est DÉJÀ à l'écran au chargement ne passe pas par l'observateur.
+     Deux raisons, et la première est une panne : un onglet ouvert en arrière-
+     plan (ou une page dont le rendu est suspendu) ne déclenche aucun rappel
+     d'IntersectionObserver. Le titre du hero, dont les lignes partent à
+     opacity 0, restait alors invisible jusqu'au premier rendu réel.
+     La seconde est de bon sens : une animation d'entrée n'a pas à attendre un
+     observateur pour ce que le visiteur a déjà sous les yeux. */
+  const aLEcran = (el) => {
+    const r = el.getBoundingClientRect();
+    return r.top < window.innerHeight && r.bottom > 0;
+  };
+
   if ('IntersectionObserver' in window) {
     const io = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
-        const el = entry.target;
-
-        if (el.hasAttribute('data-lines')) el.classList.add('is-lines-in');
-        if (el.hasAttribute('data-shot')) el.classList.add('is-shown');
-        if (el.hasAttribute('data-count')) runCounter(el);
-
-        io.unobserve(el);
+        montrer(entry.target);
+        io.unobserve(entry.target);
       });
     }, { threshold: 0.2, rootMargin: '0px 0px -6% 0px' });
 
-    [...headings, ...shots, ...counters].forEach((el) => io.observe(el));
+    [...headings, ...shots, ...counters].forEach((el) => {
+      if (aLEcran(el)) montrer(el);
+      else io.observe(el);
+    });
   } else {
     headings.forEach((el) => el.classList.add('is-lines-in'));
     shots.forEach((el) => el.classList.add('is-shown'));

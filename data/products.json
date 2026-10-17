@@ -122,7 +122,7 @@
         "body": "Cotonou et Abidjan sous 48 h, autres villes du Bénin et de Côte d'Ivoire sous 5 jours. Échange de pointure sous 7 jours, sans frais. Sur le sur-mesure : une retouche offerte après essayage, puis remboursement intégral si le chaussant ne convient toujours pas."
       }
     ],
-    "_nav": "Navigation principale. Trois entrées disent CE QU'ON PEUT ACHETER, la quatrième dit CE QUI SE PASSE SI ÇA TOURNE MAL. Pas d'entrée « Accueil » : le logo y mène déjà, c'est universel, et chaque entrée en plus affaiblit les autres.",
+    "_nav": "Navigation principale. Trois entrées disent CE QU'ON PEUT ACHETER, « About us » dit QUI VEND, la dernière dit CE QUI SE PASSE SI ÇA TOURNE MAL. Pas d'entrée « Accueil » : le logo y mène déjà, c'est universel, et chaque entrée en plus affaiblit les autres.",
     "nav": [
       {
         "label": "La sélection",
@@ -135,6 +135,10 @@
       {
         "label": "Le sur-mesure",
         "href": "configurateur.html"
+      },
+      {
+        "label": "About us",
+        "href": "about-us.html"
       },
       {
         "label": "Service client",

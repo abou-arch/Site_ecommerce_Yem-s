@@ -184,7 +184,15 @@
 
 /* La signature était masquée sous 720 px, quand le logo était calé à gauche
    à côté du monogramme. Elle revient dans l'en-tête téléphone centré, plus
-   bas dans ce fichier : c'est là qu'elle a de la place. */
+   bas dans ce fichier : c'est là qu'elle a de la place.
+
+   Entre 901 et 1 100 px, en revanche, elle est la pièce de trop : elle tient
+   150 px au moment précis où cinq entrées de navigation et le bouton du
+   configurateur se disputent la largeur. Elle disparaît de l'EN-TÊTE
+   seulement — le pied de page la garde, et le mot « YEM'S » reste. */
+@media (min-width: 901px) and (max-width: 1100px) {
+  .header .logo__tag { display: none; }
+}
 
 /* --------------------------------------------------------------------------
    HEADER
@@ -239,7 +247,11 @@
 .nav {
   display: flex;
   align-items: center;
-  gap: var(--sp-6);
+  /* L'écart se resserre avec la fenêtre. Avec cinq entrées (« About us » est
+     la cinquième), un écart fixe de 32 px faisait passer la barre sur deux
+     lignes entre 900 et 1 180 px : les libellés se coupaient en « Le sur- /
+     mesure », « Service / client ». */
+  gap: clamp(1.1rem, 2.4vw, 2rem);
 }
 
 .nav__link {
@@ -249,6 +261,10 @@
   color: var(--text-muted);
   transition: color 300ms var(--ease);
   padding-block: 4px;
+  /* Un libellé de navigation ne se coupe jamais en deux : il devient
+     illisible avant de devenir compact. S'il ne tient plus, c'est l'écart
+     ci-dessus qui doit céder, pas le mot. */
+  white-space: nowrap;
 }
 
 .nav__link::after {
@@ -785,7 +801,8 @@
    d'inverser un thème sans oublier la moitié des composants.
    ========================================================================== */
 .header,
-.hero,
+.hero-edito,
+.about-hero,
 .footer,
 .mobile-menu,
 .cta {
@@ -867,6 +884,7 @@
 .marquee,
 .bespoke,
 .bespoke__panel,
+.marque__inner,
 .auth-card,
 .offer--featured,
 .cfg-card,

@@ -1,0 +1,615 @@
+
+<!-- ═══════════════════════════════════════════════════════════════
+     ABOUT US — HERO
+     Tout ce que l'accueil racontait longuement (le récit, les deux
+     lignes, les quatre étapes du sur-mesure, les offres, la garantie,
+     les objections) vit ici. L'accueil ouvre et mène aux produits ;
+     cette page explique, pour qui veut savoir avant d'acheter.
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="about-hero" id="about">
+  <span class="about-hero__display" aria-hidden="true">MAISON</span>
+
+  <div class="container container--wide about-hero__inner">
+    <div class="about-hero__copy">
+      <span class="eyebrow" data-reveal>About us &middot; Cotonou, Bénin</span>
+      <h1 data-lines>
+        Deux façons de travailler.<br>
+        Une seule maison pour <span class="italic-accent">en répondre</span>.
+      </h1>
+      <p class="lede" data-reveal style="--reveal-delay:60ms">
+        Ce que Yem's sait faire, l'atelier le fabrique. Ce qu'il ne fabrique
+        pas, la maison va le choisir elle-même, l'ouvre et le contrôle.
+        L'origine est indiquée sur chaque pièce, au-dessus du prix.
+      </p>
+      <div class="about-hero__actions" data-reveal style="--reveal-delay:120ms">
+        <a class="btn" href="{{base}}boutique.html">
+          Découvrir les produits
+          <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
+        </a>
+        <a class="link-underline" href="{{base}}configurateur.html">
+          Composer ma paire
+          <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
+        </a>
+      </div>
+    </div>
+
+    <figure class="about-hero__visuel pshot" data-shot>
+      <picture>
+        <source type="image/webp"
+                sizes="(max-width: 900px) 92vw, 44vw"
+                srcset="{{base}}assets/img/atelier-etabli-500.webp 500w,
+                        {{base}}assets/img/atelier-etabli-800.webp 800w,
+                        {{base}}assets/img/atelier-etabli.webp 1200w">
+        <img src="{{base}}assets/img/atelier-etabli-800.jpg"
+             sizes="(max-width: 900px) 92vw, 44vw"
+             srcset="{{base}}assets/img/atelier-etabli-500.jpg 500w,
+                     {{base}}assets/img/atelier-etabli-800.jpg 800w,
+                     {{base}}assets/img/atelier-etabli.jpg 1200w"
+             width="1200" height="800" fetchpriority="high" decoding="async"
+             alt="Un soulier de cuir brun posé sur un établi d'atelier, entouré d'outils de sellier">
+      </picture>
+      {{visuel_ia}}
+    </figure>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BANDEAU DÉFILANT
+     Ces mentions défilent devant chaque visiteur : elles doivent être
+     vraies des DEUX lignes. « Point sellier deux aiguilles » ne l'est
+     que de l'atelier, et le lire au-dessus d'un mocassin choisi serait
+     un mensonge de plus.
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee__track">
+    <span class="marquee__item">Chaque pièce numérotée</span>
+    <span class="marquee__item">Contrôlée avant de partir</span>
+    <span class="marquee__item">Cotonou &amp; Abidjan en 48 h</span>
+    <span class="marquee__item">Fabriqué ou choisi, jamais caché</span>
+    <span class="marquee__item">Rien à payer d'avance</span>
+    <span class="marquee__item">On répond de tout ce qu'on vend</span>
+    <span class="marquee__item">Chaque pièce numérotée</span>
+    <span class="marquee__item">Contrôlée avant de partir</span>
+    <span class="marquee__item">Cotonou &amp; Abidjan en 48 h</span>
+    <span class="marquee__item">Fabriqué ou choisi, jamais caché</span>
+    <span class="marquee__item">Rien à payer d'avance</span>
+    <span class="marquee__item">On répond de tout ce qu'on vend</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     RÉCIT : problème externe → interne → philosophique → solution
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="section section--light" id="manifeste">
+  <div class="container story__grid story">
+    <div data-reveal>
+      <span class="eyebrow">Ce dont personne ne parle</span>
+      <h2 class="story__lead" data-lines style="margin-top:var(--sp-4)">
+        Une semelle ne lâche jamais<br>un mardi matin.
+      </h2>
+      <p>
+        Elle lâche le samedi. Entre la cérémonie et la salle, au moment précis où l'on vous
+        présente à quelqu'un. Le reste de la journée, vous marchez autrement. Le pas plus court,
+        le regard qui redescend vers vos pieds toutes les cinq minutes.
+      </p>
+      <p>
+        Et ce n'est pas la chaussure, le vrai problème. C'est d'avoir payé trois fois dans l'année
+        pour le même résultat. C'est de finir par se dire que le solide vient forcément d'ailleurs,
+        et qu'ici, on fait avec.
+      </p>
+
+      <div class="story__turn">
+        <p>
+          Nous avons un atelier à Cotonou. Il ne fait pas tout, et nous ne
+          prétendons pas le contraire : ce que nous ne fabriquons pas, nous
+          allons le choisir nous-mêmes.
+          <strong>Ce qui ne change jamais, c'est que nous répondons de la
+          pièce, quelle que soit la main qui l'a montée.</strong>
+        </p>
+      </div>
+
+      <a class="link-underline" href="#lignes" style="margin-top:var(--sp-6)">
+        Comment on distingue les deux
+        <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
+      </a>
+    </div>
+
+    <ul class="detail-list" data-reveal style="--reveal-delay:120ms">
+      <li class="detail-list__item">
+        <span class="detail-list__idx">01</span>
+        <div>
+          <h3>Le point sellier</h3>
+          <p>Deux aiguilles, un seul fil de lin, chaque point noué à part. Sur une couture machine, un point casse et toute la ligne se déroule. Ici, elle s'arrête au point d'à côté.</p>
+        </div>
+      </li>
+      <li class="detail-list__item">
+        <span class="detail-list__idx">02</span>
+        <div>
+          <h3>Le cuir</h3>
+          <p>Pleine fleur tannée végétal, 1,8 à 2 mm. Il marque, il fonce, il garde la trace de vos plis. Au bout d'une saison des pluies, il aura vieilli, pas craquelé.</p>
+        </div>
+      </li>
+      <li class="detail-list__item">
+        <span class="detail-list__idx">03</span>
+        <div>
+          <h3>Le montage</h3>
+          <p>Semelle cousue sur trépointe, jamais collée. Quand elle s'use, on la découd et on en remonte une neuve. La paire repart pour un tour.</p>
+        </div>
+      </li>
+      <li class="detail-list__item">
+        <span class="detail-list__idx">04</span>
+        <div>
+          <h3>Le numéro</h3>
+          <p>Chaque pièce a son numéro et sa carte. Revenez dans quatre ans : on retrouve votre pointure, votre cuir, et la forme sur laquelle elle a été montée.</p>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- Le fil se coud au fil du scroll -->
+<div class="seam" data-seam aria-hidden="true">
+  <svg viewBox="0 0 1440 160" preserveAspectRatio="none">
+    <defs>
+      <mask id="seam-a">
+        <path class="seam__reveal" pathLength="1" d="M0 118 C 280 118, 400 34, 720 34 S 1160 118, 1440 118"/>
+      </mask>
+    </defs>
+    <path class="seam__thread" mask="url(#seam-a)" d="M0 118 C 280 118, 400 34, 720 34 S 1160 118, 1440 118"/>
+  </svg>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     LES DEUX LIGNES
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="section section--blanc" id="lignes">
+  <div class="container">
+    <div class="section-head section-head--split" data-reveal>
+      <div>
+        <span class="eyebrow">Notre travail</span>
+        <h2 data-lines style="margin-top:var(--sp-4)">Ce qu'on fabrique.<br>Ce qu'on choisit.</h2>
+      </div>
+      <p class="lede" style="max-width:40ch">
+        Chaque pièce du site porte sa provenance. Pas en petits caractères :
+        au-dessus du prix.
+      </p>
+    </div>
+
+    <div class="grid grid--2">
+      <article class="card" data-reveal>
+        <span class="origine origine--atelier">Fabriqué à Cotonou</span>
+        <h3 style="margin-top:var(--sp-3)">L'atelier</h3>
+        <p>
+          Souliers, ceintures, portefeuilles. Cousus à la main, semelle montée
+          sur trépointe, donc remplaçable. Quand elle s'use, on la découd et on
+          en remonte une neuve : <strong>le ressemelage est à vie</strong>.
+        </p>
+        <p>
+          C'est plus long à faire et plus cher à acheter. C'est aussi la seule
+          chose qu'on ne peut pas se procurer ailleurs.
+        </p>
+        <a class="link-underline" href="{{base}}a-venir.html" style="margin-top:var(--sp-4)">
+          Voir ce qui se prépare
+          <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
+        </a>
+      </article>
+
+      <article class="card" data-reveal style="--reveal-delay:90ms">
+        <span class="origine origine--selection">Choisi par l'atelier</span>
+        <h3 style="margin-top:var(--sp-3)">La sélection</h3>
+        <p>
+          Mocassins, sneakers, et bientôt montres et ceintures. Nous ne les
+          avons pas fabriqués. Nous les avons essayés, comparés, et retenus
+          parce qu'ils tiennent.
+        </p>
+        <p>
+          Chaque paire est ouverte et contrôlée à la réception.
+          <strong>Échange pendant un an</strong>, pour une pointure comme pour
+          un défaut. La semelle est collée : elle ne se ressemelle pas, et
+          c'est pour ça qu'elle coûte la moitié d'un soulier d'atelier.
+        </p>
+        <a class="link-underline" href="{{base}}selection.html" style="margin-top:var(--sp-4)">
+          Voir la sélection
+          <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
+        </a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     LES TROIS FAÇONS D'ACHETER
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="section section--light" id="offres">
+  <div class="container">
+    <div class="section-head section-head--center" data-reveal>
+      <span class="eyebrow eyebrow--center">Trois façons d'acheter</span>
+      <h2 data-lines>Trois portes.<br>Le même engagement.</h2>
+      <p class="lede text-center">
+        Les prix ne disent pas la qualité, ils disent le travail. Ce qui ne
+        change pas d'une porte à l'autre, c'est ce qu'on fait si ça ne va pas.
+      </p>
+    </div>
+
+    <div class="offers">
+      <!-- LA SÉLECTION — la seule ligne disponible aujourd'hui, donc mise en avant -->
+      <article class="offer offer--featured" data-reveal>
+        <span class="offer__flag">Disponible aujourd'hui</span>
+        <h3 class="offer__name">La sélection</h3>
+        <p class="text-muted" style="font-size:var(--fs-sm)">Choisie, contrôlée, chez vous cette semaine.</p>
+        <div class="offer__price">dès 45 000 F<small>en stock à Cotonou</small></div>
+        <ul class="offer__list">
+          <li><svg aria-hidden="true"><use href="#i-check"></use></svg>Expédiée sous 72 h, pointure standard</li>
+          <li><svg aria-hidden="true"><use href="#i-check"></use></svg>Ouverte et vérifiée avant de partir</li>
+          <li><svg aria-hidden="true"><use href="#i-check"></use></svg>Échange un an, pointure ou défaut</li>
+          <li><svg aria-hidden="true"><use href="#i-check"></use></svg>Semelle collée : elle ne se ressemelle pas</li>
+        </ul>
+        <a class="btn btn--full" href="{{base}}selection.html" style="margin-top:var(--sp-5)">Voir la sélection</a>
+      </article>
+
+      <!-- L'ATELIER — annoncé, pas encore montrable -->
+      <article class="offer" data-reveal style="--reveal-delay:90ms">
+        <h3 class="offer__name">L'atelier</h3>
+        <p class="text-muted" style="font-size:var(--fs-sm)">Cousu main à Cotonou, semelle remplaçable.</p>
+        <div class="offer__price">dès 88 000 F<small>photographié bientôt</small></div>
+        <ul class="offer__list">
+          <li><svg aria-hidden="true"><use href="#i-check"></use></svg>Point sellier, deux aiguilles, fil de lin</li>
+          <li><svg aria-hidden="true"><use href="#i-check"></use></svg>Semelle cousue sur trépointe, jamais collée</li>
+          <li><svg aria-hidden="true"><use href="#i-check"></use></svg>Ressemelage à vie</li>
+          <li><svg aria-hidden="true"><use href="#i-check"></use></svg>Une retouche offerte après essayage</li>
+        </ul>
+        <a class="btn btn--ghost btn--full" href="{{base}}a-venir.html" style="margin-top:var(--sp-5)">Voir ce qui se prépare</a>
+      </article>
+
+      <!-- LE SUR-MESURE -->
+      <article class="offer" data-reveal style="--reveal-delay:180ms">
+        <h3 class="offer__name">Le sur-mesure</h3>
+        <p class="text-muted" style="font-size:var(--fs-sm)">Vos mesures, votre cuir, votre fil, vos initiales.</p>
+        <div class="offer__price">dès 158 000 F<small>15 jours d'atelier</small></div>
+        <ul class="offer__list">
+          <li><svg aria-hidden="true"><use href="#i-check"></use></svg>Six mesures à prendre chez vous, guidées au téléphone</li>
+          <li><svg aria-hidden="true"><use href="#i-check"></use></svg>Cuir, semelle, fil et pointure au choix</li>
+          <li><svg aria-hidden="true"><use href="#i-check"></use></svg>Initiales marquées à chaud sur la doublure</li>
+          <li><svg aria-hidden="true"><use href="#i-check"></use></svg>Une retouche offerte, puis remboursement intégral</li>
+        </ul>
+        <a class="btn btn--ghost btn--full" href="{{base}}configurateur.html" style="margin-top:var(--sp-5)">Composer ma paire</a>
+      </article>
+    </div>
+
+    <p class="text-muted text-center" style="margin-top:var(--sp-6);font-size:var(--fs-sm);max-width:56ch;margin-inline:auto">
+      <span class="todo-note">Capacité à confirmer</span><br>
+      L'atelier lance un nombre limité de paires sur-mesure par mois. Au-delà, la commande
+      bascule sur le lancement suivant.
+    </p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     LE SUR-MESURE, ÉTAPE PAR ÉTAPE
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="section section--blanc" id="sur-mesure">
+  <div class="container">
+    <div class="section-head section-head--split" data-reveal>
+      <div>
+        <span class="eyebrow">Le sur-mesure</span>
+        <h2 data-lines style="margin-top:var(--sp-4)">Quatre étapes,<br>et rien d'engagé avant la dernière.</h2>
+      </div>
+      <p class="lede" style="max-width:40ch">
+        Un 43 ne veut pas dire grand-chose quand on a le pied large ou le coup
+        de pied fort. Le sur-mesure est la réponse normale à un pied qui
+        n'entre dans aucune grille.
+      </p>
+    </div>
+
+    <div class="steps" data-reveal style="--reveal-delay:90ms">
+      <div class="step">
+        <span class="step__num">1</span>
+        <div>
+          <h3>Vous composez en deux minutes</h3>
+          <p>Modèle, cuir, semelle, pointure, initiales. Tout se choisit à l'écran, dans l'ordre que vous voulez. La couleur du fil se choisit avec l'atelier, au moment de confirmer.</p>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step__num">2</span>
+        <div>
+          <h3>Le prix s'affiche pendant que vous choisissez</h3>
+          <p>Poste par poste, en direct. Pas de devis à attendre, pas de « on vous rappelle ».</p>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step__num">3</span>
+        <div>
+          <h3>L'atelier reçoit votre message</h3>
+          <p>Votre configuration part sur WhatsApp. On vous confirme si c'est faisable, et pour quelle date, dans la journée.</p>
+        </div>
+      </div>
+      <div class="step">
+        <span class="step__num">4</span>
+        <div>
+          <h3>Vous payez quand ça vous arrange</h3>
+          <p>À la commande, ou à la livraison une fois la paire dans vos mains. C'est vous qui décidez, pas nous.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center" style="margin-top:var(--sp-7)">
+      <a class="btn" href="{{base}}configurateur.html">
+        Ouvrir le configurateur
+        <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Le fil se coud au fil du scroll -->
+<div class="seam" data-seam aria-hidden="true">
+  <svg viewBox="0 0 1440 160" preserveAspectRatio="none">
+    <defs>
+      <mask id="seam-b">
+        <path class="seam__reveal" pathLength="1" d="M0 40 C 300 40, 380 126, 720 126 S 1140 40, 1440 40"/>
+      </mask>
+    </defs>
+    <path class="seam__thread" mask="url(#seam-b)" d="M0 40 C 300 40, 380 126, 720 126 S 1140 40, 1440 40"/>
+  </svg>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     NOS ENGAGEMENTS + CARTE D'AUTHENTICITÉ
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="section section--sombre" id="garantie">
+  <div class="container assurance__grid">
+    <div class="auth-card grain" data-reveal aria-label="Exemple de carte d'authenticité">
+      <div class="auth-card__top">
+        <svg class="logo__mark" style="color:var(--brass-300)" aria-hidden="true"><use href="#i-logo"></use></svg>
+        <span class="auth-card__label">Carte d'authenticité</span>
+      </div>
+      <div>
+        <span class="auth-card__label">Pièce numéro</span>
+        <div class="auth-card__serial">N° 0142 / 250</div>
+      </div>
+      <div class="auth-card__foot">
+        <span>Derby Cotonou, cognac<br>Atelier Yem's · Cotonou</span>
+        <span style="text-align:right">Façonné le<br>12.03.2026</span>
+      </div>
+    </div>
+
+    <div data-reveal style="--reveal-delay:120ms">
+      <span class="eyebrow">Nos engagements</span>
+      <h2 data-lines style="margin-top:var(--sp-4)">Ce qu'on fait<br>quand ça ne va pas</h2>
+      <p class="lede" style="margin-top:var(--sp-4)">
+        Une garantie ne vaut que si elle est écrite avant l'achat, et qu'elle
+        dit précisément jusqu'où elle va. Les nôtres ne sont pas les mêmes sur
+        les deux lignes, et il vaut mieux le savoir maintenant.
+      </p>
+
+      <!-- La garantie est séparée par ligne, et c'est délibéré.
+           Promettre un remboursement intégral sur une pièce achetée à un
+           fournisseur qui ne la reprendra pas, c'est engager l'atelier sur
+           une perte sèche à chaque retour. Un an d'échange est tenable ;
+           un remboursement sans condition ne l'est pas. -->
+      <ul class="guarantee-list">
+        <li>
+          <svg aria-hidden="true"><use href="#i-needle"></use></svg>
+          <div>
+            <strong>Sur l'atelier : le ressemelage à vie</strong>
+            <p>La semelle est cousue, pas collée. Quand elle s'use, on la découd et on en remonte une neuve. Vous ne payez que la semelle.</p>
+          </div>
+        </li>
+        <li>
+          <svg aria-hidden="true"><use href="#i-shield"></use></svg>
+          <div>
+            <strong>Sur l'atelier : une retouche, puis remboursement</strong>
+            <p>Une pièce faite à vos mesures doit vous aller. On reprend le montage une fois. Si ça ne suffit toujours pas, vous récupérez la totalité de votre argent.</p>
+          </div>
+        </li>
+        <li>
+          <svg aria-hidden="true"><use href="#i-truck"></use></svg>
+          <div>
+            <strong>Sur la sélection : un an d'échange</strong>
+            <p>Mauvaise pointure, défaut, couture qui lâche : on échange pendant douze mois. Nous ne l'avons pas fabriquée, mais c'est nous qui l'avons choisie, donc c'est nous qui répondons.</p>
+          </div>
+        </li>
+        <li>
+          <svg aria-hidden="true"><use href="#i-card"></use></svg>
+          <div>
+            <strong>Sur tout : le numéro</strong>
+            <p>Chaque pièce a son numéro et sa carte. C'est ce papier qui nous permet de retrouver ce que vous avez acheté, même dans trois ans, même si vous avez perdu le reçu.</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     OBJECTIONS
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="section section--blanc" id="questions">
+  <div class="container">
+    <div class="section-head section-head--center" data-reveal>
+      <span class="eyebrow eyebrow--center">Ce qu'on nous demande avant de commander</span>
+      <h2>Les six vraies questions</h2>
+    </div>
+
+    <div class="faq" data-reveal style="--reveal-delay:100ms">
+      <details>
+        <summary>Pourquoi vendez-vous des choses que vous n'avez pas fabriquées&nbsp;?</summary>
+        <div class="faq__body">
+          <p>
+            Parce que l'atelier ne sait pas tout faire, et qu'on préfère le dire
+            que le cacher. Nous ne fabriquons pas de sneakers. Nous n'avons
+            jamais monté une montre.
+          </p>
+          <p>
+            Alors nous allons les chercher, nous les essayons, nous en écartons
+            beaucoup, et nous gardons celles qui tiennent. <strong>Ce qui vient
+            de l'atelier est marqué « fabriqué à Cotonou », le reste est marqué
+            « choisi par l'atelier ».</strong> C'est écrit au-dessus du prix,
+            pas en bas de page.
+          </p>
+        </div>
+      </details>
+
+      <details>
+        <summary>45 000 F pour une paire que vous avez seulement choisie&nbsp;?</summary>
+        <div class="faq__body">
+          <p>
+            C'est le prix d'un daim correct avec une doublure en cuir, dans une
+            boutique qui l'ouvre avant de vous l'envoyer et qui l'échange
+            pendant un an. Vous trouverez moins cher au marché. Vous n'y
+            trouverez ni l'un ni l'autre.
+          </p>
+          <p>
+            Et le jour où elle vous lâche, vous savez à qui parler : nous
+            l'avons choisie, donc nous en répondons.
+          </p>
+        </div>
+      </details>
+
+      <details>
+        <summary>88 000 F pour des chaussures, c'est cher.</summary>
+        <div class="faq__body">
+          <p>Comparé à une paire à 45 000 F, oui. Comparé à cinq ans, non.</p>
+          <p>
+            Une paire à 45 000 F remplacée chaque année, c'est <strong>225 000 F
+            sur cinq ans</strong>, et quatre fois le désagrément de repartir en
+            chercher une. Une paire d'atelier ressemelée deux fois, c'est
+            <strong>environ 165 000 F sur la même période</strong>, et vous avez
+            porté la bonne pendant cinq ans.
+          </p>
+          <p>La question n'est pas le prix de la paire. C'est le prix de l'année.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Quinze jours pour du sur-mesure, c'est long.</summary>
+        <div class="faq__body">
+          <p>
+            C'est le temps qu'il faut au cuir pour prendre la forme du montage.
+            On peut aller plus vite : ça ne se voit pas à la livraison, ça se
+            voit au bout de six mois, quand la tige se déforme.
+          </p>
+          <p>
+            Si vous avez une date (un mariage, une cérémonie), dites-la dès la
+            configuration. L'atelier vous confirme si c'est tenable
+            <strong>avant</strong> que vous payiez quoi que ce soit.
+          </p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Et si, à la livraison, ça ne me va pas&nbsp;?</summary>
+        <div class="faq__body">
+          <p>
+            <strong>Sur la sélection</strong>, on échange pendant un an :
+            pointure, défaut, couture qui lâche. Vous nous écrivez, on récupère
+            la paire, vous en recevez une autre.
+          </p>
+          <p>
+            <strong>Sur le sur-mesure</strong>, une retouche d'abord : on reprend
+            le montage sur vos remarques. Si ça ne suffit toujours pas,
+            remboursement intégral. Une pièce faite à vos mesures ne vaut rien
+            si vous ne pouvez pas dire non à l'arrivée.
+          </p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Je dois payer avant d'avoir vu la paire&nbsp;?</summary>
+        <div class="faq__body">
+          <p>
+            Non, et le site ne vous le demandera même pas. Vous passez commande,
+            le détail s'affiche, l'atelier vous rappelle sur WhatsApp dans la
+            journée. Le règlement se convient à ce moment-là, de vive voix.
+          </p>
+          <p>
+            <strong>À la livraison</strong> pour une paire en stock : vous payez
+            quand elle est dans vos mains. <strong>Un acompte</strong> pour du
+            sur-mesure, parce que le cuir s'achète avant de commencer. Mobile
+            Money MTN ou Moov, Wave, ou en espèces à l'atelier.
+          </p>
+        </div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     PREUVE — un atelier qui ouvre n'a pas d'avis. Plutôt que d'en
+     inventer, on donne au visiteur de quoi vérifier lui-même.
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="section section--light" id="confiance">
+  <div class="container">
+    <div class="section-head section-head--center" data-reveal>
+      <span class="eyebrow eyebrow--center">Nous ouvrons</span>
+      <h2 data-lines>Personne ne nous a<br>encore recommandés.</h2>
+      <p class="lede text-center">
+        C'est le problème de tout atelier qui commence : on vous demande de faire
+        confiance à des photos. Nous préférons vous donner trois moyens de
+        vérifier par vous-même.
+      </p>
+    </div>
+
+    <div class="grid grid--3" style="margin-top:var(--sp-6)">
+      <article class="card" data-reveal>
+        <span class="card__num">01</span>
+        <h3>Venez à l'atelier</h3>
+        <p>
+          Cotonou. Prenez une paire en main, regardez la couture de près, tirez
+          dessus. Aucune photo ne remplace ça, et c'est la seule preuve qui
+          vaille vraiment.
+        </p>
+      </article>
+
+      <article class="card" data-reveal style="--reveal-delay:90ms">
+        <span class="card__num">02</span>
+        <h3>Ne payez rien d'avance</h3>
+        <p>
+          Vous commandez, l'atelier vous rappelle, et vous réglez quand la paire
+          est entre vos mains. Si nous ne tenons pas parole, ça ne vous aura
+          rien coûté.
+        </p>
+      </article>
+
+      <article class="card" data-reveal style="--reveal-delay:180ms">
+        <span class="card__num">03</span>
+        <h3>Changez d'avis</h3>
+        <p>
+          Une retouche offerte après essayage. Si elle ne suffit pas, vous
+          récupérez la totalité de votre argent. Pas 80 %, pas un avoir.
+        </p>
+      </article>
+    </div>
+
+    <p class="lede mx-auto text-center" style="margin-top:var(--sp-6)" data-reveal>
+      Les premiers avis viendront des premières paires. D'ici là, le risque est
+      de notre côté.
+    </p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     CTA FINAL
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="section cta grain" id="contact">
+  <div class="container">
+    <span class="eyebrow eyebrow--center" data-reveal>Parlons de votre paire</span>
+    <h2 data-lines style="margin-top:var(--sp-4)">
+      Une question de pointure,<br>de délai ou de <span class="italic-accent">modèle</span>&nbsp;?
+    </h2>
+    <p class="lede mx-auto text-center" style="margin-top:var(--sp-5)" data-reveal>
+      L'atelier répond directement, du lundi au samedi, de 8 h à 19 h. Rien
+      n'est engagé tant que vous n'avez pas confirmé.
+    </p>
+    <div class="cta__actions" data-reveal>
+      <a class="btn" href="{{base}}boutique.html">
+        Voir les produits
+        <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
+      </a>
+      <a class="btn btn--ghost" href="https://wa.me/{{whatsapp}}?text=Bonjour%2C%20j'ai%20une%20question%20sur%20la%20maison%20Yem's." target="_blank" rel="noopener">
+        <svg aria-hidden="true"><use href="#i-whatsapp"></use></svg>
+        Écrire sur WhatsApp
+      </a>
+    </div>
+  </div>
+</section>

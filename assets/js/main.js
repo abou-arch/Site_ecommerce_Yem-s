@@ -82,7 +82,14 @@
         });
       }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
 
-      revealables.forEach((el) => observer.observe(el));
+      // Ce qui est déjà à l'écran est révélé tout de suite, sans passer par
+      // l'observateur : un onglet ouvert en arrière-plan ne déclenche aucun
+      // rappel d'IntersectionObserver, et le haut de page y restait vide.
+      revealables.forEach((el) => {
+        const r = el.getBoundingClientRect();
+        if (r.top < window.innerHeight && r.bottom > 0) el.classList.add('is-visible');
+        else observer.observe(el);
+      });
     }
   }
 
@@ -295,15 +302,7 @@
 })();
 
 /* --------------------------------------------------------------------------
-   Rideau d'ouverture
-
-   Le rideau se lève tout seul au bout de 1550 ms, par animation CSS. Ce qui
-   suit ne fait que raccourcir l'attente à 1260 ms quand la page est prête plus
-   tôt — jamais moins, sinon le monogramme se ferait couper en plein tracé.
-   Si ce fichier ne se charge jamais, le rideau se lève quand même.
+   Le rideau d'ouverture a été retiré de templates/base.html : il masquait la
+   page pendant plus de deux secondes. Ce bloc, qui ne servait qu'à raccourcir
+   son attente, n'a plus d'objet.
    -------------------------------------------------------------------------- */
-(function () {
-  const lever = () => document.documentElement.classList.add('is-ready');
-  if (document.readyState === 'complete') lever();
-  else window.addEventListener('load', lever, { once: true });
-})();

@@ -50,11 +50,11 @@
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap">
 </noscript>
 
-<link rel="stylesheet" href="../assets/css/base.css?v=5c7a097b">
-<link rel="stylesheet" href="../assets/css/components.css?v=7b174764">
-<link rel="stylesheet" href="../assets/css/home.css?v=5b2d143e">
+<link rel="stylesheet" href="../assets/css/base.css?v=ada5651f">
+<link rel="stylesheet" href="../assets/css/components.css?v=3068acec">
+<link rel="stylesheet" href="../assets/css/home.css?v=3b2d56b3">
 <link rel="stylesheet" href="../assets/css/shop.css?v=e0870eff">
-<link rel="stylesheet" href="../assets/css/motion.css?v=7db8d4f4">
+<link rel="stylesheet" href="../assets/css/motion.css?v=47f11a8c">
 
 
 <!-- Favicone : exactement le monogramme du site, sans adaptation. Le nouveau
@@ -63,54 +63,21 @@
      sur l'onglet clair d'un navigateur. -->
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%2314100D'/%3E%3Cpath fill='%23D9B87A' d='M18 24h14.6L50 47.2 67.4 24H82L57 57.4V71L43 80V57.4z'/%3E%3C/svg%3E">
 
-<!-- Rideau d'ouverture. Trois règles ont guidé sa construction :
+<!-- Le rideau d'ouverture a été retiré.
 
-     1. Il ne peut pas rester bloqué. La disparition est une animation CSS
-        avec « forwards » : elle se produit même si le JavaScript ne se
-        charge jamais. Le script ne fait que l'accélérer.
-     2. Il n'ajoute aucune requête. Style et logique sont écrits ici, dans le
-        document, et pèsent moins d'un kilo-octet.
-     3. Il ne se montre qu'une fois. Sans ça, chaque clic dans le menu
-        rejouerait le rideau, ce qui est vite insupportable.
+     Il masquait la page pendant 1 550 ms, puis se levait en 700 ms : plus de
+     deux secondes d'écran noir avant que le visiteur voie quoi que ce soit,
+     sur une page dont l'image de hero arrive en moins de 400 ms. Le rideau
+     n'ajoutait aucune requête, mais il retardait TOUT — y compris l'accès aux
+     produits, qui est la raison d'être de cette page.
 
-     Il est enfin désactivé pour qui a demandé moins d'animations. -->
-<style>
-.curtain { position: fixed; inset: 0; z-index: 9999; display: grid; place-items: center;
-  background: #14100D; animation: curtain-lift 700ms cubic-bezier(.16,1,.3,1) 1550ms forwards; }
-.curtain svg { width: 84px; height: 84px; color: #D9B87A; }
-/* La lettre se révèle du haut vers le bas, et le biais du pied apparaît en
-   dernier : le détail arrive après la forme, comme il se doit. */
-.curtain path { clip-path: inset(0 0 100% 0);
-  animation: curtain-fill 1050ms cubic-bezier(.16,1,.3,1) forwards; }
-@keyframes curtain-fill { to { clip-path: inset(0 0 0 0) } }
-@keyframes curtain-lift { to { opacity: 0; visibility: hidden; pointer-events: none } }
-/* Page prête plus tôt : on raccourcit, mais jamais en dessous du temps qu'il
-   faut au monogramme pour finir de se coudre. Un rideau qui se lève sur un
-   dessin inachevé ressemble à un bug, pas à une intention. */
-.is-ready .curtain { animation-delay: 1260ms; animation-duration: 620ms; }
-.curtain-off .curtain, .no-js-never .curtain { display: none; }
-@media (prefers-reduced-motion: reduce) { .curtain { display: none } }
-</style>
-<script>
-(function () {
-  // Le rideau n'a de sens qu'à la toute première page ouverte. Ensuite, la
-  // navigation interne doit être immédiate.
-  try {
-    if (sessionStorage.getItem('yems.entered')) {
-      document.documentElement.className += ' curtain-off';
-    } else {
-      sessionStorage.setItem('yems.entered', '1');
-    }
-  } catch (e) { /* navigation privée : le rideau se montrera, sans conséquence */ }
-})();
-</script>
+     L'ouverture est désormais portée par le hero lui-même : l'image est
+     servie en priorité, et le titre monte ligne par ligne (motion.js). Le
+     balisage complet du rideau reste dans l'historique git si la maison
+     veut le revoir, raccourci cette fois. -->
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Product","name":"Richelieu Noir","description":"Un richelieu noir brogué, plus formel sans devenir austère.","category":"Sélection","offers":{"@type":"Offer","price":60000,"priceCurrency":"XOF","availability":"https://schema.org/PreOrder"}}</script>
 </head>
 <body>
-
-<div class="curtain" aria-hidden="true">
-  <svg viewBox="0 0 100 100"><path fill="currentColor" d="M18 24h14.6L50 47.2 67.4 24H82L57 57.4V71L43 80V57.4z"/></svg>
-</div>
 
 <a class="skip-link" href="#main">Aller au contenu</a>
 
@@ -190,6 +157,7 @@
       <a class="nav__link" href="../selection.html" aria-current="page">La sélection</a>
       <a class="nav__link" href="../a-venir.html">L'atelier</a>
       <a class="nav__link" href="../configurateur.html">Le sur-mesure</a>
+      <a class="nav__link" href="../about-us.html">About us</a>
       <a class="nav__link" href="../service-client.html">Service client</a>
     </nav>
 
@@ -210,6 +178,7 @@
   <a href="../selection.html" aria-current="page">La sélection</a>
   <a href="../a-venir.html">L'atelier</a>
   <a href="../configurateur.html">Le sur-mesure</a>
+  <a href="../about-us.html">About us</a>
   <a href="../service-client.html">Service client</a>
   <a class="btn" href="../configurateur.html" style="margin-top:auto">Configurer ma paire</a>
 </div>
@@ -449,12 +418,15 @@
 
       <div>
         <h2 class="footer__title">La maison</h2>
+        <!-- Ces cinq liens pointaient sur des ancres de l'accueil. Le récit,
+             les garanties, les offres et les objections vivent désormais sur
+             about-us.html : les ancres ont suivi le contenu, pas l'inverse. -->
         <ul class="footer__list">
-          <li><a href="../index.html#manifeste">Notre savoir-faire</a></li>
-          <li><a href="../index.html#garantie">Garantie satisfaction</a></li>
-          <li><a href="../index.html#garantie">Carte d'authenticité</a></li>
-          <li><a href="../index.html#offres">Nos offres</a></li>
-          <li><a href="../index.html#questions">Questions fréquentes</a></li>
+          <li><a href="../about-us.html">About us</a></li>
+          <li><a href="../about-us.html#manifeste">Notre savoir-faire</a></li>
+          <li><a href="../about-us.html#garantie">Garantie satisfaction</a></li>
+          <li><a href="../about-us.html#offres">Nos offres</a></li>
+          <li><a href="../about-us.html#questions">Questions fréquentes</a></li>
         </ul>
       </div>
 
@@ -498,8 +470,8 @@
 </footer>
 
 
-<script src="../assets/js/main.js?v=e5c5817e" defer></script>
-<script src="../assets/js/motion.js?v=8f56a458" defer></script>
+<script src="../assets/js/main.js?v=61117131" defer></script>
+<script src="../assets/js/motion.js?v=0e5ba69c" defer></script>
 
 </body>
 </html>
