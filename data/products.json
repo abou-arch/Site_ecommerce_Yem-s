@@ -20,28 +20,28 @@
           "id": "loafer",
           "name": "Loafer Ouidah",
           "price": 158000,
-          "image": "",
+          "image": "configurateur-forme-loafer",
           "note": "Sans lacet, non doublé"
         },
         {
           "id": "derby",
           "name": "Derby Cotonou",
           "price": 166000,
-          "image": "",
+          "image": "configurateur-forme-derby",
           "note": "Laçage ouvert, chaussant large"
         },
         {
           "id": "boot",
           "name": "Boot Atakora",
           "price": 182000,
-          "image": "",
+          "image": "configurateur-forme-boot",
           "note": "Tige montante, semelle gomme"
         },
         {
           "id": "richelieu",
           "name": "Richelieu Abidjan",
           "price": 196000,
-          "image": "",
+          "image": "configurateur-forme-richelieu",
           "note": "Laçage fermé, empiècement fleuri"
         }
       ],
@@ -680,12 +680,12 @@
       "category": "selection",
       "name": "Derby Noir",
       "price": 52000,
-      "status": "amber",
+      "status": "green",
       "featured": false,
       "bespoke": false,
       "origine": "selection",
       "short": "Un derby noir à semelle crantée, sobre en haut, affirmé au sol.",
-      "pitch": "Une silhouette derby noire qui donne un peu de présence à une tenue quotidienne. Les caractéristiques de matière et de montage sont à confirmer avec l'atelier.",
+      "pitch": "Un derby noir à semelle crantée, avec une ligne sobre et de la présence. L’atelier vous précisera la matière et le montage avant de confirmer la commande.",
       "images": [
         {
           "file": "derby-noir-ai",
@@ -713,12 +713,12 @@
       "category": "selection",
       "name": "Mocassin Contraste",
       "price": 48000,
-      "status": "amber",
+      "status": "green",
       "featured": false,
       "bespoke": false,
       "origine": "selection",
       "short": "Un mocassin noir et blanc qui assume sa ligne graphique.",
-      "pitch": "Un modèle à enfiler au contraste net, pensé pour faire la différence sans ajouter de détail superflu. La composition exacte est à confirmer avec l'atelier.",
+      "pitch": "Un mocassin à enfiler, noir et blanc, qui joue sur un contraste net. L’atelier vous confirmera sa composition exacte avant la commande.",
       "images": [
         {
           "file": "mocassin-contraste-ai",
@@ -746,12 +746,12 @@
       "category": "selection",
       "name": "Derby Cacao",
       "price": 52000,
-      "status": "amber",
+      "status": "green",
       "featured": false,
       "bespoke": false,
       "origine": "selection",
       "short": "Un derby brun profond, facile à associer avec un pantalon clair ou marine.",
-      "pitch": "Une paire brune à bout mocassin, avec une présence plus chaleureuse que le noir. La matière et le montage seront confirmés avant la commande.",
+      "pitch": "Un derby brun profond, facile à associer avec du clair ou du marine, et un bout mocassin. L’atelier vous confirmera la matière et le montage avant la commande.",
       "images": [
         {
           "file": "derby-cacao-ai",
@@ -779,12 +779,12 @@
       "category": "selection",
       "name": "Loafer Marine",
       "price": 45000,
-      "status": "amber",
+      "status": "green",
       "featured": true,
       "bespoke": false,
       "origine": "selection",
       "short": "Un loafer marine à bandeau, plus habillé qu'un mocassin souple.",
-      "pitch": "Une forme classique en bleu marine, avec bandeau sur l'empeigne et ligne nette. Les caractéristiques techniques sont à confirmer avec l'atelier.",
+      "pitch": "Un loafer bleu marine avec bandeau sur l’empeigne, pour une allure soignée sans en faire trop. L’atelier vous précisera la matière et le montage avant la commande.",
       "images": [
         {
           "file": "loafer-marine-ai",
@@ -812,12 +812,12 @@
       "category": "selection",
       "name": "Chelsea Noir",
       "price": 58000,
-      "status": "amber",
+      "status": "green",
       "featured": false,
       "bespoke": false,
       "origine": "selection",
       "short": "Une bottine Chelsea noire, nette et facile à enfiler.",
-      "pitch": "Une bottine basse à panneaux élastiqués, pensée pour passer du pantalon de ville au jean. La matière et le montage sont à confirmer avant commande.",
+      "pitch": "Une bottine noire à panneaux élastiqués, facile à enfiler et à porter avec un jean comme un pantalon de ville. L’atelier vous confirmera la matière et le montage avant la commande.",
       "images": [
         {
           "file": "chelsea-noir-ai",
@@ -845,12 +845,12 @@
       "category": "selection",
       "name": "Richelieu Noir",
       "price": 60000,
-      "status": "amber",
+      "status": "green",
       "featured": false,
       "bespoke": false,
       "origine": "selection",
       "short": "Un richelieu noir brogué, plus formel sans devenir austère.",
-      "pitch": "Un richelieu à lacets fermés, relevé par une ligne de perforations sur l'empeigne. Les caractéristiques exactes seront vérifiées par l'atelier.",
+      "pitch": "Un richelieu noir à lacets fermés, avec des perforations sur l’empeigne. L’atelier vous confirmera les finitions exactes avant la commande.",
       "images": [
         {
           "file": "richelieu-noir-ai",

@@ -27,11 +27,11 @@
      du hero est protégé par le padding ci-dessous. */
   align-content: center;
   align-content: safe center;
-  min-height: clamp(600px, 88svh, 880px);
+  min-height: clamp(600px, 82svh, 820px);
   padding-top: calc(var(--header-h) + var(--sp-7));
   /* Au moins la hauteur du fondu : sans cela, la derniere ligne de texte
      se retrouverait sur une crème à 70 %, en beige clair sur beige clair. */
-  padding-bottom: clamp(88px, 12vh, 136px);
+  padding-bottom: clamp(80px, 10vh, 112px);
   background-color: var(--espresso-900);
   color: var(--sombre-text);
 }
@@ -75,7 +75,7 @@
    l'assombrissait déjà à 92 %. Rien n'est rogné, et la composition est
    celle qu'on voulait : le texte à gauche, le mannequin à droite.
 
-   Le seuil est à 4/3 et non à 3/2 : le hero ne fait que 88 % de la hauteur
+   Le seuil est à 4/3 et non à 3/2 : le hero ne fait que 82 % de la hauteur
    de la fenêtre, donc son cadre est déjà plus large que l'écran. */
 @media (min-width: 901px) and (min-aspect-ratio: 4/3) {
   .hero-edito__media img {
@@ -137,7 +137,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  height: clamp(72px, 10vh, 120px);
+  height: clamp(64px, 8vh, 96px);
   pointer-events: none;
   background: linear-gradient(
     to bottom,
@@ -876,6 +876,8 @@
    quatre sur grand écran. C'est la grille de la template de référence.
    -------------------------------------------------------------------------- */
 .vitrine {
+  /* Rapproche le titre des produits du hero sur écran large. */
+  padding-top: clamp(2.5rem, 4vw, 4rem);
   background: linear-gradient(180deg,
     var(--beige-200) 0%,
     var(--beige-50) 160px,

@@ -9,6 +9,7 @@ Usage :  python3 tools/process_images.py
 """
 
 import os
+import sys
 import numpy as np
 from PIL import Image, ImageFilter, ImageDraw
 from scipy import ndimage
@@ -24,6 +25,16 @@ BEIGE_BOT = (206, 189, 164)
 
 # ---------------------------------------------------------------- recettes
 JOBS = [
+    # Formes d'illustration du configurateur, générées pour Yem's puis
+    # retraitées ici comme les photos produits : fond beige, JPEG + WebP.
+    dict(src="assets/img/ai-sources/configurateur-forme-loafer.png",
+         out="configurateur-forme-loafer", crop=None, tol=38, ratio=(4, 5)),
+    dict(src="assets/img/ai-sources/configurateur-forme-derby.png",
+         out="configurateur-forme-derby", crop=None, tol=38, ratio=(4, 5)),
+    dict(src="assets/img/ai-sources/configurateur-forme-boot.png",
+         out="configurateur-forme-boot", crop=None, tol=38, ratio=(4, 5)),
+    dict(src="assets/img/ai-sources/configurateur-forme-richelieu.png",
+         out="configurateur-forme-richelieu", crop=None, tol=38, ratio=(4, 5)),
     dict(src="WhatsApp Image 2026-08-10 at 11.02.54 PM.jpeg",
          out="loafer-ouidah",       crop=None,                  tol=42, ratio=(4, 5)),
     dict(src="WhatsApp Image 2026-08-10 at 11.02.55 PM.jpeg",
@@ -171,9 +182,10 @@ def export(img, name, width=1200):
           f"jpg {os.path.getsize(jpg)//1024} Ko / webp {os.path.getsize(webp)//1024} Ko")
 
 
-def main():
+def main(configurator_only=False):
     print("Détourage + fond beige :")
-    for job in JOBS:
+    jobs = [j for j in JOBS if j["out"].startswith("configurateur-forme-")] if configurator_only else JOBS
+    for job in jobs:
         img = Image.open(os.path.join(SRC, job["src"])).convert("RGB")
         if job["crop"]:
             img = img.crop(job["crop"])
@@ -182,6 +194,9 @@ def main():
         if not 0.05 < cover < 0.85:
             print(f"  !! {job['out']} : couverture suspecte {cover:.0%}")
         export(compose(img, solid, shade, job["ratio"]), job["out"])
+
+    if configurator_only:
+        return
 
     # image d'ambiance : pas de détourage, étalonnage vers le beige
     print("Étalonnage beige (fond texturé) :")
@@ -196,4 +211,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    main(configurator_only="--configurateur-only" in sys.argv[1:])

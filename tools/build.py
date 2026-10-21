@@ -33,7 +33,7 @@ OUT_PRODUCTS = os.path.join(ROOT, "produit")
 # Libellé court pour les vignettes, libellé explicite pour la fiche produit :
 # « En route » ne dit rien à l'acheteur, « arrivage sous 10 jours » si.
 STATUS = {
-    "green": ("badge--green", "Au Bénin",     "En stock à Cotonou, expédié sous 72 h"),
+    "green": ("badge--green", "Disponible",  "En stock à Cotonou, expédié sous 72 h"),
     "amber": ("badge--amber", "En route",     "En route, arrivage sous 10 jours"),
     "red":   ("badge--red",   "Indisponible", "Sur commande uniquement"),
 }
@@ -240,7 +240,9 @@ def product_card(product, base, delay=0, level=3):
     style = ' style="--reveal-delay:%dms"' % delay if delay else ""
     images = product.get("images") or []
     empty = "" if images else " pshot--empty"
-    note = mention_ia() if images and images[0].get("ia") else ""
+    # Les mentions de transparence sur les visuels sont centralisées en bas
+    # de page ; une pastille sur chaque photo surchargeait les cartes.
+    note = ""
     return f"""      <article class="pcard" data-reveal{style} data-piece="{product['slug']}">
         <a href="{href}" aria-label="Découvrir {escape(product['name'])}">
           <div class="pshot{empty}" data-shot>
@@ -254,7 +256,6 @@ def product_card(product, base, delay=0, level=3):
             <h{level} class="pcard__name">{escape(product['name'])}</h{level}>
             <span class="pcard__price" data-prix="{product['slug']}">{price(product['price'])}</span>
           </div>
-          <p class="pcard__desc" data-court="{product['slug']}">{product['short']}</p>
         </div>
       </article>"""
 
@@ -1038,9 +1039,11 @@ class Builder:
         def vignette_forme(o):
             if not o.get("image"):
                 return '<span class="cfg-opt__shot pshot--empty"></span>'
-            return ('<span class="cfg-opt__shot"><img src="assets/img/%s.jpg" '
-                    'width="400" height="275" loading="lazy" decoding="async" alt="%s"></span>'
-                    % (o["image"], escape(o["name"], quote=True)))
+            return ('<span class="cfg-opt__shot"><picture>'
+                    '<source srcset="assets/img/%s.webp" type="image/webp">'
+                    '<img src="assets/img/%s.jpg" width="400" height="275" '
+                    'loading="lazy" decoding="async" alt="%s"></picture></span>'
+                    % (o["image"], o["image"], escape(o["name"], quote=True)))
 
         shapes = opts("shape", cfg["shapes"], lambda o: f"""      <button class="cfg-opt" type="button" aria-pressed="false" data-id="{o['id']}">
         {vignette_forme(o)}

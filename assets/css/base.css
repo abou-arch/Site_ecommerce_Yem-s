@@ -110,7 +110,7 @@
   --voile-terre:  radial-gradient(100% 70% at 80% 10%, rgba(140, 90, 60, .06) 0%, rgba(245, 243, 239, 0) 62%);
 
   /* — Statuts disponibilité (brief client) — */
-  --status-green:  #4C7A50;   /* Au Bénin  */
+  --status-green:  #4C7A50;   /* disponible */
   --status-amber:  #C08A2E;   /* En route  */
   --status-red:    #A14A3E;   /* Indisponible */
 
