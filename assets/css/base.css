@@ -216,6 +216,16 @@
   --header-h: 60px;
 }
 
+/* Sur grand écran, les pages utilisent mieux la largeur disponible. Les
+   gouttières et les largeurs mobiles restent inchangées. */
+@media (min-width: 1200px) {
+  :root {
+    --container: 1440px;
+    --container-wide: 1640px;
+    --gutter: clamp(2.5rem, 4vw, 4.5rem);
+  }
+}
+
 /* --------------------------------------------------------------------------
    2. RESET
    -------------------------------------------------------------------------- */

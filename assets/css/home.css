@@ -394,6 +394,20 @@
 
 .story__turn p { font-size: var(--fs-md); }
 
+/* La page atelier s'étend sur ordinateur, tout en gardant une mesure de
+   lecture confortable et les mêmes empilements sur téléphone. */
+.atelier-page .section-head { max-width: 68rem; }
+.atelier-page .section-head .lede { max-width: 62ch; }
+.atelier-page .story__turn { max-width: 76rem; }
+.atelier-page .grid--3 { align-items: stretch; }
+.atelier-page .card { height: 100%; }
+
+@media (min-width: 1200px) {
+  .atelier-page .section-head { margin-bottom: clamp(3rem, 5vw, 5rem); }
+  .atelier-page .story__turn { margin-top: var(--sp-7); }
+  .atelier-page .grid--3 { gap: clamp(1.5rem, 2.5vw, 2.75rem); }
+}
+
 /* --------------------------------------------------------------------------
    OBJECTIONS / FAQ
    -------------------------------------------------------------------------- */

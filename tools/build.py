@@ -1523,48 +1523,49 @@ class Builder:
         """
         atelier = sum(1 for p in self.a_venir if p.get("origine") == "atelier")
 
-        content = f"""<section class="section section--top" id="a-venir">
-  <div class="container container--narrow">
+        content = f"""<section class="section section--top atelier-page" id="a-venir">
+  <div class="container container--wide">
     <div class="section-head" data-reveal>
       <span class="eyebrow">L'atelier</span>
-      <h1 class="page-title" style="margin-top:var(--sp-3)">Ce qui se prépare</h1>
+      <h1 class="page-title" style="margin-top:var(--sp-3)">Les pièces de l'atelier arrivent</h1>
       <p class="lede">
-        La ligne cousue main n'est pas encore en ligne. Pas parce qu'elle
-        n'existe pas, mais parce qu'on refuse de la montrer avec des images
-        qui ne sont pas les nôtres.
+        À Cotonou, notre atelier façonne une ligne de souliers et de maroquinerie.
+        Nous la présenterons ici avec nos propres photos, dès que chaque pièce
+        pourra être montrée telle qu'elle est.
       </p>
     </div>
 
     <div class="story__turn" data-reveal style="margin-top:var(--sp-6)">
       <p>
-        {atelier} pièces sortent de l'atelier de Cotonou : des souliers cousus
-        à la main, une ceinture et un portefeuille taillés dans les mêmes peaux.
-        <strong>Elles seront en ligne dès qu'elles auront été photographiées
-        chez nous, telles qu'elles sont.</strong>
+        {atelier} pièces sont en préparation à l'atelier de Cotonou : des souliers
+        cousus à la main, une ceinture et un portefeuille taillés dans les mêmes
+        peaux. <strong>Les photos et les fiches seront publiées dès qu'elles
+        seront prêtes.</strong>
       </p>
     </div>
 
     <div class="grid grid--3" style="margin-top:var(--sp-7)">
       <article class="card" data-reveal>
         <span class="card__num">01</span>
-        <h2>Vous voulez voir avant</h2>
+        <h2>Les découvrir sur place</h2>
         <p>
-          Passez à l'atelier. Les pièces existent, elles se prennent en main,
-          et c'est de loin la meilleure façon de juger une couture.
+          Vous êtes à Cotonou ? Écrivez-nous pour convenir d'un passage et voir
+          les pièces de près. Vous pourrez apprécier le cuir, les finitions et
+          le travail des coutures.
         </p>
       </article>
       <article class="card" data-reveal style="--reveal-delay:90ms">
-        <h2>Vous savez déjà ce que vous voulez</h2>
+        <h2>Demander les photos</h2>
         <p>
-          Écrivez-nous. On vous envoie des photos de ce qui est disponible
-          aujourd'hui, avec le prix, sans passer par le site.
+          Contactez l'atelier sur WhatsApp pour demander des photos et connaître
+          la disponibilité des modèles en préparation.
         </p>
       </article>
       <article class="card" data-reveal style="--reveal-delay:180ms">
-        <h2>Vous préférez attendre</h2>
+        <h2>Être informé de la mise en ligne</h2>
         <p>
-          Laissez-nous votre numéro sur WhatsApp. Vous serez prévenu le jour
-          de la mise en ligne, et pas un jour de plus.
+          Écrivez-nous sur WhatsApp pour demander à être tenu au courant lorsque
+          les photos et les fiches produits seront publiées.
         </p>
       </article>
     </div>
@@ -1574,7 +1575,7 @@ class Builder:
         'Bonjour%2C%20je%20voudrais%20voir%20les%20pi%C3%A8ces%20de%20l%27atelier.'}"
          target="_blank" rel="noopener">
         <svg aria-hidden="true"><use href="#i-whatsapp"></use></svg>
-        Écrire à l'atelier
+        Demander des nouvelles à l'atelier
       </a>
       <a class="btn btn--ghost" href="selection.html">Voir ce qui est disponible</a>
     </div>
@@ -1583,9 +1584,9 @@ class Builder:
 
         self.page(
             "a-venir.html", content=content, current="a-venir",
-            title="Ce qui se prépare à l'atelier | Yem's",
-            description="La ligne cousue main de l'atelier Yem's arrive. En attendant, "
-                        "écrivez-nous pour voir les pièces disponibles à Cotonou.",
+            title="Les pièces de l'atelier arrivent | Yem's",
+            description="Découvrez les pièces cousues à la main à Cotonou et contactez "
+                        "l'atelier pour voir les modèles disponibles.",
         )
 
     def build_shop(self):
