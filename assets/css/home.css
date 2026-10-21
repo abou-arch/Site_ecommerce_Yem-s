@@ -891,11 +891,24 @@
   gap: var(--sp-4);
 }
 
+.vitrine .section-head {
+  padding-bottom: var(--sp-5);
+  border-bottom: 1px solid var(--border);
+}
+
 .vitrine__grid {
   --shot-ratio: 1 / 1;
   display: grid;
-  gap: var(--sp-6) var(--sp-4);
+  gap: clamp(1.5rem, 3vw, 2.5rem) clamp(1rem, 2.5vw, 2rem);
   grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.vitrine .origine {
+  font-family: var(--font-body);
+  font-size: var(--fs-xs);
+  font-style: normal;
+  font-weight: 500;
+  letter-spacing: 0.025em;
 }
 
 @media (min-width: 1060px) {

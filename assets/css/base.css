@@ -115,11 +115,9 @@
   --status-red:    #A14A3E;   /* Indisponible */
 
   /* — Typographie — */
-  /* Playfair Display porte les titres : serif à fort contraste, dessiné pour
-     les grandes tailles, il tient sur une photo sombre là où un serif doux
-     s'écrase. Jost porte tout le reste : géométrique, il supporte les
-     capitales très espacées des libellés sans se refermer. */
-  --font-display: "Playfair Display", "Georgia", "Times New Roman", serif;
+  /* Marcellus porte les titres avec des formes nettes et classiques. Jost
+     porte le texte et les contrôles avec une lecture directe et régulière. */
+  --font-display: "Marcellus", "Georgia", "Times New Roman", serif;
   --font-body: "Jost", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 
   /* DEUX ÉCHELLES, PAS UNE ÉCHELLE ÉLASTIQUE.
@@ -310,9 +308,7 @@ h1, h2, h3, h4 {
   font-family: var(--font-display);
   font-weight: 400;
   line-height: var(--lh-tight);
-  /* Playfair est déjà serré : l'approche négative héritée de Fraunces y
-     collait les lettres. On la relâche, et les capitales du titre reprennent
-     l'air qu'elles ont sur la maquette. */
+  /* Une approche presque neutre garde les titres lisibles et espacés. */
   letter-spacing: -0.005em;
 }
 
@@ -399,7 +395,7 @@ p { text-wrap: pretty; }
 }
 
 /* Chapeau de page : titre, surtitre et accroche. La largeur se donne en
-   pixels parce qu'elle borne un titre en Playfair, alors qu'un « ch » se
+   pixels parce qu'elle borne un titre en Marcellus, alors qu'un « ch » se
    calcule dans la police du bloc. Trois lignes de titre sur un grand écran,
    quatre sur un portable. */
 .section-head--mesure { max-width: clamp(30rem, 58vw, 44rem); }

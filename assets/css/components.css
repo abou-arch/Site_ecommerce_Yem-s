@@ -1019,13 +1019,15 @@
    ferait une trame d'ombres. Elles se soulèvent au survol, ce qui rend le
    geste lisible. */
 .pcard {
-  box-shadow: var(--shadow-sm);
-  transition: box-shadow 320ms var(--ease), transform 320ms var(--ease);
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
+  transition: transform 320ms var(--ease);
 }
 .pcard:hover,
 .pcard:focus-within {
-  box-shadow: var(--shadow-lg);
-  transform: translateY(-3px);
+  box-shadow: none;
+  transform: translateY(-2px);
 }
 
 /* La photo produit est blanche sur une carte blanche : sans un fond

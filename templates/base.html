@@ -19,7 +19,7 @@
 <!-- Les polices ne bloquent plus l'affichage. « media=print » fait charger la
      feuille sans qu'elle retarde le rendu ; le script qui suit la réactive dès
      qu'elle est là. Le texte s'affiche donc immédiatement en Georgia et en
-     police système, puis bascule sur Playfair Display et Jost. Sur une 3G, ça
+     police système, puis bascule sur Marcellus et Jost. Sur une 3G, ça
      évite plusieurs centaines de millisecondes de page blanche.
 
      Ce script remplace un attribut onload : la politique de sécurité (CSP)
@@ -30,10 +30,10 @@
      Le <noscript> garde le comportement classique pour qui n'exécute pas de
      script : mieux vaut attendre les polices que ne jamais les recevoir.
 
-     Seules les graisses réellement employées sont demandées : Playfair en 400,
-     500, 600 et son italique pour les accents ; Jost de 300 à 600. -->
+     Seules les graisses réellement employées sont demandées : Marcellus en 400
+     pour les titres et Jost de 300 à 600 pour les textes et les contrôles. -->
 <link rel="stylesheet" media="print" data-polices
-      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap">
+      href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&family=Marcellus&display=swap">
 <script>
 (function () {
   var feuille = document.querySelector('link[data-polices]');
@@ -44,7 +44,7 @@
 </script>
 <noscript>
   <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap">
+        href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&family=Marcellus&display=swap">
 </noscript>
 
 <link rel="stylesheet" href="{{base}}assets/css/base.css">

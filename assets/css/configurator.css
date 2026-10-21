@@ -92,7 +92,7 @@
   background: linear-gradient(160deg, rgba(201, 164, 106, 0.12), var(--espresso-700) 60%);
 }
 
-/* Le nom est en Playfair, le prix en Jost : deux polices, deux hauteurs d'œil.
+/* Le nom est en Marcellus, le prix en Jost : deux polices, deux hauteurs d'œil.
    Centrés l'un sur l'autre, leurs lignes de base tombaient à quatre pixels
    d'écart et la ligne paraissait bancale. On les aligne sur la ligne de base,
    et un nom sur deux lignes garde alors son prix à hauteur de la première. */
