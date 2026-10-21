@@ -215,18 +215,10 @@
         <span class="text-muted" style="font-size:var(--fs-xs)">Réf. YMS-2609-0142</span>
       </div>
 
-      <!-- Pas d'attribut autoplay : il faisait télécharger la vidéo dès
-           l'ouverture de la page, preload="none" ou pas. data-autoplay la
-           confie à main.js, qui ne la charge et ne la lance qu'une fois à
-           l'écran. Sur une connexion mobile, elle ne coûte rien tant qu'on
-           ne descend pas jusqu'ici. -->
       <div class="pshot" data-shot style="aspect-ratio:16/10;margin-bottom:var(--sp-5)">
-        <video data-autoplay muted loop playsinline preload="none"
-               poster="{{base}}assets/img/cuirs-poster.jpg"
-               aria-label="Échantillons de cuir en gros plan, dont les teintes espresso, cognac et noir">
-          <source src="{{base}}assets/video/cuirs.webm" type="video/webm">
-          <source src="{{base}}assets/video/cuirs.mp4" type="video/mp4">
-        </video>
+        <img src="{{base}}assets/img/cuirs-poster.jpg" width="574" height="960"
+             loading="lazy" decoding="async"
+             alt="Échantillons de cuir espresso, cognac, noir et sable">
         {{visuel_ia}}
       </div>
 

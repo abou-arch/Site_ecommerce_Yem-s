@@ -1,7 +1,8 @@
 # Images à générer avec ChatGPT
 
-**La vidéo d'accueil est conservée.** Seules les deux vidéos du configurateur
-sur-mesure sont remplacées par des images fixes.
+**Note de conception ancienne.** La vidéo d'accueil et les deux vidéos du
+configurateur ont depuis été retirées. Le configurateur s'appuie maintenant
+sur ses choix de cuir et de fil ; l'aperçu d'accueil utilise une image fixe.
 
 **C'est un bon échange.** Une image bien cadrée tient mieux qu'une vidéo de
 huit secondes qui tourne en boucle, elle pèse dix fois moins, elle s'affiche
@@ -123,7 +124,10 @@ voit très bien une fois l'image affichée en pleine largeur.
 
 ## Ce que je fais ensuite
 
-Dépose les deux fichiers dans `assets/img/` et dis-le moi. Je m'occupe de :
+Cette proposition de remplacement n'est plus en cours. Les étapes ci-dessous
+documentent le brief visuel initial.
+
+À l'origine, les étapes prévues étaient :
 
 1. **Redimensionner et compresser.** Les deux verticales descendent à 720 px de
    large, en JPEG et WebP. Objectif : moins de 120 Ko chacune, contre 487 et

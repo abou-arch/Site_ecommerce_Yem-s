@@ -49,7 +49,7 @@
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap">
 </noscript>
 
-<link rel="stylesheet" href="assets/css/base.css?v=e41722ee">
+<link rel="stylesheet" href="assets/css/base.css?v=c67f3f02">
 <link rel="stylesheet" href="assets/css/components.css?v=d9cea316">
 <link rel="stylesheet" href="assets/css/home.css?v=2d59b479">
 <link rel="stylesheet" href="assets/css/shop.css?v=4e02e4a4">
@@ -480,18 +480,10 @@
         <span class="text-muted" style="font-size:var(--fs-xs)">Réf. YMS-2609-0142</span>
       </div>
 
-      <!-- Pas d'attribut autoplay : il faisait télécharger la vidéo dès
-           l'ouverture de la page, preload="none" ou pas. data-autoplay la
-           confie à main.js, qui ne la charge et ne la lance qu'une fois à
-           l'écran. Sur une connexion mobile, elle ne coûte rien tant qu'on
-           ne descend pas jusqu'ici. -->
       <div class="pshot" data-shot style="aspect-ratio:16/10;margin-bottom:var(--sp-5)">
-        <video data-autoplay muted loop playsinline preload="none"
-               poster="assets/img/cuirs-poster.jpg"
-               aria-label="Échantillons de cuir en gros plan, dont les teintes espresso, cognac et noir">
-          <source src="assets/video/cuirs.webm" type="video/webm">
-          <source src="assets/video/cuirs.mp4" type="video/mp4">
-        </video>
+        <img src="assets/img/cuirs-poster.jpg" width="574" height="960"
+             loading="lazy" decoding="async"
+             alt="Échantillons de cuir espresso, cognac, noir et sable">
         
       </div>
 

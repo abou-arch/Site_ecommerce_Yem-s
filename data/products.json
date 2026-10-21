@@ -223,7 +223,7 @@
       "slug": "selection",
       "nav": "Sélection",
       "name": "Sélection",
-      "title": "La sélection : mocassins et sneakers choisis | Yem's",
+      "title": "La sélection de souliers choisis | Yem's",
       "description": "Des pièces que nous n'avons pas fabriquées mais que nous avons choisies, contrôlées et garanties. Échange un an.",
       "eyebrow": "Choisi, pas fabriqué",
       "heading": "Ce qu'on n'a pas fait,<br>on en répond quand même.",
@@ -959,84 +959,6 @@
         {
           "name": "Noir",
           "hex": "#1A1614"
-        }
-      ],
-      "a_venir": false
-    },
-    {
-      "slug": "sneaker-ganvie",
-      "category": "selection",
-      "name": "Sneaker Ganvié",
-      "price": 48000,
-      "status": "green",
-      "featured": false,
-      "bespoke": false,
-      "origine": "selection",
-      "short": "Cuir perforé, semelle légère. Pour marcher longtemps sans avoir l'air d'être en sport.",
-      "pitch": "Une sneaker en cuir perforé, doublée cuir, sur une semelle légère à crampons plats. Le perforé laisse passer l'air : c'est ce qui la rend supportable à 15 h au mois d'avril.",
-      "images": [
-        {
-          "file": "sneaker-marine-ai",
-          "teinte": "Marine",
-          "ia": true,
-          "w": 1000,
-          "h": 750,
-          "alt": "Visuel d'ambiance généré par IA : une paire de sneakers en cuir marine perforé, lacets marine, sur un bloc de pierre claire"
-        },
-        {
-          "file": "sneaker-marine-alt-ai",
-          "teinte": "Marine",
-          "ia": true,
-          "w": 1000,
-          "h": 1000,
-          "alt": "Visuel d'ambiance généré par IA : une paire de sneakers en cuir marine perforé dans une mise en scène d'atelier"
-        }
-      ],
-      "specs": [
-        {
-          "label": "Dessus",
-          "value": "Cuir de veau perforé"
-        },
-        {
-          "label": "Doublure",
-          "value": "Cuir naturel"
-        },
-        {
-          "label": "Semelle",
-          "value": "Caoutchouc à crampons plats"
-        },
-        {
-          "label": "Montage",
-          "value": "Collé"
-        },
-        {
-          "label": "Pointures",
-          "value": "39 à 45"
-        }
-      ],
-      "details": [
-        {
-          "title": "Pourquoi celle-ci",
-          "text": "L'atelier en a essayé plusieurs avant de retenir ce modèle. Le daim tient la forme, la semelle amortit sans faire de bruit, et le chaussant est régulier d'une paire à l'autre."
-        },
-        {
-          "title": "Ce qu'elle n'est pas",
-          "text": "Ce n'est pas une pièce d'atelier. La semelle est collée, elle ne se ressemelle pas. C'est le compromis d'une chaussure souple qu'on met tous les jours, et c'est pour ça qu'elle coûte la moitié d'un soulier cousu."
-        }
-      ],
-      "sizes": [
-        39,
-        40,
-        41,
-        42,
-        43,
-        44,
-        45
-      ],
-      "colors": [
-        {
-          "name": "Marine",
-          "hex": "#232B3D"
         }
       ],
       "a_venir": false

@@ -1118,18 +1118,6 @@ class Builder:
             <p class="cfg-step__hint">Pleine fleur, tannage végétal. Il foncera et se creusera avec les années, c'est voulu.</p>
           </div>
 {leathers}
-
-          <figure class="cfg-film">
-            <div class="cfg-film__media">
-              <video data-autoplay muted loop playsinline preload="none"
-                     poster="assets/img/cuirs-poster.jpg">
-                <source src="assets/video/cuirs.webm" type="video/webm">
-                <source src="assets/video/cuirs.mp4" type="video/mp4">
-              </video>
-              {mention_ia()}
-            </div>
-            <figcaption>Illustration&nbsp;: les quatre familles de grain, du plus marqué au velours. Le vrai cuir de l'atelier se voit mieux en main que sur un écran, demandez un échantillon sur WhatsApp avant de trancher.</figcaption>
-          </figure>
         </section>
 
         <section class="cfg-step">
@@ -1138,18 +1126,6 @@ class Builder:
             <h2>Le fil</h2>
             <p class="cfg-step__hint">Lin ciré, quatre teintes. Ton sur ton, la couture se devine. Contrastée, elle se voit à trois mètres. L'atelier vous demandera votre choix au moment de confirmer.</p>
           </div>
-
-          <figure class="cfg-film">
-            <div class="cfg-film__media">
-              <video data-autoplay muted loop playsinline preload="none"
-                     poster="assets/img/fils-poster.jpg">
-                <source src="assets/video/fils.webm" type="video/webm">
-                <source src="assets/video/fils.mp4" type="video/mp4">
-              </video>
-              {mention_ia()}
-            </div>
-            <figcaption>Illustration&nbsp;: espresso, cognac, noir, sable. Les quatre teintes proposées, sur du lin ciré.</figcaption>
-          </figure>
         </section>
 
         <section class="cfg-step">

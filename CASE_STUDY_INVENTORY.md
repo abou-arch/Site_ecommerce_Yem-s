@@ -675,13 +675,13 @@ Grouped by discipline. Each line gives what was done, then the proof.
 ### Photos and visuals
 
 - **No photographed atelier piece.** All 6 atelier items are `a_venir`. The
-  configurator shows « Photo à venir » for each of the 4 shapes.
+  configurator now uses generated shape illustrations, not workshop photos.
 - **No share image on the home page (`og:image`).** It was removed because the
   previous one belonged to another brand (comment in `build_home`).
 - **Hero video removed**, no replacement video (`.retirees/hero-video/POURQUOI.md`).
-- **Configurator videos show materials the shop does not offer** (a
-  saffiano-like black, an orange thread), per `docs/prompts-video-higgsfield.md`.
-  `assets/video/cuirs.mp4` and `assets/video/fils.mp4` are still in use.
+- **Generated configurator videos removed.** They showed material textures and
+  thread colors that did not match the options. The builder uses its existing
+  leather and thread choices without video; the home preview is a still image.
 - ~~**Unused large images.**~~ **RESOLVED.** `cuirs-nuancier-vertical.png`
   (6.2 MB), `fils-lin-cire-vertical.png` (5.8 MB) and `hero-900.*` have been
   deleted, along with `hero.png`, `atelier-yems-ressemelage-v1.png` and the
@@ -748,10 +748,9 @@ Grouped by discipline. Each line gives what was done, then the proof.
 - Dashboard settings recommended in `docs/securite.md` and not visible in the
   repository: Cloudflare Access in front of the admin, a WAF rate-limiting
   rule, a strong `ADMIN_TOKEN`.
-- **Desktop video load.** On the desktop home page, the sur-mesure preview
-  video (about 550 KB) downloaded without scrolling despite `preload="none"`
-  (local measurement, §2). The likely cause is the `autoplay` attribute
-  (inferred).
+- **Resolved: unused generated video load.** Configurator videos and the home
+  preview video were removed. The home preview now uses a still image; the
+  configurator uses its existing leather and thread choices.
 
 ---
 
