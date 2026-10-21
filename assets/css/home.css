@@ -903,14 +903,6 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
-.vitrine .origine {
-  font-family: var(--font-body);
-  font-size: var(--fs-xs);
-  font-style: normal;
-  font-weight: 500;
-  letter-spacing: 0.025em;
-}
-
 @media (min-width: 1060px) {
   .vitrine__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }
@@ -973,42 +965,28 @@
   margin-bottom: var(--sp-6);
 }
 
-/* PROPORTIONS DE LA PASTILLE
-   Elle faisait 44 px de haut pour un texte de 12 px : treize pixels de vide
-   au-dessus et au-dessous du mot, qui flottait au milieu d'un ovale trop
-   grand pour lui. Le texte monte d'un cran, la hauteur descend d'un cran, et
-   le remplissage horizontal s'élargit — une pastille se lit à sa longueur,
-   pas à sa hauteur.
-
-   40 px reste au-dessus du confort à la souris ; la cible tactile de 44 px
-   revient juste après, pour les pointeurs grossiers. */
+/* Liens de catégorie : libellés simples, avec un trait discret au survol. */
 .filtres a {
   display: inline-flex;
   align-items: center;
-  min-height: 40px;
-  padding: 0 1.25rem;
-  border: 1px solid rgba(122, 94, 51, 0.28);
-  border-radius: var(--radius-pill);
+  min-height: 44px;
+  padding: 0 0.15rem;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  border-radius: 0;
   font-size: 0.8125rem;
-  letter-spacing: var(--tracking-wide);
-  text-transform: uppercase;
+  letter-spacing: 0.015em;
+  text-transform: none;
   white-space: nowrap;
   color: var(--text-muted);
-  transition: background-color var(--dur) var(--ease),
-              color var(--dur) var(--ease),
-              border-color var(--dur) var(--ease);
-}
-
-/* Doigt plutôt que souris : on reprend les 44 px de cible minimale. */
-@media (pointer: coarse) {
-  .filtres a { min-height: 44px; }
+  transition: color var(--dur) var(--ease), border-color var(--dur) var(--ease);
 }
 
 .filtres a:hover,
 .filtres a:focus-visible {
-  background: var(--espresso-900);
-  border-color: var(--espresso-900);
-  color: var(--beige-100);
+  background: transparent;
+  border-bottom-color: var(--olive-600);
+  color: var(--espresso-900);
 }
 
 /* Sur téléphone, les onglets défilent plutôt que de s'empiler sur trois

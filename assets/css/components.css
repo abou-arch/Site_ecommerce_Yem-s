@@ -6,9 +6,9 @@
    BOUTONS
    -------------------------------------------------------------------------- */
 .btn {
-  --btn-bg: var(--brass-400);
+  --btn-bg: var(--olive-500);
   --btn-fg: var(--espresso-900);
-  --btn-border: var(--brass-400);
+  --btn-border: var(--olive-500);
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -18,10 +18,10 @@
   background: var(--btn-bg);
   color: var(--btn-fg);
   border: 1px solid var(--btn-border);
-  border-radius: var(--radius-pill);
+  border-radius: var(--radius-sm);
   font-size: var(--fs-sm);
   font-weight: 600;
-  letter-spacing: var(--tracking-wide);
+  letter-spacing: 0.035em;
   text-transform: uppercase;
   white-space: nowrap;
   transition:
@@ -34,8 +34,9 @@
 /* Le déplacement passe par --lift pour cohabiter avec l'effet magnétique
    (voir motion.css / motion.js), qui pilote --mx et --my sur le même transform. */
 .btn:hover {
-  background: var(--brass-300);
-  border-color: var(--brass-300);
+  background: var(--olive-600);
+  border-color: var(--olive-600);
+  color: var(--beige-50);
   --lift: -2px;
 }
 
@@ -115,8 +116,8 @@
   gap: var(--sp-2);
   font-size: var(--fs-sm);
   font-weight: 500;
-  letter-spacing: var(--tracking-wide);
-  text-transform: uppercase;
+  letter-spacing: 0.015em;
+  text-transform: none;
   color: var(--accent);
   padding-bottom: 4px;
 }
@@ -581,10 +582,11 @@
 
 .pcard__name {
   min-width: 0;
-  font-family: var(--font-body);
+  font-family: var(--font-display);
   font-size: var(--fs-md);
-  font-weight: 500;
+  font-weight: 400;
   line-height: 1.3;
+  letter-spacing: 0;
   overflow-wrap: anywhere;
 }
 
@@ -592,8 +594,17 @@
   font-size: var(--fs-sm);
   font-weight: 600;
   letter-spacing: 0.03em;
-  color: var(--accent);
+  color: var(--olive-600);
   white-space: nowrap;
+}
+
+.pcard .origine {
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-style: normal;
+  font-weight: 500;
+  letter-spacing: 0.075em;
+  text-transform: uppercase;
 }
 
 @media (max-width: 420px) {
@@ -606,7 +617,7 @@
   color: var(--text-muted);
 }
 
-.section--light .pcard__price { color: var(--brass-600); }
+.section--light .pcard__price { color: var(--olive-600); }
 .section--light .pcard__desc  { color: var(--text-muted); }
 
 /* --------------------------------------------------------------------------

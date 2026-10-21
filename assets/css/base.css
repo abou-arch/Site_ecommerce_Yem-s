@@ -27,6 +27,8 @@
   --brass-600: #7A5E33; /* 5.19:1 sur beige-100 — WCAG AA */
 
   --clay-500:  #8C5A3C;   /* accent secondaire, cuir patiné */
+  --olive-500: #8C907E;   /* accent doux repris de Kaira */
+  --olive-600: #686E5A;
 
   /* — Les deux clairs, et leur rapport —
      Le blanc pur sur toute la page fatigue et aplatit : rien ne se détache
