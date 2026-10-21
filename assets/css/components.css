@@ -563,24 +563,29 @@
 /* --------------------------------------------------------------------------
    CARTE PRODUIT
    -------------------------------------------------------------------------- */
-.pcard { display: flex; flex-direction: column; gap: var(--sp-4); }
+.pcard { display: flex; min-width: 0; flex-direction: column; gap: var(--sp-4); }
 
 .pcard__body {
   display: flex;
+  min-width: 0;
   flex-direction: column;
   gap: var(--sp-2);
 }
 
 .pcard__row {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: baseline;
-  justify-content: space-between;
-  gap: var(--sp-4);
+  gap: var(--sp-2) var(--sp-3);
 }
 
 .pcard__name {
-  font-family: var(--font-display);
-  font-size: var(--fs-lg);
+  min-width: 0;
+  font-family: var(--font-body);
+  font-size: var(--fs-md);
+  font-weight: 500;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
 }
 
 .pcard__price {
@@ -589,6 +594,11 @@
   letter-spacing: 0.03em;
   color: var(--accent);
   white-space: nowrap;
+}
+
+@media (max-width: 420px) {
+  .pcard__row { grid-template-columns: minmax(0, 1fr); }
+  .pcard__price { justify-self: start; }
 }
 
 .pcard__desc {
@@ -603,7 +613,8 @@
    CARTE GÉNÉRIQUE
    -------------------------------------------------------------------------- */
 .card {
-  padding: var(--sp-6);
+  min-width: 0;
+  padding: clamp(var(--sp-4), 3vw, var(--sp-6));
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
@@ -611,6 +622,18 @@
   flex-direction: column;
   gap: var(--sp-3);
   transition: border-color var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+
+.card h2,
+.card h3 {
+  max-width: 100%;
+  font-family: var(--font-body);
+  font-size: clamp(1.125rem, 1.55vw, 1.375rem);
+  font-weight: 500;
+  line-height: 1.28;
+  letter-spacing: 0;
+  overflow-wrap: anywhere;
+  text-wrap: pretty;
 }
 
 .card:hover {
@@ -627,7 +650,13 @@
 }
 
 /* Du texte qu'on lit, pas une légende : taille du corps, mesure bornée. */
-.card p { font-size: var(--fs-base); color: var(--text-muted); max-width: 64ch; }
+.card p {
+  max-width: 64ch;
+  font-size: var(--fs-base);
+  line-height: 1.6;
+  color: var(--text-muted);
+  overflow-wrap: anywhere;
+}
 
 .section--light .card {
   background: var(--blanc);
