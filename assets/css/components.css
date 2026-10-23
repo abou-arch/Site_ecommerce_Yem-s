@@ -6,9 +6,9 @@
    BOUTONS
    -------------------------------------------------------------------------- */
 .btn {
-  --btn-bg: var(--olive-500);
-  --btn-fg: var(--espresso-900);
-  --btn-border: var(--olive-500);
+  --btn-bg: var(--espresso-800);
+  --btn-fg: var(--beige-100);
+  --btn-border: var(--espresso-800);
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -34,9 +34,9 @@
 /* Le déplacement passe par --lift pour cohabiter avec l'effet magnétique
    (voir motion.css / motion.js), qui pilote --mx et --my sur le même transform. */
 .btn:hover {
-  background: var(--olive-600);
-  border-color: var(--olive-600);
-  color: var(--beige-50);
+  background: var(--brass-300);
+  border-color: var(--brass-300);
+  color: var(--espresso-900);
   --lift: -2px;
 }
 
@@ -66,13 +66,13 @@
 .btn--ghost {
   --btn-bg: transparent;
   --btn-fg: var(--text);
-  --btn-border: var(--border-strong);
+  --btn-border: rgba(122, 94, 51, 0.52);
 }
 
 .btn--ghost:hover {
-  background: rgba(233, 222, 203, 0.07);
-  border-color: var(--brass-400);
-  color: var(--accent);
+  background: rgba(217, 184, 122, 0.16);
+  border-color: var(--brass-600);
+  color: var(--espresso-900);
 }
 
 .btn--outline-dark {
