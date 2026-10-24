@@ -571,7 +571,7 @@ class Builder:
             description=("Yem's : souliers, ceintures et portefeuilles cousus à la main à "
                          "Cotonou. Point sellier, cuir pleine fleur, semelle ressemelable. "
                          "Sélection disponible à Cotonou, sur-mesure en 15 jours, livré au Bénin et en Côte d'Ivoire."),
-            og_title="Yem's. Des détails qui font la différence.",
+            og_title="Yem's. Le détail fait la différence.",
             # L'aperçu de partage montrait une photo qui n'appartenait pas à
             # l'atelier. Il n'y en a plus tant qu'une vraie n'aura pas été prise :
             # mieux vaut aucune vignette qu'une vignette empruntée.

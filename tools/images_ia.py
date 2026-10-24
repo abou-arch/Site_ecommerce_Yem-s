@@ -43,6 +43,10 @@ CAMPAGNE = {
     "hero-yems-avatar-portrait-v1.webp": ("hero-accueil-portrait", (941, 720, 480)),
     "atelier-yems-couture-v1.png":  ("atelier-couture", (1200, 800, 500)),
     "hero-yems-atelier-v1.png":     ("atelier-etabli",  (1200, 800, 500)),
+    # Le bloc atelier de l'accueil occupe la moitié de l'écran sur ordinateur
+    # et toute la largeur sur téléphone : il lui faut la largeur d'origine
+    # pour un écran à 2x, et 500 px pour un téléphone d'entrée de gamme.
+    "atelier-yems-geste-v1.webp":   ("atelier-geste",   (1536, 1200, 800, 500)),
 }
 
 

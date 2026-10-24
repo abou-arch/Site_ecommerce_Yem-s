@@ -61,6 +61,21 @@
   color: var(--espresso-900);
 }
 
+/* Laiton plein : l'action principale d'un fond sombre (hero, bloc atelier).
+   Le bouton espresso par défaut y disparaissait, sombre sur sombre. Au
+   survol il passe à l'ivoire, puisqu'il est déjà laiton. */
+.btn--laiton {
+  --btn-bg: var(--brass-300);
+  --btn-fg: var(--espresso-900);
+  --btn-border: var(--brass-300);
+}
+
+.btn--laiton:hover {
+  background: var(--blanc);
+  border-color: var(--blanc);
+  color: var(--espresso-900);
+}
+
 .btn svg { width: 15px; height: 15px; flex: none; }
 
 .btn--ghost {
@@ -858,6 +873,8 @@
    ========================================================================== */
 .header,
 .hero-edito,
+.preuves,
+.geste,
 .about-hero,
 .footer,
 .mobile-menu,
@@ -940,7 +957,6 @@
 .marquee,
 .bespoke,
 .bespoke__panel,
-.marque__inner,
 .auth-card,
 .offer--featured,
 .cfg-card,

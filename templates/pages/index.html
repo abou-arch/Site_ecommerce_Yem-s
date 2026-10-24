@@ -19,6 +19,13 @@
      9/16 y demanderait 1 364 px de haut, et plafonné il couperait les
      souliers. C'est le <source media> qui décide, donc le fichier large n'est
      même pas téléchargé sur un téléphone.
+
+     LA COMPOSITION DE LA MAQUETTE « SABINA » (livrables/yems-refonte-sabina).
+     Un grand titre éditorial, une seule action pleine, et rien d'autre sur
+     l'image : la typographie ample derrière le mannequin et la mention
+     verticale de la marge sont parties, le titre porte seul le poids
+     typographique. La note « Fabriqué ou choisi » a rejoint le bandeau des
+     engagements, juste sous l'image.
      ═══════════════════════════════════════════════════════════════ -->
 <section class="hero-edito" id="hero">
   <div class="hero-edito__media">
@@ -49,22 +56,17 @@
     {{visuel_ia}}
   </div>
 
-  <!-- La typographie ample derrière le mannequin. Purement décorative :
-       le nom de la maison est déjà lu par le logo et par le <title>. -->
-  <span class="hero-edito__display" aria-hidden="true">YEM&rsquo;S</span>
-
   <div class="container container--wide hero-edito__inner">
     <div class="hero-edito__copy">
       <span class="eyebrow" data-reveal>Atelier de Cotonou &middot; Bénin</span>
-      <!-- L'accroche longue (« Personne ne verra la couture… ») tenait quatre
-           lignes et repoussait tout le hero vers le bas, surtout sur
-           téléphone. Elle n'est pas perdue : elle ouvre maintenant about-us.
-           Ici, la formule courte de la maquette, qui dit la même chose en
-           deux lignes et reprend le slogan de la maison.
+      <!-- La formule de la maquette : la même idée que « Des détails qui
+           font la différence », en deux lignes plus courtes, ce qui permet
+           au titre de prendre l'échelle d'une affiche sans pousser le reste
+           du hero sous la ligne de flottaison.
            Le <br> sépare les lignes pour motion.js, qui les fait monter l'une
            après l'autre. -->
       <h1 data-lines>
-        Des détails qui font<br>
+        Le détail fait<br>
         <span class="italic-accent">la différence</span>.
       </h1>
       <p class="lede" data-reveal style="--reveal-delay:60ms">
@@ -73,8 +75,10 @@
         deux cas, on en répond.
       </p>
 
+      <!-- Le laiton plein : sur l'espresso, le bouton sombre par défaut ne se
+           détachait plus de l'image. -->
       <div class="hero-edito__actions" data-reveal style="--reveal-delay:120ms">
-        <a class="btn" href="{{base}}boutique.html">
+        <a class="btn btn--laiton" href="{{base}}boutique.html">
           Découvrir les modèles
           <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
         </a>
@@ -83,26 +87,31 @@
           <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
         </a>
       </div>
-
-      <p class="hero-edito__note" data-reveal style="--reveal-delay:180ms">
-        <strong>Fabriqué ou choisi :</strong> l'origine est écrite sur chaque
-        pièce, au-dessus du prix.
-      </p>
     </div>
   </div>
-
-  <span class="hero-edito__side" aria-hidden="true">Cuir &middot; couture &middot; caractère</span>
 </section>
 
-<!-- Le bandeau de réassurance (48 h / 1 an / à vie / 0 F) a été retiré du
-     hero à la demande d'Abou : il barrait le bas de l'image et coupait le
-     mannequin aux genoux.
+<!-- ═══════════════════════════════════════════════════════════════
+     LES ENGAGEMENTS — sous l'image, jamais dessus
+     Le bandeau de réassurance avait été retiré du hero à la demande
+     d'Abou : posé sur l'image, il barrait le bas du visuel et coupait le
+     mannequin aux genoux. Celui-ci vient APRÈS le hero, sur son propre
+     fond : l'image reste entière, et le bas du hero se fond dans lui.
 
-     Les quatre informations qu'il portait ne sont PAS perdues : les délais,
-     l'échange d'un an et le ressemelage à vie sont développés sur
-     about-us.html (« Nos engagements »), et « rien à payer d'avance » est
-     répété dans le pied de page de chaque page. Elles ne sont simplement
-     plus sur l'accueil. -->
+     Trois phrases qui ne promettent rien de plus que le catalogue : elles
+     reprennent site.origines de data/products.json (l'origine écrite sur
+     chaque pièce, la sélection contrôlée à la réception et numérotée).
+     Les délais et garanties chiffrés restent sous les pièces, plus bas.
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="preuves">
+  <div class="container container--wide">
+    <ul class="preuves__liste" aria-label="Les engagements Yem's">
+      <li><span class="preuves__num" aria-hidden="true">01</span>Fabriqué ou choisi, toujours indiqué</li>
+      <li><span class="preuves__num" aria-hidden="true">02</span>Chaque paire de la sélection contrôlée et numérotée</li>
+      <li><span class="preuves__num" aria-hidden="true">03</span>Une maison basée à Cotonou</li>
+    </ul>
+  </div>
+</div>
 
 
 <!-- ═══════════════════════════════════════════════════════════════
@@ -113,7 +122,7 @@
     <div class="section-head section-head--split" data-reveal>
       <div>
         <span class="eyebrow">La sélection Yem's</span>
-        <h2 data-lines style="margin-top:var(--sp-4)">Trouvez votre allure.</h2>
+        <h2 class="titre-ample" data-lines style="margin-top:var(--sp-4)">Trouvez<br><span class="italic-accent">votre allure.</span></h2>
       </div>
       <div class="vitrine__aside">
         <p class="lede" style="max-width:40ch">
@@ -173,6 +182,58 @@
     <path class="seam__thread" mask="url(#seam-a)" d="M0 40 C 300 40, 380 126, 720 126 S 1140 40, 1440 40"/>
   </svg>
 </div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     LE GESTE — l'atelier, image et texte bord à bord
+     Il remplace le panneau de marque arrondi : sur la maquette, l'atelier
+     n'est plus une carte posée dans la page mais une bande pleine, l'image
+     d'un côté, l'espresso de l'autre. Le récit des deux lignes, que ce
+     panneau portait, est passé au bloc « La maison » en bas de page.
+
+     Visuel de proposition, à valider avant publication : comme les autres
+     visuels de campagne, il est généré. tools/images_ia.py en tire quatre
+     largeurs (table CAMPAGNE) ; la source n'est jamais servie.
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="geste" id="atelier">
+  <figure class="geste__visuel" data-shot>
+    <picture>
+      <source type="image/webp"
+              sizes="(max-width: 899px) 100vw, 53vw"
+              srcset="{{base}}assets/img/atelier-geste-500.webp 500w,
+                      {{base}}assets/img/atelier-geste-800.webp 800w,
+                      {{base}}assets/img/atelier-geste-1200.webp 1200w,
+                      {{base}}assets/img/atelier-geste.webp 1536w">
+      <img src="{{base}}assets/img/atelier-geste-800.jpg"
+           sizes="(max-width: 899px) 100vw, 53vw"
+           srcset="{{base}}assets/img/atelier-geste-500.jpg 500w,
+                   {{base}}assets/img/atelier-geste-800.jpg 800w,
+                   {{base}}assets/img/atelier-geste-1200.jpg 1200w,
+                   {{base}}assets/img/atelier-geste.jpg 1536w"
+           width="1536" height="1024" loading="lazy" decoding="async"
+           alt="Un artisan coud à la main un mocassin en cuir brun sur son établi">
+    </picture>
+    {{visuel_ia}}
+  </figure>
+
+  <div class="geste__copy" data-reveal style="--reveal-delay:100ms">
+    <span class="eyebrow">Le geste, à Cotonou</span>
+    <h2 class="titre-ample" data-lines style="margin-top:var(--sp-4)">
+      Une paire se construit<br>point après <span class="italic-accent">point</span>.
+    </h2>
+    <!-- La première phrase est celle de la page atelier (a-venir.html) :
+         la ligne de l'atelier est en préparation, le texte ne dit pas
+         qu'elle est en vente. -->
+    <p>
+      À Cotonou, notre atelier façonne une ligne de souliers et de
+      maroquinerie. Les mains choisissent le cuir, guident le fil et soignent
+      les finitions : c'est dans ces détails que se joue la différence.
+    </p>
+    <a class="btn btn--laiton" href="{{base}}a-venir.html">
+      Entrer dans l'atelier
+      <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
+    </a>
+  </div>
+</section>
 
 <!-- ═══════════════════════════════════════════════════════════════
      SUR-MESURE — version courte. Les quatre étapes détaillées vivent
@@ -258,50 +319,6 @@
   </div>
 </section>
 
-<!-- ═══════════════════════════════════════════════════════════════
-     BLOC DE MARQUE — la porte vers « About us »
-     ═══════════════════════════════════════════════════════════════ -->
-<section class="section marque" id="maison">
-  <div class="container container--wide">
-    <div class="marque__inner">
-      <figure class="marque__visuel pshot" data-shot>
-        <picture>
-          <source type="image/webp"
-                  sizes="(max-width: 900px) 92vw, 46vw"
-                  srcset="{{base}}assets/img/atelier-couture-500.webp 500w,
-                          {{base}}assets/img/atelier-couture-800.webp 800w,
-                          {{base}}assets/img/atelier-couture.webp 1200w">
-          <img src="{{base}}assets/img/atelier-couture-800.jpg"
-               sizes="(max-width: 900px) 92vw, 46vw"
-               srcset="{{base}}assets/img/atelier-couture-500.jpg 500w,
-                       {{base}}assets/img/atelier-couture-800.jpg 800w,
-                       {{base}}assets/img/atelier-couture.jpg 1200w"
-               width="1200" height="800" loading="lazy" decoding="async"
-               alt="Deux mains cousant à la main l'empeigne d'un soulier de cuir brun sur un établi">
-        </picture>
-        {{visuel_ia}}
-      </figure>
-
-      <div class="marque__copy" data-reveal style="--reveal-delay:100ms">
-        <span class="eyebrow">La maison Yem's</span>
-        <h2 data-lines style="margin-top:var(--sp-4)">
-          Une vision du soulier,<br>façonnée par <span class="italic-accent">le détail</span>.
-        </h2>
-        <p style="margin-top:var(--sp-4)">
-          De l'atelier à la sélection, Yem's défend une allure singulière et une
-          attention sincère portée à chaque paire. Ce que nous fabriquons et ce
-          que nous choisissons ne portent pas les mêmes garanties — et nous
-          écrivons lesquelles, avant l'achat.
-        </p>
-        <a class="link-underline" href="{{base}}about-us.html" style="margin-top:var(--sp-5)">
-          Découvrir la maison
-          <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
-        </a>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- Le fil se coud au fil du scroll -->
 <div class="seam" data-seam aria-hidden="true">
   <svg viewBox="0 0 1440 160" preserveAspectRatio="none">
@@ -315,27 +332,44 @@
 </div>
 
 <!-- ═══════════════════════════════════════════════════════════════
-     CTA FINAL
+     LA MAISON — la porte vers « About us »
+     Il reprend le propos de l'ancien panneau de marque (deux lignes, deux
+     garanties, écrites avant l'achat) et remplace le CTA final : ses deux
+     actions existaient déjà plus haut (« Composer ma paire ») et dans le
+     pied de page (WhatsApp). Les trois portes de sortie de la page sont
+     réunies ici, en liens simples, comme sur la maquette.
      ═══════════════════════════════════════════════════════════════ -->
-<section class="section cta grain" id="contact">
-  <div class="container">
-    <span class="eyebrow eyebrow--center" data-reveal>La suite</span>
-    <h2 data-lines style="margin-top:var(--sp-4)">
-      Deux minutes pour composer.<br><span class="italic-accent">Quinze jours</span> pour la porter.
-    </h2>
-    <p class="lede mx-auto text-center" style="margin-top:var(--sp-5)" data-reveal>
-      Configurer ne coûte rien, recevoir le chiffrage non plus, et rien n'est engagé
-      tant que l'atelier n'a pas confirmé la date. Allez voir ce que ça donne.
-    </p>
-    <div class="cta__actions" data-reveal>
-      <a class="btn" href="{{base}}configurateur.html">
-        Configurer ma paire
-        <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
-      </a>
-      <a class="btn btn--ghost" href="https://wa.me/{{whatsapp}}?text=Bonjour%2C%20j'ai%20une%20question%20sur%20vos%20chaussures." target="_blank" rel="noopener">
-        <svg aria-hidden="true"><use href="#i-whatsapp"></use></svg>
-        Écrire sur WhatsApp
-      </a>
+<section class="section maison" id="maison">
+  <div class="container container--wide">
+    <span class="eyebrow" data-reveal>La maison Yem's</span>
+    <div class="maison__corps" data-reveal>
+      <h2 class="titre-ample" data-lines>Deux origines.<br><span class="italic-accent">Une seule exigence.</span></h2>
+      <p>
+        De l'atelier à la sélection, Yem's porte la même attention à chaque
+        paire. Ce que nous fabriquons et ce que nous choisissons ne portent
+        pas les mêmes garanties — et nous écrivons lesquelles, avant l'achat.
+      </p>
     </div>
+
+    <ul class="maison__liens" data-reveal>
+      <li>
+        <a href="{{base}}about-us.html">
+          Notre histoire
+          <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
+        </a>
+      </li>
+      <li>
+        <a href="{{base}}service-client.html">
+          Conseils &amp; service client
+          <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
+        </a>
+      </li>
+      <li>
+        <a href="https://wa.me/{{whatsapp}}?text=Bonjour%2C%20j'ai%20une%20question%20sur%20vos%20chaussures." target="_blank" rel="noopener">
+          Écrire à l'atelier
+          <svg aria-hidden="true"><use href="#i-whatsapp"></use></svg>
+        </a>
+      </li>
+    </ul>
   </div>
 </section>

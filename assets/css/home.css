@@ -5,15 +5,15 @@
 /* --------------------------------------------------------------------------
    HERO ÉDITORIAL
    --------------------------------------------------------------------------
-   Grande image pleine, navigation posée dedans, typographie ample derrière le
-   mannequin, bandeau de réassurance en pied. La composition vient de la
-   template de référence ; les proportions sont calées sur notre visuel, où le
-   sujet occupe le tiers droit et laisse les deux tiers gauches au texte.
+   Grande image pleine, navigation posée dedans, un grand titre éditorial et
+   une seule action pleine. La composition vient de la maquette « Sabina »
+   (livrables/yems-refonte-sabina) ; les proportions sont calées sur notre
+   visuel, où le sujet occupe le tiers droit et laisse les deux tiers gauches
+   au texte.
 
-   Deux rangées de grille : le bloc de texte prend la hauteur disponible et se
-   centre dedans, le bandeau se pose en bas. Le tout en flux normal — le
-   bandeau n'est PAS en position absolue, sinon il chevauche le texte dès que
-   la fenêtre se raccourcit.
+   Rien d'autre ne se pose sur l'image. Les engagements forment un bandeau
+   à part, SOUS le hero (.preuves) : posé dessus, un bandeau barrait le bas
+   du visuel et coupait le mannequin aux genoux.
    -------------------------------------------------------------------------- */
 .hero-edito {
   position: relative;
@@ -29,8 +29,8 @@
   align-content: safe center;
   min-height: clamp(600px, 82svh, 820px);
   padding-top: calc(var(--header-h) + var(--sp-7));
-  /* Au moins la hauteur du fondu : sans cela, la derniere ligne de texte
-     se retrouverait sur une crème à 70 %, en beige clair sur beige clair. */
+  /* Au moins la hauteur du fondu : aucune ligne de texte n'entre dans la
+     zone où l'image se dissout. */
   padding-bottom: clamp(80px, 10vh, 112px);
   background-color: var(--espresso-900);
   color: var(--sombre-text);
@@ -85,10 +85,10 @@
 }
 
 /* Deux voiles superposés. Le premier assombrit la gauche, où le texte est
-   posé ; le second ancre le bas, sous le bandeau de réassurance. Le palier à
-   0,56 court jusqu'à 46 % de la largeur, soit un peu au-delà de la colonne de
-   texte : en dessous, la ligne secondaire passerait sous 4,5:1 sur les plans
-   clairs du mur. */
+   posé ; le second ancre le bas, au-dessus du bandeau des engagements. Le
+   palier à 0,56 court jusqu'à 46 % de la largeur, soit un peu au-delà de la
+   colonne de texte : en dessous, la ligne secondaire passerait sous 4,5:1
+   sur les plans clairs du mur. */
 .hero-edito__media::after {
   content: "";
   position: absolute;
@@ -111,25 +111,25 @@
     );
 }
 
-/* LE FONDU VERS LA CRÈME
+/* LE FONDU VERS LE BANDEAU DES ENGAGEMENTS
    ----------------------------------------------------------------------
-   Le hero s'arrêtait net sur la section claire : une ligne horizontale
-   franche entre l'espresso et la crème, juste sous les souliers.
+   Le hero s'arrêtait net sur la section suivante : une ligne horizontale
+   franche juste sous les souliers.
 
    Le fondu est posé sur le BAS DU HERO, pas sur le haut de la section
    suivante. C'est ce qui fait la différence : au bas du hero cohabitent
    l'espresso plein à gauche et le sol éclairé de l'image à droite. Un
-   dégradé posé sur la crème partirait d'une seule couleur et laisserait
+   dégradé posé sur le bandeau partirait d'une seule couleur et laisserait
    une marche visible sur la moitié droite ; posé ici, il dissout ce qui
    se trouve derrière lui, quel qu'il soit.
 
-   Il s'arrête sur --beige-200, qui est exactement la couleur de départ
-   du fond de la vitrine : le raccord est invisible parce que les deux
-   valeurs sont la même.
+   Il s'arrête sur --espresso-900, qui est exactement le fond du bandeau
+   des engagements (.preuves) : le raccord est invisible parce que les
+   deux valeurs sont la même. Seul le filet du bandeau marque la limite.
 
-   z-index 0 : au-dessus de l'image (−2) et de la typographie ample (−1),
-   en dessous du texte (1). Le remplissage bas du hero, plus loin, garantit
-   qu'aucun texte n'entre dans la zone de fondu. */
+   z-index 0 : au-dessus de l'image (−2), en dessous du texte (1). Le
+   remplissage bas du hero, plus haut, garantit qu'aucun texte n'entre dans
+   la zone de fondu. */
 .hero-edito::after {
   content: "";
   position: absolute;
@@ -141,41 +141,24 @@
   pointer-events: none;
   background: linear-gradient(
     to bottom,
-    rgba(233, 222, 203, 0) 0%,
-    rgba(233, 222, 203, 0.28) 45%,
-    rgba(233, 222, 203, 0.72) 78%,
-    var(--beige-200) 100%
+    rgba(20, 16, 13, 0) 0%,
+    rgba(20, 16, 13, 0.36) 45%,
+    rgba(20, 16, 13, 0.78) 78%,
+    var(--espresso-900) 100%
   );
 }
 
 /* La mention « Visuel IA » du hero se pose en haut à droite : en bas, elle
-   tomberait derrière le bandeau de réassurance. */
+   tomberait dans le fondu. */
 .hero-edito__media > .pshot__note {
   top: calc(var(--header-h) + var(--sp-3));
   right: var(--sp-4);
   bottom: auto;
 }
 
-/* LA TYPOGRAPHIE AMPLE DERRIÈRE LE MANNEQUIN
-   Elle est décorative : le nom de la maison est déjà porté par le logo et par
-   le <title>. Opacité basse et pas d'ombre — c'est une texture, pas un titre
-   concurrent. */
-.hero-edito__display {
-  position: absolute;
-  z-index: -1;
-  top: 50%;
-  right: 2%;
-  transform: translateY(-50%);
-  font-family: var(--font-display);
-  font-weight: 400;
-  font-size: clamp(9rem, 20vw, 20rem);
-  line-height: 0.76;
-  letter-spacing: -0.07em;
-  white-space: nowrap;
-  pointer-events: none;
-  user-select: none;
-  color: rgba(244, 237, 226, 0.17);
-}
+/* La typographie ample « YEM'S » derrière le mannequin est partie avec la
+   maquette Sabina : à côté d'un titre à l'échelle d'une affiche, deux
+   grandes masses de lettres se disputaient l'image. */
 
 .hero-edito__inner {
   position: relative;
@@ -183,13 +166,29 @@
   width: 100%;
 }
 
-.hero-edito__copy { max-width: 36rem; }
+/* La colonne s'élargit avec le titre, sans jamais atteindre le mannequin :
+   il commence vers 60 % de la largeur sur un écran de bureau. */
+.hero-edito__copy { max-width: min(46rem, 58%); }
 
+/* LE TITRE À L'ÉCHELLE D'UNE AFFICHE
+   Il ne suit pas l'échelle commune des h1 (--fs-4xl) : c'est le seul titre
+   du site qui doit se lire d'un coup d'œil, à distance, comme sur la
+   maquette. Des paliers fixes plutôt qu'une taille en vw, pour la même
+   raison que dans base.css : chaque largeur a une valeur qu'on a regardée.
+   Téléphone et tablette, plus bas, gardent presque leur taille d'avant. */
 .hero-edito h1 {
   margin-block: var(--sp-4) var(--sp-5);
-  max-width: 15ch;
-  line-height: 1.02;
-  letter-spacing: -0.015em;
+  font-size: 4.75rem;
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+}
+
+@media (min-width: 1280px) {
+  .hero-edito h1 { font-size: 6rem; }
+}
+
+@media (min-width: 1680px) {
+  .hero-edito h1 { font-size: 7rem; }
 }
 
 .hero-edito .lede {
@@ -207,37 +206,9 @@
   margin-top: var(--sp-6);
 }
 
-.hero-edito__note {
-  margin-top: var(--sp-6);
-  font-size: var(--fs-xs);
-  letter-spacing: var(--tracking-wider);
-  text-transform: uppercase;
-  color: rgba(244, 237, 226, 0.74);
-}
-
-.hero-edito__note strong { color: var(--brass-300); font-weight: 500; }
-
-/* Mention verticale dans la marge droite, comme sur la template. Elle
-   disparaît dès qu'il n'y a plus de marge pour l'accueillir. */
-.hero-edito__side {
-  position: absolute;
-  z-index: 1;
-  right: var(--sp-5);
-  bottom: 22%;
-  writing-mode: vertical-rl;
-  transform: rotate(180deg);
-  font-size: var(--fs-xs);
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: rgba(244, 237, 226, 0.62);
-  pointer-events: none;
-}
-
-/* Le bandeau de réassurance (48 h / 1 an / à vie / 0 F) a été retiré : il
-   barrait le bas de l'image et coupait le mannequin aux genoux. Ses quatre
-   informations vivent sur about-us.html et dans le pied de page. Avec lui
-   disparaît le dernier emploi des compteurs (data-count) sur l'accueil ; le
-   geste reste décrit dans motion.js et s'appliquera au prochain chiffre. */
+/* La note « Fabriqué ou choisi » et la mention verticale « Cuir · couture ·
+   caractère » ont quitté l'image : la première ouvre le bandeau des
+   engagements, la seconde n'avait plus de marge où se poser. */
 
 /* --------------------------------------------------------------------------
    HERO ÉDITORIAL — TABLETTE ET TÉLÉPHONE
@@ -301,14 +272,6 @@
     left: var(--sp-3);
   }
 
-  /* La typographie ample ne descend pas sur téléphone.
-     Elle existe pour occuper le vide à côté du mannequin, et le cadrage
-     vertical n'en laisse aucun : où qu'on la pose, elle tombe sur le sujet.
-     Posée bas elle barrait les souliers — sur un site de souliers ; posée
-     haut elle se cognait à la barre de navigation ; posée sous l'image elle
-     recouvrait le surtitre. Le visuel en pied se suffit. */
-  .hero-edito__display { display: none; }
-
   .hero-edito__inner {
     position: relative;
     z-index: 2;
@@ -319,13 +282,18 @@
      Sous la photo, chaque respiration se paie en pixels avant le premier
      soulier : le hero demandait une image et demie d'écran. Les écarts
      passent d'un cran (sp-5 → sp-4), le titre perd ses marges larges. La
-     photo, elle, n'a pas bougé — c'est elle qu'on est venu voir. */
+     photo, elle, n'a pas bougé — c'est elle qu'on est venu voir.
+     Le titre ne gagne que deux pixels sur l'ancien (38 px) : « Le détail
+     fait » tient encore sur une ligne d'un téléphone de 360 px. */
   .hero-edito__copy { max-width: none; }
-  .hero-edito h1 { max-width: 16ch; margin-block: var(--sp-3) var(--sp-4); }
+  .hero-edito h1 {
+    margin-block: var(--sp-3) var(--sp-4);
+    font-size: 2.5rem;
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+  }
   .hero-edito .lede { max-width: 42ch; font-size: var(--fs-base); }
   .hero-edito__actions { gap: var(--sp-4); margin-top: var(--sp-4); }
-  .hero-edito__note { margin-top: var(--sp-4); }
-  .hero-edito__side { display: none; }
 
   /* Pas de fondu ici : sous 900 px, le bas du hero n'est pas l'image mais
      la colonne de texte posée sur l'espresso. Un voile crème la rendrait
@@ -338,7 +306,7 @@
 /* Tablette : le texte a de la place, on la lui donne. La bande d'image et le
    cadrage sont ceux du bloc ci-dessus, c'est-à-dire ceux du visuel paysage. */
 @media (min-width: 620px) and (max-width: 900px) {
-  .hero-edito h1 { max-width: 18ch; }
+  .hero-edito h1 { font-size: 3rem; }
   .hero-edito__copy { max-width: 42rem; }
 }
 
@@ -358,6 +326,56 @@
 
   /* S'il faut rogner, c'est le sol qui part, jamais la tête. */
   .hero-edito__media img { object-position: center top; }
+}
+
+/* --------------------------------------------------------------------------
+   LES ENGAGEMENTS — le bandeau sous le hero
+   --------------------------------------------------------------------------
+   Même espresso que le bas du hero, qui se fond dedans : seul un filet
+   marque la limite. Trois colonnes sur ordinateur, trois lignes serrées sur
+   téléphone — chaque pixel ici repousse le premier soulier, le bandeau ne
+   prend donc que la hauteur de son texte.
+   -------------------------------------------------------------------------- */
+.preuves {
+  background: var(--espresso-900);
+  color: var(--sombre-text);
+}
+
+/* Le filet court sur la largeur du contenu, pas d'un bord à l'autre :
+   il reprend la mesure du hero au lieu de trancher la page. */
+.preuves__liste {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--sp-5);
+  padding-block: var(--sp-5);
+  border-top: 1px solid var(--sombre-border);
+}
+
+.preuves__liste li {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-3);
+  font-size: var(--fs-sm);
+  line-height: 1.4;
+  color: var(--sombre-muted);
+}
+
+.preuves__num {
+  flex: none;
+  font-family: var(--font-display);
+  font-size: var(--fs-lg);
+  line-height: 1;
+  color: var(--brass-300);
+}
+
+@media (max-width: 899px) {
+  .preuves__liste {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--sp-1);
+    padding-block: var(--sp-3) var(--sp-4);
+  }
+  .preuves__liste li { font-size: var(--fs-xs); }
+  .preuves__num { font-size: var(--fs-base); }
 }
 
 /* --------------------------------------------------------------------------
@@ -892,11 +910,15 @@
 .vitrine {
   /* Rapproche le titre des produits du hero sur écran large. */
   padding-top: clamp(2.5rem, 4vw, 4rem);
-  background: linear-gradient(180deg,
-    var(--beige-200) 0%,
-    var(--beige-50) 160px,
-    var(--nuage) 420px);
+  /* L'ivoire de la maquette. Le dégradé qui raccordait la vitrine au fondu
+     crème du hero n'a plus d'objet : c'est le bandeau des engagements qui
+     les sépare. Sur l'ivoire, le plateau nuage de chaque photo se détache. */
+  background: var(--blanc);
 }
+
+/* La couture qui suit la vitrine en garde le fond : sans cela, elle
+   dessinerait une marche nuage entre l'ivoire et le bloc atelier. */
+.vitrine + .seam { background: var(--blanc); }
 
 .vitrine__aside {
   display: flex;
@@ -919,6 +941,63 @@
 
 @media (min-width: 1060px) {
   .vitrine__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+/* LA FLÈCHE DES VIGNETTES — le repère de la maquette, sur l'accueil seul.
+   Un carré ivoire au coin de la photo dit « ouvrir » sans un mot. Il est
+   purement décoratif : la photo est déjà un lien nommé (« Découvrir … »),
+   la flèche est donc dessinée en CSS et jamais lue. La carte elle-même ne
+   change pas : c'est celle de la boutique, d'une page à l'autre. */
+.vitrine__grid .pshot::after {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  right: var(--sp-3);
+  bottom: var(--sp-3);
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--radius-sm);
+  background: var(--blanc) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2314100D' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7 17 17 7M9 7h8v8'/%3E%3C/svg%3E") center / 16px no-repeat;
+  transition: background-color var(--dur) var(--ease);
+}
+
+.vitrine__grid .pcard:hover .pshot::after,
+.vitrine__grid .pcard:focus-within .pshot::after { background-color: var(--brass-300); }
+
+@media (max-width: 560px) {
+  .vitrine__grid .pshot::after {
+    right: var(--sp-2);
+    bottom: var(--sp-2);
+    width: 2rem;
+    height: 2rem;
+    background-size: 14px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   LES GRANDS TITRES DE L'ACCUEIL
+   --------------------------------------------------------------------------
+   La sélection, l'atelier et la maison ouvrent sur un titre plus ample que
+   l'échelle commune des h2 : c'est l'écart avec le texte qui donne à la
+   page son allure éditoriale. Des paliers fixes, comme dans base.css ; le
+   téléphone ne gagne que huit pixels sur un h2 ordinaire.
+   -------------------------------------------------------------------------- */
+.titre-ample {
+  font-size: 2.375rem;
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+}
+
+@media (min-width: 900px) {
+  .titre-ample {
+    font-size: 4.25rem;
+    line-height: 1;
+    letter-spacing: -0.035em;
+  }
+}
+
+@media (min-width: 1440px) {
+  .titre-ample { font-size: 5.25rem; }
 }
 
 /* --------------------------------------------------------------------------
@@ -1040,43 +1119,144 @@
 }
 
 /* --------------------------------------------------------------------------
-   BLOC DE MARQUE — la porte vers « About us »
+   LE GESTE — le bloc atelier
    --------------------------------------------------------------------------
-   Un panneau espresso posé au milieu de la page claire : c'est le seul grand
-   aplat sombre du corps de page, et il sert de respiration entre la vitrine
-   et le pied de page.
-   -------------------------------------------------------------------------- */
-.marque { background: var(--nuage); }
+   Une bande pleine, bord à bord : l'image à gauche, l'espresso à droite.
+   C'est le seul grand aplat sombre du corps de page, et il sert de
+   respiration entre la vitrine et le sur-mesure. Il remplace le panneau de
+   marque arrondi, qui posait une carte dans la page là où la maquette ouvre
+   une bande.
 
-.marque__inner {
+   Sur ordinateur, l'image remplit sa moitié quelle que soit la hauteur du
+   texte ; sous 900 px, elle repasse au-dessus du texte dans son propre
+   format 3/2, sans rien rogner.
+   -------------------------------------------------------------------------- */
+.geste {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: clamp(1.5rem, 4vw, 3.5rem);
-  align-items: center;
-  padding: clamp(1rem, 2.5vw, 1.75rem);
-  border-radius: var(--radius-lg);
-  background: linear-gradient(118deg, var(--espresso-500), var(--espresso-900));
+  grid-template-columns: minmax(0, 1fr);
+  background: var(--espresso-900);
   color: var(--sombre-text);
 }
 
 @media (min-width: 900px) {
-  .marque__inner { grid-template-columns: minmax(0, 1.04fr) minmax(0, 0.96fr); }
+  .geste {
+    grid-template-columns: minmax(0, 1.12fr) minmax(0, 1fr);
+    min-height: clamp(560px, 72svh, 760px);
+  }
 }
 
-.marque__visuel {
-  --shot-ratio: 3 / 2;
-  border-radius: var(--radius);
-  background: var(--espresso-700);
+.geste__visuel {
+  position: relative;
+  overflow: hidden;
   margin: 0;
+  aspect-ratio: 3 / 2;
+  background: var(--espresso-700);
 }
-
-.marque__copy { max-width: 46ch; padding-block: var(--sp-4); }
-.marque__copy .eyebrow { color: var(--brass-300); }
-.marque__copy p { color: rgba(244, 237, 226, 0.82); }
 
 @media (min-width: 900px) {
-  .marque__copy { padding-inline: var(--sp-4) var(--sp-5); }
+  .geste__visuel { aspect-ratio: auto; }
 }
+
+/* L'image est posée en absolu : la cellule prend la hauteur de la rangée,
+   jamais celle de l'image, et le texte décide seul de la hauteur du bloc. */
+.geste__visuel picture {
+  position: absolute;
+  inset: 0;
+}
+
+.geste__visuel img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Les mains, le fil et le soulier sont dans la moitié droite du visuel :
+     c'est le bord qu'on garde quand la cellule est plus étroite que lui. */
+  object-position: 68% center;
+}
+
+.geste__copy {
+  align-self: center;
+  max-width: 44rem;
+  padding: var(--sp-7) var(--gutter) var(--sp-8);
+}
+
+@media (min-width: 900px) {
+  .geste__copy { padding: var(--sp-8) clamp(3rem, 6vw, 6rem); }
+}
+
+.geste__copy p {
+  max-width: 44ch;
+  margin-block: var(--sp-5) var(--sp-6);
+  color: rgba(244, 237, 226, 0.82);
+}
+
+/* --------------------------------------------------------------------------
+   LA MAISON — la porte vers « About us »
+   --------------------------------------------------------------------------
+   Le titre et son texte face à face, puis les trois sorties de la page en
+   liens pleine largeur. Pas de bouton : arrivé ici, le visiteur a vu les
+   pièces ; il cherche où aller, pas quoi acheter.
+   -------------------------------------------------------------------------- */
+.maison { background: var(--blanc); }
+
+.maison__corps {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--sp-5);
+  margin-top: var(--sp-5);
+}
+
+@media (min-width: 900px) {
+  .maison__corps {
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+    align-items: end;
+    gap: var(--sp-8);
+  }
+}
+
+.maison__corps p {
+  max-width: 44ch;
+  color: var(--text-muted);
+}
+
+.maison__liens {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  margin-top: var(--sp-8);
+  border-top: 1px solid var(--border-strong);
+}
+
+@media (min-width: 760px) {
+  .maison__liens {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: var(--sp-6);
+  }
+}
+
+.maison__liens a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  min-height: 4rem;
+  padding-block: var(--sp-4);
+  border-bottom: 1px solid var(--border-strong);
+  font-family: var(--font-display);
+  font-size: var(--fs-lg);
+  line-height: 1.2;
+  transition: color var(--dur) var(--ease);
+}
+
+.maison__liens svg {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  color: var(--accent);
+  transition: transform 400ms var(--ease);
+}
+
+.maison__liens a:hover { color: var(--accent); }
+.maison__liens a:hover svg { transform: translateX(4px); }
 
 /* ==========================================================================
    ABOUT US

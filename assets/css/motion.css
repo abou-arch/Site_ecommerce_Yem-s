@@ -115,7 +115,7 @@
 
 /* Zoom lent au survol d'une carte produit */
 .pcard .pshot img,
-.marque__visuel img { will-change: transform; }
+.geste__visuel img { will-change: transform; }
 
 /* une fois le volet ouvert, le survol reprend la main sur une durée courte */
 /* clip-path doit rester dans la liste : c'est la transition de l'état « ouvert »

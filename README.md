@@ -84,12 +84,21 @@ L'accueil **ouvre, puis mène aux produits**. Il tenait sept sections de récit
 avant la première vignette ; le récit n'a pas disparu, il a changé d'adresse
 (voir « About us » juste en dessous).
 
-1. **Hero éditorial** — image pleine, navigation dedans, typographie ample
-   derrière le mannequin, bandeau de réassurance en pied (4 chiffres)
-2. **La sélection** — accès rapide au catalogue + 4 vignettes produit
-3. **Sur-mesure** — version courte + aperçu du configurateur avec facture
-4. **Bloc de marque** — panneau espresso, visuel d'atelier, porte vers About us
-5. **CTA final** — configurateur + WhatsApp
+La composition suit la maquette « Sabina » (`livrables/yems-refonte-sabina/`) :
+grand hero éditorial, accès immédiat aux produits, bloc atelier, puis des
+sorties claires.
+
+1. **Hero éditorial** — image pleine, navigation dedans, grand titre, une
+   action laiton (`.btn--laiton`)
+2. **Les engagements** — bandeau espresso sous l'image (jamais dessus), trois
+   phrases tirées de `site.origines`
+3. **La sélection** — accès rapide au catalogue + 4 vignettes produit + ligne
+   de réassurance
+4. **Le geste** — bloc atelier bord à bord, visuel `atelier-geste`, porte vers
+   la page atelier
+5. **Sur-mesure** — version courte + aperçu du configurateur avec facture
+6. **La maison** — deux origines, deux garanties ; liens vers About us, le
+   service client et WhatsApp
 
 ### Sections de « About us »
 
@@ -238,6 +247,7 @@ plusieurs largeurs, déclarées dans la table `CAMPAGNE` :
 | `hero-yems-avatar-portrait-v1.webp` | `hero-accueil-portrait` | 941 / 720 / 480 | 68 / 48 / 27 Ko |
 | `atelier-yems-couture-v1.png` | `atelier-couture` | 1200 / 800 / 500 | 70 / 36 / 16 Ko |
 | `hero-yems-atelier-v1.png` | `atelier-etabli` | 1200 / 800 / 500 | 57 / 29 / 14 Ko |
+| `atelier-yems-geste-v1.webp` | `atelier-geste` | 1536 / 1200 / 800 / 500 | 127 / 82 / 44 / 22 Ko |
 
 Le nom servi ne porte pas le numéro de version : une v8 remplacera la v7 dans
 `CAMPAGNE`, et ni le CSS ni les gabarits n'auront à bouger.
@@ -275,8 +285,8 @@ des photos de la production Yem's, ou n'utiliser ces visuels qu'en interne.
 **Accroche retenue** — « Personne ne verra la couture. Tout le monde verra la différence. »
 Elle ouvre désormais **about-us.html**, pas l'accueil : ses quatre lignes
 repoussaient les produits d'un demi-écran. L'accueil porte la formule courte
-de la maquette, « Des détails qui font la différence », qui dit la même chose
-en deux lignes et reprend le slogan.
+de la maquette Sabina, « Le détail fait la différence », qui dit la même chose
+en deux lignes courtes et reprend le slogan.
 
 Elle est alignée sur le slogan (« Différents par les détails »), porte un conflit
 invisible/visible, couvre toutes les catégories (pas seulement la chaussure) et
