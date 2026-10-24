@@ -52,6 +52,9 @@ course_all.txt
 *.jpeg
 WhatsApp Image*
 .git/
+# Livrables (templates d'inspiration, zips) : hors du dépôt, mais posés dans
+# le dossier local que « npm run deploy » met en ligne tout entier.
+livrables/
 
 # Sources PNG des visuels générés : jamais référencées par les pages,
 # tools/images_ia.py en tire les WebP/JPEG servis.

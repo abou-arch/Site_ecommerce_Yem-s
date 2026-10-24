@@ -8,6 +8,10 @@ course_all.txt
 WhatsApp Image*.jpeg
 WhatsApp Image*.jpg
 
+# Livrables de travail (templates d'inspiration, zips) : un template tiers
+# peut être sous licence, et ce dépôt est public.
+livrables/
+
 # ─── Éditeurs ─────────────────────────────────────────────────────────────
 .vs/
 .vscode/
