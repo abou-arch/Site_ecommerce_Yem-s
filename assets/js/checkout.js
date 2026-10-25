@@ -46,8 +46,8 @@
     if (items.length === 0) {
       list.innerHTML = `
         <div class="empty-state">
-          <p class="display">Rien dans le panier pour l'instant.</p>
-          <p class="text-muted">Votre panier est encore vide. Parcourez les modèles disponibles ou composez une paire à vos mesures.</p>
+          <p class="display">Votre panier est vide pour l'instant.</p>
+          <p class="text-muted">Choisissez un modèle en stock à Cotonou, ou composez une paire à vos mesures.</p>
           <div class="cta__actions" style="margin-top:var(--sp-5)">
             <a class="btn" href="selection.html">Voir la sélection</a>
             <a class="btn btn--ghost" href="configurateur.html">Composer ma paire</a>
@@ -184,11 +184,14 @@
         body: JSON.stringify({ ...data, pay_mode: data.pay_mode || 'delivery', cart: cart() }),
       });
       order = await res.json();
-      if (!res.ok || !order.ok) throw new Error(order.error || 'commande refusée');
+      // Seul le message du serveur est montré : il est écrit pour le client.
+      // Une coupure réseau ou une réponse illisible donnerait sinon « Failed
+      // to fetch » ou « Unexpected token » à quelqu'un qui veut commander.
+      if (!res.ok || !order.ok) throw Object.assign(new Error('commande refusée'), { pourClient: order.error });
     } catch (err) {
       busy = false;
       submit.disabled = false;
-      say(err.message || "La commande n'est pas passée. Réessayez dans un instant, ou écrivez-nous sur WhatsApp : on la prend à la main.", 'error');
+      say(err.pourClient || "La commande n'est pas passée. Réessayez dans un instant, ou écrivez-nous sur WhatsApp : on la prend à la main.", 'error');
       return;
     }
 

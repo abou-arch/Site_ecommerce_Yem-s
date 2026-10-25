@@ -50,7 +50,7 @@
 </noscript>
 
 <link rel="stylesheet" href="assets/css/base.css?v=ca22e37b">
-<link rel="stylesheet" href="assets/css/components.css?v=d8f20318">
+<link rel="stylesheet" href="assets/css/components.css?v=5d427329">
 <link rel="stylesheet" href="assets/css/home.css?v=14e23459">
 <link rel="stylesheet" href="assets/css/shop.css?v=4e02e4a4">
 <link rel="stylesheet" href="assets/css/motion.css?v=c64779f2">
@@ -179,7 +179,7 @@
   <a href="configurateur.html">Le sur-mesure</a>
   <a href="about-us.html">About us</a>
   <a href="service-client.html">Service client</a>
-  <a class="btn" href="configurateur.html" style="margin-top:auto">Configurer ma paire</a>
+  <a class="btn" href="configurateur.html" style="margin-top:auto">Composer ma paire</a>
 </div>
 
 <main id="main">
@@ -305,15 +305,19 @@
      ═══════════════════════════════════════════════════════════════ -->
 <section class="section vitrine" id="selection">
   <div class="container container--wide">
+    <!-- « La sélection » est le nom d'une des deux lignes de la maison (les
+         pièces choisies par l'atelier). La vitrine, elle, montrera aussi les
+         pièces de l'atelier : son surtitre ne doit pas reprendre ce nom. Le
+         texte cite les deux mentions exactes portées par les vignettes. -->
     <div class="section-head section-head--split" data-reveal>
       <div>
-        <span class="eyebrow">La sélection Yem's</span>
+        <span class="eyebrow">En vitrine</span>
         <h2 class="titre-ample" data-lines style="margin-top:var(--sp-4)">Trouvez<br><span class="italic-accent">votre allure.</span></h2>
       </div>
       <div class="vitrine__aside">
         <p class="lede" style="max-width:40ch">
-          Des paires choisies pour vous accompagner, avec le détail qui change
-          tout. L'origine de chaque pièce est indiquée au-dessus du prix.
+          Les modèles du moment. Au-dessus de chaque prix, son origine :
+          « Fabriqué à Cotonou » ou « Choisi par l'atelier ».
         </p>
         <a class="link-underline" href="boutique.html">
           Tout le catalogue
@@ -338,7 +342,7 @@
             <source srcset="assets/img/loafer-marine-ai-500.webp 500w, assets/img/loafer-marine-ai.webp 1000w" sizes="(max-width: 560px) 92vw, (max-width: 900px) 46vw, 30vw" type="image/webp">
             <img src="assets/img/loafer-marine-ai.jpg" srcset="assets/img/loafer-marine-ai-500.jpg 500w, assets/img/loafer-marine-ai.jpg 1000w" sizes="(max-width: 560px) 92vw, (max-width: 900px) 46vw, 30vw"
                  width="1000" height="1000" loading="lazy" decoding="async"
-                 alt="Loafer en cuir bleu marine à bandeau, photographié sur une dalle de pierre claire">
+                 alt="Loafer en cuir bleu marine à bandeau, posé sur une dalle de pierre claire">
           </picture>
           </div>
         </a>
@@ -380,7 +384,7 @@
             <source srcset="assets/img/derby-noir-ai-500.webp 500w, assets/img/derby-noir-ai.webp 1000w" sizes="(max-width: 560px) 92vw, (max-width: 900px) 46vw, 30vw" type="image/webp">
             <img src="assets/img/derby-noir-ai.jpg" srcset="assets/img/derby-noir-ai-500.jpg 500w, assets/img/derby-noir-ai.jpg 1000w" sizes="(max-width: 560px) 92vw, (max-width: 900px) 46vw, 30vw"
                  width="1000" height="1000" loading="lazy" decoding="async"
-                 alt="Derby noir à semelle crantée, photographié sur une dalle de pierre claire">
+                 alt="Derby noir à semelle crantée, posé sur une dalle de pierre claire">
           </picture>
           </div>
         </a>
@@ -401,7 +405,7 @@
             <source srcset="assets/img/mocassin-contraste-ai-500.webp 500w, assets/img/mocassin-contraste-ai.webp 1000w" sizes="(max-width: 560px) 92vw, (max-width: 900px) 46vw, 30vw" type="image/webp">
             <img src="assets/img/mocassin-contraste-ai.jpg" srcset="assets/img/mocassin-contraste-ai-500.jpg 500w, assets/img/mocassin-contraste-ai.jpg 1000w" sizes="(max-width: 560px) 92vw, (max-width: 900px) 46vw, 30vw"
                  width="1000" height="1000" loading="lazy" decoding="async"
-                 alt="Mocassin noir et blanc à semelle crantée, photographié sur une dalle de pierre claire">
+                 alt="Mocassin noir et blanc à semelle crantée, posé sur une dalle de pierre claire">
           </picture>
           </div>
         </a>
@@ -421,7 +425,7 @@
          la page. Chacun dit de quelle ligne il parle — la garantie n'est pas
          la même sur l'atelier et sur la sélection. -->
     <p class="reassurance" data-reveal>
-      <span>Livré en 48&nbsp;h à Cotonou &amp; Abidjan</span>
+      <span>Livraison 48&nbsp;h à Cotonou &amp; Abidjan</span>
       <span>Échange un an sur la sélection</span>
       <span>Ressemelage à vie sur l'atelier</span>
       <span>Rien à payer d'avance</span>
@@ -429,7 +433,7 @@
 
     <div class="text-center" style="margin-top:var(--sp-7)">
       <a class="btn btn--ghost" href="boutique.html">
-        Voir tous les produits
+        Voir tout le catalogue
         <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
       </a>
     </div>
@@ -537,7 +541,7 @@
     <!-- Aperçu du configurateur -->
     <div class="bespoke__panel" data-reveal style="--reveal-delay:140ms">
       <div style="display:flex;align-items:center;justify-content:space-between;gap:var(--sp-4);margin-bottom:var(--sp-5)">
-        <span class="badge badge--brass"><span class="badge__dot"></span>Aperçu configurateur</span>
+        <span class="badge badge--brass"><span class="badge__dot"></span>Aperçu du configurateur</span>
         <span class="text-muted" style="font-size:var(--fs-xs)">Réf. YMS-2609-0142</span>
       </div>
 
@@ -576,9 +580,12 @@
         <span class="offer__price" style="font-size:var(--fs-xl)" data-apercu-total>172 000 F</span>
       </div>
 
+      <!-- Le bouton disait « Envoyer à l'atelier », icône WhatsApp à l'appui,
+           et ouvrait le configurateur : rien n'était envoyé. Il dit
+           maintenant ce qu'il fait. -->
       <a class="btn btn--ghost btn--full" href="configurateur.html" style="margin-top:var(--sp-5)">
-        <svg aria-hidden="true"><use href="#i-whatsapp"></use></svg>
-        Envoyer à l'atelier
+        Ouvrir le configurateur
+        <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
       </a>
     </div>
   </div>
@@ -696,8 +703,12 @@
         <ul class="footer__list">
           <li><a href="about-us.html">About us</a></li>
           <li><a href="about-us.html#manifeste">Notre savoir-faire</a></li>
-          <li><a href="about-us.html#garantie">Garantie satisfaction</a></li>
-          <li><a href="about-us.html#offres">Nos offres</a></li>
+          <!-- « Garantie satisfaction » laissait entendre « satisfait ou
+               remboursé » sur tout. La section liée s'appelle « Nos
+               engagements » et détaille des garanties qui changent d'une
+               ligne à l'autre : le lien dit ce qu'on y trouve. -->
+          <li><a href="about-us.html#garantie">Nos garanties</a></li>
+          <li><a href="about-us.html#offres">Trois façons d'acheter</a></li>
           <li><a href="about-us.html#questions">Questions fréquentes</a></li>
         </ul>
       </div>
@@ -707,7 +718,7 @@
         <ul class="footer__list">
           <li>Cotonou, Bénin</li>
           <li>Abidjan, Côte d'Ivoire</li>
-          <li><a href="https://wa.me/2290191380234" target="_blank" rel="noopener">WhatsApp atelier</a></li>
+          <li><a href="https://wa.me/2290191380234" target="_blank" rel="noopener">WhatsApp de l'atelier</a></li>
           <li>Du lundi au samedi, 8 h – 19 h</li>
         </ul>
         <!-- Liste générée depuis data/products.json selon PAYMENT_MODE.
@@ -736,7 +747,7 @@
         <a href="donnees-personnelles.html">Données personnelles</a>
         <a href="conditions-utilisation.html">Conditions d'utilisation</a>
       </nav>
-      <span>Réglé à la livraison ou par Mobile Money, convenu avec l'atelier</span>
+      <span>Paiement à la livraison ou par Mobile Money, convenu avec l'atelier</span>
     </div>
   </div>
 </footer>

@@ -793,50 +793,6 @@
   .footer__grid { grid-template-columns: minmax(0, 1fr); }
 }
 
-/* --------------------------------------------------------------------------
-   BANDEAU DÉFILANT (marquee)
-   -------------------------------------------------------------------------- */
-.marquee {
-  overflow: hidden;
-  border-block: 1px solid var(--border);
-  padding-block: var(--sp-4);
-  background: var(--espresso-800);
-  -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
-          mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
-}
-
-.marquee__track {
-  display: flex;
-  align-items: center;
-  gap: var(--sp-7);
-  width: max-content;
-  animation: marquee 34s linear infinite;
-}
-
-.marquee:hover .marquee__track { animation-play-state: paused; }
-
-.marquee__item {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--sp-4);
-  font-family: var(--font-display);
-  font-size: var(--fs-lg);
-  color: var(--text-muted);
-  white-space: nowrap;
-}
-
-.marquee__item::after {
-  content: "";
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: var(--brass-500);
-}
-
-@keyframes marquee {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
-}
 
 /* Liens légaux du pied de page.
    Ils doivent être trouvables sans être mis en avant : un client les cherche
@@ -944,8 +900,7 @@
    ----------------------------------------------------------------------
    Ces blocs posent un fond espresso au milieu d'une page devenue blanche :
    le récapitulatif de commande, le panneau sur-mesure, la carte du
-   configurateur, le bandeau défilant, l'offre mise en avant, les messages
-   éphémères.
+   configurateur, l'offre mise en avant, les messages éphémères.
 
    Sans cette règle, ils héritaient du --text du corps clair, désormais
    espresso : du texte sombre sur un fond sombre, donc invisible. C'est le
@@ -954,7 +909,6 @@
 
    Ils reçoivent donc la même série de jetons que les ancrages. */
 .summary,
-.marquee,
 .bespoke,
 .bespoke__panel,
 .auth-card,

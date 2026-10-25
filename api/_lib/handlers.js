@@ -69,11 +69,13 @@ export async function createOrder(payload, env) {
   const email = cleanText(payload.email, 160);
   const note = cleanText(payload.note, 500);
 
-  if (name.length < 3) return ko('nom et prénom requis');
-  if (!phone || phone.length < 10) return ko('numéro de téléphone invalide');
-  if (address.length < 5) return ko('adresse de livraison requise');
-  if (city.length < 2) return ko('ville requise');
-  if (!isEmail(email)) return ko('adresse e-mail invalide');
+  // Ces messages s'affichent tels quels sous le bouton de commande : ils
+  // disent au client quoi corriger, pas ce que le serveur a vérifié.
+  if (name.length < 3) return ko('Indiquez votre nom et votre prénom : c\'est à ce nom que la paire sera remise.');
+  if (!phone || phone.length < 10) return ko('Ce numéro de téléphone paraît incomplet. Vérifiez-le : c\'est par lui que l\'atelier vous joindra.');
+  if (address.length < 5) return ko('Indiquez une adresse de livraison : quartier, rue ou repère.');
+  if (city.length < 2) return ko('Indiquez la ville de livraison.');
+  if (!isEmail(email)) return ko('Cette adresse e-mail paraît incomplète. Corrigez-la, ou laissez le champ vide : il est facultatif.');
 
   // Les montants sortent d'ici, jamais du panier envoyé par le navigateur.
   // Les corrections de l'atelier sont chargées AVANT le calcul : c'est ce qui

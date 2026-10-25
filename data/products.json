@@ -51,7 +51,7 @@
           "name": "Cognac",
           "hex": "#8C5A3C",
           "price": 0,
-          "note": "Patine chaude, se creuse avec les années"
+          "note": "Patine chaude, fonce avec les années"
         },
         {
           "id": "espresso",
@@ -78,7 +78,7 @@
       "soles": [
         {
           "id": "cuir",
-          "name": "Cuir cousue sur trépointe",
+          "name": "Cuir, cousue sur trépointe",
           "price": 0,
           "note": "Ressemelable à vie, la signature Yem's"
         },
@@ -111,13 +111,15 @@
         "initials": "A. C."
       }
     },
-    "_accordions": "Blocs dépliables communs à toutes les fiches produit.",
+    "_accordions": "Blocs dépliables communs à toutes les fiches produit. Une fiche peut remplacer le texte d'un bloc par le sien : clé « accordions » du produit, même « id » (exemple : l'entretien du daim, sur le Mocassin Tokpa).",
     "accordions": [
       {
+        "id": "entretien",
         "title": "L'entretien",
         "body": "Un coup de brosse après chaque port, une crème nourrissante tous les deux mois, des embauchoirs entre deux sorties. C'est tout. Évitez de sécher un cuir mouillé près d'une source de chaleur : c'est la seule chose qui puisse vraiment l'abîmer."
       },
       {
+        "id": "livraison",
         "title": "Livraison &amp; retours",
         "body": "Cotonou et Abidjan sous 48 h, autres villes du Bénin et de Côte d'Ivoire sous 5 jours. Échange de pointure sous 7 jours, sans frais. Sur le sur-mesure : une retouche offerte après essayage, puis remboursement intégral si le chaussant ne convient toujours pas."
       }
@@ -693,7 +695,7 @@
           "ia": true,
           "w": 1000,
           "h": 1000,
-          "alt": "Derby noir à semelle crantée, photographié sur une dalle de pierre claire"
+          "alt": "Derby noir à semelle crantée, posé sur une dalle de pierre claire"
         }
       ],
       "specs": [
@@ -726,7 +728,7 @@
           "ia": true,
           "w": 1000,
           "h": 1000,
-          "alt": "Mocassin noir et blanc à semelle crantée, photographié sur une dalle de pierre claire"
+          "alt": "Mocassin noir et blanc à semelle crantée, posé sur une dalle de pierre claire"
         }
       ],
       "specs": [
@@ -759,7 +761,7 @@
           "ia": true,
           "w": 1000,
           "h": 1000,
-          "alt": "Derby brun cacao à bout mocassin, photographié sur une dalle de pierre claire"
+          "alt": "Derby brun cacao à bout mocassin, posé sur une dalle de pierre claire"
         }
       ],
       "specs": [
@@ -792,7 +794,7 @@
           "ia": true,
           "w": 1000,
           "h": 1000,
-          "alt": "Loafer en cuir bleu marine à bandeau, photographié sur une dalle de pierre claire"
+          "alt": "Loafer en cuir bleu marine à bandeau, posé sur une dalle de pierre claire"
         }
       ],
       "specs": [
@@ -825,7 +827,7 @@
           "ia": true,
           "w": 1000,
           "h": 1000,
-          "alt": "Bottines Chelsea noires photographiées sur une dalle de pierre claire"
+          "alt": "Bottines Chelsea noires posées sur une dalle de pierre claire"
         }
       ],
       "specs": [
@@ -858,7 +860,7 @@
           "ia": true,
           "w": 1000,
           "h": 1000,
-          "alt": "Richelieu noir brogué à lacets, photographié sur une dalle de pierre claire"
+          "alt": "Richelieu noir brogué à lacets, posé sur une dalle de pierre claire"
         }
       ],
       "specs": [
@@ -942,6 +944,9 @@
           "text": "Ce n'est pas une pièce d'atelier. La semelle est collée, elle ne se ressemelle pas. C'est le compromis d'une chaussure souple qu'on met tous les jours, et c'est pour ça qu'elle coûte la moitié d'un soulier cousu."
         }
       ],
+      "accordions": {
+        "entretien": "Une brosse à daim après chaque port, pour relever le poil. Un spray imperméabilisant avant la saison des pluies. Pas de crème : elle tacherait le daim. S'il est mouillé, laissez-le sécher loin d'une source de chaleur, puis brossez-le une fois sec."
+      },
       "sizes": [
         39,
         40,

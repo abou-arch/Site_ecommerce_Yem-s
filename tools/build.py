@@ -685,7 +685,7 @@ class Builder:
   <div class="container">
     <div class="section-head" data-reveal>
       <span class="eyebrow">{escape(o['nom'])}</span>
-      <h2 style="margin-top:var(--sp-4)">Ce qui se passe<br>avant que vous la receviez</h2>
+      <h2 style="margin-top:var(--sp-4)">Ce qui se passe<br>avant que votre paire arrive</h2>
     </div>
     <div class="grid grid--3" style="margin-top:var(--sp-7)">
 {cartes}
@@ -733,12 +733,12 @@ class Builder:
     <span class="eyebrow eyebrow--center" data-reveal>Rien ne vous va exactement ?</span>
     <h2 style="margin-top:var(--sp-4)" data-reveal>C'est précisément<br>le sur-mesure</h2>
     <p class="lede mx-auto text-center" style="margin-top:var(--sp-5)" data-reveal>
-      Composez en deux minutes, la facture s'affiche à l'écran, l'atelier confirme la
-      date sur WhatsApp. Vous ne payez rien avant cette confirmation.
+      Composez en deux minutes, le prix s'affiche poste par poste, l'atelier
+      confirme la date sur WhatsApp. Vous ne payez rien avant cette confirmation.
     </p>
     <div class="cta__actions" data-reveal>
       <a class="btn" href="configurateur.html">
-        Ouvrir le configurateur
+        Composer ma paire
         <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
       </a>
     </div>
@@ -820,18 +820,29 @@ class Builder:
                          % badge(product["status"], "pshot__badge"))
             thumbs = ""
 
+        # La ligne de la pièce décide de ce que la fiche a le droit de dire :
+        # l'atelier ajuste ce qu'il monte, pas ce qu'il a choisi ailleurs, et
+        # la garantie n'est pas la même (site.origines, section 2 des CGV).
+        atelier = product.get("origine") == "atelier"
+        ligne = ORIGINES.get(product.get("origine", "selection")) or {}
+
         # pointures
         sizes = ""
         if product.get("sizes"):
             buttons = "\n".join(
                 '          <button class="size" type="button" data-size="%d">%d</button>' % (s, s)
                 for s in product["sizes"])
+            aide_pointure = (
+                "Entre deux&nbsp;? Prenez la plus grande, l'atelier ajuste au montage."
+                if atelier else
+                "Entre deux pointures&nbsp;? L'échange de pointure est gratuit sous "
+                "7 jours, si la paire n'a pas été portée à l'extérieur.")
             sizes = f"""        <div class="picker">
           <span class="picker__label">Pointure</span>
           <div class="picker__row">
 {buttons}
           </div>
-          <p class="picker__help">Entre deux&nbsp;? Prenez la plus grande, l'atelier ajuste au montage.</p>
+          <p class="picker__help">{aide_pointure}</p>
         </div>"""
 
         # couleurs
@@ -866,8 +877,13 @@ class Builder:
                 "<p><strong>%s</strong> : %s</p>" % (escape(d["title"]), d["text"])
                 for d in product["details"])
             panels.append(("La construction", body))
+        # Une fiche peut remplacer le texte d'un bloc commun par le sien,
+        # au même identifiant : l'entretien d'un daim n'est pas celui d'un
+        # cuir lisse, et la crème conseillée à l'un tacherait l'autre.
+        propres = product.get("accordions") or {}
         for acc in self.site.get("accordions", []):
-            panels.append((acc["title"], "<p>%s</p>" % acc["body"]))
+            panels.append((acc["title"],
+                           "<p>%s</p>" % propres.get(acc.get("id"), acc["body"])))
 
         details = ""
         if panels:
@@ -892,7 +908,7 @@ class Builder:
         # appel à l'action : sur-mesure seul, ou panier + sur-mesure
         if product.get("bespoke_only"):
             actions = f"""        <a class="btn btn--full" href="{base}configurateur.html">
-          Configurer sur mes mesures
+          Composer ma paire sur-mesure
           <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
         </a>
         <p class="text-muted" style="font-size:var(--fs-sm);margin-top:var(--sp-3)">
@@ -909,22 +925,28 @@ class Builder:
           <svg aria-hidden="true"><use href="#i-bag"></use></svg>
         </button>
         <a class="btn btn--ghost btn--full" href="{base}configurateur.html"
-           style="margin-top:var(--sp-3)">La version sur-mesure</a>"""
+           style="margin-top:var(--sp-3)">Composer ma paire sur-mesure</a>"""
 
         related = [p for p in self.by_category(product["category"])
                    if p["slug"] != product["slug"]][:3]
         related_block = ""
         if related:
+            # « La même construction » n'est vrai que de l'atelier : les pièces
+            # de la sélection viennent de fabricants différents.
+            surtitre, titre, lien = (
+                ("La même construction", "Les autres formes", "Toute la collection")
+                if atelier else
+                ("La sélection", "Les autres modèles", "Toute la sélection"))
             related_block = f"""
 <section class="section section--light">
   <div class="container">
     <div class="section-head section-head--split" data-reveal>
       <div>
-        <span class="eyebrow">La même construction</span>
-        <h2 style="margin-top:var(--sp-4)">Les autres formes</h2>
+        <span class="eyebrow">{surtitre}</span>
+        <h2 style="margin-top:var(--sp-4)">{titre}</h2>
       </div>
       <a class="link-underline" href="{base}{cat['slug']}.html">
-        Toute la collection
+        {lien}
         <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
       </a>
     </div>
@@ -967,7 +989,7 @@ class Builder:
       </dl>
 
       <ul class="product__reassure">
-        <li><svg aria-hidden="true"><use href="#i-shield"></use></svg>1 retouche offerte, puis remboursement intégral</li>
+        <li><svg aria-hidden="true"><use href="#i-shield"></use></svg>{escape(ligne.get('garantie', ''))}</li>
         <li><svg aria-hidden="true"><use href="#i-card"></use></svg>Carte d'authenticité numérotée</li>
         <li><svg aria-hidden="true"><use href="#i-truck"></use></svg>Cotonou &amp; Abidjan en 48 h</li>
       </ul>
@@ -1077,12 +1099,14 @@ class Builder:
             '        <button class="size" type="button" aria-pressed="false" data-id="%d">%d</button>' % (n, n)
             for n in cfg["sizes"])
 
-        def line(key, label):
+        # Les initiales sont facultatives : « À choisir » laissait croire
+        # qu'il fallait en mettre pour commander.
+        def line(key, label, vide="À choisir"):
             return (f'          <div class="spec-row" data-line="{key}" data-empty>'
                     f'<dt>{label}</dt>'
-                    f'<dd><em data-extra></em><span data-value>À choisir</span></dd></div>')
+                    f'<dd><em data-extra></em><span data-value>{vide}</span></dd></div>')
 
-        content = f"""{breadcrumb([("Accueil", "index.html"), ("L'atelier sur-mesure", None)])}
+        content = f"""{breadcrumb([("Accueil", "index.html"), ("Le sur-mesure", None)])}
 
 <section class="section section--top">
   <div class="container">
@@ -1091,7 +1115,7 @@ class Builder:
          dont les caractères sont bien plus larges : le titre tombait en six
          lignes de trois mots. -->
     <div class="section-head section-head--mesure" data-reveal>
-      <span class="eyebrow">L'atelier</span>
+      <span class="eyebrow">Le sur-mesure</span>
       <h1 data-lines>Une paire cousue<br>pour un seul pied au monde.<br>Le vôtre.</h1>
       <p class="lede">
         Six décisions, {cfg['lead_days']}. Chaque choix se voit dans l'aperçu et dans
@@ -1115,7 +1139,7 @@ class Builder:
           <div class="cfg-step__head">
             <span class="cfg-step__num">02</span>
             <h2>Le cuir</h2>
-            <p class="cfg-step__hint">Pleine fleur, tannage végétal. Il foncera et se creusera avec les années, c'est voulu.</p>
+            <p class="cfg-step__hint">Pleine fleur, tannage végétal. Il foncera et se patinera avec les années, c'est voulu.</p>
           </div>
 {leathers}
         </section>
@@ -1174,7 +1198,7 @@ class Builder:
 {line("leather", "Cuir")}
 {line("sole", "Semelle")}
 {line("size", "Pointure")}
-{line("initials", "Initiales")}
+{line("initials", "Initiales", vide="Aucune")}
           </dl>
 
           <div class="cfg-total">
@@ -1187,16 +1211,23 @@ class Builder:
             <svg aria-hidden="true"><use href="#i-bag"></use></svg>
           </button>
 
+          <!-- Un bouton grisé sans explication fait chercher ce qui manque.
+               configurator.js écrit ici les choix qui restent à faire, et
+               retire la ligne quand tout est décidé. -->
+          <p class="cfg-card__foot" data-cfg-manque aria-live="polite">
+            Il reste à choisir : la forme, le cuir, la semelle et la pointure.
+          </p>
+
           <p class="cfg-card__foot">
-            Rien à payer maintenant. L'atelier vous écrit dans la journée pour
+            Rien à payer maintenant. L'atelier vous rappelle dans la journée pour
             confirmer la date, puis vous versez un acompte de {cfg['deposit']}&nbsp;% :
-            Mobile Money MTN ou Moov, Wave, ou en espèces. Le solde à la livraison.
+            Mobile Money MTN, Moov ou Wave, ou espèces à l'atelier. Le solde à la livraison.
           </p>
 
           <ul class="cfg-trust">
             <li><svg aria-hidden="true"><use href="#i-needle"></use></svg>Point sellier main, une retouche offerte</li>
             <li><svg aria-hidden="true"><use href="#i-card"></use></svg>Carte d'authenticité numérotée</li>
-            <li><svg aria-hidden="true"><use href="#i-truck"></use></svg>Livraison 48&nbsp;h après sortie d'atelier</li>
+            <li><svg aria-hidden="true"><use href="#i-truck"></use></svg>Cotonou &amp; Abidjan : 48&nbsp;h après l'atelier</li>
           </ul>
         </div>
       </aside>
@@ -1225,7 +1256,8 @@ class Builder:
             content=content,
             title="Composer sa paire sur-mesure | Yem's",
             description="Composez votre paire sur-mesure : forme, cuir, semelle, pointure "
-                        "et initiales. Prix en direct, %s, acompte %d %% à la commande."
+                        "et initiales. Prix en direct, %s, acompte de %d %% une fois "
+                        "la date confirmée par l'atelier."
                         % (cfg["lead_days"], cfg["deposit"]),
             extra_css=("configurator",),
             extra_js=("configurator",),
@@ -1240,8 +1272,11 @@ class Builder:
 <section class="section section--top">
   <div class="container shop-grid">
     <div>
+      <!-- « Votre sélection » se confondait avec la Sélection, la ligne des
+           pièces choisies par l'atelier. Le surtitre dit plutôt où l'on en
+           est : deux étapes, celle-ci et le formulaire de livraison. -->
       <div class="section-head" data-reveal>
-        <span class="eyebrow">Votre sélection</span>
+        <span class="eyebrow">Étape 1 sur 2</span>
         <h1 class="page-title" data-lines>Votre panier</h1>
       </div>
       <div data-cart-list></div>
@@ -1254,21 +1289,26 @@ class Builder:
           <span>Sous-total</span>
           <span data-cart-subtotal>…</span>
         </div>
+        <!-- Aucune de ces lignes ne promet plus que les CGV : rien n'est
+             prélevé sur le site, les frais hors Bénin et Côte d'Ivoire sont
+             confirmés par l'atelier, et la garantie citée vaut pour toutes
+             les pièces (échange de pointure sous 7 jours, section 9). -->
         <p class="summary__note">
-          Livraison offerte au Bénin et en Côte d'Ivoire. Les frais pour les autres
-          pays s'affichent à l'étape suivante.
+          Livraison offerte au Bénin et en Côte d'Ivoire. Pour un autre pays,
+          l'atelier vous confirme les frais sur WhatsApp avant tout règlement.
         </p>
         <p class="summary__note" data-deposit-notice hidden>
-          Votre panier contient une pièce sur-mesure : seul l'acompte de
-          {self.site['bespoke']['deposit']}&nbsp;% est prélevé maintenant, le solde à la livraison.
+          Votre panier contient une pièce sur-mesure : un acompte de
+          {self.site['bespoke']['deposit']}&nbsp;% vous sera demandé avant sa fabrication, le solde
+          à la livraison. Rien n'est prélevé sur le site.
         </p>
         <a class="btn btn--full" href="checkout.html">
           Passer commande
           <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
         </a>
         <ul class="cfg-trust">
-          <li><svg aria-hidden="true"><use href="#i-shield"></use></svg>1 retouche offerte, puis remboursement intégral</li>
-          <li><svg aria-hidden="true"><use href="#i-card"></use></svg>Rien à payer maintenant, réglé à la remise</li>
+          <li><svg aria-hidden="true"><use href="#i-shield"></use></svg>Échange de pointure sous 7 jours</li>
+          <li><svg aria-hidden="true"><use href="#i-card"></use></svg>Rien à payer à la commande</li>
           <li><svg aria-hidden="true"><use href="#i-truck"></use></svg>Cotonou &amp; Abidjan en 48&nbsp;h</li>
         </ul>
       </div>
@@ -1298,7 +1338,7 @@ class Builder:
   <div class="container shop-grid">
     <div>
       <div class="section-head" data-reveal>
-        <span class="eyebrow">Dernière étape</span>
+        <span class="eyebrow">Étape 2 sur 2</span>
         <h1 class="page-title" data-lines>Où livrons-nous<br>votre commande&nbsp;?</h1>
       </div>
 
@@ -1312,8 +1352,11 @@ class Builder:
         <div class="field-row">
           <label class="field">
             <span>Téléphone</span>
+            <!-- Les numéros béninois ont dix chiffres depuis novembre 2024 :
+                 un exemple à huit chiffres faisait douter du format attendu.
+                 Le serveur accepte les deux (cleanPhone, api/_lib/http.js). -->
             <input name="phone" type="tel" required autocomplete="tel"
-                   placeholder="97 00 00 00">
+                   placeholder="01 97 00 00 00">
             <span class="field__hint">Celui de votre Mobile Money, c'est par là que l'atelier vous joindra.</span>
           </label>
           <label class="field">
@@ -1373,14 +1416,15 @@ class Builder:
             <input type="radio" name="pay_mode" value="transfer">
             <span>
               <strong>Par transfert Mobile Money</strong>
-              L'atelier vous envoie son numéro MTN ou Moov sur WhatsApp.
-              Nécessaire pour le sur-mesure, qui engage la matière.
+              L'atelier vous envoie son numéro MTN MoMo, Moov ou Wave sur
+              WhatsApp. Obligatoire pour le sur-mesure, qui engage la matière.
             </span>
           </label>
 
           <p class="field__hint" data-bespoke-notice hidden>
-            Votre panier contient une pièce sur-mesure : seul le transfert est
-            possible, avec un acompte de {self.site['bespoke']['deposit']}&nbsp;%.
+            Votre panier contient une pièce sur-mesure : le règlement à la
+            livraison n'est pas proposé, car un acompte de
+            {self.site['bespoke']['deposit']}&nbsp;% est demandé avant sa fabrication.
             Le solde se règle à la livraison.
           </p>
         </fieldset>
@@ -1417,7 +1461,7 @@ class Builder:
         </p>
         <ul class="cfg-trust">
           <li><svg aria-hidden="true"><use href="#i-whatsapp"></use></svg>L'atelier vous rappelle dans la journée</li>
-          <li><svg aria-hidden="true"><use href="#i-shield"></use></svg>Remboursement intégral si la paire ne va pas</li>
+          <li><svg aria-hidden="true"><use href="#i-shield"></use></svg>Annulation sans frais avant l'appel de l'atelier</li>
           <li><svg aria-hidden="true"><use href="#i-truck"></use></svg>Cotonou &amp; Abidjan en 48&nbsp;h</li>
         </ul>
       </div>
@@ -1489,8 +1533,8 @@ class Builder:
               + "dans la journée pour confirmer, puis vous réglez au moment où "
               + "on vous remet la paire : espèces ou Mobile Money.",
       transfer: "L'atelier vous écrit sur WhatsApp dans la journée avec son "
-              + "numéro Mobile Money. Le travail commence dès que l'acompte "
-              + "est arrivé."
+              + "numéro Mobile Money. Une pièce en stock part dès le paiement "
+              + "reçu ; une pièce sur-mesure entre en fabrication dès l'acompte reçu."
     }};
 
     var mode = params.get('mode');
@@ -1546,7 +1590,6 @@ class Builder:
 
     <div class="grid grid--3" style="margin-top:var(--sp-7)">
       <article class="card" data-reveal>
-        <span class="card__num">01</span>
         <h2>Les découvrir sur place</h2>
         <p>
           Vous êtes à Cotonou ? Écrivez-nous pour convenir d'un passage et voir
@@ -1575,7 +1618,7 @@ class Builder:
         'Bonjour%2C%20je%20voudrais%20voir%20les%20pi%C3%A8ces%20de%20l%27atelier.'}"
          target="_blank" rel="noopener">
         <svg aria-hidden="true"><use href="#i-whatsapp"></use></svg>
-        Demander des nouvelles à l'atelier
+        Écrire à l'atelier
       </a>
       <a class="btn btn--ghost" href="selection.html">Voir ce qui est disponible</a>
     </div>
@@ -1585,8 +1628,12 @@ class Builder:
         self.page(
             "a-venir.html", content=content, current="a-venir",
             title="Les pièces de l'atelier arrivent | Yem's",
-            description="Découvrez les pièces cousues à la main à Cotonou et contactez "
-                        "l'atelier pour voir les modèles disponibles.",
+            # Elle disait « Découvrez les pièces » sur une page qui n'en montre
+            # aucune : la description d'un résultat de recherche doit dire ce
+            # qu'on trouvera en cliquant.
+            description="La ligne cousue main de l'atelier de Cotonou est en préparation. "
+                        "Écrivez à l'atelier pour voir les pièces de près ou être "
+                        "prévenu de leur mise en ligne.",
         )
 
     def build_shop(self):
@@ -1614,17 +1661,19 @@ class Builder:
 {grid(produits, "", klass="shop-grid", level=3)}
     </div>""")
 
-        n = len(self.products)
-        s = "s" if n > 1 else ""
+        # Pas de nombre de pièces en stock dans le texte : la disponibilité
+        # change depuis l'écran de l'atelier sans reconstruire le site (le
+        # Worker réécrit les pastilles), et un « 7 pièces en stock » figé
+        # finirait par être faux.
         content = f"""<section class="section section--top" id="boutique">
   <div class="container container--wide">
     <div class="section-head" data-reveal>
       <span class="eyebrow">La boutique</span>
       <h1 class="page-title" style="margin-top:var(--sp-3)">Ce qui est disponible<br>aujourd'hui</h1>
       <p class="lede">
-        {n} pièce{s} en stock à Cotonou, expédiée{s} sous 72 h. Chacune indique
-        si nous l'avons fabriquée ou choisie, avant son prix. La ligne cousue
-        main arrive dès qu'elle aura été photographiée chez nous.
+        Les pièces en stock à Cotonou partent sous 72 h. Chacune indique,
+        au-dessus de son prix, si nous l'avons fabriquée ou choisie. La ligne
+        cousue main arrivera dès que nous l'aurons photographiée nous-mêmes.
       </p>
     </div>
 
@@ -1640,7 +1689,7 @@ class Builder:
         Aucune pointure ne vous va&nbsp;? C'est fréquent, et ça se règle.
       </p>
       <a class="btn" href="configurateur.html">
-        Composer ma paire sur mesure
+        Composer ma paire
         <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
       </a>
       <a class="btn btn--ghost" href="a-venir.html" style="margin-left:var(--sp-3)">

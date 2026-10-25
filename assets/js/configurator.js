@@ -106,6 +106,21 @@
       btn.disabled = !ready;
       btn.setAttribute('aria-disabled', String(!ready));
     });
+
+    // et la ligne sous le bouton dit ce qui manque, plutôt que de laisser
+    // deviner pourquoi il reste grisé
+    const manque = [
+      !shape && 'la forme', !leather && 'le cuir',
+      !sole && 'la semelle', !choice.size && 'la pointure',
+    ].filter(Boolean);
+    const aide = $('[data-cfg-manque]');
+    if (aide) {
+      aide.hidden = ready;
+      aide.textContent = ready ? '' : 'Il reste à choisir : '
+        + (manque.length > 1
+          ? manque.slice(0, -1).join(', ') + ' et ' + manque[manque.length - 1]
+          : manque[0]) + '.';
+    }
   }
 
   /* ── sélection d'une option ─────────────────────────────────────────── */

@@ -22,12 +22,12 @@
       <p class="lede" data-reveal style="--reveal-delay:60ms">
         Deux façons de travailler, une seule maison pour en répondre. Ce que
         Yem's sait faire, l'atelier le fabrique. Ce qu'il ne fabrique pas, la
-        maison va le choisir elle-même, l'ouvre et le contrôle. L'origine est
+        maison le choisit elle-même, l'ouvre et le contrôle. L'origine est
         indiquée sur chaque pièce, au-dessus du prix.
       </p>
       <div class="about-hero__actions" data-reveal style="--reveal-delay:120ms">
         <a class="btn" href="{{base}}boutique.html">
-          Découvrir les produits
+          Découvrir les modèles
           <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
         </a>
         <a class="link-underline" href="{{base}}configurateur.html">
@@ -57,29 +57,10 @@
   </div>
 </section>
 
-<!-- ═══════════════════════════════════════════════════════════════
-     BANDEAU DÉFILANT
-     Ces mentions défilent devant chaque visiteur : elles doivent être
-     vraies des DEUX lignes. « Point sellier deux aiguilles » ne l'est
-     que de l'atelier, et le lire au-dessus d'un mocassin choisi serait
-     un mensonge de plus.
-     ═══════════════════════════════════════════════════════════════ -->
-<div class="marquee" aria-hidden="true">
-  <div class="marquee__track">
-    <span class="marquee__item">Chaque pièce numérotée</span>
-    <span class="marquee__item">Contrôlée avant de partir</span>
-    <span class="marquee__item">Cotonou &amp; Abidjan en 48 h</span>
-    <span class="marquee__item">Fabriqué ou choisi, jamais caché</span>
-    <span class="marquee__item">Rien à payer d'avance</span>
-    <span class="marquee__item">On répond de tout ce qu'on vend</span>
-    <span class="marquee__item">Chaque pièce numérotée</span>
-    <span class="marquee__item">Contrôlée avant de partir</span>
-    <span class="marquee__item">Cotonou &amp; Abidjan en 48 h</span>
-    <span class="marquee__item">Fabriqué ou choisi, jamais caché</span>
-    <span class="marquee__item">Rien à payer d'avance</span>
-    <span class="marquee__item">On répond de tout ce qu'on vend</span>
-  </div>
-</div>
+<!-- Le bandeau défilant qui suivait le hero a été retiré : six mentions en
+     boucle, fondues aux deux extrémités, qui traversaient la page sans
+     qu'on puisse les lire en entier. Il était masqué aux lecteurs d'écran ;
+     son retrait n'enlève donc aucune information à personne. -->
 
 <!-- ═══════════════════════════════════════════════════════════════
      RÉCIT : problème externe → interne → philosophique → solution
@@ -240,7 +221,9 @@
       <article class="offer offer--featured" data-reveal>
         <span class="offer__flag">Disponible aujourd'hui</span>
         <h3 class="offer__name">La sélection</h3>
-        <p class="text-muted" style="font-size:var(--fs-sm)">Choisie, contrôlée, chez vous cette semaine.</p>
+        <!-- « Chez vous cette semaine » promettait plus que les CGV :
+             72 h d'expédition, puis 48 h à 5 jours ouvrés selon la ville. -->
+        <p class="text-muted" style="font-size:var(--fs-sm)">Choisie, contrôlée, prête à partir.</p>
         <div class="offer__price">dès 45 000 F<small>en stock à Cotonou</small></div>
         <ul class="offer__list">
           <li><svg aria-hidden="true"><use href="#i-check"></use></svg>Expédiée sous 72 h, pointure standard</li>
@@ -330,15 +313,18 @@
       <div class="step">
         <span class="step__num">4</span>
         <div>
-          <h3>Vous payez quand ça vous arrange</h3>
-          <p>À la commande, ou à la livraison une fois la paire dans vos mains. C'est vous qui décidez, pas nous.</p>
+          <!-- L'étape disait qu'on pouvait tout régler à la livraison : c'est
+               faux sur le sur-mesure, où le configurateur, le panier et le
+               formulaire demandent un acompte avant la fabrication. -->
+          <h3>Vous réglez en deux temps</h3>
+          <p>Un acompte de 50 % une fois la date confirmée, par Mobile Money ou en espèces à l'atelier. Le solde à la livraison, la paire dans vos mains.</p>
         </div>
       </div>
     </div>
 
     <div class="text-center" style="margin-top:var(--sp-7)">
       <a class="btn" href="{{base}}configurateur.html">
-        Ouvrir le configurateur
+        Composer ma paire
         <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
       </a>
     </div>
@@ -402,7 +388,7 @@
         <li>
           <svg aria-hidden="true"><use href="#i-shield"></use></svg>
           <div>
-            <strong>Sur l'atelier : une retouche, puis remboursement</strong>
+            <strong>Sur le sur-mesure : une retouche, puis remboursement</strong>
             <p>Une pièce faite à vos mesures doit vous aller. On reprend le montage une fois. Si ça ne suffit toujours pas, vous récupérez la totalité de votre argent.</p>
           </div>
         </li>
@@ -568,19 +554,26 @@
       <article class="card" data-reveal style="--reveal-delay:90ms">
         <span class="card__num">02</span>
         <h3>Ne payez rien d'avance</h3>
+        <!-- « Pour une paire en stock » : le sur-mesure demande un acompte,
+             et cette carte ne doit pas le faire oublier. -->
         <p>
-          Vous commandez, l'atelier vous rappelle, et vous réglez quand la paire
-          est entre vos mains. Si nous ne tenons pas parole, ça ne vous aura
-          rien coûté.
+          Pour une paire en stock, vous commandez, l'atelier vous rappelle, et
+          vous réglez quand elle est entre vos mains. Si nous ne tenons pas
+          parole, ça ne vous aura rien coûté.
         </p>
       </article>
 
       <article class="card" data-reveal style="--reveal-delay:180ms">
         <span class="card__num">03</span>
         <h3>Changez d'avis</h3>
+        <!-- La carte ne citait que la garantie du sur-mesure. « Changez
+             d'avis » renvoie d'abord au droit de 7 jours, valable sur toutes
+             les pièces (section 10 des CGV). -->
         <p>
-          Une retouche offerte après essayage. Si elle ne suffit pas, vous
-          récupérez la totalité de votre argent. Pas 80 %, pas un avoir.
+          Sept jours après réception pour échanger une pièce non portée à
+          l'extérieur, ou vous la faire rembourser. Sur le sur-mesure, une
+          retouche offerte, puis remboursement intégral si elle ne suffit pas.
+          Pas un avoir : votre argent.
         </p>
       </article>
     </div>
@@ -607,12 +600,12 @@
     </p>
     <div class="cta__actions" data-reveal>
       <a class="btn" href="{{base}}boutique.html">
-        Voir les produits
+        Voir le catalogue
         <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
       </a>
       <a class="btn btn--ghost" href="https://wa.me/{{whatsapp}}?text=Bonjour%2C%20j'ai%20une%20question%20sur%20la%20maison%20Yem's." target="_blank" rel="noopener">
         <svg aria-hidden="true"><use href="#i-whatsapp"></use></svg>
-        Écrire sur WhatsApp
+        Écrire à l'atelier
       </a>
     </div>
   </div>

@@ -59,14 +59,18 @@ function findProduct(slug, corrections = {}) {
   };
 }
 
+/* Les erreurs de ce fichier remontent telles quelles jusqu'au client, sous le
+   bouton de commande : elles disent ce qui bloque et comment s'en sortir. */
+const RETIRER = 'Retirez cette pièce du panier, puis validez à nouveau.';
+
 function priceStandard(item, corrections) {
   const product = findProduct(item.id, corrections);
-  if (!product) return { error: `produit inconnu : ${item.id}` };
+  if (!product) return { error: `Une pièce de votre panier n'est plus au catalogue. ${RETIRER}` };
 
   // Une pièce retirée de la vente ne peut plus entrer au panier, même si le
   // client avait gardé l'onglet ouvert avant le retrait.
   if (product.hidden) {
-    return { error: `${product.name} n'est plus disponible` };
+    return { error: `${product.name} n'est plus disponible. ${RETIRER}` };
   }
 
   /* Une pièce en attente de photos n'a ni fiche, ni vignette, ni prix engagé.
@@ -79,7 +83,7 @@ function priceStandard(item, corrections) {
      côté serveur. C'est la même règle que partout ailleurs ici : le HTML
      propose, le serveur décide. */
   if (product.a_venir) {
-    return { error: `${product.name} n'est pas encore en vente` };
+    return { error: `${product.name} n'est pas encore en vente. ${RETIRER}` };
   }
 
   // Un modèle vendu uniquement sur-mesure ne peut pas entrer au panier
@@ -87,7 +91,7 @@ function priceStandard(item, corrections) {
   // pour les formes qui n'existent que dans le configurateur : le générateur
   // les écarte des pages, le serveur doit les écarter du panier.
   if (product.bespoke_only || product.configurateur_only) {
-    return { error: `${product.name} est disponible en sur-mesure uniquement` };
+    return { error: `${product.name} se commande uniquement en sur-mesure, depuis le configurateur.` };
   }
 
   /* Pointure et teinte ne sont retenues que si elles viennent du catalogue.
@@ -97,14 +101,14 @@ function priceStandard(item, corrections) {
   if (product.sizes?.length) {
     size = Number(item.size);
     if (!product.sizes.includes(size)) {
-      return { error: `pointure indisponible pour ${product.name}` };
+      return { error: `Cette pointure n'existe pas pour ${product.name}. ${RETIRER}` };
     }
   }
 
   let color = null;
   if (product.colors?.length && item.color) {
     color = product.colors.find((c) => c.name === item.color)?.name || null;
-    if (!color) return { error: `teinte inconnue pour ${product.name}` };
+    if (!color) return { error: `Cette couleur n'existe pas pour ${product.name}. ${RETIRER}` };
   }
 
   return {
@@ -128,10 +132,11 @@ function priceBespoke(item) {
   const sole = cfg.soles.find((s) => s.id === spec.sole);
   const size = Number(spec.size);
 
-  if (!shape) return { error: 'forme sur-mesure inconnue' };
-  if (!leather) return { error: 'cuir sur-mesure inconnu' };
-  if (!sole) return { error: 'semelle sur-mesure inconnue' };
-  if (!cfg.sizes.includes(size)) return { error: 'pointure sur-mesure invalide' };
+  // Une seule phrase pour le client : quelle que soit l'option périmée, la
+  // solution est la même.
+  const perime = { error: 'Une option de votre paire sur-mesure n\'existe plus. '
+                        + 'Retirez-la du panier et recomposez-la dans le configurateur.' };
+  if (!shape || !leather || !sole || !cfg.sizes.includes(size)) return perime;
 
   // 4 caractères max, lettres et points : même règle que le champ côté client,
   // revalidée ici parce qu'un champ HTML ne protège rien.
@@ -162,10 +167,11 @@ function priceBespoke(item) {
  */
 export function priceCart(rawCart, corrections = {}) {
   if (!Array.isArray(rawCart) || rawCart.length === 0) {
-    return { error: 'panier vide' };
+    return { error: 'Votre panier est vide : ajoutez une pièce avant de valider.' };
   }
   if (rawCart.length > 40) {
-    return { error: 'panier trop volumineux' };
+    return { error: 'Votre panier dépasse ce qu\'une commande en ligne peut contenir. '
+                  + 'Écrivez-nous sur WhatsApp : on la prend à la main.' };
   }
 
   const items = [];
@@ -174,10 +180,12 @@ export function priceCart(rawCart, corrections = {}) {
   let hasBespoke = false;
 
   for (const raw of rawCart) {
-    if (!raw || typeof raw !== 'object') return { error: 'article invalide' };
+    if (!raw || typeof raw !== 'object') {
+      return { error: 'Une ligne de votre panier est illisible. Videz le panier, puis ajoutez à nouveau vos pièces.' };
+    }
     const qty = Math.floor(Number(raw.qty));
     if (!Number.isFinite(qty) || qty < 1 || qty > 20) {
-      return { error: 'quantité invalide' };
+      return { error: 'Une quantité du panier est hors limites : de 1 à 20 exemplaires par pièce.' };
     }
 
     const isBespoke = Boolean(raw.bespoke) || String(raw.id || '').startsWith('sur-mesure-');

@@ -106,15 +106,17 @@ sorties claires.
 `templates/pages/about-us.html`. C'est la page qui explique.
 
 1. **Hero** — « Deux façons de travailler, une seule maison pour en répondre »
-2. **Bandeau défilant** — preuves vraies des deux lignes
-3. **Récit** (`#manifeste`) — les trois couches de problème + 4 preuves techniques
-4. **Les deux lignes** (`#lignes`) — l'atelier / la sélection
-5. **Trois façons d'acheter** (`#offres`) — sélection / atelier / sur-mesure
-6. **Sur-mesure** (`#sur-mesure`) — les 4 étapes, en détail
-7. **Nos engagements** (`#garantie`) — carte d'authenticité + 4 garanties
-8. **Questions** (`#questions`) — les 6 objections en accordéon
-9. **Preuve** (`#confiance`) — trois moyens de vérifier par soi-même
-10. **CTA final** — produits + WhatsApp
+2. **Récit** (`#manifeste`) — les trois couches de problème + 4 preuves techniques
+3. **Les deux lignes** (`#lignes`) — l'atelier / la sélection
+4. **Trois façons d'acheter** (`#offres`) — sélection / atelier / sur-mesure
+5. **Sur-mesure** (`#sur-mesure`) — les 4 étapes, en détail
+6. **Nos engagements** (`#garantie`) — carte d'authenticité + 4 garanties
+7. **Questions** (`#questions`) — les 6 objections en accordéon
+8. **Preuve** (`#confiance`) — trois moyens de vérifier par soi-même
+9. **CTA final** — produits + WhatsApp
+
+Le bandeau défilant qui suivait le hero (mentions en boucle, fondues aux
+deux extrémités) a été retiré.
 
 Les ancres sont celles que le pied de page employait du temps où ce contenu
 vivait sur l'accueil : elles ont suivi le contenu, les liens n'ont pas cassé.
@@ -308,6 +310,21 @@ La copy applique les cadres de `course_all.txt` :
 - **Offre irrésistible** — piliers par offre, risk reversal développé (section Garantie),
   rareté (capacité de production mensuelle).
 - **Traitement des objections** — section « Questions » : prix, délai, chaussant, paiement.
+
+### Lexique : un mot par chose
+
+Les mêmes choses portent les mêmes mots sur toutes les pages. Les CGV font foi :
+un texte d'interface qui dit plus qu'elles est faux, même s'il rassure.
+
+| Ce que c'est | Ce qu'on écrit |
+|---|---|
+| Lien vers le configurateur | « Composer ma paire » (jamais « Configurer », ni « La version sur-mesure ») |
+| Lien WhatsApp | « Écrire à l'atelier » |
+| `boutique.html` | « Découvrir les modèles » en action principale, « Voir tout le catalogue » ailleurs |
+| La ligne des pièces choisies | « La sélection » — à ne pas employer pour autre chose (panier, vitrine) ; vignette : « Choisi par l'atelier » |
+| La ligne fabriquée à Cotonou | « L'atelier » ; vignette : « Fabriqué à Cotonou » |
+| Garantie d'une pièce | Celle de sa ligne (`site.origines.*.garantie`) ; la retouche puis le remboursement ne valent que pour le sur-mesure |
+| Paiement | « Rien à payer à la commande » ; acompte de 50 % sur le sur-mesure, une fois la date confirmée |
 
 ### Chiffres à valider avant mise en ligne
 
