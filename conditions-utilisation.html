@@ -49,10 +49,10 @@
         href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&family=Marcellus&display=swap">
 </noscript>
 
-<link rel="stylesheet" href="assets/css/base.css?v=ca22e37b">
-<link rel="stylesheet" href="assets/css/components.css?v=5d427329">
-<link rel="stylesheet" href="assets/css/home.css?v=14e23459">
-<link rel="stylesheet" href="assets/css/shop.css?v=4e02e4a4">
+<link rel="stylesheet" href="assets/css/base.css?v=d3612b7f">
+<link rel="stylesheet" href="assets/css/components.css?v=c6dc9f2b">
+<link rel="stylesheet" href="assets/css/home.css?v=f605c35b">
+<link rel="stylesheet" href="assets/css/shop.css?v=74cd4450">
 <link rel="stylesheet" href="assets/css/motion.css?v=c64779f2">
 <link rel="stylesheet" href="assets/css/legal.css?v=161a68da">
 
@@ -105,6 +105,12 @@
     <!-- Icônes UI -->
     <symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
       <path d="M5 12h14M13 6l6 6-6 6"/>
+    </symbol>
+
+    <!-- Flèche en biais : « ouvrir », sur les listes de liens posées en
+         carte (bloc « La maison » de l'accueil). -->
+    <symbol id="i-arrow-biais" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M7 17 17 7M9 7h8v8"/>
     </symbol>
 
     <!-- Chevron du repère de défilement, en pied de hero. -->
@@ -197,7 +203,7 @@
 
     <div class="legal" data-reveal>
 
-      <p class="legal__stamp">Dernière mise à jour : 24 octobre 2026</p>
+      <p class="legal__stamp">Dernière mise à jour : 30 octobre 2026</p>
 
       <h2>1. Ce que couvre ce document</h2>
       <p>
@@ -486,6 +492,10 @@
       <span>Paiement à la livraison ou par Mobile Money, convenu avec l'atelier</span>
     </div>
   </div>
+
+  <!-- La signature : le nom à l'échelle de la carte, coupé par son bord
+       bas. Pur décor, le logo plus haut porte déjà le nom. -->
+  <p class="footer__signature" aria-hidden="true">YEM’S</p>
 </footer>
 
 

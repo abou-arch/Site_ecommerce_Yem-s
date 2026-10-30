@@ -14,7 +14,7 @@
 /* Le récapitulatif reste visible pendant qu'on descend les étapes. */
 .cfg__summary {
   position: sticky;
-  top: calc(var(--header-h) + var(--sp-4));
+  top: calc(var(--header-bas) + var(--sp-4));
   order: 2;
 }
 

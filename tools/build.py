@@ -260,6 +260,38 @@ def product_card(product, base, delay=0, level=3):
       </article>"""
 
 
+def hero_piece(product, base):
+    """
+    La carte « En vitrine » posée dans le hero, sur grand écran.
+
+    C'est la carte flottante en verre de la référence Framer (AestheticMatch) :
+    un accès direct à une pièce, depuis l'image d'ouverture, sans attendre la
+    grille. Elle reprend la première pièce de la vitrine, donc rien qu'elle
+    affiche ne peut contredire le catalogue.
+
+    data-piece et data-prix sont les ancres du Worker (api/_lib/rewrite.js) :
+    une pièce retirée de la vente disparaît aussi d'ici, et un prix corrigé
+    par l'atelier s'y corrige comme sur la vignette. La photo est décorative :
+    le lien porte déjà le nom de la pièce.
+    """
+    if not product:
+        return ""
+    o = ORIGINES.get(product.get("origine", "selection")) or {}
+    href = "%sproduit/%s.html" % (base, product["slug"])
+    return f"""<a class="hero-piece" href="{href}" data-piece="{product['slug']}" data-reveal style="--reveal-delay:240ms">
+    <span class="hero-piece__photo" aria-hidden="true">
+          {picture(product, base, sizes="112px")}
+    </span>
+    <span class="hero-piece__corps">
+      <span class="hero-piece__surtitre">En vitrine</span>
+      <span class="hero-piece__nom">{escape(product['name'])}</span>
+      <span class="hero-piece__meta">{escape(o.get('court', ''))}</span>
+      <span class="hero-piece__prix" data-prix="{product['slug']}">{price(product['price'])}</span>
+    </span>
+    <span class="hero-piece__aller" aria-hidden="true"><svg><use href="#i-arrow-biais"></use></svg></span>
+  </a>"""
+
+
 def grid(products, base, klass="collections__grid", level=3, rare=True):
     if not products:
         return """      <div class="empty-state">
@@ -558,15 +590,19 @@ class Builder:
 
     def build_home(self):
         body = read(os.path.join(TPL, "pages", "index.html"))
+        vitrine = self.vitrine()
         body = fill(body, base="", whatsapp=self.site["whatsapp"],
-                    featured_grid=grid(self.vitrine(), "",
+                    featured_grid=grid(vitrine, "",
                                        klass="vitrine__grid", rare=False),
+                    hero_piece=hero_piece(vitrine[0] if vitrine else None, ""),
                     visuel_ia=mention_ia(),
                     **self.apercu_sur_mesure())
         self.page(
             "index.html",
             content=body,
-            body_class="page-edito",
+            # page-accueil : le fond ivoire continu et les cartes de l'accueil
+            # (home.css), que la page About us, éditoriale elle aussi, ne prend pas.
+            body_class="page-edito page-accueil",
             title="Souliers et maroquinerie cousus main à Cotonou | Yem's",
             description=("Yem's : souliers, ceintures et portefeuilles cousus à la main à "
                          "Cotonou. Point sellier, cuir pleine fleur, semelle ressemelable. "

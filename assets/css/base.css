@@ -191,9 +191,17 @@
      clair où les cartes flottent, un rayon serré les fait paraître collées
      à la page. */
   --radius-sm: 6px;
-  --radius:    12px;
-  --radius-lg: 18px;
+  --radius:    14px;
+  --radius-lg: 24px;
   --radius-pill: 999px;
+
+  /* LES GRANDES CARTES — la grammaire de la référence Framer (AestheticMatch).
+     Le hero, le bloc atelier, le bloc « La maison » et le pied de page ne
+     sont plus des bandes bord à bord : ce sont des cartes arrondies, posées
+     dans la page avec une marge, --cadre, qui laisse voir le fond autour
+     d'elles. La capsule de navigation flotte à la même distance du bord. */
+  --radius-xl: 32px;
+  --cadre: clamp(8px, 1vw, 16px);
 
   /* Ombres d'interface claire.
      Les précédentes montaient à 55 % et 75 % de noir : calibrées pour un fond
@@ -214,6 +222,11 @@
      doit désormais tenir dans ce qui reste. 60 px suffisent largement à un
      logo et quatre liens. */
   --header-h: 60px;
+  /* La barre ne touche plus le haut de l'écran : elle flotte en capsule, à
+     --cadre du bord. Tout ce qui se cale sous elle (ancres, colonnes
+     collantes, menu mobile) compte avec --header-bas, pas avec --header-h. */
+  --header-top: var(--cadre);
+  --header-bas: calc(var(--header-top) + var(--header-h));
 }
 
 /* Sur grand écran, les pages utilisent mieux la largeur disponible. Les
@@ -238,7 +251,7 @@
 html {
   -webkit-text-size-adjust: 100%;
   scroll-behavior: smooth;
-  scroll-padding-top: calc(var(--header-h) + 1rem);
+  scroll-padding-top: calc(var(--header-bas) + 1rem);
 }
 
 body {

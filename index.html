@@ -49,10 +49,10 @@
         href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&family=Marcellus&display=swap">
 </noscript>
 
-<link rel="stylesheet" href="assets/css/base.css?v=ca22e37b">
-<link rel="stylesheet" href="assets/css/components.css?v=5d427329">
-<link rel="stylesheet" href="assets/css/home.css?v=14e23459">
-<link rel="stylesheet" href="assets/css/shop.css?v=4e02e4a4">
+<link rel="stylesheet" href="assets/css/base.css?v=d3612b7f">
+<link rel="stylesheet" href="assets/css/components.css?v=c6dc9f2b">
+<link rel="stylesheet" href="assets/css/home.css?v=f605c35b">
+<link rel="stylesheet" href="assets/css/shop.css?v=74cd4450">
 <link rel="stylesheet" href="assets/css/motion.css?v=c64779f2">
 
 
@@ -76,7 +76,7 @@
      veut le revoir, raccourci cette fois. -->
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Yem's","slogan":"Différents par les détails","areaServed":["Cotonou, Bénin","Abidjan, Côte d'Ivoire"],"url":"https://maisonyems.com/","contactPoint":{"@type":"ContactPoint","contactType":"customer service","telephone":"+2290191380234","availableLanguage":"fr"}}</script>
 </head>
-<body class="page-edito">
+<body class="page-edito page-accueil">
 
 <a class="skip-link" href="#main">Aller au contenu</a>
 
@@ -106,6 +106,12 @@
     <!-- Icônes UI -->
     <symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
       <path d="M5 12h14M13 6l6 6-6 6"/>
+    </symbol>
+
+    <!-- Flèche en biais : « ouvrir », sur les listes de liens posées en
+         carte (bloc « La maison » de l'accueil). -->
+    <symbol id="i-arrow-biais" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M7 17 17 7M9 7h8v8"/>
     </symbol>
 
     <!-- Chevron du repère de défilement, en pied de hero. -->
@@ -207,11 +213,19 @@
      même pas téléchargé sur un téléphone.
 
      LA COMPOSITION DE LA MAQUETTE « SABINA » (livrables/yems-refonte-sabina).
-     Un grand titre éditorial, une seule action pleine, et rien d'autre sur
-     l'image : la typographie ample derrière le mannequin et la mention
-     verticale de la marge sont parties, le titre porte seul le poids
-     typographique. La note « Fabriqué ou choisi » a rejoint le bandeau des
-     engagements, juste sous l'image.
+     Un grand titre éditorial, une seule action pleine : la typographie
+     ample derrière le mannequin et la mention verticale de la marge sont
+     parties, le titre porte seul le poids typographique. La note « Fabriqué
+     ou choisi » a rejoint le bandeau des engagements, juste sous l'image.
+
+     LA GRAMMAIRE DE LA RÉFÉRENCE FRAMER (AestheticMatch). Le hero n'est
+     plus une bande bord à bord mais une carte arrondie posée dans la page,
+     qui englobe le bandeau des engagements. Un mot du titre est surligné
+     dans une pastille laiton, les deux actions sont des pilules, et une
+     carte en verre (« En vitrine », générée par hero_piece() dans
+     tools/build.py) mène à une pièce sans attendre la grille. Elle ne
+     s'affiche que là où elle tient à droite du mannequin sans toucher ses
+     souliers : sur grand écran, image calée à droite (voir home.css).
      ═══════════════════════════════════════════════════════════════ -->
 <section class="hero-edito" id="hero">
   <div class="hero-edito__media">
@@ -250,9 +264,13 @@
            au titre de prendre l'échelle d'une affiche sans pousser le reste
            du hero sous la ligne de flottaison.
            Le <br> sépare les lignes pour motion.js, qui les fait monter l'une
-           après l'autre. -->
+           après l'autre.
+           « détail » porte la pastille laiton : c'est le mot du slogan
+           (« Différents par les détails »), celui que la page doit laisser
+           en tête. L'italique de « la différence » reste, sans sa couleur :
+           un seul accent laiton par titre. -->
       <h1 data-lines>
-        Le détail fait<br>
+        Le <span class="surligne">détail</span> fait<br>
         <span class="italic-accent">la différence</span>.
       </h1>
       <p class="lede" data-reveal style="--reveal-delay:60ms">
@@ -262,19 +280,36 @@
       </p>
 
       <!-- Le laiton plein : sur l'espresso, le bouton sombre par défaut ne se
-           détachait plus de l'image. -->
+           détachait plus de l'image. La flèche passe dans une puce ronde au
+           bout de la pilule ; le lien secondaire devient une pilule en verre,
+           comme le second bouton de la référence. -->
       <div class="hero-edito__actions" data-reveal style="--reveal-delay:120ms">
-        <a class="btn btn--laiton" href="boutique.html">
+        <a class="btn btn--laiton btn--puce" href="boutique.html">
           Découvrir les modèles
-          <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
+          <span class="btn__puce" aria-hidden="true"><svg><use href="#i-arrow"></use></svg></span>
         </a>
-        <a class="link-underline" href="about-us.html">
-          La maison Yem's
-          <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
-        </a>
+        <a class="btn btn--verre" href="about-us.html">La maison Yem's</a>
       </div>
     </div>
   </div>
+
+  <a class="hero-piece" href="produit/loafer-marine.html" data-piece="loafer-marine" data-reveal style="--reveal-delay:240ms">
+    <span class="hero-piece__photo" aria-hidden="true">
+          <picture>
+            <source srcset="assets/img/loafer-marine-ai-500.webp 500w, assets/img/loafer-marine-ai.webp 1000w" sizes="112px" type="image/webp">
+            <img src="assets/img/loafer-marine-ai.jpg" srcset="assets/img/loafer-marine-ai-500.jpg 500w, assets/img/loafer-marine-ai.jpg 1000w" sizes="112px"
+                 width="1000" height="1000" loading="lazy" decoding="async"
+                 alt="Loafer en cuir bleu marine à bandeau, posé sur une dalle de pierre claire">
+          </picture>
+    </span>
+    <span class="hero-piece__corps">
+      <span class="hero-piece__surtitre">En vitrine</span>
+      <span class="hero-piece__nom">Loafer Marine</span>
+      <span class="hero-piece__meta">Choisi par l&#x27;atelier</span>
+      <span class="hero-piece__prix" data-prix="loafer-marine">45 000 F</span>
+    </span>
+    <span class="hero-piece__aller" aria-hidden="true"><svg><use href="#i-arrow-biais"></use></svg></span>
+  </a>
 </section>
 
 <!-- ═══════════════════════════════════════════════════════════════
@@ -319,7 +354,9 @@
           Les modèles du moment. Au-dessus de chaque prix, son origine :
           « Fabriqué à Cotonou » ou « Choisi par l'atelier ».
         </p>
-        <a class="link-underline" href="boutique.html">
+        <!-- La pilule sombre « Go to shop » de la référence, en face du
+             titre : l'accès au catalogue se voit avant les vignettes. -->
+        <a class="btn btn--sm" href="boutique.html">
           Tout le catalogue
           <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
         </a>
@@ -453,11 +490,12 @@
 </div>
 
 <!-- ═══════════════════════════════════════════════════════════════
-     LE GESTE — l'atelier, image et texte bord à bord
-     Il remplace le panneau de marque arrondi : sur la maquette, l'atelier
-     n'est plus une carte posée dans la page mais une bande pleine, l'image
-     d'un côté, l'espresso de l'autre. Le récit des deux lignes, que ce
-     panneau portait, est passé au bloc « La maison » en bas de page.
+     LE GESTE — l'atelier, image et texte côte à côte
+     L'image d'un côté, l'espresso de l'autre, comme sur la maquette Sabina ;
+     mais la bande bord à bord est redevenue une carte, à la manière des
+     blocs de la référence Framer : posée à --cadre des bords, l'image
+     encadrée dans son propre arrondi. Le récit des deux lignes est passé
+     au bloc « La maison » en bas de page.
 
      Visuel de proposition, à valider avant publication : comme les autres
      visuels de campagne, il est généré. tools/images_ia.py en tire quatre
@@ -610,39 +648,67 @@
      actions existaient déjà plus haut (« Composer ma paire ») et dans le
      pied de page (WhatsApp). Les trois portes de sortie de la page sont
      réunies ici, en liens simples, comme sur la maquette.
+
+     La mise en forme est celle du bloc « More Info » de la référence
+     Framer : une grande image d'atelier en carte arrondie, et posée dessus
+     une carte ivoire qui tient le titre, le texte et la liste de liens à
+     flèches. La carte est à gauche, sur l'établi sombre ; les mains et le
+     fil restent visibles à droite. Sur téléphone, l'image passe au-dessus
+     et la carte la chevauche.
+
+     Le visuel (atelier-couture) est un visuel de campagne généré, comme les
+     autres : tools/images_ia.py en tire trois largeurs (table CAMPAGNE).
      ═══════════════════════════════════════════════════════════════ -->
 <section class="section maison" id="maison">
-  <div class="container container--wide">
-    <span class="eyebrow" data-reveal>La maison Yem's</span>
-    <div class="maison__corps" data-reveal>
-      <h2 class="titre-ample" data-lines>Deux origines.<br><span class="italic-accent">Une seule exigence.</span></h2>
+  <div class="maison__carte">
+    <figure class="maison__visuel" data-shot>
+      <picture>
+        <source type="image/webp"
+                sizes="100vw"
+                srcset="assets/img/atelier-couture-500.webp 500w,
+                        assets/img/atelier-couture-800.webp 800w,
+                        assets/img/atelier-couture.webp 1200w">
+        <img src="assets/img/atelier-couture-800.jpg"
+             sizes="100vw"
+             srcset="assets/img/atelier-couture-500.jpg 500w,
+                     assets/img/atelier-couture-800.jpg 800w,
+                     assets/img/atelier-couture.jpg 1200w"
+             width="1200" height="800" loading="lazy" decoding="async"
+             alt="Des mains d'artisan piquent à l'alène la trépointe d'un soulier en cuir brun">
+      </picture>
+      
+    </figure>
+
+    <div class="maison__panneau" data-reveal>
+      <span class="eyebrow">La maison Yem's</span>
+      <h2 data-lines>Deux origines.<br><span class="italic-accent">Une seule exigence.</span></h2>
       <p>
         De l'atelier à la sélection, Yem's porte la même attention à chaque
         paire. Ce que nous fabriquons et ce que nous choisissons ne portent
         pas les mêmes garanties — et nous écrivons lesquelles, avant l'achat.
       </p>
-    </div>
 
-    <ul class="maison__liens" data-reveal>
-      <li>
-        <a href="about-us.html">
-          Notre histoire
-          <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
-        </a>
-      </li>
-      <li>
-        <a href="service-client.html">
-          Conseils &amp; service client
-          <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
-        </a>
-      </li>
-      <li>
-        <a href="https://wa.me/2290191380234?text=Bonjour%2C%20j'ai%20une%20question%20sur%20vos%20chaussures." target="_blank" rel="noopener">
-          Écrire à l'atelier
-          <svg aria-hidden="true"><use href="#i-whatsapp"></use></svg>
-        </a>
-      </li>
-    </ul>
+      <ul class="maison__liens">
+        <li>
+          <a href="about-us.html">
+            Notre histoire
+            <svg aria-hidden="true"><use href="#i-arrow-biais"></use></svg>
+          </a>
+        </li>
+        <li>
+          <a href="service-client.html">
+            Conseils &amp; service client
+            <svg aria-hidden="true"><use href="#i-arrow-biais"></use></svg>
+          </a>
+        </li>
+        <li>
+          <a href="https://wa.me/2290191380234?text=Bonjour%2C%20j'ai%20une%20question%20sur%20vos%20chaussures." target="_blank" rel="noopener">
+            Écrire à l'atelier
+            <svg aria-hidden="true"><use href="#i-whatsapp"></use></svg>
+          </a>
+        </li>
+      </ul>
+    </div>
   </div>
 </section>
 
@@ -750,6 +816,10 @@
       <span>Paiement à la livraison ou par Mobile Money, convenu avec l'atelier</span>
     </div>
   </div>
+
+  <!-- La signature : le nom à l'échelle de la carte, coupé par son bord
+       bas. Pur décor, le logo plus haut porte déjà le nom. -->
+  <p class="footer__signature" aria-hidden="true">YEM’S</p>
 </footer>
 
 

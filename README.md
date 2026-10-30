@@ -88,16 +88,31 @@ La composition suit la maquette « Sabina » (`livrables/yems-refonte-sabina/`) 
 grand hero éditorial, accès immédiat aux produits, bloc atelier, puis des
 sorties claires.
 
-1. **Hero éditorial** — image pleine, navigation dedans, grand titre, une
-   action laiton (`.btn--laiton`)
-2. **Les engagements** — bandeau espresso sous l'image (jamais dessus), trois
-   phrases tirées de `site.origines`
-3. **La sélection** — accès rapide au catalogue + 4 vignettes produit + ligne
-   de réassurance
-4. **Le geste** — bloc atelier bord à bord, visuel `atelier-geste`, porte vers
-   la page atelier
-5. **Sur-mesure** — version courte + aperçu du configurateur avec facture
-6. **La maison** — deux origines, deux garanties ; liens vers About us, le
+Le traitement visuel reprend celui du template Framer « AestheticMatch » :
+les grands blocs sont des cartes arrondies (`--radius-xl`) posées à
+`--cadre` des bords sur un fond ivoire (`body.page-accueil`), la navigation
+est une capsule flottante alignée sur ces cartes (`--header-top`,
+`--header-bas` pour les décalages collants), les boutons sont des pilules
+(`.btn--puce` : pastille à flèche ; `.btn--verre` : verre dépoli sur image),
+les vignettes produit sont des cartes crème à rayons concentriques, et le
+pied de page se ferme sur le nom de la maison en très grand (`.footer__signature`).
+
+1. **Hero éditorial** — image pleine en carte, navigation dedans, grand titre
+   avec un mot en pastille laiton (`.surligne`), une action laiton à pastille
+   et une action en verre. La carte « En vitrine » (`hero_piece()` dans
+   `tools/build.py`, première pièce de la vitrine) ne s'affiche qu'au-delà de
+   1200 px et en format paysage, là où elle tient à droite du mannequin sans
+   le toucher
+2. **Les engagements** — bandeau espresso sous l'image (jamais dessus), qui
+   ferme la carte du hero ; trois phrases tirées de `site.origines`
+3. **La sélection** — accès rapide au catalogue (filtres en pilules) +
+   4 vignettes produit + ligne de réassurance
+4. **Le geste** — carte atelier, visuel `atelier-geste`, porte vers la page
+   atelier
+5. **Sur-mesure** — carte sable : version courte + aperçu du configurateur
+   avec facture
+6. **La maison** — carte image (`atelier-couture`) et panneau ivoire posé
+   dessus : deux origines, deux garanties ; liens à flèche vers About us, le
    service client et WhatsApp
 
 ### Sections de « About us »

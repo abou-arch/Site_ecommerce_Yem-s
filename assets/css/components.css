@@ -14,15 +14,21 @@
   align-items: center;
   justify-content: center;
   gap: var(--sp-3);
-  padding: 0.95rem 1.75rem;
+  /* La pilule de la référence Framer, en bas de casse. Les capitales espacées
+     criaient un peu à côté des titres en Marcellus ; le bouton du header
+     avait déjà fait ce choix (« Composer ma paire » se lit mieux en bas de
+     casse), il s'étend à tous les boutons. Un cran de taille de plus pour
+     compenser : 16 px en minuscules pèsent ce que pesaient 15 px en
+     capitales. */
+  padding: 0.9rem 1.6rem;
   background: var(--btn-bg);
   color: var(--btn-fg);
   border: 1px solid var(--btn-border);
-  border-radius: var(--radius-sm);
-  font-size: var(--fs-sm);
-  font-weight: 600;
-  letter-spacing: 0.035em;
-  text-transform: uppercase;
+  border-radius: var(--radius-pill);
+  font-size: var(--fs-base);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
   white-space: nowrap;
   transition:
     background-color var(--dur) var(--ease),
@@ -44,15 +50,11 @@
 
 /* Variante du header. Un aplat de laiton en haut de page tire l'œil vers le
    coin au moment où le hero devrait le retenir : ici le bouton se contente
-   d'un contour, et ne se remplit qu'au survol. Les capitales tombent aussi,
-   « Composer ma paire » se lit mieux en bas de casse. */
+   d'un contour, et ne se remplit qu'au survol. */
 .btn--quiet {
   --btn-bg: transparent;
   --btn-fg: var(--brass-300);
   --btn-border: rgba(201, 164, 106, 0.55);
-  text-transform: none;
-  letter-spacing: 0.01em;
-  font-weight: 500;
 }
 
 .btn--quiet:hover {
@@ -77,6 +79,46 @@
 }
 
 .btn svg { width: 15px; height: 15px; flex: none; }
+
+/* LA PUCE — la flèche dans un rond, au bout de la pilule.
+   Le geste du bouton « Contact Now » de la référence : l'icône n'est plus
+   un signe posé après le mot, c'est un objet. Elle mord sur le remplissage
+   de droite pour que le rond reste à égale distance du bord en haut, en
+   bas et à droite. */
+.btn--puce { padding-right: 0.4rem; }
+
+.btn__puce {
+  display: grid;
+  place-items: center;
+  width: 2.35rem;
+  height: 2.35rem;
+  margin-block: -0.55rem;
+  margin-left: var(--sp-2);
+  border-radius: 50%;
+  background: var(--espresso-900);
+  color: var(--brass-300);
+  transition: transform 400ms var(--ease-out-expo);
+}
+
+.btn__puce svg { width: 15px; height: 15px; }
+.btn--puce:hover .btn__puce { transform: rotate(-45deg); }
+
+/* Verre : l'action secondaire posée sur une image. Un voile clair et un
+   filet, comme les pilules blanches de la référence, mais translucides :
+   pleines, elles auraient rivalisé avec l'action laiton. */
+.btn--verre {
+  --btn-bg: rgba(251, 249, 245, 0.08);
+  --btn-fg: var(--beige-100);
+  --btn-border: rgba(244, 237, 226, 0.34);
+  backdrop-filter: blur(12px) saturate(140%);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
+}
+
+.btn--verre:hover {
+  background: var(--blanc);
+  border-color: var(--blanc);
+  color: var(--espresso-900);
+}
 
 .btn--ghost {
   --btn-bg: transparent;
@@ -114,13 +156,13 @@
   color: var(--accent);
 }
 
-.btn--sm { padding: 0.7rem 1.25rem; font-size: var(--fs-xs); }
+.btn--sm { padding: 0.65rem 1.15rem; font-size: var(--fs-sm); }
 
-/* Une seule échelle de libellés dans la barre. Les entrées sont à 14 px et
-   le bouton était à 12 px, juste à côté : l'action se lisait plus petite que
+/* Une seule échelle de libellés dans la barre. Les entrées sont à 15 px et
+   le bouton était plus petit juste à côté : l'action se lisait moins que
    les liens qui l'entourent, ce qui est exactement l'inverse du rapport
    qu'on veut. */
-.header__actions .btn--sm { font-size: 0.8125rem; }
+.header__actions .btn--sm { font-size: var(--fs-sm); padding-block: 0.55rem; }
 .btn--full { width: 100%; }
 
 /* Lien souligné animé */
@@ -219,18 +261,28 @@
 /* --------------------------------------------------------------------------
    HEADER
    -------------------------------------------------------------------------- */
+/* LA CAPSULE — la barre ne touche plus les bords de l'écran.
+   Elle flotte à --cadre du haut et des côtés, comme la navigation des sites
+   Framer, et s'aligne sur les bords des grandes cartes (hero, pied de page).
+   Au-delà de la largeur du contenu, elle cesse de s'étirer et se centre :
+   une pilule de 1 900 px de long n'est plus une pilule. */
 .header {
   position: fixed;
-  inset: 0 0 auto 0;
+  top: var(--header-top);
+  left: var(--cadre);
+  right: var(--cadre);
   z-index: 100;
   height: var(--header-h);
+  max-width: var(--container-wide);
+  margin-inline: auto;
   display: flex;
   align-items: center;
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
   transition:
     background-color 450ms var(--ease),
     backdrop-filter 450ms var(--ease),
     border-color 450ms var(--ease);
-  border-bottom: 1px solid transparent;
 }
 
 /* En-tête translucide, dès le haut de page et pas seulement au défilement.
@@ -248,7 +300,8 @@
   background: rgba(20, 16, 13, 0.62);
   backdrop-filter: blur(22px) saturate(140%);
   -webkit-backdrop-filter: blur(22px) saturate(140%);
-  border-bottom-color: var(--sombre-border);
+  border-color: var(--sombre-border);
+  box-shadow: 0 12px 32px -18px rgba(20, 16, 13, 0.45);
 }
 
 /* Repli pour les navigateurs sans flou : sans lui, l'en-tête serait un voile
@@ -381,13 +434,16 @@
 .burger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
 .burger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
 
-/* Menu mobile */
+/* Menu mobile — une carte qui s'ouvre sous la capsule, pas un rideau
+   plein écran : elle garde la même marge que la barre au-dessus d'elle. */
 .mobile-menu {
   position: fixed;
-  inset: var(--header-h) 0 0 0;
+  inset: calc(var(--header-bas) + var(--sp-2)) var(--cadre) var(--cadre);
   z-index: 99;
   background: var(--espresso-900);
-  padding: var(--sp-7) var(--gutter) var(--sp-8);
+  border: 1px solid var(--sombre-border);
+  border-radius: var(--radius-xl);
+  padding: var(--sp-6) var(--sp-6) var(--sp-6);
   display: flex;
   flex-direction: column;
   gap: var(--sp-5);
@@ -605,11 +661,13 @@
   overflow-wrap: anywhere;
 }
 
+/* Le prix dans la police des titres, à la taille du nom : sur la référence,
+   c'est lui qui ferme la ligne, pas une étiquette grise collée au bout. */
 .pcard__price {
-  font-size: var(--fs-sm);
-  font-weight: 600;
-  letter-spacing: 0.03em;
-  color: var(--olive-600);
+  font-family: var(--font-display);
+  font-size: var(--fs-md);
+  line-height: 1.3;
+  color: var(--text);
   white-space: nowrap;
 }
 
@@ -632,7 +690,6 @@
   color: var(--text-muted);
 }
 
-.section--light .pcard__price { color: var(--olive-600); }
 .section--light .pcard__desc  { color: var(--text-muted); }
 
 /* --------------------------------------------------------------------------
@@ -694,10 +751,35 @@
 /* --------------------------------------------------------------------------
    FOOTER
    -------------------------------------------------------------------------- */
+/* Le pied de page est la dernière grande carte : posé à --cadre des bords,
+   arrondi comme le hero. La page s'ouvre et se ferme sur la même forme. */
 .footer {
-  background: var(--espresso-800);
-  border-top: 1px solid var(--border);
-  padding-block: var(--sp-8) var(--sp-5);
+  position: relative;
+  overflow: hidden;
+  margin: var(--cadre);
+  border-radius: var(--radius-xl);
+  padding-top: var(--sp-8);
+}
+
+/* LA SIGNATURE — le nom de la maison à l'échelle de la page, coupé par le
+   bas de la carte. C'est le grand mot « AESTHETIC » qui ferme la référence
+   Framer, en laiton presque éteint : on le voit comme une gravure, il ne
+   se lit pas comme un titre. Décoratif, donc caché aux lecteurs d'écran. */
+.footer__signature {
+  margin-top: var(--sp-6);
+  font-family: var(--font-display);
+  font-size: min(31vw, 30rem);
+  line-height: 0.72;
+  letter-spacing: -0.035em;
+  text-align: center;
+  white-space: nowrap;
+  color: transparent;
+  background: linear-gradient(180deg, rgba(217, 184, 122, 0.34) 0%, rgba(217, 184, 122, 0.05) 78%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  transform: translateY(0.1em);
+  user-select: none;
+  pointer-events: none;
 }
 
 .footer__grid {
@@ -996,20 +1078,40 @@
   box-shadow: var(--shadow);
 }
 
-/* Les cartes produit ne portent pas d'ombre au repos : alignées par six, ça
-   ferait une trame d'ombres. Elles se soulèvent au survol, ce qui rend le
-   geste lisible. */
+/* LA CARTE PRODUIT DE LA RÉFÉRENCE FRAMER
+   La photo n'est plus posée nue dans la page : elle est encadrée dans une
+   carte au grand rayon, le nom et le prix dessous, comme les fiches crème
+   d'AestheticMatch. La carte prend une teinte d'un cran plus soutenue que
+   le fond qu'elle habite (--pcard-bg) : ivoire sur le nuage des pages
+   boutique, crème sur l'ivoire de l'accueil.
+
+   Pas d'ombre au repos : alignées par six, elles feraient une trame
+   d'ombres. Elles se soulèvent au survol, ce qui rend le geste lisible.
+   Le rayon de la photo est celui de la carte moins son remplissage : deux
+   arrondis concentriques, sinon l'angle intérieur paraît trop rond. */
 .pcard {
-  background: transparent;
-  border-radius: 0;
+  --pcard-pad: 0.625rem;
+  padding: var(--pcard-pad);
+  background: var(--pcard-bg, var(--blanc));
+  border-radius: var(--radius-lg);
   box-shadow: none;
-  transition: transform 320ms var(--ease);
+  transition: transform 320ms var(--ease), box-shadow 320ms var(--ease);
 }
 .pcard:hover,
 .pcard:focus-within {
-  box-shadow: none;
-  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+  transform: translateY(-3px);
 }
+
+.pcard .pshot { border-radius: calc(var(--radius-lg) - var(--pcard-pad)); }
+.pcard__body { padding: 0 var(--sp-2) var(--sp-2); }
+
+/* Posées sur un fond ivoire, les cartes passent au crème. Le rayon de la
+   boutique est lui-même un panneau ivoire : sans cette ligne, ses cartes
+   s'y fondaient. */
+.section--light .pcard,
+.section--blanc .pcard,
+.rayon .pcard { --pcard-bg: var(--beige-100); }
 
 /* La photo produit est blanche sur une carte blanche : sans un fond
    légèrement plus soutenu, la chaussure flotterait dans le vide. Le nuage

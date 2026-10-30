@@ -11,14 +11,23 @@
    visuel, où le sujet occupe le tiers droit et laisse les deux tiers gauches
    au texte.
 
-   Rien d'autre ne se pose sur l'image. Les engagements forment un bandeau
-   à part, SOUS le hero (.preuves) : posé dessus, un bandeau barrait le bas
-   du visuel et coupait le mannequin aux genoux.
+   Aucun bandeau ne se pose sur l'image. Les engagements forment un bandeau
+   à part, SOUS le visuel (.preuves) : posé dessus, un bandeau barrait le
+   bas du visuel et coupait le mannequin aux genoux. Seule la carte « En
+   vitrine » flotte dessus, sur grand écran, à droite des souliers.
+
+   LA CARTE — d'après la référence Framer (AestheticMatch). Le hero et le
+   bandeau des engagements forment une seule carte arrondie, posée à
+   --cadre des bords : le hero en porte le haut, le bandeau le bas. La
+   capsule de navigation flotte à la même distance, donc ses bords et ceux
+   de la carte tombent l'un sur l'autre.
    -------------------------------------------------------------------------- */
 .hero-edito {
   position: relative;
   isolation: isolate;
   overflow: hidden;
+  margin: var(--cadre) var(--cadre) 0;
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
   display: grid;
   /* « safe » est le mot qui compte. En centrage simple, un bloc de texte plus
      haut que la place disponible déborde des DEUX côtés : sur un portable de
@@ -183,6 +192,29 @@
   letter-spacing: -0.035em;
 }
 
+/* LE MOT SURLIGNÉ — la pastille de la référence Framer (« beauty » sur fond
+   jaune), en laiton. Elle porte le seul accent de couleur du titre :
+   l'italique de « la différence » garde sa forme et perd son laiton.
+
+   La pastille déborde un peu de l'interligne serré du titre (0,98) ; les
+   masques de motion.js (.line, overflow: hidden) lui laissent donc un peu
+   d'air au-dessus, sans quoi le haut de la pilule serait rogné. */
+.surligne {
+  padding: 0 0.17em 0.02em;
+  border-radius: var(--radius-pill);
+  background: var(--brass-300);
+  color: var(--espresso-900);
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+.hero-edito h1 .italic-accent { color: inherit; }
+
+.hero-edito h1 .line {
+  padding-top: 0.14em;
+  margin-top: -0.14em;
+}
+
 @media (min-width: 1280px) {
   .hero-edito h1 { font-size: 6rem; }
 }
@@ -209,6 +241,124 @@
 /* La note « Fabriqué ou choisi » et la mention verticale « Cuir · couture ·
    caractère » ont quitté l'image : la première ouvre le bandeau des
    engagements, la seconde n'avait plus de marge où se poser. */
+
+/* LA CARTE « EN VITRINE »
+   ----------------------------------------------------------------------
+   La carte en verre de la référence Framer, en bas à droite du hero : une
+   photo, le nom, l'origine et le prix d'une pièce, et une puce laiton.
+
+   Elle ne s'affiche que là où sa place est garantie. Au-delà de 1 200 px et
+   d'un écran plus large que 4/3, l'image est calée à droite et tenue en
+   hauteur (« contain », plus haut) : le mannequin occupe alors de 50 à 74 %
+   de la largeur de l'image, et à hauteur des genoux et des souliers, tout
+   ce qui dépasse 70 % est du sol. Une carte de 15 rem posée à droite y tient
+   dès le plus petit hero (600 px de haut) sans toucher une semelle.
+   Ailleurs, elle n'existe pas : la vitrine arrive juste en dessous. */
+.hero-piece { display: none; }
+
+@media (min-width: 1200px) and (min-aspect-ratio: 4/3) {
+  .hero-piece {
+    position: absolute;
+    z-index: 2;
+    right: clamp(1.25rem, 2vw, 2rem);
+    bottom: clamp(1.25rem, 2.4vw, 2.25rem);
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-3);
+    width: 15rem;
+    padding: 0.5rem 0.5rem var(--sp-4);
+    border: 1px solid rgba(244, 237, 226, 0.18);
+    border-radius: var(--radius-lg);
+    background: rgba(28, 22, 19, 0.46);
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    box-shadow: 0 28px 56px -28px rgba(0, 0, 0, 0.6);
+    color: var(--sombre-text);
+    transition:
+      background-color var(--dur) var(--ease),
+      border-color var(--dur) var(--ease),
+      translate 420ms var(--ease-out-expo);
+  }
+
+  /* « translate » et non « transform » : l'entrée du hero (hero-in) tient
+     transform jusqu'au bout de son animation, qui l'emporterait sur le
+     survol. Les deux propriétés se composent sans se gêner. */
+  .hero-piece:hover,
+  .hero-piece:focus-visible {
+    background: rgba(28, 22, 19, 0.66);
+    border-color: rgba(217, 184, 122, 0.45);
+    translate: 0 -4px;
+  }
+
+  .hero-piece__photo {
+    display: block;
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+    border-radius: calc(var(--radius-lg) - 0.5rem);
+    background: var(--nuage);
+  }
+
+  .hero-piece__photo picture,
+  .hero-piece__photo img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .hero-piece__corps {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: baseline;
+    gap: 2px var(--sp-3);
+    padding-inline: var(--sp-3);
+  }
+
+  .hero-piece__surtitre,
+  .hero-piece__nom { grid-column: 1 / -1; }
+
+  .hero-piece__surtitre {
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: var(--tracking-wider);
+    text-transform: uppercase;
+    color: var(--brass-300);
+  }
+
+  .hero-piece__nom {
+    font-family: var(--font-display);
+    font-size: var(--fs-lg);
+    line-height: 1.2;
+  }
+
+  .hero-piece__meta {
+    font-size: var(--fs-xs);
+    color: var(--sombre-muted);
+  }
+
+  .hero-piece__prix {
+    font-family: var(--font-display);
+    font-size: var(--fs-base);
+    white-space: nowrap;
+  }
+
+  .hero-piece__aller {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 50%;
+    background: var(--brass-300);
+    color: var(--espresso-900);
+    transition: transform 400ms var(--ease-out-expo);
+  }
+
+  .hero-piece__aller svg { width: 15px; height: 15px; }
+  .hero-piece:hover .hero-piece__aller { transform: rotate(45deg); }
+}
 
 /* --------------------------------------------------------------------------
    HERO ÉDITORIAL — TABLETTE ET TÉLÉPHONE
@@ -337,6 +487,9 @@
    prend donc que la hauteur de son texte.
    -------------------------------------------------------------------------- */
 .preuves {
+  /* Le bas de la carte du hero : mêmes marges, arrondi en bas seulement. */
+  margin: 0 var(--cadre);
+  border-radius: 0 0 var(--radius-xl) var(--radius-xl);
   background: var(--espresso-900);
   color: var(--sombre-text);
 }
@@ -347,7 +500,7 @@
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: var(--sp-5);
-  padding-block: var(--sp-5);
+  padding-block: var(--sp-5) var(--sp-6);
   border-top: 1px solid var(--sombre-border);
 }
 
@@ -557,6 +710,20 @@
   background:
     radial-gradient(80% 120% at 88% 12%, rgba(176, 141, 87, 0.10) 0%, transparent 58%),
     var(--color-60);
+}
+
+/* L'accueil est une suite de cartes posées sur l'ivoire (hero, atelier,
+   maison, pied de page) : le sable du sur-mesure devient une carte de plus
+   au lieu d'une bande d'un bord à l'autre. Le fond de la page passe à
+   l'ivoire pour que les marges entre les cartes soient de la même teinte
+   que la vitrine. */
+.page-accueil { background: var(--blanc); }
+
+/* Collée sous la carte de l'atelier, séparée d'elle par le même jour que
+   celui qui la sépare des bords. */
+.page-accueil .bespoke {
+  margin: var(--cadre) var(--cadre) 0;
+  border-radius: var(--radius-xl);
 }
 
 .bespoke__grid {
@@ -912,8 +1079,9 @@
   padding-top: clamp(2.5rem, 4vw, 4rem);
   /* L'ivoire de la maquette. Le dégradé qui raccordait la vitrine au fondu
      crème du hero n'a plus d'objet : c'est le bandeau des engagements qui
-     les sépare. Sur l'ivoire, le plateau nuage de chaque photo se détache. */
+     les sépare. Sur l'ivoire, les cartes produit passent au crème. */
   background: var(--blanc);
+  --pcard-bg: var(--beige-100);
 }
 
 /* La couture qui suit la vitrine en garde le fond : sans cela, elle
@@ -927,10 +1095,9 @@
   gap: var(--sp-4);
 }
 
-.vitrine .section-head {
-  padding-bottom: var(--sp-5);
-  border-bottom: 1px solid var(--border);
-}
+/* Plus de filet sous le chapeau : la rangée de pilules qui le suit marque
+   déjà le passage aux pièces. */
+.vitrine .section-head { margin-bottom: var(--sp-6); }
 
 .vitrine__grid {
   --shot-ratio: 1 / 1;
@@ -944,10 +1111,12 @@
 }
 
 /* LA FLÈCHE DES VIGNETTES — le repère de la maquette, sur l'accueil seul.
-   Un carré ivoire au coin de la photo dit « ouvrir » sans un mot. Il est
-   purement décoratif : la photo est déjà un lien nommé (« Découvrir … »),
-   la flèche est donc dessinée en CSS et jamais lue. La carte elle-même ne
-   change pas : c'est celle de la boutique, d'une page à l'autre. */
+   Un rond ivoire au coin de la photo dit « ouvrir » sans un mot (un carré
+   sur la maquette Sabina, un rond comme les puces de la référence Framer).
+   Il est purement décoratif : la photo est déjà un lien nommé (« Découvrir
+   … »), la flèche est donc dessinée en CSS et jamais lue. La carte
+   elle-même ne change pas : c'est celle de la boutique, d'une page à
+   l'autre. */
 .vitrine__grid .pshot::after {
   content: "";
   position: absolute;
@@ -956,7 +1125,7 @@
   bottom: var(--sp-3);
   width: 2.5rem;
   height: 2.5rem;
-  border-radius: var(--radius-sm);
+  border-radius: 50%;
   background: var(--blanc) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2314100D' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7 17 17 7M9 7h8v8'/%3E%3C/svg%3E") center / 16px no-repeat;
   transition: background-color var(--dur) var(--ease);
 }
@@ -1058,28 +1227,31 @@
   margin-bottom: var(--sp-6);
 }
 
-/* Liens de catégorie : libellés simples, avec un trait discret au survol. */
+/* Liens de catégorie : des pilules à filet, comme les étiquettes de la
+   référence Framer. Elles se remplissent d'espresso au survol. */
 .filtres a {
   display: inline-flex;
   align-items: center;
   min-height: 44px;
-  padding: 0 0.15rem;
-  border: 0;
-  border-bottom: 1px solid transparent;
-  border-radius: 0;
-  font-size: 0.8125rem;
-  letter-spacing: 0.015em;
+  padding: 0 1.15rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  font-size: var(--fs-sm);
+  letter-spacing: 0.01em;
   text-transform: none;
   white-space: nowrap;
-  color: var(--text-muted);
-  transition: color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+  color: var(--text);
+  transition:
+    color var(--dur) var(--ease),
+    border-color var(--dur) var(--ease),
+    background-color var(--dur) var(--ease);
 }
 
 .filtres a:hover,
 .filtres a:focus-visible {
-  background: transparent;
-  border-bottom-color: var(--olive-600);
-  color: var(--espresso-900);
+  background: var(--espresso-900);
+  border-color: var(--espresso-900);
+  color: var(--beige-100);
 }
 
 /* Sur téléphone, les onglets défilent plutôt que de s'empiler sur trois
@@ -1130,10 +1302,18 @@
    Sur ordinateur, l'image remplit sa moitié quelle que soit la hauteur du
    texte ; sous 900 px, elle repasse au-dessus du texte dans son propre
    format 3/2, sans rien rogner.
+
+   La bande est devenue une carte (référence Framer) : à --cadre des bords,
+   arrondie, et l'image encadrée dans un second arrondi, concentrique au
+   premier — le rayon intérieur est celui de la carte moins son bord.
    -------------------------------------------------------------------------- */
 .geste {
+  --geste-bord: var(--sp-3);
   display: grid;
   grid-template-columns: minmax(0, 1fr);
+  margin-inline: var(--cadre);
+  padding: var(--geste-bord);
+  border-radius: var(--radius-xl);
   background: var(--espresso-900);
   color: var(--sombre-text);
 }
@@ -1150,6 +1330,7 @@
   overflow: hidden;
   margin: 0;
   aspect-ratio: 3 / 2;
+  border-radius: calc(var(--radius-xl) - var(--geste-bord));
   background: var(--espresso-700);
 }
 
@@ -1193,44 +1374,73 @@
 /* --------------------------------------------------------------------------
    LA MAISON — la porte vers « About us »
    --------------------------------------------------------------------------
-   Le titre et son texte face à face, puis les trois sorties de la page en
-   liens pleine largeur. Pas de bouton : arrivé ici, le visiteur a vu les
-   pièces ; il cherche où aller, pas quoi acheter.
+   Le titre, son texte, puis les trois sorties de la page en liens à
+   flèche. Pas de bouton : arrivé ici, le visiteur a vu les pièces ; il
+   cherche où aller, pas quoi acheter.
+
+   La forme est celle du bloc « More Info » de la référence Framer : une
+   grande image en carte arrondie, et posée dessus une carte claire qui
+   porte tout le texte. Elle se tient à gauche, sur l'établi sombre du
+   visuel : les mains, l'alène et le fil restent à découvert à droite.
    -------------------------------------------------------------------------- */
-.maison { background: var(--blanc); }
+.maison { padding-top: var(--sp-4); }
 
-.maison__corps {
+.maison__carte {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: var(--sp-5);
-  margin-top: var(--sp-5);
+  align-items: center;
+  min-height: clamp(560px, 74svh, 720px);
+  margin-inline: var(--cadre);
+  padding: clamp(1rem, 2.4vw, 2.25rem);
+  border-radius: var(--radius-xl);
+  background: var(--espresso-800);
 }
 
-@media (min-width: 900px) {
-  .maison__corps {
-    grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
-    align-items: end;
-    gap: var(--sp-8);
-  }
+.maison__visuel {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  margin: 0;
 }
 
-.maison__corps p {
+.maison__visuel picture,
+.maison__visuel img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Les mains sont au centre droit du visuel : c'est ce côté qu'on garde
+     quand la carte est plus étroite que l'image. */
+  object-position: 62% 55%;
+}
+
+.maison__panneau {
+  width: min(100%, 35rem);
+  padding: clamp(1.75rem, 3vw, 2.75rem);
+  border-radius: var(--radius-lg);
+  background: var(--blanc);
+  box-shadow: 0 30px 60px -30px rgba(20, 16, 13, 0.55);
+}
+
+.maison__panneau h2 {
+  margin-block: var(--sp-4);
+  font-size: clamp(2.25rem, 3.4vw, 3.25rem);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+}
+
+.maison__panneau p {
   max-width: 44ch;
   color: var(--text-muted);
 }
 
+/* La liste de la référence : des lignes pleine largeur, un filet entre
+   chacune, la flèche en biais au bout. */
 .maison__liens {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  margin-top: var(--sp-8);
+  margin-top: var(--sp-6);
   border-top: 1px solid var(--border-strong);
-}
-
-@media (min-width: 760px) {
-  .maison__liens {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    column-gap: var(--sp-6);
-  }
 }
 
 .maison__liens a {
@@ -1238,8 +1448,8 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--sp-4);
-  min-height: 4rem;
-  padding-block: var(--sp-4);
+  min-height: 3.75rem;
+  padding-block: var(--sp-3);
   border-bottom: 1px solid var(--border-strong);
   font-family: var(--font-display);
   font-size: var(--fs-lg);
@@ -1249,14 +1459,44 @@
 
 .maison__liens svg {
   flex: none;
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
   color: var(--accent);
-  transition: transform 400ms var(--ease);
+  transition: transform 400ms var(--ease-out-expo);
 }
 
 .maison__liens a:hover { color: var(--accent); }
-.maison__liens a:hover svg { transform: translateX(4px); }
+.maison__liens a:hover svg { transform: translate(3px, -3px); }
+
+/* Téléphone : l'image passe au-dessus, en carte à part, et le panneau
+   remonte la chevaucher. Une carte claire posée sur une photo étroite
+   n'aurait laissé voir que ses bords. */
+@media (max-width: 759px) {
+  .maison__carte {
+    display: block;
+    min-height: 0;
+    padding: 0;
+    overflow: visible;
+    background: transparent;
+  }
+
+  .maison__visuel {
+    position: relative;
+    z-index: 0;
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+    border-radius: var(--radius-xl);
+    background: var(--espresso-800);
+  }
+
+  .maison__panneau {
+    position: relative;
+    z-index: 1;
+    width: auto;
+    margin: -3.5rem var(--sp-3) 0;
+    padding: var(--sp-6) var(--sp-5) var(--sp-5);
+  }
+}
 
 /* ==========================================================================
    ABOUT US
@@ -1266,10 +1506,14 @@
    réassurance, et le visuel partage la place avec le texte au lieu de le
    porter.
    ========================================================================== */
+/* En carte, comme le hero de l'accueil : posée à --cadre des bords pour
+   que la capsule de navigation tombe dans son alignement. */
 .about-hero {
   position: relative;
   isolation: isolate;
   overflow: hidden;
+  margin: var(--cadre);
+  border-radius: var(--radius-xl);
   padding-top: calc(var(--header-h) + var(--sp-7));
   padding-bottom: var(--sp-7);
   background:
@@ -1334,7 +1578,7 @@
 .about-hero__visuel {
   --shot-ratio: 3 / 2;
   margin: 0;
-  border-radius: var(--radius);
+  border-radius: var(--radius-lg);
   background: var(--espresso-700);
 }
 
@@ -1370,14 +1614,14 @@
   background: transparent;
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
-  border-bottom-color: transparent;
+  border-color: transparent;
 }
 
 .page-edito .header.is-stuck {
   background: rgba(20, 16, 13, 0.82);
   backdrop-filter: blur(22px) saturate(140%);
   -webkit-backdrop-filter: blur(22px) saturate(140%);
-  border-bottom-color: var(--sombre-border);
+  border-color: var(--sombre-border);
 }
 
 @supports not (backdrop-filter: blur(1px)) {

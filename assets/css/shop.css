@@ -3,7 +3,7 @@
    ========================================================================== */
 
 /* Les pages intérieures n'ont pas de hero : il faut dégager le header fixe. */
-.section--top { padding-top: calc(var(--header-h) + var(--sp-7)); }
+.section--top { padding-top: calc(var(--header-bas) + var(--sp-7)); }
 
 /* Titre de page : c'est un h1 pour le référencement, à l'échelle d'un h2 à l'écran. */
 .page-title { font-size: var(--fs-3xl); }
@@ -12,7 +12,7 @@
    FIL D'ARIANE
    -------------------------------------------------------------------------- */
 .crumb {
-  padding-top: calc(var(--header-h) + var(--sp-5));
+  padding-top: calc(var(--header-bas) + var(--sp-5));
   padding-bottom: 0;
   font-size: var(--fs-xs);
   letter-spacing: 0.04em;
@@ -86,7 +86,7 @@
 
 .product__gallery {
   position: sticky;
-  top: calc(var(--header-h) + var(--sp-4));
+  top: calc(var(--header-bas) + var(--sp-4));
   display: flex;
   flex-direction: column;
   gap: var(--sp-3);
