@@ -963,7 +963,30 @@ class Builder:
         <a class="btn btn--ghost btn--full" href="{base}configurateur.html"
            style="margin-top:var(--sp-3)">Composer ma paire sur-mesure</a>"""
 
-        related = [p for p in self.by_category(product["category"])
+        # LA BARRE D'ACHAT DU TÉLÉPHONE
+        # Sur un téléphone, le bouton d'achat arrive après la galerie, le nom,
+        # l'origine, deux paragraphes et les sélecteurs : à près de deux
+        # écrans du haut de la fiche. Cette barre garde le prix et l'action à
+        # portée de pouce tant que le vrai bouton n'est pas à l'écran.
+        # Elle ne porte aucune logique : son bouton passe la main au bouton
+        # de la fiche (main.js), qui vérifie pointure et couleur. Le prix porte
+        # data-prix, que le Worker réécrit comme celui de la fiche.
+        if product.get("bespoke_only"):
+            barre_action = (f'<a class="btn btn--sm btn--laiton" '
+                            f'href="{base}configurateur.html">Composer ma paire</a>')
+        else:
+            barre_action = ('<button class="btn btn--sm btn--laiton" type="button" '
+                            'data-buybar-add>Ajouter au panier</button>')
+        buybar = f"""
+<div class="buybar" data-buybar inert aria-hidden="true">
+  <span class="buybar__info">
+    <span class="buybar__nom">{escape(product['name'])}</span>
+    <span class="buybar__prix" data-prix="{product['slug']}">{price(product['price'])}</span>
+  </span>
+  {barre_action}
+</div>"""
+
+        related =[p for p in self.by_category(product["category"])
                    if p["slug"] != product["slug"]][:3]
         related_block = ""
         if related:
@@ -1032,7 +1055,7 @@ class Builder:
     </div>
   </div>
 </section>
-{details}{related_block}"""
+{details}{related_block}{buybar}"""
 
         self.page(
             "produit/%s.html" % product["slug"],
@@ -1102,6 +1125,12 @@ class Builder:
                     '<img src="assets/img/%s.jpg" width="400" height="275" '
                     'loading="lazy" decoding="async" alt="%s"></picture></span>'
                     % (o["image"], o["image"], escape(o["name"], quote=True)))
+
+        # Avant le premier choix, le total affichait « … » : sur la barre du
+        # téléphone, c'était la seule chose lisible, et elle avait l'air d'un
+        # chargement en panne. Le prix de départ est un fait du catalogue :
+        # celui de la forme la moins chère, comme les « dès » des options.
+        depart = "dès " + price(min(o["price"] for o in cfg["shapes"]))
 
         shapes = opts("shape", cfg["shapes"], lambda o: f"""      <button class="cfg-opt" type="button" aria-pressed="false" data-id="{o['id']}">
         {vignette_forme(o)}
@@ -1239,7 +1268,7 @@ class Builder:
 
           <div class="cfg-total">
             <span class="cfg-total__label">Total</span>
-            <span class="cfg-total__value" data-total>…</span>
+            <span class="cfg-total__value" data-total>{depart}</span>
           </div>
 
           <button class="btn btn--full" type="button" data-cfg-add data-cart="panier.html" disabled>
@@ -1272,10 +1301,13 @@ class Builder:
 
   <div class="cfg-bar">
     <span class="cfg-bar__total">
-      <span data-total>…</span>
+      <span data-total>{depart}</span>
       <span class="cfg-bar__label">Cousue à la commande, {cfg['lead_days']}</span>
     </span>
-    <button class="btn btn--sm" type="button" data-cfg-add data-cart="panier.html" disabled>Ajouter</button>
+    <!-- Ce bouton-là n'est jamais grisé : sur téléphone, un bouton mort au
+         bas de l'écran ne dit pas quoi faire. Tant qu'un choix manque, il
+         s'appelle « Continuer » et mène à l'étape qui manque. -->
+    <button class="btn btn--sm" type="button" data-cfg-add data-cfg-bar data-cart="panier.html">Continuer</button>
   </div>
 </section>
 

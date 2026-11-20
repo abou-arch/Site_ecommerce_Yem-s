@@ -607,6 +607,16 @@ p { text-wrap: pretty; }
   transform: none;
 }
 
+/* Sur téléphone, un bloc qui met près d'une seconde à se poser se lit comme
+   une page qui charge (voir aussi motion.css) : moitié moins de durée, et un
+   déplacement plus court, à l'échelle d'un petit écran. */
+@media (max-width: 900px) {
+  [data-reveal] {
+    transform: translateY(12px);
+    transition-duration: 480ms;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *,

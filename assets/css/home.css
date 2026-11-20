@@ -472,10 +472,45 @@
    plafond en svh ne rogne que le sol sous les semelles.
    -------------------------------------------------------------------------- */
 @media (max-width: 619px) {
-  .hero-edito { --bande: min(72svh, calc(100vw * 1672 / 941)); }
+  /* LE TITRE DANS LE PREMIER ÉCRAN
+     À 72svh, l'image prenait tout le premier écran d'un téléphone : on
+     arrivait sur une photo et le logo, sans un mot sur ce que vend la
+     maison. Et sur un écran court (360 × 640), « center top » sacrifiait
+     le bas du cadre — c'est-à-dire les souliers.
 
-  /* S'il faut rogner, c'est le sol qui part, jamais la tête. */
-  .hero-edito__media img { object-position: center top; }
+     Le portrait a de l'air au-dessus de la tête (15 % de sa hauteur) et du
+     sol sous les semelles (17 %). La bande se cale donc sur trois bornes :
+       - au plus, l'image entière ;
+       - de préférence, ce qui laisse 11rem sous elle pour le surtitre et
+         le titre, dans le premier écran ;
+       - au moins 72 % de l'image, soit le mannequin de la tête aux pieds.
+     Le rognage se répartit au prorata des deux marges (46 %), pour que ni
+     la tête ni les souliers ne touchent le bord. */
+  .hero-edito {
+    /* La carte du hero est posée à --cadre des deux bords. */
+    --image: calc((100vw - 2 * var(--cadre)) * 1672 / 941);
+    --bande: clamp(calc(var(--image) * 0.72),
+                   calc(100svh - var(--header-h) - 11rem),
+                   var(--image));
+  }
+
+  .hero-edito__media img { object-position: 50% 46%; }
+
+  /* Le fondu de la tablette partait à 58 % de la bande : sur le portrait,
+     c'est là que se tiennent les souliers, qui passaient dans l'ombre. Ici
+     il ne prend que le dernier dixième, sous les semelles. */
+  .hero-edito__media::after {
+    background: linear-gradient(
+      to bottom,
+      rgba(20, 16, 13, 0.00) 0%,
+      rgba(20, 16, 13, 0.00) 89%,
+      rgba(20, 16, 13, 0.72) 96%,
+      var(--espresso-900) 100%
+    );
+  }
+
+  .hero-edito__inner { padding-top: var(--sp-3); }
+  .hero-edito h1 { margin-block: var(--sp-2) var(--sp-4); }
 }
 
 /* --------------------------------------------------------------------------
