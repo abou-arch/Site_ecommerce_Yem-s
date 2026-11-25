@@ -230,12 +230,29 @@
     });
   });
 
+  // Commander sur WhatsApp : le message prérempli reprend la pointure et la
+  // couleur choisies, pour que l'atelier n'ait rien à redemander.
+  const lienWa = $('[data-wa-nom]');
+  const majWa = () => {
+    if (!lienWa) return;
+    let texte = 'Bonjour, je souhaite commander le ' + lienWa.dataset.waNom + '.';
+    const pointure = getSize && getSize();
+    const couleur = getColor && getColor();
+    if (pointure) texte += ' Pointure : ' + pointure + '.';
+    if (couleur) texte += ' Couleur : ' + couleur + '.';
+    lienWa.href = lienWa.dataset.waBase + '?text=' + encodeURIComponent(texte);
+  };
+  if (lienWa) {
+    $$('.size, .swatch--btn').forEach((b) => b.addEventListener('click', majWa));
+  }
+
   // Rien n'est présélectionné, sauf s'il n'y a pas de choix à faire, ou si le
   // lien demande une couleur précise (…/mocassin-tokpa.html?couleur=noir).
   const voulue = (new URLSearchParams(location.search).get('couleur') || '').toLowerCase();
   const preselect = colorButtons.length === 1 ? colorButtons[0]
     : colorButtons.find((b) => b.dataset.color.toLowerCase() === voulue);
   if (preselect) preselect.click();
+  majWa();
 
   let toastEl = null;
   let toastTimer = null;
@@ -319,7 +336,9 @@
     };
 
     new IntersectionObserver((entries) => {
-      horsEcran = !entries[0].isIntersecting;
+      // La barre ne monte qu'une fois le bouton de la fiche sorti de l'écran
+      // par le haut : au chargement, il est encore plus bas, à venir.
+      horsEcran = !entries[0].isIntersecting && entries[0].boundingClientRect.top < 0;
       appliquer();
     }).observe(actions);
     if (telephone.addEventListener) telephone.addEventListener('change', appliquer);

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Les pièces de l'atelier arrivent | Yem's</title>
 <meta name="description" content="La ligne cousue main de l&#x27;atelier de Cotonou est en préparation. Écrivez à l&#x27;atelier pour voir les pièces de près ou être prévenu de leur mise en ligne.">
-<meta name="theme-color" content="#14100D">
+<meta name="theme-color" content="#F6F1E8">
 <link rel="canonical" href="https://maisonyems.com/a-venir.html">
 <meta property="og:title" content="Les pièces de l&#x27;atelier arrivent | Yem&#x27;s">
 <meta property="og:description" content="La ligne cousue main de l&#x27;atelier de Cotonou est en préparation. Écrivez à l&#x27;atelier pour voir les pièces de près ou être prévenu de leur mise en ligne.">
@@ -21,7 +21,7 @@
 <!-- Les polices ne bloquent plus l'affichage. « media=print » fait charger la
      feuille sans qu'elle retarde le rendu ; le script qui suit la réactive dès
      qu'elle est là. Le texte s'affiche donc immédiatement en Georgia et en
-     police système, puis bascule sur Marcellus et Jost. Sur une 3G, ça
+     police système, puis bascule sur Prata et Hanken Grotesk. Sur une 3G, ça
      évite plusieurs centaines de millisecondes de page blanche.
 
      Ce script remplace un attribut onload : la politique de sécurité (CSP)
@@ -32,11 +32,14 @@
      Le <noscript> garde le comportement classique pour qui n'exécute pas de
      script : mieux vaut attendre les polices que ne jamais les recevoir.
 
-     Seules les graisses réellement employées sont demandées : Marcellus en 400
-     pour les titres et Jost de 300 à 600 pour les textes et les contrôles. -->
+     Seules les graisses réellement employées sont demandées : Prata en 400
+     pour les titres, les noms et les prix, Hanken Grotesk de 400 à 600 pour
+     les textes et les contrôles, et Marcellus pour le seul mot « YEM'S »
+     du logo. -->
 <link rel="stylesheet" media="print" data-polices
-      href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&family=Marcellus&display=swap">
+      href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=Marcellus&family=Prata&display=swap">
 <script>
+document.documentElement.classList.add('js');
 (function () {
   var feuille = document.querySelector('link[data-polices]');
   var activer = function () { feuille.media = 'all'; };
@@ -46,15 +49,18 @@
 </script>
 <noscript>
   <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&family=Marcellus&display=swap">
+        href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=Marcellus&family=Prata&display=swap">
 </noscript>
 
-<link rel="stylesheet" href="assets/css/base.css?v=6218e590">
-<link rel="stylesheet" href="assets/css/components.css?v=3915a88e">
+<link rel="stylesheet" href="assets/css/base.css?v=fafb280c">
+<link rel="stylesheet" href="assets/css/components.css?v=e78d009b">
 <link rel="stylesheet" href="assets/css/home.css?v=172ffaa2">
 <link rel="stylesheet" href="assets/css/shop.css?v=11ee56dc">
 <link rel="stylesheet" href="assets/css/motion.css?v=60901b15">
-
+<!-- La refonte : jetons et composants partagés de la maison. Après les
+     feuilles historiques, avant celles propres à une page. -->
+<link rel="stylesheet" href="assets/css/maison.css?v=57538a2b">
+<link rel="stylesheet" href="assets/css/boutique.css?v=e1654f96">
 
 <!-- Favicone : exactement le monogramme du site, sans adaptation. Le nouveau
      dessin n'a plus de perforations à boucher, il tient donc tel quel à 16 px.
@@ -75,7 +81,7 @@
      balisage complet du rideau reste dans l'historique git si la maison
      veut le revoir, raccourci cette fois. -->
 </head>
-<body>
+<body class="page-rayon">
 
 <a class="skip-link" href="#main">Aller au contenu</a>
 
@@ -84,7 +90,6 @@
      de la marque, tiré point par point le long du haut de l'écran. Le motif
      est exactement celui de la classe .couture utilisée dans les pages.
      Purement décoratif, donc masqué aux lecteurs d'écran. -->
-<div class="fil-progression" aria-hidden="true"><span></span></div>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
   <defs>
@@ -158,6 +163,7 @@
     </a>
 
     <nav class="nav" aria-label="Navigation principale">
+      <a class="nav__link" href="boutique.html">Boutique</a>
       <a class="nav__link" href="selection.html">La sélection</a>
       <a class="nav__link" href="a-venir.html" aria-current="page">L'atelier</a>
       <a class="nav__link" href="configurateur.html">Le sur-mesure</a>
@@ -179,69 +185,111 @@
 </header>
 
 <div class="mobile-menu" id="mobile-menu">
+  <a href="boutique.html">Boutique</a>
   <a href="selection.html">La sélection</a>
   <a href="a-venir.html" aria-current="page">L'atelier</a>
   <a href="configurateur.html">Le sur-mesure</a>
   <a href="about-us.html">About us</a>
   <a href="service-client.html">Service client</a>
-  <a class="btn" href="configurateur.html" style="margin-top:auto">Composer ma paire</a>
+  <a class="btn" href="https://wa.me/2290191380234" target="_blank" rel="noopener" style="margin-top:auto">
+    <svg aria-hidden="true"><use href="#i-whatsapp"></use></svg>
+    Écrire à l'atelier
+  </a>
 </div>
 
 <main id="main">
 
-<section class="section section--top atelier-page" id="a-venir">
+<section class="rayon-page rayon-page--seule" id="a-venir" aria-labelledby="rayon-titre">
   <div class="container container--wide">
-    <div class="section-head" data-reveal>
-      <span class="eyebrow">L'atelier</span>
-      <h1 class="page-title" style="margin-top:var(--sp-3)">Les pièces de l'atelier arrivent</h1>
-      <p class="lede">
-        À Cotonou, notre atelier façonne une ligne de souliers et de maroquinerie.
-        Nous la présenterons ici avec nos propres photos, dès que chaque pièce
-        pourra être montrée telle qu'elle est.
-      </p>
-    </div>
-
-    <div class="story__turn" data-reveal style="margin-top:var(--sp-6)">
-      <p>
-        6 pièces sont en préparation à l'atelier de Cotonou : des souliers
-        cousus à la main, une ceinture et un portefeuille taillés dans les mêmes
-        peaux. <strong>Les photos et les fiches seront publiées dès qu'elles
-        seront prêtes.</strong>
-      </p>
-    </div>
-
-    <div class="grid grid--3" style="margin-top:var(--sp-7)">
-      <article class="card" data-reveal>
-        <h2>Les découvrir sur place</h2>
-        <p>
-          Vous êtes à Cotonou ? Écrivez-nous pour convenir d'un passage et voir
-          les pièces de près. Vous pourrez apprécier le cuir, les finitions et
-          le travail des coutures.
+    <div class="rayon-tete">
+      <h1 id="rayon-titre">Les pièces de l'atelier arrivent</h1>
+      <div class="rayon-tete__texte">
+        <p class="rayon-tete__lede">
+          À Cotonou, notre atelier façonne une ligne de souliers et de
+          maroquinerie. Chaque pièce aura ici sa fiche et son prix dès
+          qu'elle sera en production.
         </p>
-      </article>
-      <article class="card" data-reveal style="--reveal-delay:90ms">
-        <h2>Demander les photos</h2>
-        <p>
-          Contactez l'atelier sur WhatsApp pour demander des photos et connaître
-          la disponibilité des modèles en préparation.
+        <p class="rayon-tete__ligne">
+          Six pièces sont en préparation&nbsp;: des souliers cousus à la main, une
+          ceinture et un portefeuille taillés dans les mêmes peaux.
         </p>
-      </article>
-      <article class="card" data-reveal style="--reveal-delay:180ms">
-        <h2>Être informé de la mise en ligne</h2>
-        <p>
-          Écrivez-nous sur WhatsApp pour demander à être tenu au courant lorsque
-          les photos et les fiches produits seront publiées.
-        </p>
-      </article>
+      </div>
     </div>
+  </div>
+</section>
 
-    <div class="cta__actions" data-reveal style="margin-top:var(--sp-7)">
-      <a class="btn" href="https://wa.me/2290191380234?text=Bonjour%2C%20je%20voudrais%20voir%20les%20pi%C3%A8ces%20de%20l%27atelier."
-         target="_blank" rel="noopener">
-        <svg aria-hidden="true"><use href="#i-whatsapp"></use></svg>
-        Écrire à l'atelier
-      </a>
-      <a class="btn btn--ghost" href="selection.html">Voir ce qui est disponible</a>
+<section class="venir-pieces" aria-label="Pièces en préparation">
+  <div class="container container--wide">
+    <div class="venir-pieces__grille">
+      <figure class="venir-piece">
+        <div class="venir-piece__image">
+          <picture>
+            <source srcset="assets/img/ceinture-sellier-ai-500.webp 500w, assets/img/ceinture-sellier-ai.webp 1122w" sizes="(max-width: 899px) 46vw, 30vw" type="image/webp">
+            <img src="assets/img/ceinture-sellier-ai.jpg" srcset="assets/img/ceinture-sellier-ai-500.jpg 500w, assets/img/ceinture-sellier-ai.jpg 1122w" sizes="(max-width: 899px) 46vw, 30vw"
+                 width="1122" height="1402" fetchpriority="high"
+                 alt="Ceinture en cuir cognac roulée, piqûre sellier ton sur ton, boucle en laiton brossé">
+          </picture>
+        </div>
+        <figcaption>La ceinture</figcaption>
+      </figure>
+      <figure class="venir-piece">
+        <div class="venir-piece__image">
+          <picture>
+            <source srcset="assets/img/portefeuille-quatre-cartes-ai-500.webp 500w, assets/img/portefeuille-quatre-cartes-ai.webp 1122w" sizes="(max-width: 899px) 46vw, 30vw" type="image/webp">
+            <img src="assets/img/portefeuille-quatre-cartes-ai.jpg" srcset="assets/img/portefeuille-quatre-cartes-ai-500.jpg 500w, assets/img/portefeuille-quatre-cartes-ai.jpg 1122w" sizes="(max-width: 899px) 46vw, 30vw"
+                 width="1122" height="1402" loading="lazy" decoding="async"
+                 alt="Portefeuille plié en cuir brun patiné, cousu sur tout le pourtour">
+          </picture>
+        </div>
+        <figcaption>Le portefeuille</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section class="bloc groupe" aria-labelledby="venir-titre">
+  <div class="container container--wide atelier-rayon atelier-rayon--haut">
+    <figure class="atelier-rayon__image" data-reveal>
+      <picture>
+        <source type="image/webp"
+                sizes="(max-width: 899px) 92vw, 50vw"
+                srcset="assets/img/atelier-couture-500.webp 500w,
+                        assets/img/atelier-couture-800.webp 800w,
+                        assets/img/atelier-couture.webp 1200w">
+        <img src="assets/img/atelier-couture-800.jpg"
+             sizes="(max-width: 899px) 92vw, 50vw"
+             srcset="assets/img/atelier-couture-500.jpg 500w,
+                     assets/img/atelier-couture-800.jpg 800w,
+                     assets/img/atelier-couture.jpg 1200w"
+             width="1200" height="800" loading="lazy" decoding="async"
+             alt="Des mains d'artisan piquent à l'alène la trépointe d'un soulier en cuir brun">
+      </picture>
+      
+    </figure>
+
+    <div class="atelier-rayon__texte">
+      <h2 id="venir-titre" data-lines>En attendant</h2>
+      <dl class="venir-liste">
+        <div data-reveal>
+          <dt>Être prévenu</dt>
+          <dd>Écrivez à l'atelier sur WhatsApp&nbsp;: nous vous envoyons les
+          photos et la fiche de chaque pièce dès qu'elle est prête.</dd>
+        </div>
+      </dl>
+      <div class="venir-actions">
+        <a class="btn" href="https://wa.me/2290191380234?text=Bonjour%2C%20je%20voudrais%20voir%20les%20pi%C3%A8ces%20de%20l%27atelier." target="_blank" rel="noopener">
+          <svg aria-hidden="true"><use href="#i-whatsapp"></use></svg>
+          Écrire à l'atelier
+        </a>
+        <a class="lien" href="configurateur.html">
+          Composer ma paire sur mesure
+          <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
+        </a>
+        <a class="lien" href="selection.html">
+          Voir ce qui est disponible
+          <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
+        </a>
+      </div>
     </div>
   </div>
 </section>
@@ -268,9 +316,9 @@
              partie » serait une inexactitude, et l'inexactitude est précisément
              ce contre quoi cette mention protège. -->
         <p class="footer__ai-note">
-          Tous les visuels produits de ce site sont générés par intelligence
-          artificielle. Ils illustrent le modèle&nbsp;; ils ne sont pas des
-          photographies des pièces livrées.
+          Toutes les images de ce site, pièces, portrait et scènes d'atelier,
+          sont générées par intelligence artificielle. Elles illustrent la
+          maison et ses modèles&nbsp;; ce ne sont pas des photographies.
           <a href="mentions-legales.html#visuels">En savoir plus</a>
         </p>
 
@@ -288,6 +336,7 @@
         <h2 class="footer__title">Boutique</h2>
         <ul class="footer__list">
           <li><a href="boutique.html">Tout le catalogue</a></li>
+          <li><a href="entretien.html">Entretien</a></li>
           <li><a href="selection.html">Sélection</a></li>
           <li><a href="a-venir.html">Ce qui se prépare</a></li>
           <li><a href="configurateur.html">Sur-mesure</a></li>
@@ -350,13 +399,12 @@
     </div>
   </div>
 
-  <!-- La signature : le nom à l'échelle de la carte, coupé par son bord
-       bas. Pur décor, le logo plus haut porte déjà le nom. -->
-  <p class="footer__signature" aria-hidden="true">YEM’S</p>
+  <!-- La signature géante en texte dégradé de l'ancien pied a été retirée
+       avec la refonte « maison » (pas de texte en dégradé). -->
 </footer>
 
 
-<script src="assets/js/main.js?v=c80fefc8" defer></script>
+<script src="assets/js/main.js?v=5a8c5422" defer></script>
 <script src="assets/js/motion.js?v=86394c47" defer></script>
 
 </body>

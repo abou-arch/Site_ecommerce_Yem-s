@@ -21,6 +21,7 @@ import datetime
 import hashlib
 import json
 import os
+from urllib.parse import quote
 import re
 import shutil
 from html import escape
@@ -108,6 +109,13 @@ def fill(template, **values):
     return template
 
 
+def nombre_en_lettres(n):
+    """7 → « Sept » : un nombre en tête de phrase s'écrit en lettres."""
+    mots = ["Aucun", "Un", "Deux", "Trois", "Quatre", "Cinq", "Six", "Sept",
+            "Huit", "Neuf", "Dix", "Onze", "Douze"]
+    return mots[n] if 0 <= n < len(mots) else str(n)
+
+
 def price(value):
     """85000 → « 85 000 F » — espace insécable fine avant l'unité."""
     return "{:,}".format(int(value)).replace(",", " ") + " F"
@@ -134,7 +142,7 @@ def badge(status, extra="", long=False, slug=None):
 # Place réellement occupée par une image, selon l'endroit où elle s'affiche.
 # Une valeur fausse fait charger au navigateur une image trop grande, ou trop
 # petite et donc floue : ces trois chaînes décrivent les trois grilles du site.
-GRID_SIZES = "(max-width: 560px) 92vw, (max-width: 900px) 46vw, 30vw"   # vignettes de grille
+GRID_SIZES = "(max-width: 759px) 46vw, (max-width: 1179px) 31vw, 23vw"   # vignettes de grille
 MAIN_SIZES = "(max-width: 900px) 92vw, 45vw"                            # photo d'ouverture d'une fiche
 THUMB_SIZES = "(max-width: 900px) 30vw, 15vw"                           # petites vues sous la photo
 
@@ -234,7 +242,7 @@ def origine_marque(product, long=False):
     return '<span class="%s">%s</span>' % (cls, escape(o["court"]))
 
 
-def product_card(product, base, delay=0, level=3):
+def product_card(product, base, delay=0, level=3, sizes=None, eager=False):
     """Carte produit, telle qu'elle apparaît dans une grille."""
     href = "%sproduit/%s.html" % (base, product["slug"])
     style = ' style="--reveal-delay:%dms"' % delay if delay else ""
@@ -243,21 +251,45 @@ def product_card(product, base, delay=0, level=3):
     # Les mentions de transparence sur les visuels sont centralisées en bas
     # de page ; une pastille sur chaque photo surchargeait les cartes.
     note = ""
+    texte = ligne_produit(product)
+    ligne = '<p class="pcard__spec">%s</p>' % escape(texte) if texte else ""
     return f"""      <article class="pcard" data-reveal{style} data-piece="{product['slug']}">
-        <a href="{href}" aria-label="Découvrir {escape(product['name'])}">
+        <a href="{href}" tabindex="-1" aria-hidden="true">
           <div class="pshot{empty}" data-shot>
             {badge(product['status'], 'pshot__badge', slug=product['slug'])}
-            {picture(product, base)}{note}
+            {picture(product, base, lazy=not eager, sizes=sizes)}{note}
           </div>
         </a>
         <div class="pcard__body">
-          {origine_marque(product)}
-          <div class="pcard__row">
-            <h{level} class="pcard__name">{escape(product['name'])}</h{level}>
+          <h{level} class="pcard__name"><a href="{href}">{escape(product['name'])}</a></h{level}>
+          {ligne}
+          <div class="pcard__foot">
+            {origine_marque(product)}
             <span class="pcard__price" data-prix="{product['slug']}">{price(product['price'])}</span>
           </div>
         </div>
       </article>"""
+
+
+def ligne_produit(product):
+    """
+    La ligne de description d'une vignette : ce qu'est la pièce, en quelques
+    mots, tirée de sa première caractéristique (« Derby à lacets · Noir »,
+    « Pleine fleur tannée végétal, 2 mm »). Rien n'est inventé : sans
+    caractéristique, la vignette s'en passe.
+
+    L'ordre de la vignette est nom, ligne, origine, prix : l'origine reste
+    au-dessus du prix, comme le veut la maison, sans faire surtitre au-dessus
+    du nom.
+    """
+    specs = [s for s in product.get("specs") or []
+             if s.get("value") and "confirmer" not in s["value"]]
+    if not specs:
+        return ""
+    texte = specs[0]["value"]
+    if len(specs) > 1 and specs[1].get("label") == "Coloris":
+        texte += " · " + specs[1]["value"]
+    return texte
 
 
 def hero_piece(product, base):
@@ -292,13 +324,17 @@ def hero_piece(product, base):
   </a>"""
 
 
-def grid(products, base, klass="collections__grid", level=3, rare=True):
+def grid(products, base, klass="collections__grid", level=3, rare=True, sizes=None, eager=0):
     if not products:
         return """      <div class="empty-state">
         <p class="display">Cette ligne arrive bientôt.</p>
         <p class="text-muted">Écrivez-nous sur WhatsApp pour être prévenu du lancement.</p>
       </div>"""
-    cards = [product_card(p, base, delay=i * 90, level=level) for i, p in enumerate(products)]
+    # eager : les premières vignettes d'une page qui ouvre sur la grille
+    # partent tout de suite (pas de chargement différé), la première en
+    # priorité. sizes : la largeur réelle de cette grille-là.
+    cards = [product_card(p, base, delay=i * 90, level=level, sizes=sizes, eager=i < eager)
+             for i, p in enumerate(products)]
 
     # La grille s'adapte au nombre de pièces réellement en vente.
     #
@@ -446,6 +482,7 @@ class Builder:
             base=base,
             nav=nav_links(nav, base, home, current),
             nav_mobile=nav_links(nav, base, home, current, mobile=True),
+            whatsapp=self.site["whatsapp"],
         )
         # Le footer ne liste que ce qui existe. Une catégorie sans pièce
         # visible n'a plus de page : y renvoyer créerait un lien mort.
@@ -591,18 +628,30 @@ class Builder:
     def build_home(self):
         body = read(os.path.join(TPL, "pages", "index.html"))
         vitrine = self.vitrine()
+        # Les chiffres de la section « Fabriqué ou choisi » sont tirés des
+        # données, jamais écrits dans le gabarit : une pièce ajoutée à la
+        # sélection ou un prix de forme corrigé se répercutent seuls.
+        selection = [p for p in self.products
+                     if p.get("origine") == "selection" and not p.get("a_venir")
+                     and p.get("category") == "selection"]  # les souliers, pas l'entretien
+        bespoke = self.site["bespoke"]
         body = fill(body, base="", whatsapp=self.site["whatsapp"],
                     featured_grid=grid(vitrine, "",
-                                       klass="vitrine__grid", rare=False),
-                    hero_piece=hero_piece(vitrine[0] if vitrine else None, ""),
+                                       klass="vitrine__grid", rare=False,
+                                       sizes="(max-width: 899px) 46vw, 23vw"),
                     visuel_ia=mention_ia(),
-                    **self.apercu_sur_mesure())
+                    nb_selection=nombre_en_lettres(len(selection)),
+                    delai_sur_mesure=bespoke["lead_days"][:1].upper() + bespoke["lead_days"][1:],
+                    prix_sur_mesure=price(min(f["price"] for f in bespoke["shapes"])),
+                    acompte=bespoke["deposit"])
         self.page(
             "index.html",
             content=body,
-            # page-accueil : le fond ivoire continu et les cartes de l'accueil
-            # (home.css), que la page About us, éditoriale elle aussi, ne prend pas.
-            body_class="page-edito page-accueil",
+            # page-maison : l'accueil de la refonte n'emprunte plus rien à
+            # home.css (ancien hero, cartes arrondies, en-tête transparent) ;
+            # ses styles sont dans accueil.css.
+            body_class="page-maison",
+            extra_css=("accueil",),
             title="Souliers et maroquinerie cousus main à Cotonou | Yem's",
             description=("Yem's : souliers, ceintures et portefeuilles cousus à la main à "
                          "Cotonou. Point sellier, cuir pleine fleur, semelle ressemelable. "
@@ -670,127 +719,158 @@ class Builder:
             },
         )
 
-    def methode(self, origine="selection"):
-        """
-        Le bloc qui remplace la photographie qu'on n'a pas.
+    # ── la boutique et les pages catégorie (refonte « maison ») ─────
+    #
+    # Le registre est celui de l'accueil : un titre Prata aligné à gauche,
+    # une ou deux phrases tirées des données, puis les pièces ; des filets
+    # fins entre les sections, aucun surtitre, aucune carte numérotée. Les
+    # styles sont dans assets/css/boutique.css, chargée sur ces pages seules.
 
-        Une page boutique avec trois pièces et rien d'autre ne donne au
-        visiteur aucune raison de rester. Tant que le catalogue est court,
-        c'est le récit du travail qui doit occuper la place : comment la pièce
-        arrive jusqu'à lui, et ce qui se passe si elle ne convient pas.
+    def ligne_origine(self, origine):
+        """« Choisi par l'atelier. Échange un an, pointure ou défaut. » :
+        l'origine et la garantie de la ligne, mot pour mot depuis
+        site.origines, jamais réécrites dans le gabarit."""
+        o = ORIGINES.get(origine)
+        if not o:
+            return ""
+        return "<strong>%s.</strong> %s." % (escape(o["court"]), escape(o["garantie"]))
 
-        Ce n'est pas du remplissage. C'est exactement la question qu'on se pose
-        devant une boutique inconnue, et elle est ici posée à l'endroit où l'on
-        décide, pas reléguée sur la page d'accueil.
-        """
-        if origine == "atelier":
-            etapes = [
-                ("01", "On coupe", "La peau est choisie à Cotonou, puis coupée à "
-                 "la forme. C'est là que se décide la tenue d'une paire, bien "
-                 "avant la couture."),
-                ("02", "On coud", "Point sellier, deux aiguilles, un fil de lin "
-                 "poissé. Plus lent qu'une machine, et c'est le but : un point "
-                 "qui lâche ne défait pas la ligne."),
-                ("03", "On répond", "Ressemelage à vie, une retouche offerte "
-                 "après essayage. La semelle se remplace, la paire reste."),
-            ]
-        else:
-            etapes = [
-                ("01", "On choisit", "L'atelier ne sait pas tout faire. Ce qu'il "
-                 "ne fabrique pas, il va le chercher lui-même, et n'en retient "
-                 "qu'une pièce sur plusieurs."),
-                ("02", "On contrôle", "Chaque paire est ouverte à la réception. "
-                 "Couture, doublure, collage, symétrie. Ce qui ne passe pas ne "
-                 "part pas."),
-                ("03", "On en répond", "Numérotée, échangeable un an, pointure "
-                 "ou défaut. Nous ne l'avons pas fabriquée, nous en répondons "
-                 "quand même."),
-            ]
+    def note_prix(self):
+        """La réserve sur les prix, telle que l'accueil l'affiche."""
+        return ('    <p class="bloc__note">\n'
+                '      <span class="todo-note">À valider</span>\n'
+                '      Prix indicatifs en FCFA, à confirmer avant mise en ligne.\n'
+                '    </p>')
 
-        cartes = "\n".join(
-            """      <article class="card" data-reveal style="--reveal-delay:%dms">
-        <span class="card__num">%s</span>
-        <h2>%s</h2>
-        <p>%s</p>
-      </article>""" % (i * 90, num, titre, texte)
-            for i, (num, titre, texte) in enumerate(etapes))
-
-        o = self.site["origines"][origine]
-        return f"""
-<section class="section methode">
-  <div class="container">
-    <div class="section-head" data-reveal>
-      <span class="eyebrow">{escape(o['nom'])}</span>
-      <h2 style="margin-top:var(--sp-4)">Ce qui se passe<br>avant que votre paire arrive</h2>
-    </div>
-    <div class="grid grid--3" style="margin-top:var(--sp-7)">
-{cartes}
-    </div>
-
-    <ul class="assurances" data-reveal>
-      <li><svg aria-hidden="true"><use href="#i-check"></use></svg>{escape(o['garantie'])}</li>
-      <li><svg aria-hidden="true"><use href="#i-shield"></use></svg>Rien à payer d'avance</li>
-      <li><svg aria-hidden="true"><use href="#i-truck"></use></svg>Cotonou &amp; Abidjan en 48 h</li>
-      <li><svg aria-hidden="true"><use href="#i-needle"></use></svg>Chaque pièce porte un numéro</li>
-    </ul>
-  </div>
-</section>
-"""
-
-    def build_category(self, cat):
-        products = self.by_category(cat["slug"])
-        content = f"""<section class="section section--top" id="{cat['slug']}">
-  <div class="container">
-    <div class="section-head section-head--split" data-reveal>
-      <div>
-        <span class="eyebrow">{cat['eyebrow']}</span>
-        <h1 class="page-title" style="margin-top:var(--sp-4)" data-lines>{cat['heading']}</h1>
+    def tete_rayon(self, titre, lede, ligne):
+        """L'ouverture d'une page de rayon : le h1 à gauche, le texte à côté
+        sur grand écran, dessous au téléphone. Rien n'y est animé : c'est le
+        premier écran."""
+        ligne = '\n      <p class="rayon-tete__ligne">%s</p>' % ligne if ligne else ""
+        return f"""    <div class="rayon-tete">
+      <h1 id="rayon-titre">{titre}</h1>
+      <div class="rayon-tete__texte">
+      <p class="rayon-tete__lede">{lede}</p>{ligne}
       </div>
-      <p class="lede" style="max-width:40ch">{cat['lede']}</p>
-    </div>
+    </div>"""
 
-{grid(products, "", klass="shop-grid", level=2)}
-  </div>
-</section>
-{self.methode(cat.get('origine', 'selection'))}
-<div class="seam" data-seam aria-hidden="true">
-  <svg viewBox="0 0 1440 160" preserveAspectRatio="none">
-    <defs>
-      <mask id="seam-cat">
-        <path class="seam__reveal" pathLength="1" d="M0 40 C 300 40, 380 126, 720 126 S 1140 40, 1440 40"/>
-      </mask>
-    </defs>
-    <path class="seam__thread" mask="url(#seam-cat)" d="M0 40 C 300 40, 380 126, 720 126 S 1140 40, 1440 40"/>
-  </svg>
-</div>
-
-<section class="section cta grain">
-  <div class="container">
-    <span class="eyebrow eyebrow--center" data-reveal>Rien ne vous va exactement ?</span>
-    <h2 style="margin-top:var(--sp-4)" data-reveal>C'est précisément<br>le sur-mesure</h2>
-    <p class="lede mx-auto text-center" style="margin-top:var(--sp-5)" data-reveal>
-      Composez en deux minutes, le prix s'affiche poste par poste, l'atelier
-      confirme la date sur WhatsApp. Vous ne payez rien avant cette confirmation.
-    </p>
-    <div class="cta__actions" data-reveal>
-      <a class="btn" href="configurateur.html">
-        Composer ma paire
-        <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
-      </a>
-    </div>
+    def invitation(self, *, ident, titre, phrase, lien):
+        """La dernière section : un filet, un titre, une phrase, un bouton.
+        Sur fond ivoire, comme la question qui ferme l'accueil."""
+        return f"""<section class="bloc bloc--filet invitation" aria-labelledby="{ident}">
+  <div class="container container--narrow invitation__inner">
+    <h2 id="{ident}" data-lines>{titre}</h2>
+    <p>{phrase}</p>
+    {lien}
   </div>
 </section>"""
 
-        crumb = breadcrumb([("Accueil", "index.html"), (cat["name"], None)])
+    def methode(self, origine="selection"):
+        """
+        Ce qui se passe avant que la paire arrive, sous la grille d'un rayon.
+
+        Les trois cartes numérotées 01 / 02 / 03 et le bandeau d'icônes
+        de l'ancien registre deviennent une liste à filets (dt / dd), comme
+        « Payer et recevoir » sur l'accueil. Les faits sont les mêmes : le
+        choix, le contrôle à la réception, la garantie et le numéro, rien à
+        payer d'avance, 48 h à Cotonou et Abidjan. La numérotation ne disait
+        rien qu'un ordre de lecture ne dise déjà : elle est retirée.
+
+        Le bloc est gardé sur la page catégorie parce qu'il dit ce que l'en-tête
+        ne dit pas (ce que l'on contrôle, la semelle collée, comment on paie).
+        Il n'est plus posé sur la boutique : elle a déjà la garantie de chaque
+        ligne en tête de page, et sa tâche est de montrer les pièces.
+        """
+        if origine == "atelier":
+            faits = [
+                ("Le cuir", "La peau est choisie à Cotonou, puis coupée à la "
+                 "forme. C'est là que se décide la tenue d'une paire, bien "
+                 "avant la couture."),
+                ("La couture", "Point sellier, deux aiguilles, un fil de lin "
+                 "poissé. Plus lent qu'une machine, et c'est le but : un point "
+                 "qui lâche ne défait pas la ligne."),
+                ("La garantie", "Ressemelage à vie, et une retouche offerte "
+                 "après essayage sur le sur-mesure. La semelle se remplace, la "
+                 "paire reste. Chaque pièce porte un numéro."),
+            ]
+        else:
+            faits = [
+                ("Le choix", "Ce que l'atelier ne fabrique pas, il va le "
+                 "chercher lui-même, l'essaie et le compare avant de le retenir."),
+                ("Le contrôle", "Chaque paire est ouverte à la réception : "
+                 "couture, doublure, collage, symétrie. Ce qui ne passe pas ne "
+                 "part pas."),
+                ("La garantie", "Numérotée, échangeable un an, pointure ou "
+                 "défaut. La semelle est collée : elle ne se ressemelle pas, "
+                 "nous préférons le dire avant l'achat."),
+            ]
+        faits.append(("Payer et recevoir", "Rien à payer d'avance : vous réglez "
+                      "à la livraison ou par Mobile Money. Expédiée sous 72 h, "
+                      "puis livrée en 48 h à Cotonou et à Abidjan, sous 5 jours "
+                      "ailleurs (jours ouvrés)."))
+
+        lignes = "\n".join(
+            f"""      <div data-reveal style="--reveal-delay:{i * 60}ms">
+        <dt>{escape(titre)}</dt>
+        <dd>{escape(texte, quote=False)}</dd>
+      </div>""" for i, (titre, texte) in enumerate(faits))
+
+        return f"""<section class="bloc bloc--filet methode-rayon" aria-labelledby="methode-titre">
+  <div class="container container--wide methode-rayon__grille">
+    <div class="methode-rayon__tete">
+      <h2 id="methode-titre" data-lines>Avant que votre paire arrive</h2>
+      <p>Ce que nous faisons de chaque pièce, et ce qui se passe si elle ne vous va pas.</p>
+    </div>
+    <dl class="methode-rayon__liste">
+{lignes}
+    </dl>
+  </div>
+</section>"""
+
+    def build_category(self, cat):
+        products = self.by_category(cat["slug"])
+        # L'origine du rayon se lit sur ses pièces : un rayon où tout est
+        # fabriqué à Cotonou affiche la garantie de l'atelier, un rayon de la
+        # sélection celle de la sélection. Un rayon mêlé n'en affiche aucune
+        # plutôt que d'en promettre une qui ne vaudrait pas pour tout.
+        origines = {p.get("origine", "selection") for p in products}
+        origine = cat.get("origine") or (next(iter(origines)) if len(origines) == 1 else None)
+
+        rayon = f"""<section class="rayon-page" aria-labelledby="rayon-titre">
+  <div class="container container--wide">
+{self.tete_rayon(cat['heading'], cat['lede'], self.ligne_origine(origine) if origine else "")}
+
+{grid(products, "", klass="rayon-grille", level=2, rare=False, eager=2)}
+
+{self.note_prix()}
+  </div>
+</section>"""
+
+        invitation = self.invitation(
+            ident="invitation-titre",
+            titre="Rien ne vous va exactement&nbsp;?",
+            phrase=("Composez votre paire en deux minutes&nbsp;: le prix "
+                    "s'affiche poste par poste, et l'atelier confirme la date "
+                    "sur WhatsApp avant tout paiement."),
+            lien='<a class="btn" href="configurateur.html">Composer ma paire</a>',
+        )
+
+        parties = [breadcrumb([("Accueil", "index.html"), (cat["name"], None)]), rayon]
+        if origine:
+            parties.append(self.methode(origine))
+        parties.append(invitation)
+
         self.page(
             "%s.html" % cat["slug"],
-            content=crumb + "\n\n" + content,
+            content="\n\n".join(parties),
             # « Yem's » n'est ajouté que s'il n'est pas déjà dans le titre
             # de la catégorie : « Sélection Yem's : … | Yem's » le disait deux
             # fois dans un onglet de navigateur.
             title=cat["title"] if "Yem's" in cat["title"] else "%s | Yem's" % cat["title"],
             description=cat["description"],
             current=cat["slug"],
+            body_class="page-rayon",
+            extra_css=("boutique",),
             structured={
                 "@context": "https://schema.org",
                 "@type": "CollectionPage",
@@ -834,7 +914,7 @@ class Builder:
                 grand = images[idx[0]]
                 main = ('<div class="pshot" data-shot style="--shot-ratio:%d/%d">%s\n          %s%s\n        </div>'
                         % (grand["w"], grand["h"],
-                           badge(product["status"], "pshot__badge"),
+                           badge(product["status"], "pshot__badge", slug=product["slug"]),
                            picture(product, base, idx[0], lazy=n > 0,
                                    sizes=MAIN_SIZES),
                            mention_ia() if grand.get("ia") else ""))
@@ -853,7 +933,7 @@ class Builder:
             thumbs = ""
         else:
             main_shot = ('<div class="pshot pshot--empty" data-shot>%s</div>'
-                         % badge(product["status"], "pshot__badge"))
+                         % badge(product["status"], "pshot__badge", slug=product["slug"]))
             thumbs = ""
 
         # La ligne de la pièce décide de ce que la fiche a le droit de dire :
@@ -871,8 +951,8 @@ class Builder:
             aide_pointure = (
                 "Entre deux&nbsp;? Prenez la plus grande, l'atelier ajuste au montage."
                 if atelier else
-                "Entre deux pointures&nbsp;? L'échange de pointure est gratuit sous "
-                "7 jours, si la paire n'a pas été portée à l'extérieur.")
+                "Entre deux pointures&nbsp;? Sur la sélection, la pointure "
+                "s'échange pendant un an.")
             sizes = f"""        <div class="picker">
           <span class="picker__label">Pointure</span>
           <div class="picker__row">
@@ -930,9 +1010,8 @@ class Builder:
             details = f"""
 <section class="section">
   <div class="container">
-    <div class="section-head section-head--center" data-reveal>
-      <span class="eyebrow eyebrow--center">Le détail qui compte</span>
-      <h2>Ce qu'on ne voit pas<br>de loin</h2>
+    <div class="section-head" data-reveal>
+      <h2>Ce qu'on ne voit pas de loin</h2>
     </div>
 
     <div class="faq" data-reveal style="--reveal-delay:100ms">
@@ -959,9 +1038,7 @@ class Builder:
                 data-cart="{base}panier.html">
           Ajouter au panier
           <svg aria-hidden="true"><use href="#i-bag"></use></svg>
-        </button>
-        <a class="btn btn--ghost btn--full" href="{base}configurateur.html"
-           style="margin-top:var(--sp-3)">Composer ma paire sur-mesure</a>"""
+        </button>"""
 
         # LA BARRE D'ACHAT DU TÉLÉPHONE
         # Sur un téléphone, le bouton d'achat arrive après la galerie, le nom,
@@ -972,10 +1049,10 @@ class Builder:
         # de la fiche (main.js), qui vérifie pointure et couleur. Le prix porte
         # data-prix, que le Worker réécrit comme celui de la fiche.
         if product.get("bespoke_only"):
-            barre_action = (f'<a class="btn btn--sm btn--laiton" '
+            barre_action = (f'<a class="btn btn--sm" '
                             f'href="{base}configurateur.html">Composer ma paire</a>')
         else:
-            barre_action = ('<button class="btn btn--sm btn--laiton" type="button" '
+            barre_action = ('<button class="btn btn--sm" type="button" '
                             'data-buybar-add>Ajouter au panier</button>')
         buybar = f"""
 <div class="buybar" data-buybar inert aria-hidden="true">
@@ -992,27 +1069,47 @@ class Builder:
         if related:
             # « La même construction » n'est vrai que de l'atelier : les pièces
             # de la sélection viennent de fabricants différents.
-            surtitre, titre, lien = (
-                ("La même construction", "Les autres formes", "Toute la collection")
+            titre, lien = (
+                ("Les autres formes", "Toute la collection")
                 if atelier else
-                ("La sélection", "Les autres modèles", "Toute la sélection"))
+                ("Les autres modèles", "Toute la sélection"))
             related_block = f"""
-<section class="section section--light">
+<section class="section section--light product-suite">
   <div class="container">
     <div class="section-head section-head--split" data-reveal>
-      <div>
-        <span class="eyebrow">{surtitre}</span>
-        <h2 style="margin-top:var(--sp-4)">{titre}</h2>
-      </div>
-      <a class="link-underline" href="{base}{cat['slug']}.html">
+      <h2>{titre}</h2>
+      <a class="lien" href="{base}{cat['slug']}.html">
         {lien}
         <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
       </a>
     </div>
 
-{grid(related, base, klass='shop-grid')}
+{grid(related, base, klass='shop-grid', rare=False)}
   </div>
 </section>"""
+
+        # Le configurateur ne fabrique que les formes de l'atelier : il n'a
+        # sa place sous le bouton que sur une fiche de l'atelier.
+        lien_atelier = (f"""      <a class="lien" href="{base}configurateur.html">
+        Composer une paire sur mesure à l'atelier
+        <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
+      </a>""" if atelier else "")
+
+        # Commander sur WhatsApp : le message arrive déjà rédigé, avec le nom
+        # de la pièce. Le prix n'y figure pas : l'atelier peut le corriger en
+        # direct (Worker), et le message ne doit jamais contredire la fiche.
+        if product.get("bespoke_only"):
+            commande_wa = ""
+        else:
+            message = quote("Bonjour, je souhaite commander le %s." % product["name"])
+            # main.js réécrit ce lien quand le client choisit sa pointure et sa
+            # couleur (data-wa-nom, data-wa-base) : le message arrive complet.
+            commande_wa = f"""        <a class="btn btn--ghost btn--full lien--wa" href="https://wa.me/{self.site['whatsapp']}?text={message}"
+           data-wa-nom="{escape(product['name'], quote=True)}" data-wa-base="https://wa.me/{self.site['whatsapp']}"
+           target="_blank" rel="noopener">
+          <svg aria-hidden="true"><use href="#i-whatsapp"></use></svg>
+          Commander sur WhatsApp
+        </a>"""
 
         content = f"""{breadcrumb([("Accueil", base + "index.html"),
                                   (cat["name"], base + cat["slug"] + ".html"),
@@ -1020,19 +1117,19 @@ class Builder:
 
 <section class="section section--top">
   <div class="container product">
-    <div class="product__gallery" data-reveal>
+    <!-- Ni la galerie (l'image d'ouverture est le LCP) ni le bloc du prix ne
+         sont animés : rien ne doit retarder l'achat. -->
+    <div class="product__gallery">
       {main_shot}{thumbs}
     </div>
 
-    <div class="product__info" data-reveal style="--reveal-delay:120ms">
-      <span class="eyebrow">La ligne {escape(cat['name'])}</span>
+    <div class="product__info">
       <h1 class="product__name">{escape(product['name'])}</h1>
-      {badge(product['status'], long=True, slug=product['slug'])}
-      {origine_marque(product, long=True)}
+      {origine_marque(product)}
       <p class="product__price"><span data-prix="{product['slug']}">{price(product['price'])}</span>
-        <small>FCFA · livraison 48 h Cotonou &amp; Abidjan</small></p>
+        <small>francs CFA, prix indicatif</small></p>
+      {badge(product['status'], long=True, slug=product['slug'])}
       <p class="lede" data-court="{product['slug']}">{product['short']}</p>
-      <p class="lede" style="margin-top:var(--sp-3)">{product['pitch']}</p>
 
       <div class="product__pickers">
 {colors}
@@ -1041,17 +1138,32 @@ class Builder:
 
       <div class="product__actions">
 {actions}
+{commande_wa}
       </div>
+
+      <!-- Payer et recevoir : ce qui se passe après le bouton, juste sous le
+           bouton. Sources : CGV (paiement à la livraison ou Mobile Money,
+           confirmation des frais sur WhatsApp avant tout règlement),
+           site.origines (garantie de la ligne), confirmation de la maison du
+           20 novembre 2026 pour l'essai à la livraison. -->
+      <div class="recevoir-fiche">
+        <h2 class="recevoir-fiche__titre">Payer et recevoir</h2>
+        <ul>
+          <li><strong>À la livraison ou par Mobile Money.</strong> En espèces, ou par MTN MoMo, Moov ou Wave, convenu avec l'atelier.</li>
+          <li><strong>Essai à la livraison.</strong> Vous essayez la paire au moment où on vous la livre.</li>
+          <li><strong>Confirmation sur WhatsApp.</strong> L'atelier confirme la commande et ses frais avant tout règlement.</li>
+          <li><strong>Expédiée sous 72&nbsp;h</strong>, puis livrée en 48&nbsp;h à Cotonou et à Abidjan, sous 5 jours ailleurs au Bénin et en Côte d'Ivoire (jours ouvrés).</li>
+          <li><strong>{escape(ligne.get('garantie', ''))}.</strong> {"Carte numérotée." if atelier else "Paire numérotée à la réception."}</li>
+        </ul>
+      </div>
+{lien_atelier}
 
       <dl class="product__specs">
 {specs}
       </dl>
 
-      <ul class="product__reassure">
-        <li><svg aria-hidden="true"><use href="#i-shield"></use></svg>{escape(ligne.get('garantie', ''))}</li>
-        <li><svg aria-hidden="true"><use href="#i-card"></use></svg>Carte d'authenticité numérotée</li>
-        <li><svg aria-hidden="true"><use href="#i-truck"></use></svg>Cotonou &amp; Abidjan en 48 h</li>
-      </ul>
+      {origine_marque(product, long=True)}
+      <p class="product__pitch">{product['pitch']}</p>
     </div>
   </div>
 </section>
@@ -1066,6 +1178,7 @@ class Builder:
             og_image=images[0]["file"] if images else None,
             current=cat["slug"],
             depth=1,
+            extra_css=("fiche",),
             structured={
                 "@context": "https://schema.org",
                 "@type": "Product",
@@ -1632,69 +1745,118 @@ class Builder:
         Aucun nom de pièce n'y figure. Annoncer « Loafer Ouidah, 88 000 F »
         sans pouvoir le montrer, c'est prendre un engagement sur un prix et un
         modèle qui peuvent encore bouger.
+
+        Refonte « maison » : le registre des pages de rayon (boutique.css).
+        Le titre à gauche, deux phrases, puis l'image de l'atelier et trois
+        façons d'agir en liste à filets (plus de cartes) ; WhatsApp en bouton
+        plein, le sur-mesure et la sélection en liens.
         """
         atelier = sum(1 for p in self.a_venir if p.get("origine") == "atelier")
+        nombre = ("Une pièce est" if atelier == 1
+                  else "%s pièces sont" % nombre_en_lettres(atelier))
+        wa = "https://wa.me/%s?text=%s" % (
+            self.site["whatsapp"],
+            "Bonjour%2C%20je%20voudrais%20voir%20les%20pi%C3%A8ces%20de%20l%27atelier.")
 
-        content = f"""<section class="section section--top atelier-page" id="a-venir">
+        # Les pièces de l'atelier qui ont déjà une image (la ceinture et le
+        # portefeuille) se montrent ici, sans prix ni panier : le prix n'est
+        # pas engagé tant que la pièce n'est pas en production. Le nom générique
+        # (« La ceinture ») respecte la règle ci-dessus.
+        montrables = [p for p in self.a_venir
+                      if p.get("origine") == "atelier" and p.get("images")]
+        pieces = ""
+        if montrables:
+            figures = "\n".join(
+                '      <figure class="venir-piece">\n'
+                '        <div class="venir-piece__image">\n          %s\n        </div>\n'
+                '        <figcaption>%s</figcaption>\n'
+                '      </figure>'
+                % (picture(p, "", lazy=i > 0, sizes="(max-width: 899px) 46vw, 30vw"),
+                   {"ceintures": "La ceinture", "portefeuilles": "Le portefeuille"}
+                   .get(p.get("category"), "Une pièce de l'atelier"))
+                for i, p in enumerate(montrables))
+            pieces = f"""
+<section class="venir-pieces" aria-label="Pièces en préparation">
   <div class="container container--wide">
-    <div class="section-head" data-reveal>
-      <span class="eyebrow">L'atelier</span>
-      <h1 class="page-title" style="margin-top:var(--sp-3)">Les pièces de l'atelier arrivent</h1>
-      <p class="lede">
-        À Cotonou, notre atelier façonne une ligne de souliers et de maroquinerie.
-        Nous la présenterons ici avec nos propres photos, dès que chaque pièce
-        pourra être montrée telle qu'elle est.
-      </p>
+    <div class="venir-pieces__grille">
+{figures}
     </div>
+  </div>
+</section>
+"""
 
-    <div class="story__turn" data-reveal style="margin-top:var(--sp-6)">
-      <p>
-        {atelier} pièces sont en préparation à l'atelier de Cotonou : des souliers
-        cousus à la main, une ceinture et un portefeuille taillés dans les mêmes
-        peaux. <strong>Les photos et les fiches seront publiées dès qu'elles
-        seront prêtes.</strong>
-      </p>
+        chargement_atelier = ('loading="lazy"' if montrables
+                              else 'fetchpriority="high"')
+        content = f"""<section class="rayon-page rayon-page--seule" id="a-venir" aria-labelledby="rayon-titre">
+  <div class="container container--wide">
+    <div class="rayon-tete">
+      <h1 id="rayon-titre">Les pièces de l'atelier arrivent</h1>
+      <div class="rayon-tete__texte">
+        <p class="rayon-tete__lede">
+          À Cotonou, notre atelier façonne une ligne de souliers et de
+          maroquinerie. Chaque pièce aura ici sa fiche et son prix dès
+          qu'elle sera en production.
+        </p>
+        <p class="rayon-tete__ligne">
+          {nombre} en préparation&nbsp;: des souliers cousus à la main, une
+          ceinture et un portefeuille taillés dans les mêmes peaux.
+        </p>
+      </div>
     </div>
+  </div>
+</section>
+{pieces}
+<section class="bloc groupe" aria-labelledby="venir-titre">
+  <div class="container container--wide atelier-rayon atelier-rayon--haut">
+    <figure class="atelier-rayon__image" data-reveal>
+      <picture>
+        <source type="image/webp"
+                sizes="(max-width: 899px) 92vw, 50vw"
+                srcset="assets/img/atelier-couture-500.webp 500w,
+                        assets/img/atelier-couture-800.webp 800w,
+                        assets/img/atelier-couture.webp 1200w">
+        <img src="assets/img/atelier-couture-800.jpg"
+             sizes="(max-width: 899px) 92vw, 50vw"
+             srcset="assets/img/atelier-couture-500.jpg 500w,
+                     assets/img/atelier-couture-800.jpg 800w,
+                     assets/img/atelier-couture.jpg 1200w"
+             width="1200" height="800" {chargement_atelier} decoding="async"
+             alt="Des mains d'artisan piquent à l'alène la trépointe d'un soulier en cuir brun">
+      </picture>
+      {mention_ia()}
+    </figure>
 
-    <div class="grid grid--3" style="margin-top:var(--sp-7)">
-      <article class="card" data-reveal>
-        <h2>Les découvrir sur place</h2>
-        <p>
-          Vous êtes à Cotonou ? Écrivez-nous pour convenir d'un passage et voir
-          les pièces de près. Vous pourrez apprécier le cuir, les finitions et
-          le travail des coutures.
-        </p>
-      </article>
-      <article class="card" data-reveal style="--reveal-delay:90ms">
-        <h2>Demander les photos</h2>
-        <p>
-          Contactez l'atelier sur WhatsApp pour demander des photos et connaître
-          la disponibilité des modèles en préparation.
-        </p>
-      </article>
-      <article class="card" data-reveal style="--reveal-delay:180ms">
-        <h2>Être informé de la mise en ligne</h2>
-        <p>
-          Écrivez-nous sur WhatsApp pour demander à être tenu au courant lorsque
-          les photos et les fiches produits seront publiées.
-        </p>
-      </article>
-    </div>
-
-    <div class="cta__actions" data-reveal style="margin-top:var(--sp-7)">
-      <a class="btn" href="https://wa.me/{self.site['whatsapp']}?text={
-        'Bonjour%2C%20je%20voudrais%20voir%20les%20pi%C3%A8ces%20de%20l%27atelier.'}"
-         target="_blank" rel="noopener">
-        <svg aria-hidden="true"><use href="#i-whatsapp"></use></svg>
-        Écrire à l'atelier
-      </a>
-      <a class="btn btn--ghost" href="selection.html">Voir ce qui est disponible</a>
+    <div class="atelier-rayon__texte">
+      <h2 id="venir-titre" data-lines>En attendant</h2>
+      <dl class="venir-liste">
+        <div data-reveal>
+          <dt>Être prévenu</dt>
+          <dd>Écrivez à l'atelier sur WhatsApp&nbsp;: nous vous envoyons les
+          photos et la fiche de chaque pièce dès qu'elle est prête.</dd>
+        </div>
+      </dl>
+      <div class="venir-actions">
+        <a class="btn" href="{wa}" target="_blank" rel="noopener">
+          <svg aria-hidden="true"><use href="#i-whatsapp"></use></svg>
+          Écrire à l'atelier
+        </a>
+        <a class="lien" href="configurateur.html">
+          Composer ma paire sur mesure
+          <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
+        </a>
+        <a class="lien" href="selection.html">
+          Voir ce qui est disponible
+          <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
+        </a>
+      </div>
     </div>
   </div>
 </section>"""
 
         self.page(
             "a-venir.html", content=content, current="a-venir",
+            body_class="page-rayon",
+            extra_css=("boutique",),
             title="Les pièces de l'atelier arrivent | Yem's",
             # Elle disait « Découvrez les pièces » sur une page qui n'en montre
             # aucune : la description d'un résultat de recherche doit dire ce
@@ -1704,71 +1866,163 @@ class Builder:
                         "prévenu de leur mise en ligne.",
         )
 
-    def build_shop(self):
+    def groupe_atelier(self):
         """
-        La boutique entière, sur une page.
+        La ligne de l'atelier, sur la boutique, tant qu'elle est en préparation.
 
-        Elle manquait : le hero promet « la boutique » et n'avait que des pages
-        catégorie à offrir. Un visiteur qui ne cherche pas encore une forme
-        précise doit pouvoir tout voir d'un coup — huit pièces tiennent
-        largement sur un écran.
+        Aucune vignette, aucun nom de pièce, aucun prix : la page « Ce qui se
+        prépare » explique pourquoi. Le nombre de pièces vient des données
+        (les pièces « a_venir » d'origine atelier), le délai du sur-mesure
+        aussi. L'image est un visuel d'ambiance de l'atelier, pas une pièce à
+        vendre : son texte alternatif ne nomme aucun modèle.
         """
-        blocs = []
-        for cat in self.categories:
-            produits = self.by_category(cat["slug"])
-            if not produits:
-                continue   # rayon vide : il est annoncé sur a-venir.html
-            blocs.append(f"""    <div class="rayon" id="{cat['slug']}">
-      <div class="rayon__head" data-reveal>
-        <h2>{cat['name']}</h2>
-        <a class="link-underline" href="{cat['slug']}.html">
-          Tout voir
+        atelier = [p for p in self.a_venir if p.get("origine") == "atelier"]
+        if not atelier:
+            return ""
+        n = len(atelier)
+        compte = ("Une pièce en préparation" if n == 1 else
+                  "%s pièces en préparation" % nombre_en_lettres(n))
+        o = ORIGINES.get("atelier") or {}
+        bespoke = self.site["bespoke"]
+        formes = nombre_en_lettres(len(bespoke["shapes"])).lower()
+        return f"""<section class="bloc groupe" id="atelier" aria-labelledby="groupe-atelier">
+  <div class="container container--wide">
+    <div class="groupe__tete">
+      <h2 id="groupe-atelier" data-lines>L'atelier</h2>
+      <p class="groupe__compte">{compte} · {escape(o.get('court', ''))}</p>
+      <a class="lien groupe__lien" href="a-venir.html">
+        Ce qui se prépare
+        <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
+      </a>
+    </div>
+
+    <div class="atelier-rayon">
+      <figure class="atelier-rayon__image" data-reveal>
+        <picture>
+          <source type="image/webp"
+                  sizes="(max-width: 899px) 92vw, 50vw"
+                  srcset="assets/img/atelier-etabli-500.webp 500w,
+                          assets/img/atelier-etabli-800.webp 800w,
+                          assets/img/atelier-etabli.webp 1200w">
+          <img src="assets/img/atelier-etabli-800.jpg"
+               sizes="(max-width: 899px) 92vw, 50vw"
+               srcset="assets/img/atelier-etabli-500.jpg 500w,
+                       assets/img/atelier-etabli-800.jpg 800w,
+                       assets/img/atelier-etabli.jpg 1200w"
+               width="1200" height="800" fetchpriority="high" decoding="async"
+               alt="Une paire de mocassins en cuir brun sur un établi de bois, près d'une bobine de fil et d'outils de cordonnier">
+        </picture>
+        {mention_ia()}
+      </figure>
+
+      <div class="atelier-rayon__texte" data-reveal style="--reveal-delay:80ms">
+        <p>
+          Des souliers et de la maroquinerie cousus main au point sellier, sur
+          trépointe. La ligne est en préparation à Cotonou&nbsp;; nous la
+          montrerons dès que chaque pièce pourra l'être telle qu'elle est.
+        </p>
+        <p class="atelier-rayon__ligne">{self.ligne_origine('atelier')}</p>
+        <p>
+          En attendant, l'atelier coud votre paire sur mesure&nbsp;: {formes}
+          formes, votre cuir, votre pointure, {escape(bespoke['lead_days'])}.
+        </p>
+        <a class="lien" href="configurateur.html">
+          Composer ma paire
           <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
         </a>
       </div>
-{grid(produits, "", klass="shop-grid", level=3)}
-    </div>""")
-
-        # Pas de nombre de pièces en stock dans le texte : la disponibilité
-        # change depuis l'écran de l'atelier sans reconstruire le site (le
-        # Worker réécrit les pastilles), et un « 7 pièces en stock » figé
-        # finirait par être faux.
-        content = f"""<section class="section section--top" id="boutique">
-  <div class="container container--wide">
-    <div class="section-head" data-reveal>
-      <span class="eyebrow">La boutique</span>
-      <h1 class="page-title" style="margin-top:var(--sp-3)">Ce qui est disponible<br>aujourd'hui</h1>
-      <p class="lede">
-        Les pièces en stock à Cotonou partent sous 72 h. Chacune indique,
-        au-dessus de son prix, si nous l'avons fabriquée ou choisie. La ligne
-        cousue main arrivera dès que nous l'aurons photographiée nous-mêmes.
-      </p>
-    </div>
-
-{chr(10).join(blocs)}
-
-  </div>
-</section>
-{self.methode('selection')}
-<section class="section">
-  <div class="container container--wide">
-    <div class="text-center">
-      <p class="lede mx-auto text-center" style="margin-bottom:var(--sp-5)">
-        Aucune pointure ne vous va&nbsp;? C'est fréquent, et ça se règle.
-      </p>
-      <a class="btn" href="configurateur.html">
-        Composer ma paire
-        <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
-      </a>
-      <a class="btn btn--ghost" href="a-venir.html" style="margin-left:var(--sp-3)">
-        Voir ce qui se prépare
-      </a>
     </div>
   </div>
 </section>"""
 
+    def build_shop(self):
+        """
+        La boutique entière, sur une page.
+
+        Un titre, deux phrases, puis un groupe par rayon : un filet, le nom du
+        rayon, son nombre de modèles et son origine, un lien vers sa page, et
+        la grille. La ligne de l'atelier suit, en préparation, avec ce qu'on
+        peut déjà en faire (le sur-mesure). On termine par la question sur
+        WhatsApp, comme l'accueil.
+
+        Pas de nombre de pièces en stock : la disponibilité change depuis
+        l'écran de l'atelier sans reconstruire le site (le Worker réécrit les
+        pastilles), et un « 7 pièces en stock » figé finirait par être faux.
+        Le nombre de modèles du rayon, lui, vient du catalogue.
+        """
+        rayons = [(c, self.by_category(c["slug"])) for c in self.categories]
+        # Un rayon vide n'a pas de groupe : il est annoncé sur a-venir.html.
+        rayons = [(c, produits) for c, produits in rayons if produits]
+        # L'entretien ferme le catalogue : on vient pour les souliers, la
+        # crème et les embauchoirs viennent après.
+        rayons.sort(key=lambda r: r[0]["slug"] == "entretien")
+        groupes = []
+        for i, (cat, produits) in enumerate(rayons):
+            n = len(produits)
+            mot = "pièce" if cat["slug"] == "entretien" else "modèle"
+            compte = "%d %s%s" % (n, mot, "s" if n > 1 else "")
+            origines = {p.get("origine", "selection") for p in produits}
+            if len(origines) == 1:
+                court = (ORIGINES.get(next(iter(origines))) or {}).get("court")
+                if court:
+                    compte += " · " + escape(court)
+            # La réserve sur les prix ferme la dernière grille.
+            note = "\n\n" + self.note_prix() if i == len(rayons) - 1 else ""
+            groupes.append(f"""<section class="bloc groupe" id="{cat['slug']}" aria-labelledby="groupe-{cat['slug']}">
+  <div class="container container--wide">
+    <div class="groupe__tete">
+      <h2 id="groupe-{cat['slug']}" data-lines>{escape(cat['name'])}</h2>
+      <p class="groupe__compte">{compte}</p>
+      <a class="lien groupe__lien" href="{cat['slug']}.html">
+        Voir le rayon
+        <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
+      </a>
+    </div>
+
+{grid(produits, "", klass="rayon-grille", level=3, rare=False)}{note}
+  </div>
+</section>""")
+
+        # Les deux origines et leurs garanties, l'atelier d'abord.
+        lignes = []
+        for o in (ORIGINES.get("atelier"), ORIGINES.get("selection")):
+            if o:
+                lignes.append("<strong>%s</strong>&nbsp;: %s." % (
+                    escape(o["court"]),
+                    escape(o["garantie"][:1].lower() + o["garantie"][1:])))
+
+        entete = self.tete_rayon(
+            "Le catalogue",
+            "Les pièces en stock à Cotonou partent sous 72&nbsp;h. Chacune "
+            "dit, au-dessus de son prix, si nous l'avons fabriquée ou choisie.",
+            " ".join(lignes))
+        tete = f"""<section class="rayon-page rayon-page--seule" aria-labelledby="rayon-titre">
+  <div class="container container--wide">
+{entete}
+  </div>
+</section>"""
+
+        invitation = self.invitation(
+            ident="invitation-titre",
+            titre="Une question avant de commander&nbsp;?",
+            phrase="L'atelier répond sur WhatsApp, du lundi au samedi, de 8&nbsp;h à 19&nbsp;h.",
+            lien=(f'<a class="btn" href="https://wa.me/{self.site["whatsapp"]}'
+                  '?text=Bonjour%2C%20j\'ai%20une%20question%20sur%20vos%20souliers." '
+                  'target="_blank" rel="noopener">\n'
+                  '      <svg aria-hidden="true"><use href="#i-whatsapp"></use></svg>\n'
+                  '      Écrire à l\'atelier\n'
+                  '    </a>'),
+        )
+
+        # L'atelier ouvre la boutique (PRODUCT.md : l'atelier mène), en bande
+        # compacte ; la sélection, achat immédiat, suit aussitôt.
+        fil = breadcrumb([("Accueil", "index.html"), ("Boutique", None)])
+        content = "\n\n".join([fil, tete, self.groupe_atelier()] + groupes + [invitation])
+
         self.page(
             "boutique.html", content=content, current="boutique",
+            body_class="page-rayon",
+            extra_css=("boutique",),
             title="La boutique : tout le catalogue | Yem's",
             description="Les pièces Yem's disponibles aujourd'hui à Cotonou. "
                         "Origine indiquée sur chacune, échange un an, livraison "

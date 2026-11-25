@@ -770,22 +770,7 @@
    bas de la carte. C'est le grand mot « AESTHETIC » qui ferme la référence
    Framer, en laiton presque éteint : on le voit comme une gravure, il ne
    se lit pas comme un titre. Décoratif, donc caché aux lecteurs d'écran. */
-.footer__signature {
-  margin-top: var(--sp-6);
-  font-family: var(--font-display);
-  font-size: min(31vw, 30rem);
-  line-height: 0.72;
-  letter-spacing: -0.035em;
-  text-align: center;
-  white-space: nowrap;
-  color: transparent;
-  background: linear-gradient(180deg, rgba(217, 184, 122, 0.34) 0%, rgba(217, 184, 122, 0.05) 78%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  transform: translateY(0.1em);
-  user-select: none;
-  pointer-events: none;
-}
+/* .footer__signature : retirée avec la refonte « maison » (texte en dégradé). */
 
 .footer__grid {
   display: grid;

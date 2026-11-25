@@ -11,9 +11,24 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://maisonyems.com/entretien.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://maisonyems.com/selection.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://maisonyems.com/produit/creme-nourrissante.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://maisonyems.com/produit/embauchoirs-cedre.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://maisonyems.com/produit/derby-noir.html</loc>
