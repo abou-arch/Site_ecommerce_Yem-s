@@ -46,6 +46,10 @@
 
   const fmt = (n) => n.toLocaleString('fr-FR').replace(/ | | /g, ' ') + ' F';
 
+  // Avant le premier choix : le prix de la forme la moins chère, comme le
+  // « dès » des options (build.py écrit la même valeur dans la page).
+  const depart = 'dès ' + fmt(Math.min.apply(null, CFG.shapes.map((s) => s.price)));
+
   /* ── rendu du récapitulatif ─────────────────────────────────────────── */
   function render() {
     const shape = find('shapes', choice.shape);
@@ -83,7 +87,7 @@
 
     const sum = total();
     $$('[data-total]').forEach((el) => {
-      el.textContent = sum ? fmt(sum) : '…';
+      el.textContent = sum ? fmt(sum) : depart;
     });
 
     // aperçu : la photo du modèle retenu
@@ -103,6 +107,12 @@
     // le bouton ne s'active que lorsque tout l'essentiel est décidé
     const ready = Boolean(shape && leather && sole && choice.size);
     $$('[data-cfg-add]').forEach((btn) => {
+      // Le bouton de la barre du téléphone ne se grise pas : il change de
+      // rôle et mène au choix qui manque (voir le clic, plus bas).
+      if (btn.hasAttribute('data-cfg-bar')) {
+        btn.textContent = ready ? 'Ajouter' : 'Continuer';
+        return;
+      }
       btn.disabled = !ready;
       btn.setAttribute('aria-disabled', String(!ready));
     });
@@ -154,6 +164,21 @@
       const shape = find('shapes', choice.shape);
       const leather = find('leathers', choice.leather);
       const sole = find('soles', choice.sole);
+
+      // Rien n'est ajouté tant qu'un choix manque : on amène à la première
+      // étape incomplète, dans l'ordre de la page.
+      const manquant = [
+        !shape && 'shape', !leather && 'leather', !sole && 'sole', !choice.size && 'size',
+      ].find(Boolean);
+      if (manquant) {
+        const groupe = $('[data-group="' + manquant + '"]');
+        const etape = groupe && (groupe.closest('.cfg-step') || groupe);
+        if (etape) {
+          const reduit = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          etape.scrollIntoView({ behavior: reduit ? 'auto' : 'smooth', block: 'start' });
+        }
+        return;
+      }
 
       const item = {
         id: 'sur-mesure-' + choice.shape,

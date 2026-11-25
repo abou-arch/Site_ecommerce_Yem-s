@@ -86,7 +86,9 @@
         montrer(entry.target);
         io.unobserve(entry.target);
       });
-    }, { threshold: 0.2, rootMargin: '0px 0px -6% 0px' });
+    // 0,1 et non 0,2 : sur téléphone, on fait défiler vite, et une photo à
+    // moitié entrée dans l'écran doit déjà s'ouvrir.
+    }, { threshold: 0.1, rootMargin: '0px 0px -6% 0px' });
 
     [...headings, ...shots, ...counters].forEach((el) => {
       if (aLEcran(el)) montrer(el);

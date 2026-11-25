@@ -22,6 +22,13 @@ node_modules/
 docs/
 .claude/
 
+# Outils de conception (Impeccable, genjutsu bunshin) : skills, agents,
+# contrat de direction et fichiers de travail. Rien de tout cela n est le site.
+.agents/
+.codex/
+.impeccable/
+.bunshin/
+
 # Aucune page du site n'est écrite en Markdown : un .md à la racine ou dans
 # marque/ (README, AGENTS.md, charte de marque) est un document de travail.
 # AGENTS.md et .claude/ étaient en ligne, lisibles par n'importe qui.

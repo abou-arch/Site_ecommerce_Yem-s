@@ -321,3 +321,150 @@
   .cfg-bar { display: flex; }
   body:has(.cfg-bar) { padding-bottom: 76px; }
 }
+
+/* ==========================================================================
+   REFONTE « MAISON » (novembre 2026)
+   Le configurateur gardait le registre de l'ancien site : des cartes
+   arrondies, un récapitulatif et une barre de téléphone sombres, et des
+   textes d'étape décalés de la largeur du numéro. Au téléphone, l'aide de
+   chaque étape tenait dans une colonne étroite qui touchait le bord droit,
+   le prix « inclus » tombait sous le nom du cuir, et le bouton « Continuer »
+   (encre) disparaissait sur la barre encre. Tout repasse sur l'ivoire, avec
+   des angles droits et des filets, comme les fiches produit.
+   ========================================================================== */
+
+/* Les étapes : plus de panneau, un filet entre chacune. */
+.cfg-step {
+  background: none;
+  box-shadow: none;
+  border-radius: 0;
+  border: 0;
+  border-top: var(--filet);
+  padding-inline: 0;
+}
+.cfg-step:first-child { border-top: 0; }
+
+/* Le numéro et le titre sur une ligne ; l'aide dessous, sur toute la
+   largeur, alignée avec le numéro et non plus avec le titre. */
+.cfg-step__head {
+  grid-template-columns: auto minmax(0, 1fr);
+  column-gap: var(--sp-3);
+  row-gap: 0;
+}
+.cfg-step__num {
+  font-size: 1rem;
+  letter-spacing: 0;
+  color: var(--text-subtle);
+}
+.cfg-step h2 { font-size: 1.625rem; line-height: 1.15; }
+.cfg-step__hint {
+  grid-column: 1 / -1;
+  margin-top: var(--sp-3);
+  max-width: 52ch;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: var(--text-muted);
+}
+@media (min-width: 900px) {
+  .cfg-step h2 { font-size: 2rem; }
+}
+
+/* Les options : cartes plates, angle droit, filet d'encre quand choisies. */
+.cfg-opt {
+  border-radius: 0;
+  background: var(--ivoire-haut);
+  border: 1px solid var(--border-strong);
+}
+.cfg-opt:hover { transform: none; border-color: var(--encre); }
+.cfg-opt[aria-pressed="true"] {
+  --surface: var(--ivoire-haut);
+  --text: var(--encre);
+  --text-muted: #4A3F36;
+  --text-subtle: #5E5248;
+  --border: rgba(20, 16, 13, 0.12);
+  --accent: var(--cognac);
+  color: var(--encre);
+  background: var(--ivoire-haut);
+  border-color: var(--encre);
+  box-shadow: inset 0 0 0 1px var(--encre);
+}
+/* Le nom (avec ou sans pastille) et le prix sur la même ligne visuelle. */
+.cfg-opt__top { align-items: center; }
+.cfg-opt__name { font-size: 1.125rem; }
+.cfg-opt__price { color: var(--encre); font-size: 0.875rem; }
+.cfg-opt__note { font-size: 0.8125rem; }
+.cfg-opt__shot { border-radius: 0; background: var(--sable); }
+/* Les formes sont photographiées sur fond blanc : elles prennent le sable. */
+.cfg-opt__shot img { mix-blend-mode: multiply; }
+.cfg-opt__chip { width: 22px; height: 22px; border-color: rgba(20, 16, 13, 0.2); }
+
+.cfg-initials input {
+  border-radius: 0;
+  background: var(--ivoire-haut);
+  border-color: var(--border-strong);
+}
+.cfg-initials input:focus { border-color: var(--encre); }
+
+/* Le récapitulatif : un panneau sable, plus de carte sombre. */
+.cfg-card {
+  --surface: var(--sable);
+  --text: var(--encre);
+  --text-muted: #4A3F36;
+  --text-subtle: #5E5248;
+  --border: rgba(20, 16, 13, 0.14);
+  --accent: var(--cognac);
+  color: var(--encre);
+  background: var(--sable);
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+@media (max-width: 559px) {
+  .cfg-card { padding: var(--sp-5) var(--sp-4); }
+}
+/* Tant qu'aucune forme n'est choisie, l'aperçu n'a rien à montrer : un
+   rectangle vide de 210 px au téléphone n'aide personne. */
+.cfg-card__shot { border-radius: 0; background: var(--ivoire-haut); }
+.cfg-card__shot:empty { display: none; }
+.cfg-card__shot img { mix-blend-mode: multiply; }
+.cfg-card h2 { font-size: 1.5rem; }
+.cfg-total__value { color: var(--encre); }
+.cfg-card .btn[disabled],
+.cfg-card .btn[aria-disabled="true"] { opacity: 0.45; }
+
+/* La barre du téléphone : ivoire, comme la barre d'achat des fiches. */
+.cfg-bar {
+  background: var(--ivoire);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border-top: var(--filet);
+  color: var(--encre);
+}
+.cfg-bar__total { color: var(--encre); font-size: 1.375rem; }
+.cfg-bar__label { color: var(--text-muted); }
+
+/* Les pointures : les mêmes boutons que sur les fiches (48 px, filet
+   d'encre), pleins d'encre une fois choisis, plus de laiton. */
+.cfg-sizes .size {
+  min-width: 52px;
+  min-height: 48px;
+  border-radius: 0;
+  border-color: rgba(20, 16, 13, 0.5);
+  background: var(--ivoire-haut);
+  color: var(--encre);
+  font-size: 1rem;
+}
+.cfg-sizes .size:hover { border-color: var(--encre); }
+.cfg-sizes .size[aria-pressed="true"] {
+  background: var(--encre);
+  border-color: var(--encre);
+  color: var(--ivoire);
+}
+
+/* Sur grand écran, la colonne des étapes fait ~650 px : trois cartes par
+   rangée coupaient « Loafer / Ouidah » en deux lignes et laissaient la
+   quatrième forme seule. Deux par rangée : quatre formes en carré, quatre
+   cuirs en carré, deux semelles côte à côte. */
+@media (min-width: 560px) {
+  .cfg-options { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}

@@ -593,7 +593,7 @@ p { text-wrap: pretty; }
 .hero-edito h1,
 .about-hero h1 { opacity: 1; }
 
-[data-reveal] {
+.js [data-reveal] {
   opacity: 0;
   transform: translateY(26px);
   transition:
@@ -602,9 +602,19 @@ p { text-wrap: pretty; }
   transition-delay: var(--reveal-delay, 0ms);
 }
 
-[data-reveal].is-visible {
+.js [data-reveal].is-visible {
   opacity: 1;
   transform: none;
+}
+
+/* Sur téléphone, un bloc qui met près d'une seconde à se poser se lit comme
+   une page qui charge (voir aussi motion.css) : moitié moins de durée, et un
+   déplacement plus court, à l'échelle d'un petit écran. */
+@media (max-width: 900px) {
+  .js [data-reveal] {
+    transform: translateY(12px);
+    transition-duration: 480ms;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

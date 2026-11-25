@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>La sélection de souliers choisis | Yem's</title>
 <meta name="description" content="Des pièces que nous n&#x27;avons pas fabriquées mais que nous avons choisies, contrôlées et garanties. Échange un an.">
-<meta name="theme-color" content="#14100D">
+<meta name="theme-color" content="#F6F1E8">
 <link rel="canonical" href="https://maisonyems.com/selection.html">
 <meta property="og:title" content="La sélection de souliers choisis | Yem&#x27;s">
 <meta property="og:description" content="Des pièces que nous n&#x27;avons pas fabriquées mais que nous avons choisies, contrôlées et garanties. Échange un an.">
@@ -21,7 +21,7 @@
 <!-- Les polices ne bloquent plus l'affichage. « media=print » fait charger la
      feuille sans qu'elle retarde le rendu ; le script qui suit la réactive dès
      qu'elle est là. Le texte s'affiche donc immédiatement en Georgia et en
-     police système, puis bascule sur Marcellus et Jost. Sur une 3G, ça
+     police système, puis bascule sur Prata et Hanken Grotesk. Sur une 3G, ça
      évite plusieurs centaines de millisecondes de page blanche.
 
      Ce script remplace un attribut onload : la politique de sécurité (CSP)
@@ -32,11 +32,14 @@
      Le <noscript> garde le comportement classique pour qui n'exécute pas de
      script : mieux vaut attendre les polices que ne jamais les recevoir.
 
-     Seules les graisses réellement employées sont demandées : Marcellus en 400
-     pour les titres et Jost de 300 à 600 pour les textes et les contrôles. -->
+     Seules les graisses réellement employées sont demandées : Prata en 400
+     pour les titres, les noms et les prix, Hanken Grotesk de 400 à 600 pour
+     les textes et les contrôles, et Marcellus pour le seul mot « YEM'S »
+     du logo. -->
 <link rel="stylesheet" media="print" data-polices
-      href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&family=Marcellus&display=swap">
+      href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=Marcellus&family=Prata&display=swap">
 <script>
+document.documentElement.classList.add('js');
 (function () {
   var feuille = document.querySelector('link[data-polices]');
   var activer = function () { feuille.media = 'all'; };
@@ -46,15 +49,18 @@
 </script>
 <noscript>
   <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&family=Marcellus&display=swap">
+        href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=Marcellus&family=Prata&display=swap">
 </noscript>
 
-<link rel="stylesheet" href="assets/css/base.css?v=d3612b7f">
-<link rel="stylesheet" href="assets/css/components.css?v=c6dc9f2b">
-<link rel="stylesheet" href="assets/css/home.css?v=f605c35b">
-<link rel="stylesheet" href="assets/css/shop.css?v=74cd4450">
-<link rel="stylesheet" href="assets/css/motion.css?v=c64779f2">
-
+<link rel="stylesheet" href="assets/css/base.css?v=fafb280c">
+<link rel="stylesheet" href="assets/css/components.css?v=e78d009b">
+<link rel="stylesheet" href="assets/css/home.css?v=172ffaa2">
+<link rel="stylesheet" href="assets/css/shop.css?v=11ee56dc">
+<link rel="stylesheet" href="assets/css/motion.css?v=60901b15">
+<!-- La refonte : jetons et composants partagés de la maison. Après les
+     feuilles historiques, avant celles propres à une page. -->
+<link rel="stylesheet" href="assets/css/maison.css?v=57538a2b">
+<link rel="stylesheet" href="assets/css/boutique.css?v=e1654f96">
 
 <!-- Favicone : exactement le monogramme du site, sans adaptation. Le nouveau
      dessin n'a plus de perforations à boucher, il tient donc tel quel à 16 px.
@@ -76,7 +82,7 @@
      veut le revoir, raccourci cette fois. -->
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","name":"Sélection","description":"Des pièces que nous n'avons pas fabriquées mais que nous avons choisies, contrôlées et garanties. Échange un an."}</script>
 </head>
-<body>
+<body class="page-rayon">
 
 <a class="skip-link" href="#main">Aller au contenu</a>
 
@@ -85,7 +91,6 @@
      de la marque, tiré point par point le long du haut de l'écran. Le motif
      est exactement celui de la classe .couture utilisée dans les pages.
      Purement décoratif, donc masqué aux lecteurs d'écran. -->
-<div class="fil-progression" aria-hidden="true"><span></span></div>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
   <defs>
@@ -159,6 +164,7 @@
     </a>
 
     <nav class="nav" aria-label="Navigation principale">
+      <a class="nav__link" href="boutique.html">Boutique</a>
       <a class="nav__link" href="selection.html" aria-current="page">La sélection</a>
       <a class="nav__link" href="a-venir.html">L'atelier</a>
       <a class="nav__link" href="configurateur.html">Le sur-mesure</a>
@@ -180,171 +186,182 @@
 </header>
 
 <div class="mobile-menu" id="mobile-menu">
+  <a href="boutique.html">Boutique</a>
   <a href="selection.html" aria-current="page">La sélection</a>
   <a href="a-venir.html">L'atelier</a>
   <a href="configurateur.html">Le sur-mesure</a>
   <a href="about-us.html">About us</a>
   <a href="service-client.html">Service client</a>
-  <a class="btn" href="configurateur.html" style="margin-top:auto">Composer ma paire</a>
+  <a class="btn" href="https://wa.me/2290191380234" target="_blank" rel="noopener" style="margin-top:auto">
+    <svg aria-hidden="true"><use href="#i-whatsapp"></use></svg>
+    Écrire à l'atelier
+  </a>
 </div>
 
 <main id="main">
 
 <nav class="crumb" aria-label="Fil d'Ariane"><div class="container"><a href="index.html">Accueil</a><span class="crumb__sep" aria-hidden="true">/</span><span aria-current="page">Sélection</span></div></nav>
 
-<section class="section section--top" id="selection">
-  <div class="container">
-    <div class="section-head section-head--split" data-reveal>
-      <div>
-        <span class="eyebrow">Choisi, pas fabriqué</span>
-        <h1 class="page-title" style="margin-top:var(--sp-4)" data-lines>Ce qu'on n'a pas fait,<br>on en répond quand même.</h1>
+<section class="rayon-page" aria-labelledby="rayon-titre">
+  <div class="container container--wide">
+    <div class="rayon-tete">
+      <h1 id="rayon-titre">Ce qu'on n'a pas fait,<br>on en répond quand même.</h1>
+      <div class="rayon-tete__texte">
+      <p class="rayon-tete__lede">L'atelier ne sait pas tout faire. Ce qu'il ne fabrique pas, il le choisit lui-même, le contrôle à la réception et l'échange pendant un an.</p>
+      <p class="rayon-tete__ligne"><strong>Choisi par l&#x27;atelier.</strong> Échange un an, pointure ou défaut.</p>
       </div>
-      <p class="lede" style="max-width:40ch">L'atelier ne sait pas tout faire. Ce qu'il ne fabrique pas, il le choisit lui-même, le contrôle à la réception et l'échange pendant un an.</p>
     </div>
 
-    <div class="shop-grid">
+    <div class="rayon-grille">
       <article class="pcard" data-reveal data-piece="derby-noir">
-        <a href="produit/derby-noir.html" aria-label="Découvrir Derby Noir">
+        <a href="produit/derby-noir.html" tabindex="-1" aria-hidden="true">
           <div class="pshot" data-shot>
             <span class="badge badge--green pshot__badge" data-badge="derby-noir" data-badge-long="0"><span class="badge__dot"></span>Disponible</span>
             <picture>
-            <source srcset="assets/img/derby-noir-ai-500.webp 500w, assets/img/derby-noir-ai.webp 1000w" sizes="(max-width: 560px) 92vw, (max-width: 900px) 46vw, 30vw" type="image/webp">
-            <img src="assets/img/derby-noir-ai.jpg" srcset="assets/img/derby-noir-ai-500.jpg 500w, assets/img/derby-noir-ai.jpg 1000w" sizes="(max-width: 560px) 92vw, (max-width: 900px) 46vw, 30vw"
-                 width="1000" height="1000" loading="lazy" decoding="async"
+            <source srcset="assets/img/derby-noir-ai-500.webp 500w, assets/img/derby-noir-ai.webp 1000w" sizes="(max-width: 759px) 46vw, (max-width: 1179px) 31vw, 23vw" type="image/webp">
+            <img src="assets/img/derby-noir-ai.jpg" srcset="assets/img/derby-noir-ai-500.jpg 500w, assets/img/derby-noir-ai.jpg 1000w" sizes="(max-width: 759px) 46vw, (max-width: 1179px) 31vw, 23vw"
+                 width="1000" height="1000" fetchpriority="high"
                  alt="Derby noir à semelle crantée, posé sur une dalle de pierre claire">
           </picture>
           </div>
         </a>
         <div class="pcard__body">
-          <span class="origine origine--selection">Choisi par l&#x27;atelier</span>
-          <div class="pcard__row">
-            <h2 class="pcard__name">Derby Noir</h2>
+          <h2 class="pcard__name"><a href="produit/derby-noir.html">Derby Noir</a></h2>
+          <p class="pcard__spec">Derby à lacets · Noir</p>
+          <div class="pcard__foot">
+            <span class="origine origine--selection">Choisi par l&#x27;atelier</span>
             <span class="pcard__price" data-prix="derby-noir">52 000 F</span>
           </div>
         </div>
       </article>
 
       <article class="pcard" data-reveal style="--reveal-delay:90ms" data-piece="mocassin-contraste">
-        <a href="produit/mocassin-contraste.html" aria-label="Découvrir Mocassin Contraste">
+        <a href="produit/mocassin-contraste.html" tabindex="-1" aria-hidden="true">
           <div class="pshot" data-shot>
             <span class="badge badge--green pshot__badge" data-badge="mocassin-contraste" data-badge-long="0"><span class="badge__dot"></span>Disponible</span>
             <picture>
-            <source srcset="assets/img/mocassin-contraste-ai-500.webp 500w, assets/img/mocassin-contraste-ai.webp 1000w" sizes="(max-width: 560px) 92vw, (max-width: 900px) 46vw, 30vw" type="image/webp">
-            <img src="assets/img/mocassin-contraste-ai.jpg" srcset="assets/img/mocassin-contraste-ai-500.jpg 500w, assets/img/mocassin-contraste-ai.jpg 1000w" sizes="(max-width: 560px) 92vw, (max-width: 900px) 46vw, 30vw"
-                 width="1000" height="1000" loading="lazy" decoding="async"
+            <source srcset="assets/img/mocassin-contraste-ai-500.webp 500w, assets/img/mocassin-contraste-ai.webp 1000w" sizes="(max-width: 759px) 46vw, (max-width: 1179px) 31vw, 23vw" type="image/webp">
+            <img src="assets/img/mocassin-contraste-ai.jpg" srcset="assets/img/mocassin-contraste-ai-500.jpg 500w, assets/img/mocassin-contraste-ai.jpg 1000w" sizes="(max-width: 759px) 46vw, (max-width: 1179px) 31vw, 23vw"
+                 width="1000" height="1000" fetchpriority="high"
                  alt="Mocassin noir et blanc à semelle crantée, posé sur une dalle de pierre claire">
           </picture>
           </div>
         </a>
         <div class="pcard__body">
-          <span class="origine origine--selection">Choisi par l&#x27;atelier</span>
-          <div class="pcard__row">
-            <h2 class="pcard__name">Mocassin Contraste</h2>
+          <h2 class="pcard__name"><a href="produit/mocassin-contraste.html">Mocassin Contraste</a></h2>
+          <p class="pcard__spec">Mocassin à enfiler · Noir et blanc</p>
+          <div class="pcard__foot">
+            <span class="origine origine--selection">Choisi par l&#x27;atelier</span>
             <span class="pcard__price" data-prix="mocassin-contraste">48 000 F</span>
           </div>
         </div>
       </article>
 
       <article class="pcard" data-reveal style="--reveal-delay:180ms" data-piece="derby-cacao">
-        <a href="produit/derby-cacao.html" aria-label="Découvrir Derby Cacao">
+        <a href="produit/derby-cacao.html" tabindex="-1" aria-hidden="true">
           <div class="pshot" data-shot>
             <span class="badge badge--green pshot__badge" data-badge="derby-cacao" data-badge-long="0"><span class="badge__dot"></span>Disponible</span>
             <picture>
-            <source srcset="assets/img/derby-cacao-ai-500.webp 500w, assets/img/derby-cacao-ai.webp 1000w" sizes="(max-width: 560px) 92vw, (max-width: 900px) 46vw, 30vw" type="image/webp">
-            <img src="assets/img/derby-cacao-ai.jpg" srcset="assets/img/derby-cacao-ai-500.jpg 500w, assets/img/derby-cacao-ai.jpg 1000w" sizes="(max-width: 560px) 92vw, (max-width: 900px) 46vw, 30vw"
+            <source srcset="assets/img/derby-cacao-ai-500.webp 500w, assets/img/derby-cacao-ai.webp 1000w" sizes="(max-width: 759px) 46vw, (max-width: 1179px) 31vw, 23vw" type="image/webp">
+            <img src="assets/img/derby-cacao-ai.jpg" srcset="assets/img/derby-cacao-ai-500.jpg 500w, assets/img/derby-cacao-ai.jpg 1000w" sizes="(max-width: 759px) 46vw, (max-width: 1179px) 31vw, 23vw"
                  width="1000" height="1000" loading="lazy" decoding="async"
                  alt="Derby brun cacao à bout mocassin, posé sur une dalle de pierre claire">
           </picture>
           </div>
         </a>
         <div class="pcard__body">
-          <span class="origine origine--selection">Choisi par l&#x27;atelier</span>
-          <div class="pcard__row">
-            <h2 class="pcard__name">Derby Cacao</h2>
+          <h2 class="pcard__name"><a href="produit/derby-cacao.html">Derby Cacao</a></h2>
+          <p class="pcard__spec">Derby à lacets · Cacao</p>
+          <div class="pcard__foot">
+            <span class="origine origine--selection">Choisi par l&#x27;atelier</span>
             <span class="pcard__price" data-prix="derby-cacao">52 000 F</span>
           </div>
         </div>
       </article>
 
       <article class="pcard" data-reveal style="--reveal-delay:270ms" data-piece="loafer-marine">
-        <a href="produit/loafer-marine.html" aria-label="Découvrir Loafer Marine">
+        <a href="produit/loafer-marine.html" tabindex="-1" aria-hidden="true">
           <div class="pshot" data-shot>
             <span class="badge badge--green pshot__badge" data-badge="loafer-marine" data-badge-long="0"><span class="badge__dot"></span>Disponible</span>
             <picture>
-            <source srcset="assets/img/loafer-marine-ai-500.webp 500w, assets/img/loafer-marine-ai.webp 1000w" sizes="(max-width: 560px) 92vw, (max-width: 900px) 46vw, 30vw" type="image/webp">
-            <img src="assets/img/loafer-marine-ai.jpg" srcset="assets/img/loafer-marine-ai-500.jpg 500w, assets/img/loafer-marine-ai.jpg 1000w" sizes="(max-width: 560px) 92vw, (max-width: 900px) 46vw, 30vw"
+            <source srcset="assets/img/loafer-marine-ai-500.webp 500w, assets/img/loafer-marine-ai.webp 1000w" sizes="(max-width: 759px) 46vw, (max-width: 1179px) 31vw, 23vw" type="image/webp">
+            <img src="assets/img/loafer-marine-ai.jpg" srcset="assets/img/loafer-marine-ai-500.jpg 500w, assets/img/loafer-marine-ai.jpg 1000w" sizes="(max-width: 759px) 46vw, (max-width: 1179px) 31vw, 23vw"
                  width="1000" height="1000" loading="lazy" decoding="async"
                  alt="Loafer en cuir bleu marine à bandeau, posé sur une dalle de pierre claire">
           </picture>
           </div>
         </a>
         <div class="pcard__body">
-          <span class="origine origine--selection">Choisi par l&#x27;atelier</span>
-          <div class="pcard__row">
-            <h2 class="pcard__name">Loafer Marine</h2>
+          <h2 class="pcard__name"><a href="produit/loafer-marine.html">Loafer Marine</a></h2>
+          <p class="pcard__spec">Loafer à bandeau · Marine</p>
+          <div class="pcard__foot">
+            <span class="origine origine--selection">Choisi par l&#x27;atelier</span>
             <span class="pcard__price" data-prix="loafer-marine">45 000 F</span>
           </div>
         </div>
       </article>
 
       <article class="pcard" data-reveal style="--reveal-delay:360ms" data-piece="chelsea-noir">
-        <a href="produit/chelsea-noir.html" aria-label="Découvrir Chelsea Noir">
+        <a href="produit/chelsea-noir.html" tabindex="-1" aria-hidden="true">
           <div class="pshot" data-shot>
             <span class="badge badge--green pshot__badge" data-badge="chelsea-noir" data-badge-long="0"><span class="badge__dot"></span>Disponible</span>
             <picture>
-            <source srcset="assets/img/chelsea-noir-ai-500.webp 500w, assets/img/chelsea-noir-ai.webp 1000w" sizes="(max-width: 560px) 92vw, (max-width: 900px) 46vw, 30vw" type="image/webp">
-            <img src="assets/img/chelsea-noir-ai.jpg" srcset="assets/img/chelsea-noir-ai-500.jpg 500w, assets/img/chelsea-noir-ai.jpg 1000w" sizes="(max-width: 560px) 92vw, (max-width: 900px) 46vw, 30vw"
+            <source srcset="assets/img/chelsea-noir-ai-500.webp 500w, assets/img/chelsea-noir-ai.webp 1000w" sizes="(max-width: 759px) 46vw, (max-width: 1179px) 31vw, 23vw" type="image/webp">
+            <img src="assets/img/chelsea-noir-ai.jpg" srcset="assets/img/chelsea-noir-ai-500.jpg 500w, assets/img/chelsea-noir-ai.jpg 1000w" sizes="(max-width: 759px) 46vw, (max-width: 1179px) 31vw, 23vw"
                  width="1000" height="1000" loading="lazy" decoding="async"
                  alt="Bottines Chelsea noires posées sur une dalle de pierre claire">
           </picture>
           </div>
         </a>
         <div class="pcard__body">
-          <span class="origine origine--selection">Choisi par l&#x27;atelier</span>
-          <div class="pcard__row">
-            <h2 class="pcard__name">Chelsea Noir</h2>
+          <h2 class="pcard__name"><a href="produit/chelsea-noir.html">Chelsea Noir</a></h2>
+          <p class="pcard__spec">Bottine Chelsea · Noir</p>
+          <div class="pcard__foot">
+            <span class="origine origine--selection">Choisi par l&#x27;atelier</span>
             <span class="pcard__price" data-prix="chelsea-noir">58 000 F</span>
           </div>
         </div>
       </article>
 
       <article class="pcard" data-reveal style="--reveal-delay:450ms" data-piece="richelieu-noir">
-        <a href="produit/richelieu-noir.html" aria-label="Découvrir Richelieu Noir">
+        <a href="produit/richelieu-noir.html" tabindex="-1" aria-hidden="true">
           <div class="pshot" data-shot>
             <span class="badge badge--green pshot__badge" data-badge="richelieu-noir" data-badge-long="0"><span class="badge__dot"></span>Disponible</span>
             <picture>
-            <source srcset="assets/img/richelieu-noir-ai-500.webp 500w, assets/img/richelieu-noir-ai.webp 1000w" sizes="(max-width: 560px) 92vw, (max-width: 900px) 46vw, 30vw" type="image/webp">
-            <img src="assets/img/richelieu-noir-ai.jpg" srcset="assets/img/richelieu-noir-ai-500.jpg 500w, assets/img/richelieu-noir-ai.jpg 1000w" sizes="(max-width: 560px) 92vw, (max-width: 900px) 46vw, 30vw"
+            <source srcset="assets/img/richelieu-noir-ai-500.webp 500w, assets/img/richelieu-noir-ai.webp 1000w" sizes="(max-width: 759px) 46vw, (max-width: 1179px) 31vw, 23vw" type="image/webp">
+            <img src="assets/img/richelieu-noir-ai.jpg" srcset="assets/img/richelieu-noir-ai-500.jpg 500w, assets/img/richelieu-noir-ai.jpg 1000w" sizes="(max-width: 759px) 46vw, (max-width: 1179px) 31vw, 23vw"
                  width="1000" height="1000" loading="lazy" decoding="async"
                  alt="Richelieu noir brogué à lacets, posé sur une dalle de pierre claire">
           </picture>
           </div>
         </a>
         <div class="pcard__body">
-          <span class="origine origine--selection">Choisi par l&#x27;atelier</span>
-          <div class="pcard__row">
-            <h2 class="pcard__name">Richelieu Noir</h2>
+          <h2 class="pcard__name"><a href="produit/richelieu-noir.html">Richelieu Noir</a></h2>
+          <p class="pcard__spec">Richelieu brogué · Noir</p>
+          <div class="pcard__foot">
+            <span class="origine origine--selection">Choisi par l&#x27;atelier</span>
             <span class="pcard__price" data-prix="richelieu-noir">60 000 F</span>
           </div>
         </div>
       </article>
 
       <article class="pcard" data-reveal style="--reveal-delay:540ms" data-piece="mocassin-tokpa">
-        <a href="produit/mocassin-tokpa.html" aria-label="Découvrir Mocassin Tokpa">
+        <a href="produit/mocassin-tokpa.html" tabindex="-1" aria-hidden="true">
           <div class="pshot" data-shot>
             <span class="badge badge--green pshot__badge" data-badge="mocassin-tokpa" data-badge-long="0"><span class="badge__dot"></span>Disponible</span>
             <picture>
-            <source srcset="assets/img/mocassin-marine-ai-500.webp 500w, assets/img/mocassin-marine-ai.webp 1000w" sizes="(max-width: 560px) 92vw, (max-width: 900px) 46vw, 30vw" type="image/webp">
-            <img src="assets/img/mocassin-marine-ai.jpg" srcset="assets/img/mocassin-marine-ai-500.jpg 500w, assets/img/mocassin-marine-ai.jpg 1000w" sizes="(max-width: 560px) 92vw, (max-width: 900px) 46vw, 30vw"
-                 width="1000" height="750" loading="lazy" decoding="async"
-                 alt="Visuel d&#x27;ambiance généré par IA : une paire de mocassins en daim bleu marine sur un bloc de pierre claire, semelle marine">
+            <source srcset="assets/img/mocassin-marine-alt-ai-500.webp 500w, assets/img/mocassin-marine-alt-ai.webp 1000w" sizes="(max-width: 759px) 46vw, (max-width: 1179px) 31vw, 23vw" type="image/webp">
+            <img src="assets/img/mocassin-marine-alt-ai.jpg" srcset="assets/img/mocassin-marine-alt-ai-500.jpg 500w, assets/img/mocassin-marine-alt-ai.jpg 1000w" sizes="(max-width: 759px) 46vw, (max-width: 1179px) 31vw, 23vw"
+                 width="1000" height="1000" loading="lazy" decoding="async"
+                 alt="Visuel d&#x27;ambiance généré par IA : une paire de mocassins en daim bleu marine à semelle blanche, vue de dessus sur une dalle de pierre">
           </picture>
           </div>
         </a>
         <div class="pcard__body">
-          <span class="origine origine--selection">Choisi par l&#x27;atelier</span>
-          <div class="pcard__row">
-            <h2 class="pcard__name">Mocassin Tokpa</h2>
+          <h2 class="pcard__name"><a href="produit/mocassin-tokpa.html">Mocassin Tokpa</a></h2>
+          <p class="pcard__spec">Mocassin à enfiler · Marine ou noir</p>
+          <div class="pcard__foot">
+            <span class="origine origine--selection">Choisi par l&#x27;atelier</span>
             <span class="pcard__price" data-prix="mocassin-tokpa">45 000 F</span>
           </div>
         </div>
@@ -353,64 +370,38 @@
   </div>
 </section>
 
-<section class="section methode">
-  <div class="container">
-    <div class="section-head" data-reveal>
-      <span class="eyebrow">Sélection</span>
-      <h2 style="margin-top:var(--sp-4)">Ce qui se passe<br>avant que votre paire arrive</h2>
+<section class="bloc bloc--filet methode-rayon" aria-labelledby="methode-titre">
+  <div class="container container--wide methode-rayon__grille">
+    <div class="methode-rayon__tete">
+      <h2 id="methode-titre" data-lines>Avant que votre paire arrive</h2>
+      <p>Ce que nous faisons de chaque pièce, et ce qui se passe si elle ne vous va pas.</p>
     </div>
-    <div class="grid grid--3" style="margin-top:var(--sp-7)">
-      <article class="card" data-reveal style="--reveal-delay:0ms">
-        <span class="card__num">01</span>
-        <h2>On choisit</h2>
-        <p>L'atelier ne sait pas tout faire. Ce qu'il ne fabrique pas, il va le chercher lui-même, et n'en retient qu'une pièce sur plusieurs.</p>
-      </article>
-      <article class="card" data-reveal style="--reveal-delay:90ms">
-        <span class="card__num">02</span>
-        <h2>On contrôle</h2>
-        <p>Chaque paire est ouverte à la réception. Couture, doublure, collage, symétrie. Ce qui ne passe pas ne part pas.</p>
-      </article>
-      <article class="card" data-reveal style="--reveal-delay:180ms">
-        <span class="card__num">03</span>
-        <h2>On en répond</h2>
-        <p>Numérotée, échangeable un an, pointure ou défaut. Nous ne l'avons pas fabriquée, nous en répondons quand même.</p>
-      </article>
-    </div>
-
-    <ul class="assurances" data-reveal>
-      <li><svg aria-hidden="true"><use href="#i-check"></use></svg>Échange un an, pointure ou défaut</li>
-      <li><svg aria-hidden="true"><use href="#i-shield"></use></svg>Rien à payer d'avance</li>
-      <li><svg aria-hidden="true"><use href="#i-truck"></use></svg>Cotonou &amp; Abidjan en 48 h</li>
-      <li><svg aria-hidden="true"><use href="#i-needle"></use></svg>Chaque pièce porte un numéro</li>
-    </ul>
+    <dl class="methode-rayon__liste">
+      <div data-reveal style="--reveal-delay:0ms">
+        <dt>Le choix</dt>
+        <dd>Ce que l'atelier ne fabrique pas, il va le chercher lui-même, l'essaie et le compare avant de le retenir.</dd>
+      </div>
+      <div data-reveal style="--reveal-delay:60ms">
+        <dt>Le contrôle</dt>
+        <dd>Chaque paire est ouverte à la réception : couture, doublure, collage, symétrie. Ce qui ne passe pas ne part pas.</dd>
+      </div>
+      <div data-reveal style="--reveal-delay:120ms">
+        <dt>La garantie</dt>
+        <dd>Numérotée, échangeable un an, pointure ou défaut. La semelle est collée : elle ne se ressemelle pas, nous préférons le dire avant l'achat.</dd>
+      </div>
+      <div data-reveal style="--reveal-delay:180ms">
+        <dt>Payer et recevoir</dt>
+        <dd>Rien à payer d'avance : vous réglez à la livraison ou par Mobile Money. Expédiée sous 72 h, puis livrée en 48 h à Cotonou et à Abidjan, sous 5 jours ailleurs (jours ouvrés).</dd>
+      </div>
+    </dl>
   </div>
 </section>
 
-<div class="seam" data-seam aria-hidden="true">
-  <svg viewBox="0 0 1440 160" preserveAspectRatio="none">
-    <defs>
-      <mask id="seam-cat">
-        <path class="seam__reveal" pathLength="1" d="M0 40 C 300 40, 380 126, 720 126 S 1140 40, 1440 40"/>
-      </mask>
-    </defs>
-    <path class="seam__thread" mask="url(#seam-cat)" d="M0 40 C 300 40, 380 126, 720 126 S 1140 40, 1440 40"/>
-  </svg>
-</div>
-
-<section class="section cta grain">
-  <div class="container">
-    <span class="eyebrow eyebrow--center" data-reveal>Rien ne vous va exactement ?</span>
-    <h2 style="margin-top:var(--sp-4)" data-reveal>C'est précisément<br>le sur-mesure</h2>
-    <p class="lede mx-auto text-center" style="margin-top:var(--sp-5)" data-reveal>
-      Composez en deux minutes, le prix s'affiche poste par poste, l'atelier
-      confirme la date sur WhatsApp. Vous ne payez rien avant cette confirmation.
-    </p>
-    <div class="cta__actions" data-reveal>
-      <a class="btn" href="configurateur.html">
-        Composer ma paire
-        <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
-      </a>
-    </div>
+<section class="bloc bloc--filet invitation" aria-labelledby="invitation-titre">
+  <div class="container container--narrow invitation__inner">
+    <h2 id="invitation-titre" data-lines>Rien ne vous va exactement&nbsp;?</h2>
+    <p>Composez votre paire en deux minutes&nbsp;: le prix s'affiche poste par poste, et l'atelier confirme la date sur WhatsApp avant tout paiement.</p>
+    <a class="btn" href="configurateur.html">Composer ma paire</a>
   </div>
 </section>
 
@@ -436,9 +427,9 @@
              partie » serait une inexactitude, et l'inexactitude est précisément
              ce contre quoi cette mention protège. -->
         <p class="footer__ai-note">
-          Tous les visuels produits de ce site sont générés par intelligence
-          artificielle. Ils illustrent le modèle&nbsp;; ils ne sont pas des
-          photographies des pièces livrées.
+          Toutes les images de ce site, pièces, portrait et scènes d'atelier,
+          sont générées par intelligence artificielle. Elles illustrent la
+          maison et ses modèles&nbsp;; ce ne sont pas des photographies.
           <a href="mentions-legales.html#visuels">En savoir plus</a>
         </p>
 
@@ -456,6 +447,7 @@
         <h2 class="footer__title">Boutique</h2>
         <ul class="footer__list">
           <li><a href="boutique.html">Tout le catalogue</a></li>
+          <li><a href="entretien.html">Entretien</a></li>
           <li><a href="selection.html">Sélection</a></li>
           <li><a href="a-venir.html">Ce qui se prépare</a></li>
           <li><a href="configurateur.html">Sur-mesure</a></li>
@@ -518,14 +510,13 @@
     </div>
   </div>
 
-  <!-- La signature : le nom à l'échelle de la carte, coupé par son bord
-       bas. Pur décor, le logo plus haut porte déjà le nom. -->
-  <p class="footer__signature" aria-hidden="true">YEM’S</p>
+  <!-- La signature géante en texte dégradé de l'ancien pied a été retirée
+       avec la refonte « maison » (pas de texte en dégradé). -->
 </footer>
 
 
-<script src="assets/js/main.js?v=61117131" defer></script>
-<script src="assets/js/motion.js?v=171a06b8" defer></script>
+<script src="assets/js/main.js?v=5a8c5422" defer></script>
+<script src="assets/js/motion.js?v=86394c47" defer></script>
 
 </body>
 </html>

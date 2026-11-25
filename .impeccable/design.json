@@ -1,0 +1,490 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-21T18:00:00Z",
+  "title": "Design System: Yem's",
+  "extensions": {
+    "colorMeta": {
+      "ivoire": {
+        "role": "neutral",
+        "displayName": "Ivoire",
+        "canonical": "#F6F1E8",
+        "tonalRamp": [
+          "#0C0B09",
+          "#272521",
+          "#44423C",
+          "#65615A",
+          "#86827A",
+          "#A8A59E",
+          "#CBC9C4",
+          "#F0EEEB"
+        ]
+      },
+      "ivoire-haut": {
+        "role": "neutral",
+        "displayName": "Ivoire haut",
+        "canonical": "#FBF8F2",
+        "tonalRamp": [
+          "#0C0B0A",
+          "#262522",
+          "#43423E",
+          "#63615C",
+          "#84827D",
+          "#A7A5A1",
+          "#CAC9C6",
+          "#EFEEEC"
+        ]
+      },
+      "sable": {
+        "role": "neutral",
+        "displayName": "Sable",
+        "canonical": "#ECE4D6",
+        "tonalRamp": [
+          "#0D0B08",
+          "#28251F",
+          "#464139",
+          "#676055",
+          "#888176",
+          "#AAA49B",
+          "#CDC9C1",
+          "#F1EEE9"
+        ]
+      },
+      "sable-fonce": {
+        "role": "neutral",
+        "displayName": "Sable foncé",
+        "canonical": "#DED3C1",
+        "tonalRamp": [
+          "#0D0B07",
+          "#29241D",
+          "#484136",
+          "#696052",
+          "#8A8172",
+          "#ACA497",
+          "#CEC8BE",
+          "#F2EEE7"
+        ]
+      },
+      "encre": {
+        "role": "neutral",
+        "displayName": "Encre espresso",
+        "canonical": "#14100D",
+        "tonalRamp": [
+          "#0C0B0A",
+          "#272423",
+          "#45413F",
+          "#65605D",
+          "#86817E",
+          "#A8A4A1",
+          "#CCC8C6",
+          "#F0EEEC"
+        ]
+      },
+      "encre-survol": {
+        "role": "neutral",
+        "displayName": "Encre de survol",
+        "canonical": "#3A2E26",
+        "tonalRamp": [
+          "#0E0A08",
+          "#2A241F",
+          "#49403A",
+          "#6B5E56",
+          "#8C7F77",
+          "#AEA39B",
+          "#D0C7C2",
+          "#F3EDE9"
+        ]
+      },
+      "cognac": {
+        "role": "primary",
+        "displayName": "Cognac",
+        "canonical": "#8C5A3C",
+        "tonalRamp": [
+          "#150702",
+          "#361E10",
+          "#5B3924",
+          "#82553A",
+          "#A6765A",
+          "#C39B84",
+          "#E2C2B0",
+          "#FFE9DD"
+        ]
+      },
+      "cognac-fonce": {
+        "role": "primary",
+        "displayName": "Cognac foncé",
+        "canonical": "#6F4329",
+        "tonalRamp": [
+          "#140803",
+          "#351F12",
+          "#593A28",
+          "#80563E",
+          "#A3775E",
+          "#C19C88",
+          "#E0C2B2",
+          "#FFEADE"
+        ]
+      },
+      "texte-doux": {
+        "role": "neutral",
+        "displayName": "Texte doux",
+        "canonical": "#4A3F36",
+        "tonalRamp": [
+          "#0E0A08",
+          "#29241F",
+          "#48403A",
+          "#6A5F56",
+          "#8B8077",
+          "#ADA39B",
+          "#CFC8C1",
+          "#F3EDE9"
+        ]
+      },
+      "texte-discret": {
+        "role": "neutral",
+        "displayName": "Texte discret",
+        "canonical": "#5E5248",
+        "tonalRamp": [
+          "#0E0A08",
+          "#2A241F",
+          "#494039",
+          "#6A5F56",
+          "#8C8076",
+          "#ADA39B",
+          "#CFC7C1",
+          "#F3EDE9"
+        ]
+      },
+      "sombre-surface": {
+        "role": "neutral",
+        "displayName": "Surface sur encre",
+        "canonical": "#1F1915",
+        "tonalRamp": [
+          "#0D0B09",
+          "#282422",
+          "#46413D",
+          "#66605B",
+          "#88817C",
+          "#AAA4A0",
+          "#CDC8C5",
+          "#F1EEEB"
+        ]
+      },
+      "sombre-texte": {
+        "role": "neutral",
+        "displayName": "Texte sur encre",
+        "canonical": "#F1EADF",
+        "tonalRamp": [
+          "#0D0B08",
+          "#272520",
+          "#45413B",
+          "#666058",
+          "#878178",
+          "#A9A49D",
+          "#CCC9C3",
+          "#F1EEEA"
+        ]
+      },
+      "cognac-sur-encre": {
+        "role": "primary",
+        "displayName": "Cognac éclairci",
+        "canonical": "#D6B48E",
+        "tonalRamp": [
+          "#120902",
+          "#302211",
+          "#523E25",
+          "#775B3C",
+          "#997C5C",
+          "#B9A085",
+          "#D9C6B1",
+          "#FAECDD"
+        ]
+      },
+      "statut-disponible": {
+        "role": "status",
+        "displayName": "Disponible",
+        "canonical": "#2F5A35",
+        "tonalRamp": [
+          "#040E05",
+          "#162B19",
+          "#2D4A30",
+          "#456C4A",
+          "#668E6A",
+          "#8EAF91",
+          "#B7D1B9",
+          "#E2F4E3"
+        ]
+      },
+      "statut-en-route": {
+        "role": "status",
+        "displayName": "En route",
+        "canonical": "#7A5512",
+        "tonalRamp": [
+          "#130900",
+          "#332103",
+          "#563D12",
+          "#7C5A23",
+          "#9F7C45",
+          "#BDA075",
+          "#DCC5A4",
+          "#FCECD5"
+        ]
+      },
+      "statut-indisponible": {
+        "role": "status",
+        "displayName": "Indisponible",
+        "canonical": "#8E3A2E",
+        "tonalRamp": [
+          "#1A0402",
+          "#3F1711",
+          "#682E25",
+          "#94473B",
+          "#B9685B",
+          "#D59185",
+          "#F1BAB0",
+          "#FFE4DD"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Le titre d'ouverture de l'accueil, centré sous l'image ; même voix pour les titres de rayon et le nom de produit sur la fiche."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Titres de section, à gauche (1.75rem au téléphone, 2.5rem dès 900 px)."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Intitulés de faits, questions des blocs dépliables, titres du pied de page."
+      },
+      "price": {
+        "displayName": "Nom et prix",
+        "purpose": "Noms et prix des vignettes (1.1875rem dès 900 px), chiffres tabulaires ; prix de fiche 1.75rem."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Texte courant ; 1.0625rem dès 900 px."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Libellés des sélecteurs et intitulés courts, sans capitales."
+      },
+      "origine": {
+        "displayName": "Origine",
+        "purpose": "La ligne d'origine, en cognac, au-dessus du prix."
+      },
+      "marque": {
+        "displayName": "Mot-symbole",
+        "purpose": "Le seul logo YEM'S ; 1.25rem et 0.2em au téléphone."
+      }
+    },
+    "shadows": [
+      {
+        "name": "filet-surface",
+        "value": "0 1px 0 rgba(20, 16, 13, 0.06)",
+        "purpose": "Un trait sous une surface, plutôt qu'une ombre."
+      },
+      {
+        "name": "portee-basse",
+        "value": "0 18px 40px -24px rgba(20, 16, 13, 0.28)",
+        "purpose": "Seulement pour un élément qui couvre la page (notification, panneaux du panier et du configurateur)."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease",
+        "value": "cubic-bezier(.2, .7, .2, 1)",
+        "purpose": "La seule courbe du site."
+      },
+      {
+        "name": "dur-etat",
+        "value": "240ms",
+        "purpose": "Changements d'état : survol des boutons et des liens, filet de l'en-tête."
+      },
+      {
+        "name": "dur-appui",
+        "value": "120ms",
+        "purpose": "État pressé au toucher."
+      },
+      {
+        "name": "dur-entree",
+        "value": "480ms",
+        "purpose": "Apparition unique des images (montée de 10 px) et des titres ligne par ligne (70 ms d'écart) ; agrandissement de 2 % des photos de vignette au pointeur fin."
+      },
+      {
+        "name": "barre-achat",
+        "value": "320ms",
+        "purpose": "Montée de la barre d'achat du téléphone une fois le vrai bouton sorti de l'écran."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "none",
+        "purpose": "Tout mouvement s'éteint sous prefers-reduced-motion ; le contenu reste visible sans JavaScript."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "pied-deux-colonnes",
+        "value": "560px"
+      },
+      {
+        "name": "bande-ouverture",
+        "value": "620px"
+      },
+      {
+        "name": "grille-3",
+        "value": "760px"
+      },
+      {
+        "name": "grand-ecran",
+        "value": "900px"
+      },
+      {
+        "name": "grille-4",
+        "value": "1180px"
+      },
+      {
+        "name": "conteneur-large",
+        "value": "1200px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Bouton plein",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "L'action principale d'un bloc : voir les modèles, ajouter au panier.",
+      "html": "<button class=\"ds-btn\">Ajouter au panier</button>",
+      "css": ".ds-btn{font-family:'Hanken Grotesk',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;min-height:52px;padding:.9rem 1.75rem;border-radius:0;font-size:1rem;font-weight:500;letter-spacing:.02em;background:#14100D;color:#F6F1E8;border:1px solid #14100D;cursor:pointer;transition:background-color 240ms cubic-bezier(.2,.7,.2,1),border-color 240ms cubic-bezier(.2,.7,.2,1);} .ds-btn:hover{background:#3A2E26;border-color:#3A2E26;} .ds-btn:active{background:#000;border-color:#000;transition-duration:120ms;} .ds-btn:focus-visible{outline:2px solid #8C5A3C;outline-offset:3px;}"
+    },
+    {
+      "name": "Bouton ghost",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Le second chemin d'achat (Commander sur WhatsApp) et le bouton de l'en-tête.",
+      "html": "<button class=\"ds-btn-ghost\">Commander sur WhatsApp</button>",
+      "css": ".ds-btn-ghost{font-family:'Hanken Grotesk',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;min-height:52px;padding:.9rem 1.75rem;border-radius:0;font-size:1rem;font-weight:500;letter-spacing:.02em;background:transparent;color:#14100D;border:1px solid #14100D;cursor:pointer;transition:background-color 240ms cubic-bezier(.2,.7,.2,1),color 240ms cubic-bezier(.2,.7,.2,1);} .ds-btn-ghost:hover{background:#14100D;color:#F6F1E8;} .ds-btn-ghost:focus-visible{outline:2px solid #8C5A3C;outline-offset:3px;}"
+    },
+    {
+      "name": "Lien texte",
+      "kind": "custom",
+      "refersTo": "text-link",
+      "description": "Le lien de la maison : souligné fin, cognac au survol, une flèche à la suite.",
+      "html": "<a class=\"ds-lien\" href=\"#\">Tout le catalogue <svg aria-hidden=\"true\" viewBox=\"0 0 24 24\" width=\"14\" height=\"14\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M5 12h14M13 6l6 6-6 6\"/></svg></a>",
+      "css": ".ds-lien{font-family:'Hanken Grotesk',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;display:inline-flex;align-items:center;gap:.4em;min-height:44px;color:#14100D;font-weight:500;text-decoration:underline;text-decoration-color:rgba(20,16,13,.35);text-underline-offset:.22em;text-decoration-thickness:1px;transition:color 240ms cubic-bezier(.2,.7,.2,1),text-decoration-color 240ms cubic-bezier(.2,.7,.2,1);} .ds-lien:hover{color:#8C5A3C;text-decoration-color:currentColor;} .ds-lien:focus-visible{outline:2px solid #8C5A3C;outline-offset:3px;}"
+    },
+    {
+      "name": "Vignette produit",
+      "kind": "card",
+      "refersTo": "product-card",
+      "description": "La vignette plate : l'image sur le sable, le nom, une ligne, l'origine au-dessus du prix ; toute la carte est un lien.",
+      "html": "<article class=\"ds-pcard\"><div class=\"ds-pshot\"></div><h3 class=\"ds-pcard-name\"><a href=\"#\">Derby Noir</a></h3><p class=\"ds-pcard-spec\">Derby à lacets · Cuir lisse noir</p><p class=\"ds-origine\">Choisi par l'atelier</p><p class=\"ds-pcard-price\">52&nbsp;000&nbsp;F</p></article>",
+      "css": ".ds-pcard{position:relative;display:grid;gap:.2rem;width:220px;font-family:'Hanken Grotesk',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:#14100D;} .ds-pshot{aspect-ratio:4/5;background:#ECE4D6;margin-bottom:.55rem;transition:transform 480ms cubic-bezier(.2,.7,.2,1);} .ds-pcard:hover .ds-pshot{transform:scale(1.02);} .ds-pcard-name{font-family:Prata,Georgia,'Times New Roman',serif;font-weight:400;font-size:1.0625rem;line-height:1.25;margin:0;} .ds-pcard-name a{color:inherit;text-decoration:none;} .ds-pcard-name a::after{content:'';position:absolute;inset:0;} .ds-pcard:hover .ds-pcard-name a{text-decoration:underline;text-underline-offset:.22em;text-decoration-thickness:1px;} .ds-pcard-name a:focus-visible{outline:2px solid #8C5A3C;outline-offset:3px;} .ds-pcard-spec{margin:0;font-size:.875rem;line-height:1.4;color:#4A3F36;} .ds-origine{margin:.35rem 0 0;font-size:.875rem;font-weight:500;line-height:1.35;letter-spacing:.01em;color:#8C5A3C;} .ds-pcard-price{font-family:Prata,Georgia,'Times New Roman',serif;font-weight:400;margin:0;font-size:1.0625rem;font-variant-numeric:tabular-nums;white-space:nowrap;}"
+    },
+    {
+      "name": "Pastille de disponibilité",
+      "kind": "chip",
+      "refersTo": "badge",
+      "description": "Étiquette ivoire à angle droit, couleur du texte selon le statut ; muette sur une vignette quand la pièce est disponible.",
+      "html": "<span class=\"ds-badge ds-badge--amber\"><span class=\"ds-dot\"></span>En route</span>",
+      "css": ".ds-badge{font-family:'Hanken Grotesk',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;display:inline-flex;align-items:center;gap:.5rem;padding:.3rem .55rem;border-radius:0;background:rgba(246,241,232,.94);color:#14100D;font-size:.75rem;letter-spacing:.02em;} .ds-badge--amber{color:#7A5512;} .ds-dot{width:6px;height:6px;border-radius:50%;background:currentColor;}"
+    },
+    {
+      "name": "Pointure",
+      "kind": "input",
+      "refersTo": "size-chip",
+      "description": "Le sélecteur de pointure : carré à filet, plein d'encre une fois choisi.",
+      "html": "<div class=\"ds-sizes\"><button class=\"ds-size\">40</button><button class=\"ds-size is-active\" aria-pressed=\"true\">41</button><button class=\"ds-size\">42</button></div>",
+      "css": ".ds-sizes{display:flex;gap:.5rem;} .ds-size{font-family:'Hanken Grotesk',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;min-height:48px;min-width:52px;border-radius:0;border:1px solid rgba(20,16,13,.5);background:transparent;color:#14100D;font-size:1rem;cursor:pointer;} .ds-size:hover{border-color:#14100D;} .ds-size.is-active{background:#14100D;border-color:#14100D;color:#F6F1E8;} .ds-size:focus-visible{outline:2px solid #8C5A3C;outline-offset:3px;}"
+    },
+    {
+      "name": "En-tête",
+      "kind": "nav",
+      "refersTo": "header",
+      "description": "Barre ivoire pleine, mot-symbole Marcellus, liens en texte doux, page courante soulignée de cognac.",
+      "html": "<header class=\"ds-header\"><span class=\"ds-logo\">YEM'S</span><nav class=\"ds-nav\"><a href=\"#\">Boutique</a><a href=\"#\" aria-current=\"page\">La sélection</a><a href=\"#\">L'atelier</a></nav></header>",
+      "css": ".ds-header{display:flex;align-items:center;gap:2rem;height:68px;padding:0 1.5rem;background:#F6F1E8;border-bottom:1px solid rgba(20,16,13,.12);color:#14100D;} .ds-logo{font-family:Marcellus,Georgia,serif;font-size:1.375rem;letter-spacing:.08em;} .ds-nav{display:flex;gap:2rem;} .ds-nav a{font-family:'Hanken Grotesk',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;position:relative;color:#4A3F36;font-size:.9375rem;letter-spacing:.01em;text-decoration:none;padding:.4rem 0;} .ds-nav a:hover,.ds-nav a[aria-current=page]{color:#14100D;} .ds-nav a[aria-current=page]::after{content:'';position:absolute;left:0;right:0;bottom:0;height:1px;background:#8C5A3C;} .ds-nav a:focus-visible{outline:2px solid #8C5A3C;outline-offset:3px;}"
+    },
+    {
+      "name": "Panneau Payer et recevoir",
+      "kind": "card",
+      "refersTo": "panel-sable",
+      "description": "L'aplat sable de la fiche, sous les boutons : des faits en rangées à filets.",
+      "html": "<div class=\"ds-panel\"><h3>Payer et recevoir</h3><ul><li><strong>À la livraison</strong> ou par Mobile Money.</li><li><strong>Essayez à la livraison</strong> avant de payer.</li></ul></div>",
+      "css": ".ds-panel{font-family:'Hanken Grotesk',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;padding:1.5rem;background:#ECE4D6;color:#4A3F36;max-width:28rem;} .ds-panel h3{font-family:Prata,Georgia,'Times New Roman',serif;font-weight:400;font-size:1.375rem;color:#14100D;margin:0 0 .75rem;} .ds-panel ul{list-style:none;margin:0;padding:0;} .ds-panel li{padding-block:.75rem;border-top:1px solid rgba(20,16,13,.1);font-size:.9375rem;line-height:1.5;} .ds-panel li:first-child{border-top:0;padding-top:0;} .ds-panel strong{color:#14100D;font-weight:600;}"
+    }
+  ],
+  "narrative": {
+    "northStar": "La maison de souliers, jouée droit",
+    "overview": "Le registre des grandes maisons de souliers (Corthay, Crockett & Jones, Septième Largeur), exécuté sans détour : un fond ivoire, une encre espresso, une seule couleur d'accent, des images à angle droit, des boutons pleins et rectangulaires, des filets fins entre les sections. L'image et la pièce mènent ; la ligne d'origine se lit au-dessus de chaque prix ; rien sur la page ne leur fait concurrence. La page est un aplat : pas de voile, pas de dégradé, pas d'objet qui flotte.\n\nLa densité est celle d'un catalogue de maison : peu de mots, des grilles plates de vignettes, des faits courts posés en rangées à filets plutôt qu'en cartes. Le titre d'ouverture est centré sous l'image ; tout le reste se compose à gauche. Le site est pensé d'abord pour un téléphone en plein jour, ouvert depuis un lien WhatsApp.\n\nCe que le système refuse, et que la concurrence régionale porte : les restes de gabarit, le chrome décoratif, les prix barrés, les preuves inventées, les surtitres au-dessus des titres.",
+    "keyCharacteristics": [
+      "Fond ivoire, encre espresso, cognac pour l'origine, les liens et le focus ; rien d'autre ne colore la page.",
+      "Prata (serif à déliés tenus) pour titres, noms et prix ; Hanken Grotesk pour le texte et les contrôles.",
+      "Angles droits partout ; le rond ne survit que là où il dit quelque chose (compteur du panier, pastille de teinte, point de statut).",
+      "Profondeur par filets et fonds sable, presque jamais par ombre.",
+      "Mouvement sobre : une courbe, 180 à 480 ms, rien sur l'image principale ni sur le prix."
+    ],
+    "rules": [
+      {
+        "name": "The One Accent Rule",
+        "body": "Le cognac est la seule couleur de la page en dehors de l'ivoire, du sable et de l'encre. Il marque l'origine, les liens et le focus, et rien d'autre ; une seconde couleur d'accent (le laiton de l'ancien registre, un vert de promotion) est une dérive.",
+        "section": "colors"
+      },
+      {
+        "name": "The Origin Above Price Rule",
+        "body": "Sur chaque vignette et chaque fiche, la ligne d'origine, en cognac, se lit avant le prix. Elle n'est jamais grisée.",
+        "section": "colors"
+      },
+      {
+        "name": "The Flat Ground Rule",
+        "body": "Le fond est un aplat ivoire. Les voiles, dégradés d'ambiance et grains de l'ancien registre sont éteints (`--voile-*: none`) et ne reviennent pas.",
+        "section": "colors"
+      },
+      {
+        "name": "The No Eyebrow Rule",
+        "body": "Aucun surtitre, aucune étiquette au-dessus d'un titre. Le titre porte son propre poids ; là où un ancien gabarit en garde un, il est masqué (`.eyebrow { display: none }`).",
+        "section": "typography"
+      },
+      {
+        "name": "The Plain Serif Rule",
+        "body": "Prata n'a pas d'italique et n'en reçoit pas : pas de mot en italique d'accent, pas de mot surligné dans un titre. Pas de capitales espacées pour les libellés.",
+        "section": "typography"
+      },
+      {
+        "name": "The Gutter Rule",
+        "body": "Les filets entre sections sont tirés dans la largeur du contenu, pas bord à bord : la page garde ses marges.",
+        "section": "layout"
+      },
+      {
+        "name": "The Thumb Rule",
+        "body": "Tout lien ou contrôle fait au moins 44 px de haut (boutons 52 px, pointures 48 px, liens texte et fil d'Ariane 44 px, entrées du menu téléphone 56 px).",
+        "section": "layout"
+      },
+      {
+        "name": "The Rule Not Shadow Rule",
+        "body": "Une séparation se dessine par un filet ou un changement de fond, jamais par une ombre. Une ombre n'existe que pour un élément qui couvre la page.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** poser chaque pièce sur le sable (#ECE4D6), à angle droit, au ratio 4/5 dans les grilles.",
+      "**Do** écrire l'origine en cognac au-dessus du prix, sur chaque vignette et chaque fiche.",
+      "**Do** séparer les sections par un filet de 1 px d'encre à 12 %, tiré dans la gouttière.",
+      "**Do** donner une seule action pleine (encre) par bloc ; le second chemin est un ghost ou un lien texte.",
+      "**Do** poser les faits en rangées à filets plutôt qu'en cartes.",
+      "**Do** garder 44 px minimum pour tout ce qui se touche.",
+      "**Do** composer les titres à gauche, sauf le titre d'ouverture de l'accueil, centré sous l'image."
+    ],
+    "donts": [
+      "**Don't** mettre de surtitre au-dessus d'un titre, ni de numéro de section.",
+      "**Don't** arrondir un bouton, une image, une vignette ou un champ ; le rond est réservé au compteur, à la teinte et au point de statut.",
+      "**Don't** ajouter une seconde couleur d'accent : ni laiton, ni vert promotionnel, ni prix barré.",
+      "**Don't** séparer par une ombre, un voile, un dégradé ou un flou ; la page est un aplat.",
+      "**Don't** animer l'image principale, le prix ou le bloc d'achat ; pas de parallaxe, de compteur animé, de bouton aimanté, de boucle décorative ni de révélation lettre par lettre.",
+      "**Don't** mettre une barre latérale colorée sur un panneau ; un panneau est un aplat sable plein.",
+      "**Don't** remplacer une icône par un caractère Unicode ou un emoji ; les icônes sont des SVG du sprite de la maison."
+    ]
+  }
+}

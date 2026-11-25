@@ -230,12 +230,29 @@
     });
   });
 
+  // Commander sur WhatsApp : le message prérempli reprend la pointure et la
+  // couleur choisies, pour que l'atelier n'ait rien à redemander.
+  const lienWa = $('[data-wa-nom]');
+  const majWa = () => {
+    if (!lienWa) return;
+    let texte = 'Bonjour, je souhaite commander le ' + lienWa.dataset.waNom + '.';
+    const pointure = getSize && getSize();
+    const couleur = getColor && getColor();
+    if (pointure) texte += ' Pointure : ' + pointure + '.';
+    if (couleur) texte += ' Couleur : ' + couleur + '.';
+    lienWa.href = lienWa.dataset.waBase + '?text=' + encodeURIComponent(texte);
+  };
+  if (lienWa) {
+    $$('.size, .swatch--btn').forEach((b) => b.addEventListener('click', majWa));
+  }
+
   // Rien n'est présélectionné, sauf s'il n'y a pas de choix à faire, ou si le
   // lien demande une couleur précise (…/mocassin-tokpa.html?couleur=noir).
   const voulue = (new URLSearchParams(location.search).get('couleur') || '').toLowerCase();
   const preselect = colorButtons.length === 1 ? colorButtons[0]
     : colorButtons.find((b) => b.dataset.color.toLowerCase() === voulue);
   if (preselect) preselect.click();
+  majWa();
 
   let toastEl = null;
   let toastTimer = null;
@@ -294,6 +311,53 @@
             echappe(details) + '. <a href="' + echappe(btn.dataset.cart || 'panier.html') + '">voir le panier</a>');
     });
   });
+
+  /* ----------------------------------------------------------------------
+     7 bis. Barre d'achat du téléphone (fiche produit)
+     Elle monte quand le bouton de la fiche n'est plus à l'écran, et redescend
+     dès qu'il y revient : jamais deux boutons d'achat visibles à la fois.
+     Son bouton passe la main au vrai : la vérification de la pointure et de
+     la couleur reste à un seul endroit. Si la pointure manque, on remonte
+     d'abord jusqu'au sélecteur, sinon le message parlerait d'un choix que
+     le visiteur ne voit pas.
+     ---------------------------------------------------------------------- */
+  const buybar = $('[data-buybar]');
+  const actions = $('.product__actions');
+  if (buybar && actions && 'IntersectionObserver' in window) {
+    const telephone = window.matchMedia('(max-width: 900px)');
+    let horsEcran = false;
+
+    const appliquer = () => {
+      const on = telephone.matches && horsEcran;
+      buybar.classList.toggle('is-on', on);
+      buybar.toggleAttribute('inert', !on);
+      buybar.setAttribute('aria-hidden', String(!on));
+      document.body.classList.toggle('has-buybar', on);
+    };
+
+    new IntersectionObserver((entries) => {
+      // La barre ne monte qu'une fois le bouton de la fiche sorti de l'écran
+      // par le haut : au chargement, il est encore plus bas, à venir.
+      horsEcran = !entries[0].isIntersecting && entries[0].boundingClientRect.top < 0;
+      appliquer();
+    }).observe(actions);
+    if (telephone.addEventListener) telephone.addEventListener('change', appliquer);
+
+    const ajout = $('[data-buybar-add]', buybar);
+    const vrai = $('[data-add-to-cart]', actions);
+    if (ajout && vrai) {
+      ajout.addEventListener('click', () => {
+        const manque = (getSize && !getSize()) || (getColor && !getColor());
+        if (manque) {
+          const pickers = $('.product__pickers');
+          if (pickers) {
+            pickers.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
+          }
+        }
+        vrai.click();
+      });
+    }
+  }
 
   /* ----------------------------------------------------------------------
      6. Année courante dans le footer

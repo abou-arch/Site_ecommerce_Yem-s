@@ -1,0 +1,584 @@
+/* ==========================================================================
+   YEM'S : la maison, fondations de la refonte (novembre 2026)
+
+   Chargée après base, components, home, shop et motion, et avant les
+   feuilles propres à une page. Elle ne retire rien des anciennes : elle
+   redéfinit les jetons et les quelques composants partagés (en-tête,
+   boutons, vignettes, pied de page), si bien que toutes les pages changent
+   de registre d'un coup, y compris celles qui ne sont pas encore refaites.
+
+   Le registre est celui des maisons de souliers : fond ivoire, encre
+   espresso, une seule couleur d'accent (le cognac), des images à angle
+   droit, des boutons pleins et rectangulaires, des filets fins entre les
+   sections. Rien ne flotte, rien ne brille : l'image et la pièce mènent.
+
+   Contrat de direction : .impeccable/surfaces/templates-pages-index-html.md
+   ========================================================================== */
+
+:root {
+  /* La palette. Quatre valeurs portent tout le site. */
+  --ivoire:  #F6F1E8;   /* le fond de lecture */
+  --ivoire-haut: #FBF8F2; /* champs de saisie, panneaux qui avancent */
+  --sable:   #ECE4D6;   /* le fond des images et des panneaux calmes */
+  --sable-fonce: #DED3C1;
+  --encre:   #14100D;   /* le texte et les boutons pleins (17,6:1 sur ivoire) */
+  --cognac:  #8C5A3C;   /* l'accent unique : origine, liens, focus (5,1:1) */
+  --cognac-fonce: #6F4329;
+
+  /* Les anciens jetons pointent désormais sur la palette : tout composant
+     qui les lit change de registre sans qu'on le touche. */
+  --nuage: var(--ivoire);
+  --blanc: var(--ivoire-haut);
+  --color-60: var(--ivoire);
+  --color-30: var(--ivoire-haut);
+  --color-10: var(--encre);
+  --color-accent: var(--cognac);
+  --bg: var(--ivoire);
+  --bg-elevated: var(--ivoire-haut);
+  --surface: var(--ivoire-haut);
+  --text: var(--encre);
+  --text-muted: #4A3F36;   /* 9,4:1 sur ivoire */
+  --text-subtle: #5E5248;  /* 7,0:1 sur ivoire */
+  --border: rgba(20, 16, 13, 0.12);
+  --border-strong: rgba(20, 16, 13, 0.28);
+  --accent: var(--cognac);
+  --accent-strong: var(--cognac-fonce);
+  --filet: 1px solid var(--border);
+
+  --sombre-bg: var(--encre);
+  --sombre-surface: #1F1915;
+  --sombre-text: #F1EADF;
+  --sombre-muted: rgba(241, 234, 223, 0.74);
+  --sombre-subtle: rgba(241, 234, 223, 0.66);
+  --sombre-border: rgba(241, 234, 223, 0.16);
+  --sombre-accent: #D6B48E;  /* le cognac éclairci, lisible sur l'encre (8,9:1) */
+
+  /* Les voiles et dégradés d'ambiance s'éteignent : la page est un aplat. */
+  --voile-beige: var(--ivoire);
+  --voile-haut: var(--ivoire);
+  --voile-laiton: none;
+  --voile-terre: none;
+
+  /* Prata pour les titres, les noms et les prix : ses déliés tiennent au
+     soleil sur un téléphone, et ses chiffres lisent « 103 000 F » là où
+     Marcellus dessinait des zéros comme des O capitales. Hanken Grotesk
+     pour le texte et les contrôles, plus ferme que Jost à 14 px. */
+  --font-display: "Prata", Georgia, "Times New Roman", serif;
+  --font-body: "Hanken Grotesk", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-marque: "Marcellus", Georgia, serif;
+
+  /* Angles droits. Les pastilles rondes ne survivent que là où le rond
+     dit quelque chose (un nuancier, un compteur). */
+  --radius-sm: 2px;
+  --radius: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
+  --radius-pill: 0px;
+  --cadre: 0px;
+
+  /* L'en-tête est une barre pleine, collée en haut. */
+  --header-h: 60px;
+  --header-top: 0px;
+
+  /* Les ombres disparaissent presque : la profondeur vient des filets et
+     des fonds, pas d'objets qui flottent. */
+  --shadow-sm: none;
+  --shadow: 0 1px 0 rgba(20, 16, 13, 0.06);
+  --shadow-lg: 0 18px 40px -24px rgba(20, 16, 13, 0.28);
+
+  /* Le mouvement : sobre, court, une seule courbe. */
+  --ease: cubic-bezier(.2, .7, .2, 1);
+  --ease-out-expo: cubic-bezier(.2, .7, .2, 1);
+  --dur: 240ms;
+
+  --section-y: 3.5rem;
+  --tracking-wider: 0.08em;
+}
+
+@media (min-width: 900px) {
+  :root {
+    --header-h: 68px;
+    --section-y: 6rem;
+    --fs-4xl: 3.5rem;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   SURFACES DU NAVIGATEUR
+   -------------------------------------------------------------------------- */
+html { background: var(--ivoire); color-scheme: light; }
+body {
+  background: var(--ivoire);
+  color: var(--encre);
+  font-feature-settings: "kern", "liga";
+}
+::selection { background: var(--cognac); color: var(--ivoire); }
+:focus-visible {
+  outline: 2px solid var(--cognac);
+  outline-offset: 3px;
+  border-radius: 0;
+}
+input, textarea, select { caret-color: var(--cognac); }
+a { text-underline-offset: 0.22em; text-decoration-thickness: 1px; }
+.fil-progression { display: none; }
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: inherit;
+}
+h1 { line-height: 1.08; }
+h2 { line-height: 1.12; }
+
+/* L'italique d'accent et le surlignage laiton appartenaient à l'ancien
+   registre ; Prata n'a pas d'italique, et un titre n'a pas besoin d'un mot
+   surligné pour se lire. */
+.italic-accent { font-style: normal; color: inherit; }
+.surligne { background: none; padding: 0; color: inherit; }
+
+/* Les surtitres au-dessus des titres sont retirés de la refonte. Là où un
+   ancien gabarit en garde un, il se tait plutôt que de faire étiquette. */
+.eyebrow { display: none; }
+
+.lede { color: var(--text-muted); }
+
+/* La couture pointillée laiton servait de filet : un trait fin plein la
+   remplace. */
+.stitch {
+  height: 0;
+  border: 0;
+  border-top: var(--filet);
+  background: none;
+}
+
+/* Les volets « cousus » et les filets animés des anciennes sections. */
+.seam { display: none; }
+/* Le grand mot « MAISON » en filigrane du haut de la page About us. */
+.about-hero__display,
+.footer__signature {
+  display: none;
+  background: none;
+  -webkit-background-clip: border-box;
+  background-clip: border-box;
+}
+.fil-progression span { background: none; }
+.grain::before { display: none; }
+
+/* --------------------------------------------------------------------------
+   EN-TÊTE : une barre ivoire, pleine, un filet dessous
+   -------------------------------------------------------------------------- */
+.header,
+.header.is-stuck,
+.page-edito .header,
+.page-edito .header.is-stuck {
+  --bg: var(--ivoire);
+  --text: var(--encre);
+  --text-muted: var(--text-muted);
+  --border: rgba(20, 16, 13, 0.12);
+  --accent: var(--cognac);
+  top: 0;
+  left: 0;
+  right: 0;
+  max-width: none;
+  height: var(--header-h);
+  color: var(--encre);
+  background: var(--ivoire);
+  border: 0;
+  border-bottom: 1px solid transparent;
+  border-radius: 0;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  transition: border-color var(--dur) var(--ease);
+}
+.header.is-stuck,
+.page-edito .header.is-stuck { border-bottom-color: var(--border); }
+
+/* Les pages réservent déjà la hauteur de la barre (--header-bas, qui vaut
+   maintenant --header-h puisque la barre touche le haut). */
+
+.logo { color: var(--encre); }
+.logo__mark { color: var(--encre); width: 22px; height: 22px; }
+.logo__word {
+  font-family: var(--font-marque);
+  font-size: 1.375rem;
+  letter-spacing: 0.08em;
+}
+.logo__tag { display: none; }
+
+.nav__link {
+  color: var(--text-muted);
+  font-size: 0.9375rem;
+  letter-spacing: 0.01em;
+}
+.nav__link:hover,
+.nav__link[aria-current="page"] { color: var(--encre); }
+.nav__link::after { background: var(--cognac); bottom: calc(1.1rem - 4px); }
+
+.icon-btn {
+  border: 0;
+  border-radius: 0;
+  color: var(--encre);
+}
+.icon-btn:hover { background: var(--sable); }
+.icon-btn svg { width: 20px; height: 20px; }
+.cart-count {
+  top: 4px;
+  right: 2px;
+  min-width: 17px;
+  height: 17px;
+  border-radius: 999px;
+  background: var(--encre);
+  color: var(--ivoire);
+  font-size: 0.625rem;
+  font-weight: 600;
+}
+.burger span { background: var(--encre); }
+
+@media (max-width: 900px) {
+  .logo__word { font-size: 1.25rem; letter-spacing: 0.2em; text-indent: 0.2em; }
+  .logo__tag, .logo__tag::after { display: none; }
+}
+
+/* Le menu du téléphone : une page ivoire sous la barre, des entrées
+   séparées par des filets. */
+.mobile-menu {
+  --bg: var(--ivoire);
+  --text: var(--encre);
+  --border: rgba(20, 16, 13, 0.12);
+  inset: var(--header-h) 0 0 0;
+  background: var(--ivoire);
+  color: var(--encre);
+  border: 0;
+  border-top: 1px solid var(--border);
+  border-radius: 0;
+  padding: var(--sp-4) var(--gutter) var(--sp-6);
+  gap: 0;
+  transform: none;
+  transition: opacity var(--dur) var(--ease), visibility var(--dur);
+}
+.mobile-menu a:not(.btn) {
+  display: flex;
+  align-items: center;
+  min-height: 56px;
+  padding-block: var(--sp-3);
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+.mobile-menu .btn { margin-top: var(--sp-6) !important; }
+
+/* --------------------------------------------------------------------------
+   BOUTONS : pleins, rectangulaires, sans aimant
+   -------------------------------------------------------------------------- */
+.btn,
+.btn--laiton,
+.btn--verre {
+  --btn-bg: var(--encre);
+  --btn-fg: var(--ivoire);
+  --btn-border: var(--encre);
+  min-height: 52px;
+  padding: 0.9rem 1.75rem;
+  border-radius: 0;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  border: 1px solid var(--btn-border);
+  transform: none;
+  will-change: auto;
+  transition:
+    background-color var(--dur) var(--ease),
+    border-color var(--dur) var(--ease),
+    color var(--dur) var(--ease);
+}
+.btn:hover,
+.btn--laiton:hover,
+.btn--verre:hover {
+  --lift: 0px;
+  background: #3A2E26;
+  border-color: #3A2E26;
+  color: var(--ivoire);
+}
+.btn:active { background: #000; border-color: #000; transition-duration: 120ms; }
+
+.btn--ghost,
+.btn--quiet {
+  --btn-bg: transparent;
+  --btn-fg: var(--encre);
+  --btn-border: var(--encre);
+}
+.btn--ghost:hover,
+.btn--quiet:hover {
+  background: var(--encre);
+  border-color: var(--encre);
+  color: var(--ivoire);
+}
+.btn--sm { min-height: 44px; padding: 0.6rem 1.1rem; font-size: 0.9375rem; }
+.header__actions .btn--sm { min-height: 40px; padding-block: 0.45rem; }
+.btn__puce { display: none; }
+.btn--puce { padding-right: 1.75rem; }
+
+/* Dans les blocs sombres, le bouton s'inverse. */
+.footer .btn,
+.cta .btn,
+.about-hero .btn:not(.btn--ghost) {
+  --btn-bg: var(--ivoire);
+  --btn-fg: var(--encre);
+  --btn-border: var(--ivoire);
+}
+.footer .btn--ghost,
+.cta .btn--ghost {
+  --btn-bg: transparent;
+  --btn-fg: var(--sombre-text);
+  --btn-border: var(--sombre-border);
+}
+.footer .btn:hover,
+.cta .btn:hover,
+.about-hero .btn:hover {
+  background: var(--sombre-text);
+  border-color: var(--sombre-text);
+  color: var(--encre);
+}
+
+/* Le lien texte de la maison : souligné fin, cognac au survol. */
+.lien {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  color: var(--encre);
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-color: rgba(20, 16, 13, 0.35);
+  transition: color var(--dur) var(--ease), text-decoration-color var(--dur) var(--ease);
+}
+.lien { min-height: 44px; }
+.lien:hover { color: var(--cognac); text-decoration-color: currentColor; }
+.lien svg { width: 14px; height: 14px; }
+
+/* --------------------------------------------------------------------------
+   PASTILLES DE DISPONIBILITÉ : une étiquette ivoire, à angle droit
+   -------------------------------------------------------------------------- */
+.badge {
+  border-radius: 0;
+  border: 0;
+  padding: 0.3rem 0.55rem;
+  background: rgba(246, 241, 232, 0.94);
+  backdrop-filter: none;
+  color: var(--encre);
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+}
+.badge__dot { width: 6px; height: 6px; box-shadow: none !important; }
+.badge--green { color: #2F5A35; }
+.badge--amber { color: #7A5512; }
+.badge--red   { color: #8E3A2E; }
+.badge--brass { color: var(--cognac); border: 1px solid currentColor; background: transparent; }
+
+/* --------------------------------------------------------------------------
+   VIGNETTE PRODUIT : l'image sur le sable, le texte dessous, rien autour
+   -------------------------------------------------------------------------- */
+.pshot {
+  border-radius: 0;
+  background: var(--sable);
+}
+.pshot__note {
+  border-radius: 0;
+  background: rgba(246, 241, 232, 0.9);
+  color: var(--text-muted);
+}
+
+.pcard,
+.section--light .pcard,
+.section--blanc .pcard,
+.rayon .pcard {
+  --pcard-pad: 0;
+  padding: 0;
+  gap: var(--sp-3);
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
+}
+.pcard:hover,
+.pcard:focus-within { box-shadow: none; transform: none; }
+.pcard .pshot { border-radius: 0; }
+.pcard__body { padding: 0; gap: 0.2rem; }
+.pcard__name {
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  line-height: 1.25;
+}
+.pcard__spec {
+  font-size: 0.875rem;
+  line-height: 1.4;
+  color: var(--text-muted);
+}
+.pcard__foot {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.15rem;
+  margin-top: 0.35rem;
+}
+
+/* Toute la vignette est un lien : le nom porte le lien, son pseudo-élément
+   couvre la carte (l'image a son propre lien, retiré du clavier). */
+.pcard { position: relative; }
+.pcard__name a { color: inherit; text-decoration: none; }
+.pcard__name a::after { content: ""; position: absolute; inset: 0; }
+.pcard:hover .pcard__name a {
+  text-decoration: underline;
+  text-underline-offset: .22em;
+  text-decoration-thickness: 1px;
+}
+/* La pastille « Disponible » ne dit rien sur une vignette ; les autres
+   états (en route, indisponible) restent. Le Worker change la classe. */
+.pcard .badge--green { display: none; }
+.pcard__price {
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  color: var(--encre);
+}
+@media (min-width: 900px) {
+  .pcard__name, .pcard__price { font-size: 1.1875rem; }
+}
+
+/* L'origine : en cognac, dans la voix du texte, au-dessus du prix. */
+.origine,
+.pcard .origine {
+  font-family: var(--font-body);
+  font-style: normal;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: 0.01em;
+  color: var(--cognac);
+}
+.section--light .origine--atelier { color: var(--cognac); }
+
+/* L'origine développée de la fiche : un panneau sable plein, sans barre
+   latérale. */
+.origine--long {
+  border: 0;
+  border-radius: 0;
+  background: var(--sable);
+  color: var(--text-muted);
+  padding: var(--sp-4) var(--sp-5);
+}
+.origine--long strong { font-family: var(--font-display); color: var(--encre); }
+
+/* --------------------------------------------------------------------------
+   PIED DE PAGE : un aplat d'encre, bord à bord
+   -------------------------------------------------------------------------- */
+.footer {
+  margin: 0;
+  border-radius: 0;
+  padding-top: var(--sp-8);
+  padding-bottom: var(--sp-6);
+  margin-top: var(--section-y);
+}
+.footer__title {
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--sombre-text);
+}
+.footer__list a:hover { color: var(--sombre-text); text-decoration: underline; }
+.footer__ai-note a { color: var(--sombre-text); text-decoration: underline; }
+.footer .logo, .footer .logo__mark { color: var(--sombre-text); }
+.pay-logos span { border-radius: 0; }
+.footer .pay-logos { display: grid; grid-template-columns: repeat(2, max-content); gap: var(--sp-2); }
+
+/* Au téléphone, les deux listes de liens se partagent la largeur : le pied
+   de page tenait sur deux écrans et demi. */
+@media (max-width: 560px) {
+  .footer__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--sp-6) var(--sp-4);
+  }
+  .footer__grid > div:first-child,
+  .footer__grid > div:last-child { grid-column: 1 / -1; }
+}
+
+/* --------------------------------------------------------------------------
+   SECTIONS ET FILETS
+   -------------------------------------------------------------------------- */
+.section--blanc,
+.section--nuage,
+.section--light,
+.methode { background: var(--ivoire); }
+.methode { box-shadow: none; border-block: var(--filet); }
+
+.card,
+.empty-state {
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* Champs de formulaire : angle droit, filet net. */
+input:not([type="checkbox"]):not([type="radio"]),
+select,
+textarea { border-radius: 0; }
+
+/* --------------------------------------------------------------------------
+   MOUVEMENT
+   Les images apparaissent une fois, par un fondu qui monte de 10 px ; les
+   titres montent ligne par ligne ; au pointeur fin, la photo d'une vignette
+   grandit de 2 %. Le volet, le zoom d'entrée, le fil qui court et les
+   boutons aimantés de l'ancien registre sont retirés.
+   -------------------------------------------------------------------------- */
+.js [data-reveal] {
+  transform: translateY(10px);
+  transition:
+    opacity 480ms var(--ease),
+    transform 480ms var(--ease);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+[data-shot] img,
+[data-shot].is-shown img {
+  clip-path: none;
+  transform: none;
+  transition: transform 480ms var(--ease);
+}
+[data-shot]::before,
+[data-shot].is-shown::before { display: none; animation: none; }
+
+[data-lines] .line > span {
+  transform: translateY(100%);
+  transition:
+    transform 480ms var(--ease),
+    opacity 320ms linear;
+  transition-delay: calc(var(--i, 0) * 70ms);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .pcard:hover .pshot img,
+  .pcard:hover .pshot.is-shown img,
+  .porte:hover .porte__image img { transform: scale(1.02); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js [data-reveal] { opacity: 1; transform: none; transition: none; }
+  [data-lines] .line > span { transform: none; opacity: 1; transition: none; }
+  .pcard:hover .pshot img,
+  .porte:hover .porte__image img { transform: none; }
+}
+
+/* La confirmation « ajouté au panier » : un bandeau ivoire à angle droit,
+   un filet, sans laiton (elle gardait la pilule de l'ancien registre). */
+.toast {
+  border-radius: 0;
+  border: 1px solid var(--border-strong);
+  background: var(--ivoire-haut);
+  color: var(--encre);
+  box-shadow: var(--shadow-lg);
+}
+.toast svg, .toast a { color: var(--cognac); }

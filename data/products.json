@@ -121,11 +121,15 @@
       {
         "id": "livraison",
         "title": "Livraison &amp; retours",
-        "body": "Cotonou et Abidjan sous 48 h, autres villes du Bénin et de Côte d'Ivoire sous 5 jours. Échange de pointure sous 7 jours, sans frais. Sur le sur-mesure : une retouche offerte après essayage, puis remboursement intégral si le chaussant ne convient toujours pas."
+        "body": "Expédiée sous 72 h, puis livrée en 48 h à Cotonou et à Abidjan, sous 5 jours ailleurs au Bénin et en Côte d'Ivoire (jours ouvrés). Échange de pointure sous 7 jours, sans frais, sur toute pièce non portée à l'extérieur ; sur la sélection, échange pendant un an pour une pointure ou un défaut. Sur le sur-mesure : une retouche offerte après essayage, puis remboursement intégral si le chaussant ne convient toujours pas."
       }
     ],
     "_nav": "Navigation principale. Trois entrées disent CE QU'ON PEUT ACHETER, « About us » dit QUI VEND, la dernière dit CE QUI SE PASSE SI ÇA TOURNE MAL. Pas d'entrée « Accueil » : le logo y mène déjà, c'est universel, et chaque entrée en plus affaiblit les autres.",
     "nav": [
+      {
+        "label": "Boutique",
+        "href": "boutique.html"
+      },
       {
         "label": "La sélection",
         "href": "selection.html"
@@ -152,8 +156,8 @@
       "atelier": {
         "nom": "Atelier",
         "court": "Fabriqué à Cotonou",
-        "phrase": "Cousu main dans notre atelier de Cotonou. Semelle remplaçable, ressemelage à vie, une retouche offerte après essayage.",
-        "garantie": "Ressemelage à vie et une retouche offerte"
+        "phrase": "Cousu main dans notre atelier de Cotonou. Semelle remplaçable, ressemelage à vie, une retouche offerte après essayage sur le sur-mesure.",
+        "garantie": "Ressemelage à vie ; une retouche offerte sur le sur-mesure"
       },
       "selection": {
         "nom": "Sélection",
@@ -515,7 +519,15 @@
       "bespoke": true,
       "short": "Taillée dans la peau qui a servi à monter vos souliers. Pas encore en production : écrivez-nous pour être prévenu.",
       "pitch": "Une ceinture bon marché est faite de deux bandes fines collées ensemble. Elle se plie, puis se fend au milieu. Celle-ci est taillée d'un seul tenant dans la croupe, la partie la plus dense de la peau.",
-      "images": [],
+      "images": [
+        {
+          "file": "ceinture-sellier-ai",
+          "ia": true,
+          "w": 1122,
+          "h": 1402,
+          "alt": "Ceinture en cuir cognac roulée, piqûre sellier ton sur ton, boucle en laiton brossé"
+        }
+      ],
       "specs": [
         {
           "label": "Cuir",
@@ -567,7 +579,15 @@
       "bespoke": true,
       "short": "Quatre emplacements, un soufflet à billets, aucune doublure. Il tient dans une poche de veste sans la déformer.",
       "pitch": "Un portefeuille épais déforme la veste et use le pantalon. Celui-ci est monté sans renfort : quatre cartes, les billets pliés une fois, et rien d'autre. Il s'affine encore avec le temps.",
-      "images": [],
+      "images": [
+        {
+          "file": "portefeuille-quatre-cartes-ai",
+          "ia": true,
+          "w": 1122,
+          "h": 1402,
+          "alt": "Portefeuille plié en cuir brun patiné, cousu sur tout le pourtour"
+        }
+      ],
       "specs": [
         {
           "label": "Cuir",
@@ -615,10 +635,18 @@
       "name": "Crème nourrissante",
       "price": 7000,
       "status": "green",
-      "placeholder": true,
-      "short": "Cire d'abeille et huile de lin. Nourrit sans boucher les pores du cuir. Une application tous les deux mois suffit.",
+      "placeholder": false,
+      "short": "Cire d'abeille et huile de lin. Nourrit sans boucher les pores du cuir. Une application tous les deux mois suffit. Précisez la teinte dans la note de commande.",
       "pitch": "La plupart des cirages du marché déposent un film qui brille et étouffe. Celle-ci pénètre : le cuir reprend sa souplesse et fonce légèrement, ce qui est exactement ce qu'on attend d'une patine.",
-      "images": [],
+      "images": [
+        {
+          "file": "creme-nourrissante-ai",
+          "ia": true,
+          "w": 1122,
+          "h": 1402,
+          "alt": "Boîte de crème nourrissante ouverte, couvercle posé à côté, et un chiffon de coton plié"
+        }
+      ],
       "specs": [
         {
           "label": "Composition",
@@ -641,7 +669,7 @@
       "sizes": [],
       "colors": [],
       "origine": "selection",
-      "a_venir": true
+      "a_venir": false
     },
     {
       "slug": "embauchoirs-cedre",
@@ -649,10 +677,18 @@
       "name": "Embauchoirs cèdre",
       "price": 19000,
       "status": "amber",
-      "placeholder": true,
-      "short": "Cèdre rouge non verni. Il absorbe l'humidité et garde la forme du soulier entre deux ports.",
+      "placeholder": false,
+      "short": "Cèdre rouge non verni. Il absorbe l'humidité et garde la forme du soulier entre deux ports. Précisez votre pointure dans la note de commande.",
       "pitch": "C'est l'accessoire qui prolonge le plus une paire, et celui qu'on achète en dernier. Sans embauchoir, la tige se creuse à l'endroit du pli et le cuir finit par se fendre là.",
-      "images": [],
+      "images": [
+        {
+          "file": "embauchoirs-cedre-ai",
+          "ia": true,
+          "w": 1122,
+          "h": 1402,
+          "alt": "Paire d'embauchoirs en cèdre rouge à double fente, boutons en laiton"
+        }
+      ],
       "specs": [
         {
           "label": "Bois",
@@ -675,7 +711,7 @@
       "sizes": [],
       "colors": [],
       "origine": "selection",
-      "a_venir": true
+      "a_venir": false
     },
     {
       "slug": "derby-noir",
@@ -687,7 +723,7 @@
       "bespoke": false,
       "origine": "selection",
       "short": "Un derby noir à semelle crantée, sobre en haut, affirmé au sol.",
-      "pitch": "Un derby noir à semelle crantée, avec une ligne sobre et de la présence. L’atelier vous précisera la matière et le montage avant de confirmer la commande.",
+      "pitch": "Un derby noir à semelle crantée, avec une ligne sobre et de la présence. L’atelier vous précisera la matière avant de confirmer la commande.",
       "images": [
         {
           "file": "derby-noir-ai",
@@ -702,6 +738,7 @@
         { "label": "Silhouette", "value": "Derby à lacets" },
         { "label": "Coloris", "value": "Noir" },
         { "label": "Semelle", "value": "Crantée, à confirmer" },
+        { "label": "Montage", "value": "Collé, non ressemelable" },
         { "label": "Pointures", "value": "39 à 45" },
         { "label": "Matière", "value": "À confirmer" }
       ],
@@ -735,6 +772,7 @@
         { "label": "Silhouette", "value": "Mocassin à enfiler" },
         { "label": "Coloris", "value": "Noir et blanc" },
         { "label": "Semelle", "value": "Crantée, à confirmer" },
+        { "label": "Montage", "value": "Collé, non ressemelable" },
         { "label": "Pointures", "value": "39 à 45" },
         { "label": "Matière", "value": "À confirmer" }
       ],
@@ -753,7 +791,7 @@
       "bespoke": false,
       "origine": "selection",
       "short": "Un derby brun profond, facile à associer avec un pantalon clair ou marine.",
-      "pitch": "Un derby brun profond, facile à associer avec du clair ou du marine, et un bout mocassin. L’atelier vous confirmera la matière et le montage avant la commande.",
+      "pitch": "Un derby brun profond, facile à associer avec du clair ou du marine, et un bout mocassin. L’atelier vous confirmera la matière avant la commande.",
       "images": [
         {
           "file": "derby-cacao-ai",
@@ -768,6 +806,7 @@
         { "label": "Silhouette", "value": "Derby à lacets" },
         { "label": "Coloris", "value": "Cacao" },
         { "label": "Semelle", "value": "À confirmer" },
+        { "label": "Montage", "value": "Collé, non ressemelable" },
         { "label": "Pointures", "value": "39 à 45" },
         { "label": "Matière", "value": "À confirmer" }
       ],
@@ -786,7 +825,7 @@
       "bespoke": false,
       "origine": "selection",
       "short": "Un loafer marine à bandeau, plus habillé qu'un mocassin souple.",
-      "pitch": "Un loafer bleu marine avec bandeau sur l’empeigne, pour une allure soignée sans en faire trop. L’atelier vous précisera la matière et le montage avant la commande.",
+      "pitch": "Un loafer bleu marine avec bandeau sur l’empeigne, pour une allure soignée sans en faire trop. L’atelier vous précisera la matière avant la commande.",
       "images": [
         {
           "file": "loafer-marine-ai",
@@ -801,6 +840,7 @@
         { "label": "Silhouette", "value": "Loafer à bandeau" },
         { "label": "Coloris", "value": "Marine" },
         { "label": "Semelle", "value": "À confirmer" },
+        { "label": "Montage", "value": "Collé, non ressemelable" },
         { "label": "Pointures", "value": "39 à 45" },
         { "label": "Matière", "value": "À confirmer" }
       ],
@@ -819,7 +859,7 @@
       "bespoke": false,
       "origine": "selection",
       "short": "Une bottine Chelsea noire, nette et facile à enfiler.",
-      "pitch": "Une bottine noire à panneaux élastiqués, facile à enfiler et à porter avec un jean comme un pantalon de ville. L’atelier vous confirmera la matière et le montage avant la commande.",
+      "pitch": "Une bottine noire à panneaux élastiqués, facile à enfiler et à porter avec un jean comme un pantalon de ville. L’atelier vous confirmera la matière avant la commande.",
       "images": [
         {
           "file": "chelsea-noir-ai",
@@ -834,6 +874,7 @@
         { "label": "Silhouette", "value": "Bottine Chelsea" },
         { "label": "Coloris", "value": "Noir" },
         { "label": "Fermeture", "value": "Panneaux élastiqués" },
+        { "label": "Montage", "value": "Collé, non ressemelable" },
         { "label": "Pointures", "value": "39 à 45" },
         { "label": "Matière", "value": "À confirmer" }
       ],
@@ -867,6 +908,7 @@
         { "label": "Silhouette", "value": "Richelieu brogué" },
         { "label": "Coloris", "value": "Noir" },
         { "label": "Fermeture", "value": "Lacets fermés" },
+        { "label": "Montage", "value": "Collé, non ressemelable" },
         { "label": "Pointures", "value": "39 à 45" },
         { "label": "Matière", "value": "À confirmer" }
       ],
@@ -888,14 +930,6 @@
       "pitch": "Un mocassin souple en daim, sur semelle de gomme blanche. Rien à lacer, rien à ajuster : on l'enfile et on part. C'est la pièce que l'atelier recommande à ceux qui trouvent le soulier cousu trop habillé pour tous les jours. Deux couleurs, marine ou noir, même modèle et même semelle.",
       "images": [
         {
-          "file": "mocassin-marine-ai",
-          "teinte": "Marine",
-          "ia": true,
-          "w": 1000,
-          "h": 750,
-          "alt": "Visuel d'ambiance généré par IA : une paire de mocassins en daim bleu marine sur un bloc de pierre claire, semelle marine"
-        },
-        {
           "file": "mocassin-marine-alt-ai",
           "teinte": "Marine",
           "ia": true,
@@ -913,6 +947,14 @@
         }
       ],
       "specs": [
+        {
+          "label": "Silhouette",
+          "value": "Mocassin à enfiler"
+        },
+        {
+          "label": "Coloris",
+          "value": "Marine ou noir"
+        },
         {
           "label": "Dessus",
           "value": "Daim de veau"

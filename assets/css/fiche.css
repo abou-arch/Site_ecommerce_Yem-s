@@ -1,0 +1,192 @@
+/* ==========================================================================
+   YEM'S : la fiche produit de la refonte (tools/build.py, build_product)
+
+   Chargée sur les fiches seulement, après maison.css. L'ordre de la fiche :
+   le nom, l'origine, le prix, la disponibilité, une phrase ; la couleur et
+   la pointure ; les boutons ; puis « Payer et recevoir », juste sous le
+   bouton, et enfin les caractéristiques. Ni la galerie ni le prix ne sont
+   animés.
+   ========================================================================== */
+
+.product__name {
+  font-size: 2rem;
+  line-height: 1.1;
+  margin-bottom: var(--sp-2);
+}
+@media (min-width: 900px) {
+  .product__name { font-size: 2.75rem; }
+}
+
+.product__info > .origine { display: block; }
+
+.product__price {
+  margin: var(--sp-3) 0 var(--sp-3);
+  font-size: 1.75rem;
+  color: var(--encre);
+  font-variant-numeric: tabular-nums;
+}
+.product__price small {
+  display: inline;
+  margin: 0 0 0 var(--sp-2);
+  font-size: 0.875rem;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--text-subtle);
+}
+
+/* La disponibilité : une ligne de texte, sa pastille devant. */
+.product__info > .badge {
+  margin: 0 0 var(--sp-4);
+  padding: 0;
+  background: none;
+  font-size: 0.9375rem;
+}
+
+.product__info .lede {
+  margin-bottom: var(--sp-5);
+  font-size: 1.0625rem;
+  line-height: 1.55;
+  color: var(--text-muted);
+}
+
+/* Les sélecteurs */
+.product__pickers {
+  gap: var(--sp-5);
+  padding-block: var(--sp-5);
+  border-color: var(--border);
+}
+.picker__label {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--encre);
+}
+.picker__help { color: var(--text-subtle); }
+
+.size,
+.teinte {
+  min-height: 48px;
+  border-radius: 0;
+  border-color: rgba(20, 16, 13, 0.5);
+  color: var(--encre);
+}
+.size { min-width: 52px; font-size: 1rem; }
+.size:hover,
+.teinte:hover { border-color: var(--encre); color: var(--encre); }
+.size.is-active {
+  background: var(--encre);
+  border-color: var(--encre);
+  color: var(--ivoire);
+}
+.teinte.is-active {
+  border-color: var(--encre);
+  box-shadow: inset 0 0 0 1px var(--encre);
+  color: var(--encre);
+}
+.teinte__dot { box-shadow: 0 0 0 1px var(--border-strong); }
+
+/* Les actions */
+.product__actions { margin-bottom: var(--sp-6); }
+.product__actions .btn + .btn { margin-top: var(--sp-3) !important; }
+.lien--wa { margin-top: var(--sp-3); }
+.recevoir-fiche + .lien { margin: calc(var(--sp-3) * -1) 0 var(--sp-5); }
+.lien--wa svg { width: 18px; height: 18px; }
+
+/* Payer et recevoir : un panneau sable plein, des faits en ligne. */
+.recevoir-fiche {
+  margin-bottom: var(--sp-6);
+  padding: var(--sp-5);
+  background: var(--sable);
+}
+.recevoir-fiche__titre {
+  font-size: 1.375rem;
+  margin-bottom: var(--sp-3);
+}
+.recevoir-fiche ul { display: grid; }
+.recevoir-fiche li {
+  padding-block: var(--sp-3);
+  border-top: 1px solid rgba(20, 16, 13, 0.1);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+.recevoir-fiche li:first-child { border-top: 0; padding-top: 0; }
+.recevoir-fiche li:last-child { padding-bottom: 0; }
+.recevoir-fiche strong { color: var(--encre); font-weight: 600; }
+
+/* Les caractéristiques : des rangées à filet. */
+.product__specs { margin-bottom: var(--sp-5); padding-top: 0; }
+.product__specs .spec-row {
+  padding-block: var(--sp-3);
+  border-bottom: var(--filet);
+  font-size: 0.9375rem;
+}
+.product__specs .spec-row:last-of-type { border-bottom: var(--filet); }
+.product__specs .spec-row dt { color: var(--text-subtle); }
+
+.product__pitch {
+  margin-top: var(--sp-5);
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+/* Les blocs dépliables : des filets, pas des cartes. */
+.faq { gap: 0; max-width: 48rem; margin-inline: 0; background: none; box-shadow: none; border-radius: 0; }
+.faq details { overflow: visible; }
+.faq summary { padding-right: 6px; }
+.faq summary::after { border-color: var(--encre); }
+.faq details {
+  border: 0;
+  border-bottom: var(--filet);
+  border-radius: 0;
+  background: none;
+  padding: 0;
+}
+.faq details:first-child { border-top: var(--filet); }
+.faq details[open] { border-color: var(--border); }
+.faq summary {
+  padding: var(--sp-4) 0;
+  font-family: var(--font-display);
+  font-size: 1.1875rem;
+}
+.faq__body { padding: 0 0 var(--sp-5); color: var(--text-muted); }
+
+.section-head h2 { font-size: 1.75rem; }
+@media (min-width: 900px) {
+  .section-head h2 { font-size: 2.25rem; }
+}
+
+/* Les autres modèles : deux par rangée au téléphone. */
+@media (max-width: 899px) {
+  .shop-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--sp-6) var(--sp-3);
+  }
+}
+
+/* La barre d'achat du téléphone : ivoire, un filet dessus, le prix en
+   encre. Elle monte une fois le vrai bouton sorti de l'écran (main.js). */
+@media (max-width: 900px) {
+  .buybar {
+    background: var(--ivoire);
+    backdrop-filter: none;
+    border-top: var(--filet);
+    color: var(--encre);
+    transition: transform 320ms var(--ease);
+  }
+  .buybar__nom { color: var(--text-muted); font-size: 0.8125rem; }
+  .buybar__prix { color: var(--encre); }
+}
+
+/* Les autres modèles : trois vignettes égales sur grand écran. La règle
+   « grid--rare » des pages catégorie (une grande vignette, deux petites)
+   ne convient pas à une rangée de suggestions. */
+@media (min-width: 900px) {
+  .product-suite .shop-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--sp-6) var(--sp-5);
+  }
+}
+.faq details,
+.faq summary { background: transparent; }

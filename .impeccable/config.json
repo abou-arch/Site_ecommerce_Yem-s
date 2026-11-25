@@ -1,0 +1,18 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "cream-palette",
+        "value": "*",
+        "files": [
+          "*.html",
+          "produit/*.html"
+        ],
+        "createdAt": "2026-11-21T16:10:41.594Z",
+        "reason": "Contract-sanctioned: the direction contract (canon, chosen by the owner 2026-11-20) names the warm ivory ground #F6F1E8 as an allowed pattern."
+      }
+    ]
+  }
+}

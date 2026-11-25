@@ -1,388 +1,235 @@
 
 <!-- ═══════════════════════════════════════════════════════════════
-     HERO ÉDITORIAL
-     La navigation passe DANS le hero (voir .header--transparent dans
-     components.css) : la page s'ouvre sur une image pleine, pas sur une
-     barre posée au-dessus d'elle.
+     ACCUEIL : la refonte « maison » (novembre 2026)
 
-     Le visuel est un <img> et non un fond CSS. Trois raisons :
-       le navigateur choisit la largeur dans srcset ; fetchpriority="high" le
-       fait partir avant les scripts, c'est lui le Largest Contentful Paint de
-       la page ; width et height réservent la place, donc aucun saut de mise
-       en page. Le PNG source de 1,6 Mo n'est jamais servi : tools/images_ia.py
-       en tire ces fichiers (47 Ko en WebP pour la plus grande largeur).
+     Le registre des maisons de souliers, joué droit : l'image d'abord, une
+     phrase, un bouton, puis les pièces. Le contrat de direction est dans
+     .impeccable/surfaces/templates-pages-index-html.md ; les styles de la
+     page dans assets/css/accueil.css, les fondations partagées dans
+     assets/css/maison.css.
 
-     DEUX CADRAGES, PAS UN RECADRAGE. Sous 620 px — le téléphone — le
-     navigateur prend une prise de vue verticale (9/16) plutôt que de rogner
-     le paysage : sur un écran étroit, « object-fit: cover » coupait le
-     mannequin ou le repoussait hors champ. La tablette garde le paysage : un
-     9/16 y demanderait 1 364 px de haut, et plafonné il couperait les
-     souliers. C'est le <source media> qui décide, donc le fichier large n'est
-     même pas téléchargé sur un téléphone.
-
-     LA COMPOSITION DE LA MAQUETTE « SABINA » (livrables/yems-refonte-sabina).
-     Un grand titre éditorial, une seule action pleine : la typographie
-     ample derrière le mannequin et la mention verticale de la marge sont
-     parties, le titre porte seul le poids typographique. La note « Fabriqué
-     ou choisi » a rejoint le bandeau des engagements, juste sous l'image.
-
-     LA GRAMMAIRE DE LA RÉFÉRENCE FRAMER (AestheticMatch). Le hero n'est
-     plus une bande bord à bord mais une carte arrondie posée dans la page,
-     qui englobe le bandeau des engagements. Un mot du titre est surligné
-     dans une pastille laiton, les deux actions sont des pilules, et une
-     carte en verre (« En vitrine », générée par hero_piece() dans
-     tools/build.py) mène à une pièce sans attendre la grille. Elle ne
-     s'affiche que là où elle tient à droite du mannequin sans toucher ses
-     souliers : sur grand écran, image calée à droite (voir home.css).
+     Toutes les affirmations de la page viennent de data/products.json, des
+     CGV ou de la page About us. Les prix ne sont jamais écrits ici : ils
+     arrivent avec les vignettes (tools/build.py) et le Worker les corrige
+     en direct (data-prix).
      ═══════════════════════════════════════════════════════════════ -->
-<section class="hero-edito" id="hero">
-  <div class="hero-edito__media">
+
+<!-- L'OUVERTURE
+     L'image est un <img> en fetchpriority="high" : c'est elle le Largest
+     Contentful Paint, elle part avant les scripts et n'est jamais animée.
+     Deux cadrages : la prise de vue verticale sur téléphone, le paysage
+     au-delà ; sur grand écran la bande montre le bas de la silhouette, les
+     souliers dans la lumière. width et height réservent la place. -->
+<section class="ouverture" aria-labelledby="ouverture-titre">
+  <div class="ouverture__image">
     <picture>
       <source type="image/webp" media="(max-width: 619px)"
               sizes="100vw"
               srcset="{{base}}assets/img/hero-accueil-portrait-480.webp 480w,
                       {{base}}assets/img/hero-accueil-portrait-720.webp 720w,
-                      {{base}}assets/img/hero-accueil-portrait.webp 941w">
+                      {{base}}assets/img/hero-accueil-portrait.webp 1145w">
       <source media="(max-width: 619px)"
               sizes="100vw"
               srcset="{{base}}assets/img/hero-accueil-portrait-480.jpg 480w,
                       {{base}}assets/img/hero-accueil-portrait-720.jpg 720w,
-                      {{base}}assets/img/hero-accueil-portrait.jpg 941w">
+                      {{base}}assets/img/hero-accueil-portrait.jpg 1145w">
       <source type="image/webp"
               sizes="100vw"
               srcset="{{base}}assets/img/hero-accueil-800.webp 800w,
                       {{base}}assets/img/hero-accueil-1200.webp 1200w,
-                      {{base}}assets/img/hero-accueil.webp 1536w">
+                      {{base}}assets/img/hero-accueil.webp 1817w">
       <img src="{{base}}assets/img/hero-accueil-1200.jpg"
            sizes="100vw"
            srcset="{{base}}assets/img/hero-accueil-800.jpg 800w,
                    {{base}}assets/img/hero-accueil-1200.jpg 1200w,
-                   {{base}}assets/img/hero-accueil.jpg 1536w"
-           width="1536" height="1024" fetchpriority="high" decoding="async"
-           alt="Un homme en chemise ivoire et pantalon brun, chaussé de mocassins de cuir, dans la lumière d'un mur ocre">
+                   {{base}}assets/img/hero-accueil.jpg 1817w"
+           width="1817" height="866" fetchpriority="high" decoding="async"
+           alt="Des mocassins de cuir brun, portés, dans la lumière d'un mur ocre">
     </picture>
     {{visuel_ia}}
   </div>
 
-  <div class="container container--wide hero-edito__inner">
-    <div class="hero-edito__copy">
-      <span class="eyebrow" data-reveal>Atelier de Cotonou &middot; Bénin</span>
-      <!-- La formule de la maquette : la même idée que « Des détails qui
-           font la différence », en deux lignes plus courtes, ce qui permet
-           au titre de prendre l'échelle d'une affiche sans pousser le reste
-           du hero sous la ligne de flottaison.
-           Le <br> sépare les lignes pour motion.js, qui les fait monter l'une
-           après l'autre.
-           « détail » porte la pastille laiton : c'est le mot du slogan
-           (« Différents par les détails »), celui que la page doit laisser
-           en tête. L'italique de « la différence » reste, sans sa couleur :
-           un seul accent laiton par titre. -->
-      <h1 data-lines>
-        Le <span class="surligne">détail</span> fait<br>
-        <span class="italic-accent">la différence</span>.
-      </h1>
-      <p class="lede" data-reveal style="--reveal-delay:60ms">
-        Une maison de Cotonou, avec un atelier au milieu. Ce qu'on sait faire,
-        on le fabrique. Ce qu'on ne sait pas faire, on le choisit. Dans les
-        deux cas, on en répond.
-      </p>
-
-      <!-- Le laiton plein : sur l'espresso, le bouton sombre par défaut ne se
-           détachait plus de l'image. La flèche passe dans une puce ronde au
-           bout de la pilule ; le lien secondaire devient une pilule en verre,
-           comme le second bouton de la référence. -->
-      <div class="hero-edito__actions" data-reveal style="--reveal-delay:120ms">
-        <a class="btn btn--laiton btn--puce" href="{{base}}boutique.html">
-          Découvrir les modèles
-          <span class="btn__puce" aria-hidden="true"><svg><use href="#i-arrow"></use></svg></span>
-        </a>
-        <a class="btn btn--verre" href="{{base}}about-us.html">La maison Yem's</a>
-      </div>
-    </div>
+  <div class="ouverture__texte">
+    <h1 id="ouverture-titre">Le détail fait la différence.</h1>
+    <p class="ouverture__lede">
+      Une maison de Cotonou&nbsp;: un atelier qui coud à la main, et des pièces
+      choisies par l'atelier.
+    </p>
+    <a class="btn" href="{{base}}boutique.html">Voir les modèles</a>
   </div>
-
-  {{hero_piece}}
 </section>
 
-<!-- ═══════════════════════════════════════════════════════════════
-     LES ENGAGEMENTS — sous l'image, jamais dessus
-     Le bandeau de réassurance avait été retiré du hero à la demande
-     d'Abou : posé sur l'image, il barrait le bas du visuel et coupait le
-     mannequin aux genoux. Celui-ci vient APRÈS le hero, sur son propre
-     fond : l'image reste entière, et le bas du hero se fond dans lui.
 
-     Trois phrases qui ne promettent rien de plus que le catalogue : elles
-     reprennent site.origines de data/products.json (l'origine écrite sur
-     chaque pièce, la sélection contrôlée à la réception et numérotée).
-     Les délais et garanties chiffrés restent sous les pièces, plus bas.
-     ═══════════════════════════════════════════════════════════════ -->
-<div class="preuves">
+<!-- TROIS FAÇONS D'ACHETER
+     L'atelier, la sélection, le sur-mesure. Les chiffres viennent de
+     data/products.json au build (Builder.build_home) : nombre de pièces de
+     la sélection, délai et prix de départ du sur-mesure. La ligne de
+     l'atelier est en préparation, la page le dit. -->
+<section class="bloc bloc--portes" id="lignes" aria-labelledby="lignes-titre">
   <div class="container container--wide">
-    <ul class="preuves__liste" aria-label="Les engagements Yem's">
-      <li><span class="preuves__num" aria-hidden="true">01</span>Fabriqué ou choisi, toujours indiqué</li>
-      <li><span class="preuves__num" aria-hidden="true">02</span>Chaque paire de la sélection contrôlée et numérotée</li>
-      <li><span class="preuves__num" aria-hidden="true">03</span>Une maison basée à Cotonou</li>
-    </ul>
-  </div>
-</div>
+    <div class="bloc__tete bloc__tete--pile">
+      <h2 id="lignes-titre" data-lines>Fabriqué ou choisi, toujours écrit.</h2>
+      <p>Chaque pièce dit d'où elle vient, au-dessus de son prix. La garantie suit l'origine.</p>
+    </div>
 
-
-<!-- ═══════════════════════════════════════════════════════════════
-     LA SÉLECTION — les produits, juste après le hero
-     ═══════════════════════════════════════════════════════════════ -->
-<section class="section vitrine" id="selection">
-  <div class="container container--wide">
-    <!-- « La sélection » est le nom d'une des deux lignes de la maison (les
-         pièces choisies par l'atelier). La vitrine, elle, montrera aussi les
-         pièces de l'atelier : son surtitre ne doit pas reprendre ce nom. Le
-         texte cite les deux mentions exactes portées par les vignettes. -->
-    <div class="section-head section-head--split" data-reveal>
-      <div>
-        <span class="eyebrow">En vitrine</span>
-        <h2 class="titre-ample" data-lines style="margin-top:var(--sp-4)">Trouvez<br><span class="italic-accent">votre allure.</span></h2>
-      </div>
-      <div class="vitrine__aside">
-        <p class="lede" style="max-width:40ch">
-          Les modèles du moment. Au-dessus de chaque prix, son origine :
-          « Fabriqué à Cotonou » ou « Choisi par l'atelier ».
+    <div class="portes">
+      <article class="porte" data-reveal>
+        <a class="porte__image" href="{{base}}a-venir.html" tabindex="-1" aria-hidden="true" data-shot>
+          <picture>
+            <source type="image/webp"
+                    sizes="(max-width: 899px) 100vw, 31vw"
+                    srcset="{{base}}assets/img/atelier-geste-500.webp 500w,
+                            {{base}}assets/img/atelier-geste-800.webp 800w,
+                            {{base}}assets/img/atelier-geste-1200.webp 1200w">
+            <img src="{{base}}assets/img/atelier-geste-800.jpg"
+                 sizes="(max-width: 899px) 100vw, 31vw"
+                 srcset="{{base}}assets/img/atelier-geste-500.jpg 500w,
+                         {{base}}assets/img/atelier-geste-800.jpg 800w,
+                         {{base}}assets/img/atelier-geste-1200.jpg 1200w"
+                 width="1536" height="1024" loading="lazy" decoding="async" alt="">
+          </picture>
+          {{visuel_ia}}
+        </a>
+        <h3>L'atelier</h3>
+        <p>
+          À Cotonou, notre atelier coud à la main une ligne de souliers et de
+          maroquinerie, cousus sur trépointe et ressemelables à vie. La ligne
+          est en préparation.
         </p>
-        <!-- La pilule sombre « Go to shop » de la référence, en face du
-             titre : l'accès au catalogue se voit avant les vignettes. -->
-        <a class="btn btn--sm" href="{{base}}boutique.html">
-          Tout le catalogue
+        <a class="lien" href="{{base}}a-venir.html">
+          Ce qui se prépare
           <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
         </a>
-      </div>
-    </div>
+      </article>
 
-    <nav class="filtres" aria-label="Accès rapide au catalogue">
-      <a href="{{base}}boutique.html">Tout voir</a>
-      <a href="{{base}}selection.html">La sélection</a>
-      <a href="{{base}}a-venir.html">L'atelier</a>
-      <a href="{{base}}configurateur.html">Le sur-mesure</a>
-    </nav>
+      <article class="porte" data-reveal style="--reveal-delay:80ms">
+        <a class="porte__image" href="{{base}}selection.html" tabindex="-1" aria-hidden="true" data-shot>
+          <picture>
+            <source type="image/webp"
+                    sizes="(max-width: 899px) 100vw, 31vw"
+                    srcset="{{base}}assets/img/ville-derby-ai-500.webp 500w,
+                            {{base}}assets/img/ville-derby-ai-800.webp 800w,
+                            {{base}}assets/img/ville-derby-ai.webp 1122w">
+            <img src="{{base}}assets/img/ville-derby-ai-800.jpg"
+                 sizes="(max-width: 899px) 100vw, 31vw"
+                 srcset="{{base}}assets/img/ville-derby-ai-500.jpg 500w,
+                         {{base}}assets/img/ville-derby-ai-800.jpg 800w,
+                         {{base}}assets/img/ville-derby-ai.jpg 1122w"
+                 width="1122" height="1402" loading="lazy" decoding="async" alt="">
+          </picture>
+          {{visuel_ia}}
+        </a>
+        <h3>La sélection</h3>
+        <p>
+          {{nb_selection}} modèles que l'atelier n'a pas fabriqués mais a choisis,
+          essayés et contrôlés à la réception. Échange pendant un an sur la
+          pointure ou un défaut.
+        </p>
+        <a class="lien" href="{{base}}selection.html">
+          Voir la sélection
+          <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
+        </a>
+      </article>
 
-{{featured_grid}}
-
-    <!-- Les quatre chiffres que portait le bandeau du hero. Ils reviennent
-         ici, en une ligne de texte sous les pièces : c'est à ce moment-là
-         qu'on se demande ce qui se passe après l'achat, pas en arrivant sur
-         la page. Chacun dit de quelle ligne il parle — la garantie n'est pas
-         la même sur l'atelier et sur la sélection. -->
-    <p class="reassurance" data-reveal>
-      <span>Livraison 48&nbsp;h à Cotonou &amp; Abidjan</span>
-      <span>Échange un an sur la sélection</span>
-      <span>Ressemelage à vie sur l'atelier</span>
-      <span>Rien à payer d'avance</span>
-    </p>
-
-    <div class="text-center" style="margin-top:var(--sp-7)">
-      <a class="btn btn--ghost" href="{{base}}boutique.html">
-        Voir tout le catalogue
-        <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
-      </a>
-    </div>
-
-    <p class="text-muted text-center" style="margin-top:var(--sp-6);font-size:var(--fs-sm)">
-      <span class="todo-note">À valider</span>
-      &nbsp; Prix indicatifs en FCFA, à confirmer avant mise en ligne.
-    </p>
-  </div>
-</section>
-
-<!-- Le fil se coud au fil du scroll -->
-<div class="seam" data-seam aria-hidden="true">
-  <svg viewBox="0 0 1440 160" preserveAspectRatio="none">
-    <defs>
-      <mask id="seam-a">
-        <path class="seam__reveal" pathLength="1" d="M0 40 C 300 40, 380 126, 720 126 S 1140 40, 1440 40"/>
-      </mask>
-    </defs>
-    <path class="seam__thread" mask="url(#seam-a)" d="M0 40 C 300 40, 380 126, 720 126 S 1140 40, 1440 40"/>
-  </svg>
-</div>
-
-<!-- ═══════════════════════════════════════════════════════════════
-     LE GESTE — l'atelier, image et texte côte à côte
-     L'image d'un côté, l'espresso de l'autre, comme sur la maquette Sabina ;
-     mais la bande bord à bord est redevenue une carte, à la manière des
-     blocs de la référence Framer : posée à --cadre des bords, l'image
-     encadrée dans son propre arrondi. Le récit des deux lignes est passé
-     au bloc « La maison » en bas de page.
-
-     Visuel de proposition, à valider avant publication : comme les autres
-     visuels de campagne, il est généré. tools/images_ia.py en tire quatre
-     largeurs (table CAMPAGNE) ; la source n'est jamais servie.
-     ═══════════════════════════════════════════════════════════════ -->
-<section class="geste" id="atelier">
-  <figure class="geste__visuel" data-shot>
-    <picture>
-      <source type="image/webp"
-              sizes="(max-width: 899px) 100vw, 53vw"
-              srcset="{{base}}assets/img/atelier-geste-500.webp 500w,
-                      {{base}}assets/img/atelier-geste-800.webp 800w,
-                      {{base}}assets/img/atelier-geste-1200.webp 1200w,
-                      {{base}}assets/img/atelier-geste.webp 1536w">
-      <img src="{{base}}assets/img/atelier-geste-800.jpg"
-           sizes="(max-width: 899px) 100vw, 53vw"
-           srcset="{{base}}assets/img/atelier-geste-500.jpg 500w,
-                   {{base}}assets/img/atelier-geste-800.jpg 800w,
-                   {{base}}assets/img/atelier-geste-1200.jpg 1200w,
-                   {{base}}assets/img/atelier-geste.jpg 1536w"
-           width="1536" height="1024" loading="lazy" decoding="async"
-           alt="Un artisan coud à la main un mocassin en cuir brun sur son établi">
-    </picture>
-    {{visuel_ia}}
-  </figure>
-
-  <div class="geste__copy" data-reveal style="--reveal-delay:100ms">
-    <span class="eyebrow">Le geste, à Cotonou</span>
-    <h2 class="titre-ample" data-lines style="margin-top:var(--sp-4)">
-      Une paire se construit<br>point après <span class="italic-accent">point</span>.
-    </h2>
-    <!-- La première phrase est celle de la page atelier (a-venir.html) :
-         la ligne de l'atelier est en préparation, le texte ne dit pas
-         qu'elle est en vente. -->
-    <p>
-      À Cotonou, notre atelier façonne une ligne de souliers et de
-      maroquinerie. Les mains choisissent le cuir, guident le fil et soignent
-      les finitions : c'est dans ces détails que se joue la différence.
-    </p>
-    <a class="btn btn--laiton" href="{{base}}a-venir.html">
-      Entrer dans l'atelier
-      <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
-    </a>
-  </div>
-</section>
-
-<!-- ═══════════════════════════════════════════════════════════════
-     SUR-MESURE — version courte. Les quatre étapes détaillées vivent
-     désormais sur about-us.html ; l'accueil garde l'aperçu chiffré,
-     qui est le seul élément commercial du bloc.
-     ═══════════════════════════════════════════════════════════════ -->
-<section class="section bespoke grain" id="sur-mesure">
-  <div class="container bespoke__grid">
-    <div data-reveal>
-      <span class="eyebrow">Le sur-mesure</span>
-      <h2 data-lines style="margin-top:var(--sp-4)">Si aucune pointure ne vous va,<br><span class="italic-accent">ce n'est pas</span> votre pied</h2>
-      <p class="lede" style="margin-top:var(--sp-5)">
-        Un 43 ne veut pas dire grand-chose quand on a le pied large ou le coup
-        de pied fort. Le sur-mesure n'est pas un luxe de vitrine : c'est la
-        réponse normale à un pied qui n'entre dans aucune grille.
-      </p>
-
-      <ul class="points" style="margin-top:var(--sp-5)">
-        <li>Modèle, cuir, semelle, pointure et initiales se choisissent à l'écran, en deux minutes.</li>
-        <li>Le prix s'affiche poste par poste pendant que vous choisissez. Pas de devis à attendre.</li>
-        <li>L'atelier confirme la faisabilité et la date dans la journée, avant que vous payiez quoi que ce soit.</li>
-      </ul>
-
-      <div class="bespoke__actions" style="margin-top:var(--sp-6)">
-        <a class="btn" href="{{base}}configurateur.html">
+      <article class="porte" data-reveal style="--reveal-delay:160ms">
+        <a class="porte__image" href="{{base}}configurateur.html" tabindex="-1" aria-hidden="true" data-shot>
+          <picture>
+            <source type="image/webp" srcset="{{base}}assets/img/configurateur-forme-derby.webp">
+            <img src="{{base}}assets/img/configurateur-forme-derby.jpg"
+                 width="960" height="660" loading="lazy" decoding="async" alt="">
+          </picture>
+          {{visuel_ia}}
+        </a>
+        <h3>Le sur-mesure</h3>
+        <p>
+          Quatre formes, votre cuir, votre pointure, vos initiales.
+          {{delai_sur_mesure}}, à partir de {{prix_sur_mesure}}. L'atelier
+          confirme la faisabilité et la date dans la journée&nbsp;; un acompte
+          de {{acompte}}&nbsp;% peut être demandé avant la fabrication.
+        </p>
+        <a class="lien" href="{{base}}configurateur.html">
           Composer ma paire
           <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
         </a>
-        <a class="link-underline" href="{{base}}about-us.html#sur-mesure">
-          Les quatre étapes, en détail
-          <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
-        </a>
-      </div>
-    </div>
-
-    <!-- Aperçu du configurateur -->
-    <div class="bespoke__panel" data-reveal style="--reveal-delay:140ms">
-      <div style="display:flex;align-items:center;justify-content:space-between;gap:var(--sp-4);margin-bottom:var(--sp-5)">
-        <span class="badge badge--brass"><span class="badge__dot"></span>Aperçu du configurateur</span>
-        <span class="text-muted" style="font-size:var(--fs-xs)">Réf. YMS-2609-0142</span>
-      </div>
-
-      <div class="pshot" data-shot style="aspect-ratio:16/10;margin-bottom:var(--sp-5)">
-        <img src="{{base}}assets/img/cuirs-poster.jpg" width="574" height="960"
-             loading="lazy" decoding="async"
-             alt="Échantillons de cuir espresso, cognac, noir et sable">
-        {{visuel_ia}}
-      </div>
-
-      <dl style="margin:0">
-        <div class="spec-row"><dt>Modèle</dt><dd>{{apercu_modele}}</dd></div>
-        <div class="spec-row"><dt>Cuir</dt><dd>{{apercu_cuir}}</dd></div>
-        <div class="spec-row">
-          <dt>Fil de couture</dt>
-          <dd>
-            <span class="swatches">
-              <span class="swatch swatch--espresso"></span>
-              <span class="swatch swatch--cognac is-active"></span>
-              <span class="swatch swatch--noir"></span>
-              <span class="swatch swatch--sable"></span>
-            </span>
-          </dd>
-        </div>
-        <div class="spec-row"><dt>Initiales</dt><dd>{{apercu_initiales}}</dd></div>
-        <div class="spec-row"><dt>Délai</dt><dd>15 jours</dd></div>
-      </dl>
-
-      <hr class="stitch" style="margin-block:var(--sp-5)">
-
-      <!-- Modèle, cuir, initiales et total viennent de bespoke.apercu et des
-           prix de data/products.json (apercu_sur_mesure() dans tools/build.py) :
-           le total ne peut plus contredire le modèle affiché. -->
-      <div style="display:flex;align-items:baseline;justify-content:space-between;gap:var(--sp-4)">
-        <span class="text-muted" style="font-size:var(--fs-sm)">Total estimé</span>
-        <span class="offer__price" style="font-size:var(--fs-xl)" data-apercu-total>{{apercu_total}}</span>
-      </div>
-
-      <!-- Le bouton disait « Envoyer à l'atelier », icône WhatsApp à l'appui,
-           et ouvrait le configurateur : rien n'était envoyé. Il dit
-           maintenant ce qu'il fait. -->
-      <a class="btn btn--ghost btn--full" href="{{base}}configurateur.html" style="margin-top:var(--sp-5)">
-        Ouvrir le configurateur
-        <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
-      </a>
+      </article>
     </div>
   </div>
 </section>
 
-<!-- Le fil se coud au fil du scroll -->
-<div class="seam" data-seam aria-hidden="true">
-  <svg viewBox="0 0 1440 160" preserveAspectRatio="none">
-    <defs>
-      <mask id="seam-b">
-        <path class="seam__reveal" pathLength="1" d="M0 118 C 280 118, 400 34, 720 34 S 1160 118, 1440 118"/>
-      </mask>
-    </defs>
-    <path class="seam__thread" mask="url(#seam-b)" d="M0 118 C 280 118, 400 34, 720 34 S 1160 118, 1440 118"/>
-  </svg>
-</div>
 
-<!-- ═══════════════════════════════════════════════════════════════
-     LA MAISON — la porte vers « About us »
-     Il reprend le propos de l'ancien panneau de marque (deux lignes, deux
-     garanties, écrites avant l'achat) et remplace le CTA final : ses deux
-     actions existaient déjà plus haut (« Composer ma paire ») et dans le
-     pied de page (WhatsApp). Les trois portes de sortie de la page sont
-     réunies ici, en liens simples, comme sur la maquette.
+<!-- LES MODÈLES
+     La vitrine : les pièces mises en avant dans data/products.json, puis le
+     catalogue dans l'ordre (Builder.vitrine). Chaque vignette dit son
+     origine au-dessus de son prix. -->
+<section class="bloc bloc--vitrine bloc--filet" id="modeles" aria-labelledby="modeles-titre">
+  <div class="container container--wide">
+    <div class="bloc__tete">
+      <h2 id="modeles-titre" data-lines>Les modèles du moment</h2>
+      <a class="lien" href="{{base}}boutique.html">
+        Tout le catalogue
+        <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
+      </a>
+    </div>
 
-     La mise en forme est celle du bloc « More Info » de la référence
-     Framer : une grande image d'atelier en carte arrondie, et posée dessus
-     une carte ivoire qui tient le titre, le texte et la liste de liens à
-     flèches. La carte est à gauche, sur l'établi sombre ; les mains et le
-     fil restent visibles à droite. Sur téléphone, l'image passe au-dessus
-     et la carte la chevauche.
+{{featured_grid}}
 
-     Le visuel (atelier-couture) est un visuel de campagne généré, comme les
-     autres : tools/images_ia.py en tire trois largeurs (table CAMPAGNE).
-     ═══════════════════════════════════════════════════════════════ -->
-<section class="section maison" id="maison">
-  <div class="maison__carte">
-    <figure class="maison__visuel" data-shot>
+    <p class="bloc__note">
+      <span class="todo-note">À valider</span>
+      Prix indicatifs en FCFA, à confirmer avant mise en ligne.
+    </p>
+  </div>
+</section>
+
+
+<!-- PAYER ET RECEVOIR
+     Ce qui se passe après le clic, dit avant le clic. Quatre faits, sans
+     icônes ni cartes : un titre court et une phrase, séparés par des filets.
+     Sources : CGV (paiement à la livraison ou Mobile Money, convenu avec
+     l'atelier ; confirmation des frais sur WhatsApp avant tout règlement),
+     data/products.json (délais de livraison), et la confirmation de la
+     maison du 20 novembre 2026 pour l'essai à la livraison. -->
+<section class="bloc bloc--filet" id="recevoir" aria-labelledby="recevoir-titre">
+  <div class="container container--wide recevoir">
+    <div class="recevoir__tete">
+      <h2 id="recevoir-titre" data-lines>Payer et recevoir</h2>
+      <p>Vous commandez sur le site ou sur WhatsApp. L'atelier s'occupe du reste.</p>
+    </div>
+    <dl class="recevoir__liste">
+      <div data-reveal>
+        <dt>À la livraison ou par Mobile Money</dt>
+        <dd>En espèces quand la paire arrive, ou par MTN MoMo, Moov ou Wave, convenu avec l'atelier.</dd>
+      </div>
+      <div data-reveal style="--reveal-delay:60ms">
+        <dt>Essai à la livraison</dt>
+        <dd>Vous essayez la paire au moment où on vous la livre.</dd>
+      </div>
+      <div data-reveal style="--reveal-delay:120ms">
+        <dt>Confirmation sur WhatsApp</dt>
+        <dd>L'atelier confirme chaque commande et ses frais sur WhatsApp, avant tout règlement.</dd>
+      </div>
+      <div data-reveal style="--reveal-delay:180ms">
+        <dt>Expédiée sous 72&nbsp;h</dt>
+        <dd>Puis livrée en 48&nbsp;h à Cotonou et à Abidjan, sous 5 jours ailleurs au Bénin et en Côte d'Ivoire (jours ouvrés).</dd>
+      </div>
+    </dl>
+  </div>
+</section>
+
+
+<!-- LE GESTE
+     Comment une paire de l'atelier est faite, en trois faits repris de la
+     page About us (le point sellier, le cuir, la trépointe). -->
+<section class="bloc bloc--filet geste-maison" id="atelier" aria-labelledby="atelier-titre">
+  <div class="container container--wide geste-maison__grille">
+    <figure class="geste-maison__image" data-shot>
       <picture>
         <source type="image/webp"
-                sizes="100vw"
+                sizes="(max-width: 899px) 100vw, 50vw"
                 srcset="{{base}}assets/img/atelier-couture-500.webp 500w,
                         {{base}}assets/img/atelier-couture-800.webp 800w,
                         {{base}}assets/img/atelier-couture.webp 1200w">
         <img src="{{base}}assets/img/atelier-couture-800.jpg"
-             sizes="100vw"
+             sizes="(max-width: 899px) 100vw, 50vw"
              srcset="{{base}}assets/img/atelier-couture-500.jpg 500w,
                      {{base}}assets/img/atelier-couture-800.jpg 800w,
                      {{base}}assets/img/atelier-couture.jpg 1200w"
@@ -392,35 +239,44 @@
       {{visuel_ia}}
     </figure>
 
-    <div class="maison__panneau" data-reveal>
-      <span class="eyebrow">La maison Yem's</span>
-      <h2 data-lines>Deux origines.<br><span class="italic-accent">Une seule exigence.</span></h2>
-      <p>
-        De l'atelier à la sélection, Yem's porte la même attention à chaque
-        paire. Ce que nous fabriquons et ce que nous choisissons ne portent
-        pas les mêmes garanties — et nous écrivons lesquelles, avant l'achat.
-      </p>
+    <div class="geste-maison__texte">
+      <h2 id="atelier-titre" data-lines>Cousu au point sellier.</h2>
+      <dl class="faits">
+        <div>
+          <dt>Le point</dt>
+          <dd>Deux aiguilles, un seul fil de lin, chaque point noué à part. Si un point casse, la couture s'arrête au point d'à côté.</dd>
+        </div>
+        <div>
+          <dt>Le cuir</dt>
+          <dd>Pleine fleur tannée végétal, de 1,8 à 2&nbsp;mm. Il fonce et garde la trace de vos plis.</dd>
+        </div>
+        <div>
+          <dt>La semelle</dt>
+          <dd>Cousue sur trépointe, jamais collée&nbsp;: c'est ce qui permet de la changer.</dd>
+        </div>
+      </dl>
+      <a class="lien" href="{{base}}about-us.html">
+        La maison Yem's
+        <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
+      </a>
+    </div>
+  </div>
+</section>
 
-      <ul class="maison__liens">
-        <li>
-          <a href="{{base}}about-us.html">
-            Notre histoire
-            <svg aria-hidden="true"><use href="#i-arrow-biais"></use></svg>
-          </a>
-        </li>
-        <li>
-          <a href="{{base}}service-client.html">
-            Conseils &amp; service client
-            <svg aria-hidden="true"><use href="#i-arrow-biais"></use></svg>
-          </a>
-        </li>
-        <li>
-          <a href="https://wa.me/{{whatsapp}}?text=Bonjour%2C%20j'ai%20une%20question%20sur%20vos%20chaussures." target="_blank" rel="noopener">
-            Écrire à l'atelier
-            <svg aria-hidden="true"><use href="#i-whatsapp"></use></svg>
-          </a>
-        </li>
-      </ul>
+
+<!-- UNE QUESTION
+     La porte WhatsApp, avec les horaires du pied de page. Un seul bouton
+     plein sur la page en plus de l'ouverture. -->
+<section class="bloc bloc--filet question" id="question" aria-labelledby="question-titre">
+  <div class="container container--narrow question__inner">
+    <h2 id="question-titre" data-lines>Une question avant de commander&nbsp;?</h2>
+    <p>L'atelier répond sur WhatsApp, du lundi au samedi, de 8&nbsp;h à 19&nbsp;h.</p>
+    <div class="question__actions">
+      <a class="btn" href="https://wa.me/{{whatsapp}}?text=Bonjour%2C%20j'ai%20une%20question%20sur%20vos%20souliers." target="_blank" rel="noopener">
+        <svg aria-hidden="true"><use href="#i-whatsapp"></use></svg>
+        Écrire à l'atelier
+      </a>
+      <a class="lien" href="{{base}}service-client.html">Livraison, retours et entretien</a>
     </div>
   </div>
 </section>

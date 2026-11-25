@@ -1,0 +1,353 @@
+/* ==========================================================================
+   YEM'S : la boutique et les pages de rayon (tools/build.py, build_shop,
+   build_category, methode)
+
+   Chargée sur boutique.html et les pages catégorie seulement, après
+   maison.css. Même vocabulaire que l'accueil (accueil.css) : un titre Prata
+   aligné à gauche, une ou deux phrases, puis les pièces en grille plate ;
+   des filets fins tirés dans la gouttière entre les sections ; une
+   invitation calme pour finir. Aucun surtitre, aucune carte numérotée,
+   aucun bloc sombre.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   LE FIL D'ARIANE : lisible, et chaque lien assez haut pour le pouce
+   -------------------------------------------------------------------------- */
+.page-rayon .crumb {
+  font-size: 0.875rem;
+  letter-spacing: 0.01em;
+}
+.page-rayon .crumb a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--text-muted);
+}
+.page-rayon .crumb a:hover { color: var(--cognac); }
+.page-rayon .crumb [aria-current] { color: var(--encre); }
+
+/* --------------------------------------------------------------------------
+   L'OUVERTURE DU RAYON
+   Sous la barre fixe : le titre à gauche, le texte dessous au téléphone,
+   à côté sur grand écran pour que la grille commence dans le premier écran.
+   -------------------------------------------------------------------------- */
+.rayon-page { padding-top: calc(var(--header-bas) + var(--sp-6)); }
+.crumb + .rayon-page { padding-top: var(--sp-3); }
+
+.rayon-tete { margin-bottom: var(--sp-6); }
+.rayon-tete h1 {
+  max-width: 20ch;
+  font-size: 1.875rem;
+  line-height: 1.08;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+.rayon-tete__texte { margin-top: var(--sp-4); max-width: 52ch; }
+.rayon-tete__lede {
+  font-size: 1rem;
+  line-height: 1.55;
+  color: var(--text-muted);
+}
+.rayon-tete__ligne {
+  margin-top: var(--sp-3);
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: var(--text-muted);
+}
+.rayon-tete__ligne strong,
+.atelier-rayon__ligne strong {
+  font-weight: 500;
+  color: var(--cognac);
+}
+
+@media (min-width: 900px) {
+  .rayon-page { padding-top: calc(var(--header-bas) + var(--sp-7)); }
+  .crumb + .rayon-page { padding-top: var(--sp-4); }
+  .rayon-tete {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: var(--sp-8);
+    align-items: end;
+    margin-bottom: var(--sp-7);
+  }
+  .rayon-tete h1 { font-size: 3rem; line-height: 1.04; }
+  .rayon-tete__texte { margin-top: 0; }
+  .rayon-tete__lede { font-size: 1.0625rem; }
+}
+
+/* Une ouverture sans grille dessous (la boutique, « Ce qui se prépare ») :
+   la section suivante porte son propre filet et son propre écart. */
+.rayon-page--seule .rayon-tete { margin-bottom: 0; }
+
+/* --------------------------------------------------------------------------
+   LA GRILLE : deux colonnes au téléphone, trois puis quatre sur grand écran
+   Les vignettes sont celles de l'accueil (product_card, maison.css) : la
+   photo sur le sable, le nom, une ligne, l'origine au-dessus du prix.
+   -------------------------------------------------------------------------- */
+.rayon-grille {
+  --shot-ratio: 4 / 5;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--sp-6) var(--sp-3);
+}
+@media (min-width: 760px) {
+  .rayon-grille {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--sp-7) var(--sp-4);
+  }
+}
+@media (min-width: 1180px) {
+  .rayon-grille {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--sp-7) var(--sp-5);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   LES BLOCS ET LEURS FILETS (le même dessin que l'accueil)
+   -------------------------------------------------------------------------- */
+.page-rayon .bloc { padding-block: var(--section-y); }
+.page-rayon .bloc--filet { padding-top: 0; }
+.page-rayon .bloc--filet > .container::before {
+  content: "";
+  display: block;
+  grid-column: 1 / -1;
+  border-top: var(--filet);
+  margin-bottom: var(--section-y);
+}
+.page-rayon .bloc h2 { font-size: 1.75rem; line-height: 1.12; }
+@media (min-width: 900px) {
+  .page-rayon .bloc h2 { font-size: 2.5rem; }
+}
+
+.page-rayon .bloc__note {
+  margin-top: var(--sp-6);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--text-subtle);
+}
+.page-rayon .bloc__note .todo-note { margin-right: var(--sp-2); }
+
+/* Une section à filet qui suit une grille (rayon ou groupe) : l'écart
+   au-dessus du filet, la grille n'ayant pas de marge basse. */
+.rayon-page + .bloc--filet,
+.groupe + .bloc--filet { margin-top: var(--section-y); }
+
+/* --------------------------------------------------------------------------
+   LES GROUPES DE LA BOUTIQUE
+   Un filet, puis le nom du rayon, son nombre de modèles et son origine,
+   et le lien vers sa page.
+   -------------------------------------------------------------------------- */
+.page-rayon .groupe { padding-block: var(--sp-6) 0; }
+.groupe > .container::before {
+  content: "";
+  display: block;
+  grid-column: 1 / -1;
+  border-top: var(--filet);
+  margin-bottom: var(--sp-5);
+}
+.groupe__tete {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--sp-1) var(--sp-4);
+  margin-bottom: var(--sp-5);
+}
+.groupe__tete h2 { grid-column: 1; }
+.groupe__compte {
+  grid-column: 1;
+  grid-row: 2;
+  font-size: 0.9375rem;
+  color: var(--text-muted);
+}
+.groupe__lien {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  min-height: 44px;
+  white-space: nowrap;
+}
+@media (min-width: 900px) {
+  .page-rayon .groupe { padding-top: var(--sp-7); }
+  .groupe > .container::before { margin-bottom: var(--sp-6); }
+  .groupe__tete {
+    display: flex;
+    align-items: baseline;
+    gap: var(--sp-5);
+    margin-bottom: var(--sp-6);
+  }
+  .groupe__lien { margin-left: auto; align-self: center; }
+}
+
+/* --------------------------------------------------------------------------
+   L'ATELIER, EN PRÉPARATION : l'image de l'établi et ce qu'on peut déjà
+   faire (le sur-mesure)
+   -------------------------------------------------------------------------- */
+.atelier-rayon {
+  display: grid;
+  gap: var(--sp-5);
+}
+.atelier-rayon__image {
+  position: relative;
+  margin: 0;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  background: var(--sable);
+}
+.atelier-rayon__image picture { display: block; height: 100%; }
+.atelier-rayon__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.atelier-rayon__texte p {
+  max-width: 48ch;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+.atelier-rayon__texte p + p { margin-top: var(--sp-3); }
+.atelier-rayon__texte .lien { margin-top: var(--sp-4); min-height: 44px; }
+
+@media (min-width: 900px) {
+  .atelier-rayon {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: var(--sp-8);
+    align-items: center;
+  }
+  .atelier-rayon__texte p { font-size: 1.0625rem; }
+  .atelier-rayon--haut { align-items: start; }
+}
+
+/* --------------------------------------------------------------------------
+   AVANT QUE VOTRE PAIRE ARRIVE : des faits à filets, comme « Payer et
+   recevoir » sur l'accueil
+   -------------------------------------------------------------------------- */
+.methode-rayon__grille {
+  display: grid;
+  gap: var(--sp-6);
+}
+.methode-rayon__tete p {
+  margin-top: var(--sp-3);
+  max-width: 40ch;
+  color: var(--text-muted);
+  line-height: 1.55;
+}
+.methode-rayon__liste { display: grid; margin: 0; }
+.methode-rayon__liste > div {
+  padding-block: var(--sp-4);
+  border-top: var(--filet);
+}
+.methode-rayon__liste > div:first-child { border-top: 0; padding-top: 0; }
+.methode-rayon__liste dt {
+  font-family: var(--font-display);
+  font-size: 1.1875rem;
+  line-height: 1.3;
+}
+.methode-rayon__liste dd {
+  margin: var(--sp-2) 0 0;
+  max-width: 42ch;
+  color: var(--text-muted);
+  line-height: 1.55;
+}
+
+@media (min-width: 900px) {
+  .methode-rayon__grille {
+    grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+    gap: var(--sp-8);
+  }
+  .methode-rayon__liste {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: var(--sp-7);
+  }
+  .methode-rayon__liste > div { padding-block: var(--sp-5); }
+  .methode-rayon__liste > div:nth-child(-n + 2) { border-top: 0; padding-top: 0; }
+}
+
+/* --------------------------------------------------------------------------
+   L'INVITATION : un filet, un titre, une phrase, un bouton
+   -------------------------------------------------------------------------- */
+.invitation__inner { text-align: center; }
+.invitation p {
+  margin: var(--sp-3) auto 0;
+  max-width: 44ch;
+  color: var(--text-muted);
+  line-height: 1.55;
+}
+.invitation .btn { margin-top: var(--sp-5); }
+.invitation .btn svg { width: 18px; height: 18px; }
+
+/* Le pied de page suit : sa marge haute suffit. */
+.page-rayon .invitation { padding-bottom: 0; }
+
+/* --------------------------------------------------------------------------
+   CE QUI SE PRÉPARE (a-venir.html) : l'image de l'atelier, trois façons
+   d'agir à filets, puis WhatsApp en bouton plein et deux liens
+   -------------------------------------------------------------------------- */
+.venir-liste { margin: var(--sp-4) 0 0; }
+.venir-liste > div {
+  display: grid;
+  gap: var(--sp-1);
+  padding-block: var(--sp-4);
+  border-top: var(--filet);
+}
+.venir-liste > div:last-child { border-bottom: var(--filet); }
+.venir-liste dt { font-weight: 600; font-size: 0.9375rem; color: var(--encre); }
+.venir-liste dd {
+  margin: 0;
+  max-width: 48ch;
+  color: var(--text-muted);
+  line-height: 1.55;
+}
+.venir-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0;
+  margin-top: var(--sp-6);
+}
+.venir-actions .btn { margin-bottom: var(--sp-4); }
+.venir-actions .btn svg { width: 18px; height: 18px; }
+.venir-actions .lien { min-height: 44px; }
+@media (max-width: 559px) {
+  .venir-actions .btn { width: 100%; justify-content: center; }
+}
+
+/* --------------------------------------------------------------------------
+   L'ATELIER EN TÊTE DE BOUTIQUE (relecture, round 1)
+   La bande ouvre la page : compacte, pour que la sélection, l'achat
+   immédiat, commence avant le bas du deuxième écran.
+   -------------------------------------------------------------------------- */
+.page-rayon #atelier .atelier-rayon__image { aspect-ratio: auto; height: 220px; }
+@media (min-width: 900px) {
+  .page-rayon #atelier .atelier-rayon { grid-template-columns: minmax(0, 4fr) minmax(0, 6fr); gap: var(--sp-7); }
+  .page-rayon #atelier .atelier-rayon__image { aspect-ratio: auto; height: 320px; }
+}
+
+/* --------------------------------------------------------------------------
+   À VENIR : les pièces de l'atelier qui ont déjà une image, sans prix.
+   Deux colonnes au téléphone, quatre sur grand écran comme les vignettes
+   de l'accueil ; le nom générique en Prata dessous.
+   -------------------------------------------------------------------------- */
+.venir-pieces { padding-top: var(--sp-5); padding-bottom: var(--sp-7); }
+.venir-pieces__grille {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--sp-5) var(--sp-3);
+}
+@media (min-width: 900px) {
+  .venir-pieces__grille { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--sp-5); }
+}
+.venir-piece { margin: 0; }
+.venir-piece__image {
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: var(--sable);
+}
+.venir-piece__image picture { display: block; height: 100%; }
+.venir-piece__image img { width: 100%; height: 100%; object-fit: cover; }
+.venir-piece figcaption {
+  margin-top: var(--sp-3);
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  line-height: 1.25;
+}

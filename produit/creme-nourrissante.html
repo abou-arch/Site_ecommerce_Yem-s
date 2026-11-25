@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<!-- ⚠ Fichier généré par tools/build.py, toute modification directe sera écrasée.
+     Éditer les gabarits dans templates/ ou les données dans data/products.json. -->
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Crème nourrissante, Entretien | Yem's</title>
+<meta name="description" content="Cire d&#x27;abeille et huile de lin. Nourrit sans boucher les pores du cuir. Une application tous les deux mois suffit. Précisez la teinte dans la note de commande.">
+<meta name="theme-color" content="#F6F1E8">
+<link rel="canonical" href="https://maisonyems.com/produit/creme-nourrissante.html">
+<meta property="og:title" content="Crème nourrissante, Entretien | Yem&#x27;s">
+<meta property="og:description" content="Cire d&#x27;abeille et huile de lin. Nourrit sans boucher les pores du cuir. Une application tous les deux mois suffit. Précisez la teinte dans la note de commande.">
+<meta property="og:type" content="product">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:site_name" content="Yem's">
+<meta property="og:url" content="https://maisonyems.com/produit/creme-nourrissante.html">
+<meta property="og:image" content="https://maisonyems.com/assets/img/creme-nourrissante-ai.jpg">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Les polices ne bloquent plus l'affichage. « media=print » fait charger la
+     feuille sans qu'elle retarde le rendu ; le script qui suit la réactive dès
+     qu'elle est là. Le texte s'affiche donc immédiatement en Georgia et en
+     police système, puis bascule sur Prata et Hanken Grotesk. Sur une 3G, ça
+     évite plusieurs centaines de millisecondes de page blanche.
+
+     Ce script remplace un attribut onload : la politique de sécurité (CSP)
+     n'autorise que les scripts dont elle connaît l'empreinte, et un
+     gestionnaire écrit dans un attribut exigerait en plus 'unsafe-hashes',
+     que tous les navigateurs ne comprennent pas.
+
+     Le <noscript> garde le comportement classique pour qui n'exécute pas de
+     script : mieux vaut attendre les polices que ne jamais les recevoir.
+
+     Seules les graisses réellement employées sont demandées : Prata en 400
+     pour les titres, les noms et les prix, Hanken Grotesk de 400 à 600 pour
+     les textes et les contrôles, et Marcellus pour le seul mot « YEM'S »
+     du logo. -->
+<link rel="stylesheet" media="print" data-polices
+      href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=Marcellus&family=Prata&display=swap">
+<script>
+document.documentElement.classList.add('js');
+(function () {
+  var feuille = document.querySelector('link[data-polices]');
+  var activer = function () { feuille.media = 'all'; };
+  // Déjà chargée (cache) : l'événement load est passé, on active tout de suite.
+  if (feuille.sheet) activer(); else feuille.addEventListener('load', activer);
+})();
+</script>
+<noscript>
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=Marcellus&family=Prata&display=swap">
+</noscript>
+
+<link rel="stylesheet" href="../assets/css/base.css?v=fafb280c">
+<link rel="stylesheet" href="../assets/css/components.css?v=e78d009b">
+<link rel="stylesheet" href="../assets/css/home.css?v=172ffaa2">
+<link rel="stylesheet" href="../assets/css/shop.css?v=11ee56dc">
+<link rel="stylesheet" href="../assets/css/motion.css?v=60901b15">
+<!-- La refonte : jetons et composants partagés de la maison. Après les
+     feuilles historiques, avant celles propres à une page. -->
+<link rel="stylesheet" href="../assets/css/maison.css?v=57538a2b">
+<link rel="stylesheet" href="../assets/css/fiche.css?v=c9ee59a8">
+
+<!-- Favicone : exactement le monogramme du site, sans adaptation. Le nouveau
+     dessin n'a plus de perforations à boucher, il tient donc tel quel à 16 px.
+     Le fond espresso est conservé : sans lui, un trait laiton serait illisible
+     sur l'onglet clair d'un navigateur. -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%2314100D'/%3E%3Cpath fill='%23D9B87A' d='M18 24h14.6L50 47.2 67.4 24H82L57 57.4V71L43 80V57.4z'/%3E%3C/svg%3E">
+
+<!-- Le rideau d'ouverture a été retiré.
+
+     Il masquait la page pendant 1 550 ms, puis se levait en 700 ms : plus de
+     deux secondes d'écran noir avant que le visiteur voie quoi que ce soit,
+     sur une page dont l'image de hero arrive en moins de 400 ms. Le rideau
+     n'ajoutait aucune requête, mais il retardait TOUT — y compris l'accès aux
+     produits, qui est la raison d'être de cette page.
+
+     L'ouverture est désormais portée par le hero lui-même : l'image est
+     servie en priorité, et le titre monte ligne par ligne (motion.js). Le
+     balisage complet du rideau reste dans l'historique git si la maison
+     veut le revoir, raccourci cette fois. -->
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Product","name":"Crème nourrissante","description":"Cire d'abeille et huile de lin. Nourrit sans boucher les pores du cuir. Une application tous les deux mois suffit. Précisez la teinte dans la note de commande.","category":"Entretien","offers":{"@type":"Offer","price":7000,"priceCurrency":"XOF","availability":"https://schema.org/InStock"}}</script>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Aller au contenu</a>
+
+<!-- Le fil qui se coud à mesure qu'on descend.
+     Ce n'est pas une barre de progression générique : c'est le point sellier
+     de la marque, tiré point par point le long du haut de l'écran. Le motif
+     est exactement celui de la classe .couture utilisée dans les pages.
+     Purement décoratif, donc masqué aux lecteurs d'écran. -->
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <!-- Logo Yem's : monogramme Y au pied coupé en biais.
+
+         Le dessin précédent était percé de trous d'alêne : un symbole de
+         sellier, qui n'aurait rien voulu dire sur un cadran de montre ou une
+         étiquette de chemise. La maison s'élargit, le monogramme aussi.
+
+         Il ne reste qu'un détail, et c'est le bon : le pied tranché à 9°.
+         Assez discret pour ne pas se voir au premier regard, assez net pour
+         qu'on le remarque au second. « Différents par les détails. » -->
+    <symbol id="i-logo" viewBox="0 0 100 100">
+      <path fill="currentColor" d="M18 24h14.6L50 47.2 67.4 24H82L57 57.4V71L43 80V57.4z"/>
+    </symbol>
+
+
+    <!-- Icônes UI -->
+    <symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M5 12h14M13 6l6 6-6 6"/>
+    </symbol>
+
+    <!-- Flèche en biais : « ouvrir », sur les listes de liens posées en
+         carte (bloc « La maison » de l'accueil). -->
+    <symbol id="i-arrow-biais" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M7 17 17 7M9 7h8v8"/>
+    </symbol>
+
+    <!-- Chevron du repère de défilement, en pied de hero. -->
+    <symbol id="i-chevron-bas" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M5 9l7 7 7-7"/>
+    </symbol>
+    <symbol id="i-arrow-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M19 12H5M11 6l-6 6 6 6"/>
+    </symbol>
+    <symbol id="i-bag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M6 8h12l1 12H5L6 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/>
+    </symbol>
+    <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4 12.5l5.5 5.5L20 7"/>
+    </symbol>
+    <symbol id="i-star" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 2l3 6.6 7 .9-5.2 4.8 1.4 7L12 18l-6.2 3.3 1.4-7L2 9.5l7-.9L12 2z"/>
+    </symbol>
+    <symbol id="i-whatsapp" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2zm5.6 14.1c-.2.7-1.4 1.3-2 1.4-.5.1-1.1.1-1.8-.1-.4-.1-1-.3-1.7-.6-3-1.3-4.9-4.3-5-4.5-.2-.2-1.2-1.6-1.2-3s.7-2.1 1-2.4c.3-.3.6-.4.8-.4h.6c.2 0 .5-.1.7.5l1 2.3c.1.2.1.4 0 .6l-.4.5-.3.4c-.1.1-.3.3-.1.6.1.3.7 1.2 1.5 1.9 1 .9 1.9 1.2 2.2 1.3.3.1.4.1.6-.1l.8-1c.2-.2.4-.2.6-.1l2.2 1c.2.1.4.2.5.3.1.2.1.6-.1 1.3z"/>
+    </symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 3l8 3v6c0 5-3.5 8.2-8 9-4.5-.8-8-4-8-9V6l8-3z"/><path d="M9 12l2 2 4-4"/>
+    </symbol>
+    <symbol id="i-needle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 21l7-7"/><path d="M10 14L20 4"/><circle cx="20.5" cy="3.5" r="1.5"/><path d="M12 12c2 1 4 1 6-1" stroke-dasharray="2 2"/>
+    </symbol>
+    <symbol id="i-card" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="M2.5 10h19"/><path d="M6 15h4"/>
+    </symbol>
+    <symbol id="i-truck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M2 6h11v10H2z"/><path d="M13 9h4l4 4v3h-8z"/><circle cx="6.5" cy="18.5" r="1.8"/><circle cx="17.5" cy="18.5" r="1.8"/>
+    </symbol>
+  </defs>
+</svg>
+<!-- Généré par tools/build.py, ne pas modifier les fichiers HTML de sortie -->
+<header class="header" id="header">
+  <div class="container container--wide header__inner">
+    <a class="logo" href="../index.html" aria-label="Yem's, accueil">
+      <svg class="logo__mark" aria-hidden="true"><use href="#i-logo"></use></svg>
+      <span>
+        <span class="logo__word">YEM'S</span>
+        <span class="logo__tag">Différents par les détails</span>
+      </span>
+    </a>
+
+    <nav class="nav" aria-label="Navigation principale">
+      <a class="nav__link" href="../boutique.html">Boutique</a>
+      <a class="nav__link" href="../selection.html">La sélection</a>
+      <a class="nav__link" href="../a-venir.html">L'atelier</a>
+      <a class="nav__link" href="../configurateur.html">Le sur-mesure</a>
+      <a class="nav__link" href="../about-us.html">About us</a>
+      <a class="nav__link" href="../service-client.html">Service client</a>
+    </nav>
+
+    <div class="header__actions">
+      <a class="btn btn--sm btn--quiet" href="../configurateur.html">Composer ma paire</a>
+      <a class="icon-btn" href="../panier.html" aria-label="Panier (0 article)">
+        <svg aria-hidden="true"><use href="#i-bag"></use></svg>
+        <span class="cart-count" data-cart-count>0</span>
+      </a>
+      <button class="burger" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Ouvrir le menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobile-menu">
+  <a href="../boutique.html">Boutique</a>
+  <a href="../selection.html">La sélection</a>
+  <a href="../a-venir.html">L'atelier</a>
+  <a href="../configurateur.html">Le sur-mesure</a>
+  <a href="../about-us.html">About us</a>
+  <a href="../service-client.html">Service client</a>
+  <a class="btn" href="https://wa.me/2290191380234" target="_blank" rel="noopener" style="margin-top:auto">
+    <svg aria-hidden="true"><use href="#i-whatsapp"></use></svg>
+    Écrire à l'atelier
+  </a>
+</div>
+
+<main id="main">
+
+<nav class="crumb" aria-label="Fil d'Ariane"><div class="container"><a href="../index.html">Accueil</a><span class="crumb__sep" aria-hidden="true">/</span><a href="../entretien.html">Entretien</a><span class="crumb__sep" aria-hidden="true">/</span><span aria-current="page">Crème nourrissante</span></div></nav>
+
+<section class="section section--top">
+  <div class="container product">
+    <!-- Ni la galerie (l'image d'ouverture est le LCP) ni le bloc du prix ne
+         sont animés : rien ne doit retarder l'achat. -->
+    <div class="product__gallery">
+      <div class="pshot" data-shot style="--shot-ratio:1122/1402"><span class="badge badge--green pshot__badge" data-badge="creme-nourrissante" data-badge-long="0"><span class="badge__dot"></span>Disponible</span>
+          <picture>
+            <source srcset="../assets/img/creme-nourrissante-ai-500.webp 500w, ../assets/img/creme-nourrissante-ai.webp 1122w" sizes="(max-width: 900px) 92vw, 45vw" type="image/webp">
+            <img src="../assets/img/creme-nourrissante-ai.jpg" srcset="../assets/img/creme-nourrissante-ai-500.jpg 500w, ../assets/img/creme-nourrissante-ai.jpg 1122w" sizes="(max-width: 900px) 92vw, 45vw"
+                 width="1122" height="1402" fetchpriority="high"
+                 alt="Boîte de crème nourrissante ouverte, couvercle posé à côté, et un chiffon de coton plié">
+          </picture>
+        </div>
+    </div>
+
+    <div class="product__info">
+      <h1 class="product__name">Crème nourrissante</h1>
+      <span class="origine origine--selection">Choisi par l&#x27;atelier</span>
+      <p class="product__price"><span data-prix="creme-nourrissante">7 000 F</span>
+        <small>francs CFA, prix indicatif</small></p>
+      <span class="badge badge--green " data-badge="creme-nourrissante" data-badge-long="1"><span class="badge__dot"></span>En stock à Cotonou, expédié sous 72 h</span>
+      <p class="lede" data-court="creme-nourrissante">Cire d'abeille et huile de lin. Nourrit sans boucher les pores du cuir. Une application tous les deux mois suffit. Précisez la teinte dans la note de commande.</p>
+
+      <div class="product__pickers">
+
+
+      </div>
+
+      <div class="product__actions">
+        <button class="btn btn--full" type="button"
+                data-add-to-cart
+                data-id="creme-nourrissante"
+                data-name="Crème nourrissante"
+                data-price="7000"
+                data-cart="../panier.html">
+          Ajouter au panier
+          <svg aria-hidden="true"><use href="#i-bag"></use></svg>
+        </button>
+        <a class="btn btn--ghost btn--full lien--wa" href="https://wa.me/2290191380234?text=Bonjour%2C%20je%20souhaite%20commander%20le%20Cr%C3%A8me%20nourrissante."
+           data-wa-nom="Crème nourrissante" data-wa-base="https://wa.me/2290191380234"
+           target="_blank" rel="noopener">
+          <svg aria-hidden="true"><use href="#i-whatsapp"></use></svg>
+          Commander sur WhatsApp
+        </a>
+      </div>
+
+      <!-- Payer et recevoir : ce qui se passe après le bouton, juste sous le
+           bouton. Sources : CGV (paiement à la livraison ou Mobile Money,
+           confirmation des frais sur WhatsApp avant tout règlement),
+           site.origines (garantie de la ligne), confirmation de la maison du
+           20 novembre 2026 pour l'essai à la livraison. -->
+      <div class="recevoir-fiche">
+        <h2 class="recevoir-fiche__titre">Payer et recevoir</h2>
+        <ul>
+          <li><strong>À la livraison ou par Mobile Money.</strong> En espèces, ou par MTN MoMo, Moov ou Wave, convenu avec l'atelier.</li>
+          <li><strong>Essai à la livraison.</strong> Vous essayez la paire au moment où on vous la livre.</li>
+          <li><strong>Confirmation sur WhatsApp.</strong> L'atelier confirme la commande et ses frais avant tout règlement.</li>
+          <li><strong>Expédiée sous 72&nbsp;h</strong>, puis livrée en 48&nbsp;h à Cotonou et à Abidjan, sous 5 jours ailleurs au Bénin et en Côte d'Ivoire (jours ouvrés).</li>
+          <li><strong>Échange un an, pointure ou défaut.</strong> Paire numérotée à la réception.</li>
+        </ul>
+      </div>
+
+
+      <dl class="product__specs">
+          <div class="spec-row"><dt>Composition</dt><dd>Cire d'abeille, huile de lin, essence de térébenthine</dd></div>
+          <div class="spec-row"><dt>Contenance</dt><dd>100 ml</dd></div>
+          <div class="spec-row"><dt>Teintes</dt><dd>Incolore, cognac, espresso, noir</dd></div>
+          <div class="spec-row"><dt>Fréquence</dt><dd>Une application tous les deux mois</dd></div>
+      </dl>
+
+      <p class="origine origine--selection origine--long"><strong>Sélection</strong>Nous ne l&#x27;avons pas fabriquée, nous l&#x27;avons choisie. Chaque paire est contrôlée à la réception, numérotée, et échangeable un an.</p>
+      <p class="product__pitch">La plupart des cirages du marché déposent un film qui brille et étouffe. Celle-ci pénètre : le cuir reprend sa souplesse et fonce légèrement, ce qui est exactement ce qu'on attend d'une patine.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head" data-reveal>
+      <h2>Ce qu'on ne voit pas de loin</h2>
+    </div>
+
+    <div class="faq" data-reveal style="--reveal-delay:100ms">
+      <details>
+        <summary>L'entretien</summary>
+        <div class="faq__body"><p>Un coup de brosse après chaque port, une crème nourrissante tous les deux mois, des embauchoirs entre deux sorties. C'est tout. Évitez de sécher un cuir mouillé près d'une source de chaleur : c'est la seule chose qui puisse vraiment l'abîmer.</p></div>
+      </details>
+      <details>
+        <summary>Livraison &amp; retours</summary>
+        <div class="faq__body"><p>Expédiée sous 72 h, puis livrée en 48 h à Cotonou et à Abidjan, sous 5 jours ailleurs au Bénin et en Côte d'Ivoire (jours ouvrés). Échange de pointure sous 7 jours, sans frais, sur toute pièce non portée à l'extérieur ; sur la sélection, échange pendant un an pour une pointure ou un défaut. Sur le sur-mesure : une retouche offerte après essayage, puis remboursement intégral si le chaussant ne convient toujours pas.</p></div>
+      </details>
+    </div>
+  </div>
+</section>
+<section class="section section--light product-suite">
+  <div class="container">
+    <div class="section-head section-head--split" data-reveal>
+      <h2>Les autres modèles</h2>
+      <a class="lien" href="../entretien.html">
+        Toute la sélection
+        <svg aria-hidden="true"><use href="#i-arrow"></use></svg>
+      </a>
+    </div>
+
+    <div class="shop-grid">
+      <article class="pcard" data-reveal data-piece="embauchoirs-cedre">
+        <a href="../produit/embauchoirs-cedre.html" tabindex="-1" aria-hidden="true">
+          <div class="pshot" data-shot>
+            <span class="badge badge--amber pshot__badge" data-badge="embauchoirs-cedre" data-badge-long="0"><span class="badge__dot"></span>En route</span>
+            <picture>
+            <source srcset="../assets/img/embauchoirs-cedre-ai-500.webp 500w, ../assets/img/embauchoirs-cedre-ai.webp 1122w" sizes="(max-width: 759px) 46vw, (max-width: 1179px) 31vw, 23vw" type="image/webp">
+            <img src="../assets/img/embauchoirs-cedre-ai.jpg" srcset="../assets/img/embauchoirs-cedre-ai-500.jpg 500w, ../assets/img/embauchoirs-cedre-ai.jpg 1122w" sizes="(max-width: 759px) 46vw, (max-width: 1179px) 31vw, 23vw"
+                 width="1122" height="1402" loading="lazy" decoding="async"
+                 alt="Paire d&#x27;embauchoirs en cèdre rouge à double fente, boutons en laiton">
+          </picture>
+          </div>
+        </a>
+        <div class="pcard__body">
+          <h3 class="pcard__name"><a href="../produit/embauchoirs-cedre.html">Embauchoirs cèdre</a></h3>
+          <p class="pcard__spec">Cèdre rouge non verni</p>
+          <div class="pcard__foot">
+            <span class="origine origine--selection">Choisi par l&#x27;atelier</span>
+            <span class="pcard__price" data-prix="embauchoirs-cedre">19 000 F</span>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+<div class="buybar" data-buybar inert aria-hidden="true">
+  <span class="buybar__info">
+    <span class="buybar__nom">Crème nourrissante</span>
+    <span class="buybar__prix" data-prix="creme-nourrissante">7 000 F</span>
+  </span>
+  <button class="btn btn--sm" type="button" data-buybar-add>Ajouter au panier</button>
+</div>
+
+</main>
+
+<footer class="footer">
+  <div class="container container--wide">
+    <div class="footer__grid">
+      <div>
+        <a class="logo" href="../index.html">
+          <svg class="logo__mark" aria-hidden="true"><use href="#i-logo"></use></svg>
+          <span>
+            <span class="logo__word">YEM'S</span>
+            <span class="logo__tag">Différents par les détails</span>
+          </span>
+        </a>
+        <p class="text-muted" style="font-size:var(--fs-sm);margin-top:var(--sp-4);max-width:34ch">
+          Des souliers et accessoires choisis ou façonnés avec soin, pour le
+          Bénin et la Côte d'Ivoire.
+        </p>
+        <!-- Mention de transparence. Elle dit « tous » parce que c'est le cas :
+             les onze visuels produits du catalogue sont générés. Écrire « une
+             partie » serait une inexactitude, et l'inexactitude est précisément
+             ce contre quoi cette mention protège. -->
+        <p class="footer__ai-note">
+          Toutes les images de ce site, pièces, portrait et scènes d'atelier,
+          sont générées par intelligence artificielle. Elles illustrent la
+          maison et ses modèles&nbsp;; ce ne sont pas des photographies.
+          <a href="../mentions-legales.html#visuels">En savoir plus</a>
+        </p>
+
+        <!-- Le formulaire d'inscription a été retiré : il n'était relié à rien et
+             faisait disparaître les adresses saisies. À remettre le jour où une
+             liste de diffusion existe vraiment. -->
+        <a class="btn btn--ghost btn--sm" style="margin-top:var(--sp-5)"
+           href="https://wa.me/2290191380234" target="_blank" rel="noopener">
+          <svg aria-hidden="true"><use href="#i-whatsapp"></use></svg>
+          Écrire à l'atelier
+        </a>
+      </div>
+
+      <div>
+        <h2 class="footer__title">Boutique</h2>
+        <ul class="footer__list">
+          <li><a href="../boutique.html">Tout le catalogue</a></li>
+          <li><a href="../entretien.html">Entretien</a></li>
+          <li><a href="../selection.html">Sélection</a></li>
+          <li><a href="../a-venir.html">Ce qui se prépare</a></li>
+          <li><a href="../configurateur.html">Sur-mesure</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h2 class="footer__title">La maison</h2>
+        <!-- Ces cinq liens pointaient sur des ancres de l'accueil. Le récit,
+             les garanties, les offres et les objections vivent désormais sur
+             about-us.html : les ancres ont suivi le contenu, pas l'inverse. -->
+        <ul class="footer__list">
+          <li><a href="../about-us.html">About us</a></li>
+          <li><a href="../about-us.html#manifeste">Notre savoir-faire</a></li>
+          <!-- « Garantie satisfaction » laissait entendre « satisfait ou
+               remboursé » sur tout. La section liée s'appelle « Nos
+               engagements » et détaille des garanties qui changent d'une
+               ligne à l'autre : le lien dit ce qu'on y trouve. -->
+          <li><a href="../about-us.html#garantie">Nos garanties</a></li>
+          <li><a href="../about-us.html#offres">Trois façons d'acheter</a></li>
+          <li><a href="../about-us.html#questions">Questions fréquentes</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h2 class="footer__title">Contact</h2>
+        <ul class="footer__list">
+          <li>Cotonou, Bénin</li>
+          <li>Abidjan, Côte d'Ivoire</li>
+          <li><a href="https://wa.me/2290191380234" target="_blank" rel="noopener">WhatsApp de l'atelier</a></li>
+          <li>Du lundi au samedi, 8 h – 19 h</li>
+        </ul>
+        <!-- Liste générée depuis data/products.json selon PAYMENT_MODE.
+             Elle était écrite en dur, ce qui avait déjà mené le site à
+             annoncer un mode de règlement qu'il ne savait pas encaisser. -->
+        <div class="pay-logos" style="margin-top:var(--sp-5)">
+          <span>MTN MoMo</span>
+          <span>Moov</span>
+          <span>Wave</span>
+          <span>Espèces</span>
+        </div>
+      </div>
+    </div>
+
+    <hr class="stitch">
+
+    <div class="footer__bottom">
+      <span>© <span data-year>2026</span> Yem's. Tous droits réservés.</span>
+      <!-- Les trois documents que le code du numérique exige d'une plateforme
+           de commerce électronique. Ils sont en pied de page sur toutes les
+           pages, y compris le tunnel de commande : c'est là qu'un client se
+           demande à qui il a affaire. -->
+      <nav class="footer__legal" aria-label="Informations légales">
+        <a href="../mentions-legales.html">Mentions légales</a>
+        <a href="../cgv.html">Conditions de vente</a>
+        <a href="../donnees-personnelles.html">Données personnelles</a>
+        <a href="../conditions-utilisation.html">Conditions d'utilisation</a>
+      </nav>
+      <span>Paiement à la livraison ou par Mobile Money, convenu avec l'atelier</span>
+    </div>
+  </div>
+
+  <!-- La signature géante en texte dégradé de l'ancien pied a été retirée
+       avec la refonte « maison » (pas de texte en dégradé). -->
+</footer>
+
+
+<script src="../assets/js/main.js?v=5a8c5422" defer></script>
+<script src="../assets/js/motion.js?v=86394c47" defer></script>
+
+</body>
+</html>

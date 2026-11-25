@@ -141,6 +141,37 @@
 }
 
 /* --------------------------------------------------------------------------
+   TÉLÉPHONE ET TABLETTE : LES MÊMES GESTES, PLUS COURTS
+   --------------------------------------------------------------------------
+   La clientèle arrive surtout sur téléphone, où l'on fait défiler vite et
+   où chaque bloc entre à l'écran pendant qu'on lit le précédent. À 1,15 s
+   le volet et 1,05 s par ligne de titre, on attendait les photos et les
+   titres à chaque écran : une fiche produit restait à moitié vide près de
+   deux secondes après l'arrivée.
+
+   Les gestes restent, ils durent la moitié. Le zoom d'entrée (×1,14) part :
+   sur un téléphone d'entrée de gamme, c'est lui qui saccadait, et sans
+   survol il ne se voit pas. */
+@media (max-width: 900px) {
+  [data-lines] .line > span {
+    transition:
+      transform 620ms var(--ease-out-expo),
+      opacity 360ms linear;
+    transition-delay: calc(var(--i, 0) * 60ms);
+  }
+
+  [data-shot] img,
+  [data-shot].is-shown img {
+    transform: none;
+    transition: clip-path 620ms var(--ease-out-expo);
+  }
+
+  [data-shot].is-shown::before {
+    animation-duration: 620ms;
+  }
+}
+
+/* --------------------------------------------------------------------------
    RETRAIT COMPLET SI L'UTILISATEUR LE DEMANDE
    -------------------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
